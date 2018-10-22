@@ -1,0 +1,154 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsfonts, bm}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+\usepackage{cite}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{color}
+\usepackage{enumitem}
+\usepackage{xspace}
+\usepackage{units}
+
+\usepackage[colorlinks=true,citecolor=blue,bookmarksnumbered=true,hyperfootnotes=true]{hyperref}
+\usepackage{cleveref}
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\newcounter{secnum}
+\newcommand{\mysection}[1]{
+   \refstepcounter{secnum}
+   \subsubsection*{\large \textbf{\S\arabic{secnum}. #1}}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{remark}
+\newtheorem*{notation}{Notation}
+\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem*{fact}{Fact}
+\newtheorem*{observation}{Observation}
+\newtheorem*{condition}{Condition}
+\newtheorem*{claim}{Claim}
+\newtheorem*{example}{Example}
+
+%Referencing
+%cref declarations
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{proposition}{Proposition}{Propositions}
+\crefname{corollary}{Corollary}{Corollaries}
+
+\crefname{fact}{Fact}{Facts}
+\crefname{observation}{Observation}{Observations}
+\crefname{claim}{Claim}{Claims}
+\crefname{condition}{Condition}{Conditions}
+
+\crefname{example}{Example}{Examples}
+\crefname{definition}{Definition}{Definitions}
+\crefname{remark}{Remark}{Remarks}
+\crefname{note}{Note}{Notes}
+\crefname{notation}{Notation}{Notations}
+\crefname{section}{Section}{Sections}
+\crefname{appendix}{Appendix}{Appendices}
+
+\crefname{secnum}{Section}{Sections}
+\creflabelformat{secnum}{#2\S#1#3}
+
+% Fancy lists using enumitem package
+\setlist{leftmargin=*} 
+%\setitemize[1]{label=$\blacktriangleright$} 
+%\setitemize[2]{label=--} 
+\setenumerate[1]{label=\arabic*)}
+
+\definecolor{Red}{rgb}{1,0,0}
+\newcommand{\red}{\color{Red}}
+\newcommand{\tsjnote}[1]{$\ll$\textsf{\red #1}$\gg$\marginpar{\tiny\bf TSJ}}
+
+%\addtolength{\multlinegap}{1cm} % to squeeze in the equations
+
+\newcommand{\etal}{\textit{et al.\/}\xspace}
+
+\newcommand{\Reals}{\mathbb{R}}
+\newcommand{\Ints}{\mathbb{Z}}
+
+\newcommand{\zo}{\{0,1\}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\half}{\tfrac{1}{2}} % horizontal /
+\newcommand{\slhalf}{\nicefrac{1}{2}} % slanted /
+
+%\newcommand{\T}{\top}w
+\newcommand{\T}{\mathsf{T}}
+
+\newcommand{\ceq}{\coloneqq}
+
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil} 
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor} 
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\tuple}{\langle}{\rangle}
+\DeclarePairedDelimiterX{\ip}[2]{\langle}{\rangle}{#1,#2}
+
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}}
+
+\newcommand{\vect}[1]{\mathbf{#1}}
+\newcommand{\vx}{\vect{x}}
+\newcommand{\vy}{\vect{y}}
+
+\newcommand{\dotp}{\ \tikz[baseline=-0.65ex]\draw[black,fill=black,radius=0.8pt] (0,0) circle ;\ }%
+\newcommand{\argdot}{\,\tikz[baseline=-0.5ex]\draw[black,fill=black,radius=1pt] (0,0) circle ;\,}%
+
+\newcommand{\COMMENT}[1]{}
+
+
+\begin{document}
+
+Here are the simplified equations.
+
+\mysection{Control Unit}
+
+\begin{align*}
+&q_i = U_i^{d \times 2d} q + b_i^d  \tag{c0} \\
+&cq_i = W^{d \times d} c_{i-1} + q_i  \tag{c1} \\
+&ca_{is} = \ip{cq_i}{\mathbf{cw}_s}  \tag{c2.1}\\
+&cv_{is} = \textrm{softmax}(ca_{is}) \tag{c2.2}\\
+&\mathbf{c}_i = \sum_s cv_{is} \, \mathbf{cw}_s  \tag{c2.3}
+\end{align*}
+Only eqn.~(c0) above is non-recurrent.
+
+\mysection{Read Unit}
+
+\begin{align*}
+&\mathbf{g}_{hw} = W_1^{d \times d} \mathbf{k}_{hw} + b_1^d \tag{r0} \\
+&I_{ihw} = \mathbf{m}_{i-1} \odot \mathbf{g}_{hw} \tag{r1} \\
+&I'_{ihw} = W_2^{d \times 2d} [I_{ihw}, \mathbf{k}_{hw}] + b_2^{d} \tag{r2} \\
+&ra_{ihw} = \ip{\mathbf{c}_i}{I'_{ihw}}  \tag{r3.1}\\
+&rv_{ihw} = \textrm{softmax}(ra_{ihw}) \tag{r3.2}\\
+&\mathbf{r}_i = \sum_s rv_{ihw} \, \mathbf{k}_{hw}  \tag{r3.3}
+\end{align*}
+
+Note that $\mathbf{g}_{hw}$ can be \emph{precomputed} before the reasoning steps.
+       
+\mysection{Write Unit}
+
+\begin{equation}
+\mathbf{m}_i = W^{d \times 2d}[\mathbf{r}_i, \mathbf{m}_{i-1}] + b^d \tag{w1}
+\end{equation}
+
+
+
+\end{document}
