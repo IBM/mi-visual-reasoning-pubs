@@ -1,1 +1,34 @@
 \section{Simplified MAC model}
+
+Idealized equations:
+\subsection*{Control Unit}
+
+\begin{align*}
+	&q_i = U_i^{[d \times 2d]} q + b_i^{[d]}  \tag{c0} \\
+	\cline{1-2}
+	&cq_i = W_{\textsf{cq}}^{[d \times d]} c_{i-1} + q_i  \tag{c1} \\
+	&ca_{is} = W_{\textsf{ca}}^{[1 \times d]} (cq_i \odot \mathbf{cw}_s)  \tag{c2.1}\\
+	&cv_{is} = \textrm{softmax}(ca_{is}) \tag{c2.2}\\
+	&\mathbf{c}_i = \sum_s cv_{is} \, \mathbf{cw}_s  \tag{c2.3}
+\end{align*}
+Only eqn.~(c0) above is \emph{position dependent}
+
+\subsection*{Read Unit}
+
+\begin{align*}
+	&\mathbf{\tk}_{hw} = U_{\textsf{proj}}^{[d \times d]} \mathbf{k}_{hw} + b_{\textsf{proj}}^{[d]} \tag{r0} \\
+	\cline{1-2}
+	&I_{ihw} = \mathbf{m}_{i-1} \odot \mathbf{\tk}_{hw} \tag{r1} \\
+	&I'_{ihw} = \mathbf{\tk}_{hw}  + W_{\textsf{I}}^{[d \times d]} I_{ihw} + b_{\textsf{I}}^{[d]}  \tag{r2} \\
+	&ra_{ihw} = W_{\textsf{ra}}^{[1 \times d]} (\mathbf{c}_i \odot I'_{ihw})  \tag{r3.1}\\
+	&rv_{ihw} = \textrm{softmax}(ra_{ihw}) \tag{r3.2}\\
+	&\mathbf{r}_i = \sum_s rv_{ihw} \, \mathbf{\tk}_{hw}  \tag{r3.3}
+\end{align*}
+
+Note that $\mathbf{\tk}_{hw}$ can be \emph{precomputed} before the reasoning steps.
+
+\subsection*{Write Unit}
+
+\begin{equation}
+\mathbf{m}_i = W_{\textsf{m}}^{[d \times d]} \mathbf{r}_i + b_{\textsf{m}}^{[d]} \tag{w1}
+\end{equation}
