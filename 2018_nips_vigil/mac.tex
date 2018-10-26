@@ -10,3 +10,18 @@ A MAC network is an end-to-end differentiable architecture primed to perform an 
 	\label{fig:core_concepts}
 \end{figure}
 
+\textbf{\textit{Description of the input unit:}}
+
+The role of the input unit is to preprocess the raw images and questions. 
+The images are passed through a feature extractor (ResNet101 cut after layer \textbf{\textit{con4}} ) pre-trained on ImageNet. The output tensor is a feature map that is finally processed by two trainable CNN layers to obtain the knowledge base \textbf{\textit{K}}, the final image representation.
+
+The question first go through a word embedding method and then a bidirectional LSTM.
+The question preprocessing leads to two different outputs:
+
+\begin{description}
+	\item[$\bullet$] The question representation \textbf{\textit{q}} which is the concatenation of the final hidden states from the backward and forward LSTM passes
+	\item[$\bullet$] The contextual words \textbf{\textit{cw}} : a series of output states \textbf{\textit{cw1}}, . . . , \textbf{\textit{cwS}} that represent each word in the context of the question
+\end{description}
+
+
+
