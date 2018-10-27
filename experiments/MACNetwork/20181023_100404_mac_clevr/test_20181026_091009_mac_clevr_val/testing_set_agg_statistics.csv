@@ -1,0 +1,2 @@
+episode,episodes_aggregated,loss,loss_min,loss_max,loss_std,acc,acc_min,acc_max,acc_std,samples_aggregated
+002344,002344,0.1499639004,0.0042915940,0.5958027244,0.0874820128,0.9469594955,0.8437500000,1.0000000000,0.0283251144,149991
