@@ -1,6 +1,21 @@
-\section{Simplified MAC model}
+\subsection{Simplified MAC network}
+Our proposed modification to the MAC network is based on two heuristic
+simplifications of the equations governing a MAC cell. 
+First, we observed that when looking at the equations of different units
+together as a whole, we notice that there are several affine transformations
+that are applied in sequence (with no activation in-between).
+Therefore they can actually be combined to form a single affine transformation.
+The second observation uses the following heuristic argument:
+suppose there is a single affine transformation which preserves the number
+of dimensions. Then one can assume that the transformation is invertible
+so as to avoid a loss in the information. Applying this principle to 
+equations in the read and write unit results in eliminating an affine
+operation of the knowledge base in the recurrent network. Instead we compute
+this operation on the knowledge base right after we apply the 2 
+trainable CNN layers (i.e. prior to the reasoning steps). This results
+in a significant savings in training time, as our experiments demonstrate
+below, without incurring too much drop in accuracy.
 
-Idealized equations:
 \subsection*{Control Unit}
 
 \begin{align*}

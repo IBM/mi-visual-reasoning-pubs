@@ -1,22 +1,28 @@
 \section{Introduction}
 Reasoning over visual inputs is a fundamental characteristic of human intelligence.
-Reproducing this ability with artificial agents is a challenge that requires learning relations and compositionality (Hu et al. 2017; Johnson et al. 2017b).\\
-The Visual Question Answering (VQA) task has been tailored to benchmark those reasoning performances. It is a complex semantic task requiring both natural language processing and visual recognition. It also put to the test the effective use of the short term memory.\\
+Reproducing this ability with artificial agents is a challenge that requires learning relations and compositionality (Hu et al. 2017; Johnson et al. 2017b).
+
+The Visual Question Answering (VQA) task has been tailored to benchmark those reasoning performances. It is a complex semantic task requiring both natural language processing and visual recognition. It also put to the test the effective use of the short term memory.
+
 The recent CLEVR dataset (Johnson et al., 2017a) proposes a challenging multimodal task that requires to answer compositional questions about an image. The dataset is designed with the explicit goal of enabling detailed analysis of visual reasoning.
 Solving this problem involves a broad array of skills such as counting, comparison and understanding transitive reasoning.
 It also requires perceptual abilities such as recognizing objects, attributes, and spatial relations as well as leveraging commonsense world knowledge (Hudson et al. 2018).
-CLEVR is a generated synthetic dataset that allows to introduce variations on a subset of data to test a particular ability such as generalization or transfer learning.\\
+CLEVR is a generated synthetic dataset that allows to introduce variations on a subset of data to test a particular ability such as generalization or transfer learning.
+
 To solve this type of reasoning task, many deep learning approaches have been explored although they often struggle to perform well on tasks with a structured and compositional nature (Garnelo et al., 2016; Lake et al., 2017). 
 More recent approaches adopt modular structures, resembling the trees of programming languages, that compose neural modules from a fixed predefined collection (Andreas et al., 2016a; Johnson et al., 2017b, Mascharka et al., 2018). However, they rely on externally provided structured representations and functional programs, parsers or expert demonstration, and sometimes require reinforcement learning training schemes (Hudson et al. 2018). 
-These models’ structure is inherently rigid and the use of a range of specialized modules weaken their robustness and generalization capacities.\\
+These models’ structure is inherently rigid and the use of a range of specialized modules weaken their robustness and generalization capacities.
+
 Recent work on CLEVR from Hudson et al. 2018;  has introduced  MAC ( Memory, Attention, and Composition). The MAC model has been deliberately designed to decompose the problem into a sequence of attention-based reasoning operations. Its ability to arbitrarily draw a complex reasoning graph while still featuring end-to-end differentiability made its sucess.
-MAC doesn’t use specific modules that would make it specifically tailored for the CLEVR dataset. The three general units working in tandem to perform a reasoning step make the robustness of the model.\\
+MAC doesn’t use specific modules that would make it specifically tailored for the CLEVR dataset. The three general units working in tandem to perform a reasoning step make the robustness of the model.
+
 MAC achieves state-of-the-art accuracy on CLEVR and also on the most difficult CLEVR Humans dataset, were questions are written by humans. 
 Although the performance of MAC has been proven, It appears difficult to understand what concepts the model is learning. 
 Does the model really learn relations between objects? 
 How does the model represent those relations and reasoning steps? 
 The interpretability of the MAC model seems yet to be fully defined.
-Is the model representing notions and concepts like objects attributes?\\
+Is the model representing notions and concepts like objects attributes?
+
 In this work, we first question the complexity of the MAC model and explore simplification possibilities. We propose a new set of equations that aims to simplify the model and improve training performance. 
 We also put to proof the MAC model on the CLEVR CoGenT dataset. The CoGenT dataset has been designed to highlight transfer learning abilities and give a better sense of interpretability. By mixing attributes over two sub-datasets, the CLEVR CoGenT task allow us to see what relations and concepts the model has really learned. We show how MAC performs on CLEVR CoGenT and compare it to state-of-the-art models.
 and propose a study about the model failures. This work points out some of the MAC model weaknesses, in particular its failure to differentiate concepts of colors and shape. We finally discuss some improvement possibilities.
