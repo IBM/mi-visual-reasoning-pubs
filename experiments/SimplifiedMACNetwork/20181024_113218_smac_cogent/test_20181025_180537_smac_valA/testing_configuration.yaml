@@ -1,0 +1,94 @@
+default_configs: configs/mac/default_cogent.yaml
+model:
+  dim: 512
+  dropout: 0.15
+  embed_hidden: 300
+  max_step: 12
+  name: SimplifiedMACNetwork
+  save_intermediate: false
+testing:
+  dataloader:
+    batch_sampler: null
+    drop_last: false
+    num_workers: 0
+    pin_memory: false
+    sampler: null
+    shuffle: true
+    timeout: 0
+  problem:
+    batch_size: 64
+    images:
+      feature_extractor:
+        cnn_model: resnet101
+        num_blocks: 4
+      raw_images: false
+    max_test_episodes: 2344
+    name: CLEVR
+    questions:
+      embedding_dim: 300
+      embedding_type: random
+    settings:
+      data_folder: /home/vmarois/CLEVR_CoGenT_v1.0
+      dataset_variant: CLEVR-CoGenT
+      set: valA
+  seed_numpy: 2146169395
+  seed_torch: 581737181
+training:
+  dataloader:
+    batch_sampler: null
+    drop_last: false
+    num_workers: 0
+    pin_memory: false
+    sampler: null
+    shuffle: true
+    timeout: 0
+  gradient_clipping: 10
+  optimizer:
+    lr: 0.0001
+    name: Adam
+  problem:
+    batch_size: 64
+    images:
+      feature_extractor:
+        cnn_model: resnet101
+        num_blocks: 4
+      raw_images: false
+    name: CLEVR
+    questions:
+      embedding_dim: 300
+      embedding_type: random
+    settings:
+      data_folder: /home/vmarois/CLEVR_CoGenT_v1.0
+      dataset_variant: CLEVR-CoGenT
+      set: trainA
+  seed_numpy: 0
+  seed_torch: 0
+  terminal_conditions:
+    episode_limit: -1
+    epoch_limit: 20
+    loss_stop: 0.03
+validation:
+  dataloader:
+    batch_sampler: null
+    drop_last: false
+    num_workers: 0
+    pin_memory: false
+    sampler: null
+    shuffle: true
+    timeout: 0
+  partial_validation_interval: 200
+  problem:
+    batch_size: 64
+    images:
+      feature_extractor:
+        cnn_model: resnet101
+        num_blocks: 4
+      raw_images: false
+    name: CLEVR
+    questions:
+      embedding_dim: 300
+      embedding_type: random
+    settings:
+      data_folder: /home/vmarois/CLEVR_CoGenT_v1.0
+      dataset_variant: CLEVR-CoGenT
+      set: valA
