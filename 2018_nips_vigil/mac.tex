@@ -26,10 +26,10 @@ Finally, the write unit retrieves this visual information and updates the memory
 The last part of the network is the output unit. The output unit is simply a classifier that process the concatenation of the question representation and the final memory to produce a final answer.
 
 By going through this recurrent process, the network performs a reasoning strategy that learns concepts and relations between them. MAC is performing state of the art accuracy on CLEVR and CLEVR Humans datasets.
-In contrast to modular approaches (Andreas et al., 2016a;b; Hu et al., 2017; Johnson et al., 2017b), MAC is fully
+In contrast to modular approaches \cite{andreas2016learning,hu2017learning,johnson2017inferring}, MAC is fully
 differentiable and does not require additional supervision. It is making use of a single computational cell chained in sequence rather than a collection of custom modules deployed in a rigid tree structure.
-In contrast to augmented CNN approaches (Santoro et al., 2017; Perez et al., 2017),  the MAC model provides an ability for relational reasoning with better generalization capacity, higher
-computational efficiency and enhanced transparency.
+In contrast to augmented CNN approaches, the MAC model provides an ability for relational reasoning with better generalization capacity, higher
+computational efficiency and enhanced transparency \cite{hudson2018compositional}.
 
 %\begin{figure}[htbp]
 %	\centering
