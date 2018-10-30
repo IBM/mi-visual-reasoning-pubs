@@ -9,7 +9,13 @@ transformed the question into a sequence of vectors which is then passed through
 a bidirectional LSTM to produce a sequence of hidden state pairs. Each such pair 
 corresponds to a unique word in the question and is called the 
 \emph{contextual embedding} for that word.
-Similarly each image is initially processed using a pre-trained network (using ResNet) followed by two trainable CNN layers. 
+Similarly each image is initially processed using a pre-trained network (using ResNet) followed by two trainable CNN layers.\\
+The core of network is a sequence of recurrent MAC cells. A MAC cell (Figure 1) is performing one reasoning step. At every step the network is driving the attention on one part of the question and a corresponding part of the image. This operation is made possible by the combination of 3 units working together, a control unit, a read and a write units. The control unit is updating the control state and drives the attention over the question. Given this control state, the read unit then retrieves information from the memory and drives the attention over the image.
+Finally, the write unit retrieves this visual information and update the memory state.
+The last part of the network is the output unit. The output unit is simply a classifier that process the concatenation of the question representation and the final memory to produce a final answer.\\
+By going through this recurrent process, the network performs a reasoning strategy that learns concepts and relations between them. 
+MAC is performing state of the art accuracy on CLEVR....
+
 
 \begin{figure}[htbp]
 	\centering
@@ -18,24 +24,7 @@ Similarly each image is initially processed using a pre-trained network (using R
 	\label{fig:mac_cell}
 \end{figure}
 
-\textbf{\textit{Description of the input unit:}}
 
-The role of the input unit is to preprocess the raw images and questions. 
-The images are passed through a feature extractor (ResNet101 cut after layer \textbf{\textit{con4}} ) pre-trained on ImageNet. The output tensor is a feature map that is finally processed by two trainable CNN layers to obtain the knowledge base \textbf{\textit{K}}, the final image representation.
-
-The question first go through a word embedding method and then a bidirectional LSTM.
-The question preprocessing leads to two different outputs:
-
-\begin{description}
-	\item[$\bullet$] The question representation \textbf{\textit{q}} which is the concatenation of the final hidden states from the backward and forward LSTM passes
-	\item[$\bullet$] The contextual words \textbf{\textit{cw}} : a series of output states \textbf{\textit{cw1}}, . . . , \textbf{\textit{cwS}} that represent each word in the context of the question
-\end{description}
-
-
-
-\textbf{\textit{Description of the output unit:}}
-
-The output unit simply process the concatenation of the question representation  \textbf{\textit{q}} and the final memory  \textbf{\textit{mp}} to produce a final answer. For CLEVR it is a 2-layer fully-connected softmax classifier.
 
 
 
