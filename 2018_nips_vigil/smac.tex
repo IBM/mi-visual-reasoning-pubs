@@ -59,8 +59,8 @@ knowledge base, as is done by the original MAC network in \emph{each} reasoning 
 \begin{multicols}{2}
 	\noindent
 	\begin{align*}
-	&I_{ihw} = (W_{m}^{[d \times d]} m_{i-1} + b_{m}^{[d]}) \\
-	           & \qquad \quad \odot (W_{k}^{[d \times d]} \kb_{hw} + b_{m}^{[d]}) \tag{r1} \\
+	&I_{ihw} = (W_{m}^{[d \times d]} \mem_{i-1} + b_{m}^{[d]}) \\
+	           & \qquad \quad \odot (W_{k}^{[d \times d]} \kb_{hw} + b_{k}^{[d]}) \tag{r1} \\
 	&I'_{ihw} =  W_{I'}^{[d \times 2d]} [I_{ihw},\kb_{hw}]  + b_{I'}^{[d]}  \tag{r2} \\
 	&ra_{ihw} = W_{ra}^{[1 \times d]} (\cc_i \odot I'_{ihw}) + b_{ra}^{[1]} \tag{r3.1}\\
 	&rv_{ihw} = \textrm{softmax}(ra_{ihw}) \tag{r3.2}\\
