@@ -1,29 +1,14 @@
 \documentclass{article}
 
-%\usepackage{nips_2018}
-
-% to compile a preprint version, e.g., for submission to arXiv, add
-% add the [preprint] option:
-% \usepackage[preprint]{nips_2018}
-
-% to compile a camera-ready version, add the [final] option, e.g.:
-\usepackage[final]{nips_2018}
-
-% to avoid loading the natbib package, add option nonatbib:
-% \usepackage[nonatbib]{nips_2018}
+\usepackage{nips_2018}
 
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
 
-%\usepackage[sc,osf]{mathpazo}   % With old-style figures and real smallcaps.
-%\linespread{1.025}              % Palatino leads a little more leading
 
-%% Euler for math and numbers
-%\usepackage[euler-digits,small]{eulervm}
-
-\usepackage{booktabs}       % professional-quality tables
 %% Useful packages
 \usepackage{amsmath, amssymb, amsfonts, bm}
 \usepackage{amsthm}
+\usepackage{booktabs}       % professional-quality tables
 \usepackage{mathtools}
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
@@ -39,7 +24,12 @@
 \usepackage[title]{appendix}
 \usepackage[percent]{overpic}
 \usepackage{floatrow}
+
+\usepackage{wrapfig}
 \usepackage{multicol}
+\setlength{\columnsep}{1cm}
+\setlength{\columnseprule}{0.5pt}
+\def\columnseprulecolor{\color{Plum}}
 
 %\usepackage{cite}
 \usepackage[hyphens]{url}
@@ -47,10 +37,10 @@
 \usepackage{hyperref}
 \hypersetup{
 	colorlinks=true, % false: boxed links; true: colored links
-	linkcolor=red, % color of internal links
-	citecolor=green, % color of links to bibliography
-	filecolor=magenta, % color of file links
-	urlcolor=cyan, % color of external links
+	linkcolor=Red, % color of internal links
+	citecolor=ForestGreen, % color of links to bibliography
+	filecolor=Magenta, % color of file links
+	urlcolor=Cyan, % color of external links
 	bookmarksnumbered=true,
 	hyperfootnotes=true,
 	breaklinks
@@ -64,6 +54,11 @@
 \newtheorem*{remark}{Remark}
 \newtheorem*{note}{Note}
 
+\newcommand{\cw}{\mathbf{cw}}
+\newcommand{\cc}{\mathbf{c}}
+\newcommand{\kb}{\mathbf{k}}
+\newcommand{\mem}{\mathbf{m}}
+\newcommand{\rr}{\mathbf{r}}
 
 
 \title{On the performance of the MAC model}
@@ -78,31 +73,32 @@
 % on the second line, try using \AND instead of \And before the third
 % author name.
 
-\author{
-  MI-Prometheus\thanks{%
-  It's scary --- \href{https://www.imdb.com/title/tt1446714/}{and it's back!}} \\
-  %% examples of more authors
-  %% \And
-  %% Coauthor \\
-  %% Affiliation \\
-  %% Address \\
-  %% \texttt{email} \\
-  %% \AND
-  %% Coauthor \\
-  %% Affiliation \\
-  %% Address \\
-  %% \texttt{email} \\
-  %% \And
-  %% Coauthor \\
-  %% Affiliation \\
-  %% Address \\
-  %% \texttt{email} \\
-  %% \And
-  %% Coauthor \\
-  %% Affiliation \\
-  %% Address \\
-  %% \texttt{email} \\
-}
+\author{}
+%\author{
+%  MI-Prometheus\thanks{%
+%  It's scary --- \href{https://www.imdb.com/title/tt1446714/}{and it's back!}} \\
+%  %% examples of more authors
+%  %% \And
+%  %% Coauthor \\
+%  %% Affiliation \\
+%  %% Address \\
+%  %% \texttt{email} \\
+%  %% \AND
+%  %% Coauthor \\
+%  %% Affiliation \\
+%  %% Address \\
+%  %% \texttt{email} \\
+%  %% \And
+%  %% Coauthor \\
+%  %% Affiliation \\
+%  %% Address \\
+%  %% \texttt{email} \\
+%  %% \And
+%  %% Coauthor \\
+%  %% Affiliation \\
+%  %% Address \\
+%  %% \texttt{email} \\
+%}
 
 \begin{document}
 % \nipsfinalcopy is no longer used

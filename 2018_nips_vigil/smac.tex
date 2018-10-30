@@ -17,79 +17,65 @@ in a significant savings in training time, as our experiments demonstrate
 below, without incurring too much drop in accuracy.
 
 In the description below, the original MAC cell equations are shown on the \emph{left}
-while our simplified equations are shown on the \emph{right}.
+while our simplified equations are shown (in color) on the {\color{Plum} \emph{right}}.
 (The equation numbering is the same as in~\cite{hudsonManning18}.)
 
-\setlength{\columnsep}{1cm}
-\setlength{\columnseprule}{0.5pt}
-%\def\columnseprulecolor{\color{blue}}
+\noindent\textit{Notation:} The index/position $i$ below denotes the reasoning step. 
+Unless mentioned otherwise, the weights/biases are invariant w.r.t $i$, 
+i.e., shared across all the reasoning steps. 
 
-
-\subsection*{Control Unit:}
-\newcommand{\cq}{cq}
-\newcommand{\ca}{ca}
-\newcommand{\cw}{\mathbf{cw}}
-\newcommand{\cc}{\mathbf{c}}
+\noindent\textbf{Control unit:} 
+For both models, in the control unit, the question $q$ is first transformed in each step of 
+the reasoning using a \emph{position-aware}~\cite{hudsonManning18} 
+linear layer: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 
 \begin{multicols}{2}
 	\noindent
 	\begin{align*}
-	&q_i = U_i^{[d \times 2d]} q + b_i^{[d]}  \tag{c0} \\
-	\cline{1-2} \\[2pt]
-	&cq_i = W_{\cq}^{[d \times 2d]} [c_{i-1}, q_i] + b_{\cq}^{[d]}  \tag{c1} \\
-	&ca_{is} = W_{\ca}^{[1 \times d]} (cq_i \odot \cw_s) + b_{\ca}^{[1]}
+	&cq_i = W_{cq}^{[d \times 2d]} [c_{i-1}, q_i] + b_{cq}^{[d]}  \tag{c1} \\
+	&ca_{is} = W_{ca}^{[1 \times d]} (cq_i \odot \cw_s) + b_{ca}^{[1]}
 	\tag{c2.1}\\
 	&cv_{is} = \textrm{softmax}(ca_{is}) \tag{c2.2}\\
 	&\cc_i = \sum_s cv_{is} \, \cw_s  \tag{c2.3}
-	\end{align*} 
+	\end{align*}
 	\columnbreak
+	{\color{Plum}
 	\begin{align*}
-	&q_i = U_i^{[d \times 2d]} q + b_i^{[d]}  \tag{c0} \\
-	\cline{1-2} \\[2pt]
-	&cq_i = W_{\cq}^{[d \times d]} c_{i-1} + q_i  \tag{c1} \\
-	&ca_{is} = W_{\ca}^{[1 \times d]} (cq_i \odot \cw_s)  \tag{c2.1}\\
+	&cq_i = W_{cq}^{[d \times d]} c_{i-1} + q_i  \tag{c1} \\
+	&ca_{is} = W_{ca}^{[1 \times d]} (cq_i \odot \cw_s)  \tag{c2.1}\\
 	&cv_{is} = \textrm{softmax}(ca_{is}) \tag{c2.2}\\
 	&\cc_i = \sum_s cv_{is} \, \cw_s  \tag{c2.3}
-    \end{align*} 
+    \end{align*}}
 \end{multicols}
 
-Above, $i$ refers to index/position of the reasoning step. Note that the weights/biases
-are \emph{shared} across reasoning steps except for eqn.~(c0) above, which 
-is \emph{position-aware}~\cite{hudsonManning18}, i.e. depends
-on $i$.
-
-\subsection*{Read and Write Unit:}
-\newcommand{\kb}{\mathbf{k}}
-\newcommand{\tkb}{\mathbf{\hat{k}}}
-\newcommand{\mi}{\textsf{I}}
-\newcommand{\mpi}{\textsf{I'}}
-\newcommand{\mem}{\mathbf{m}}
-\newcommand{\rr}{\mathbf{r}}
+\noindent\textbf{Read and write units:}
+For both models below, $\kb_{hw}$ denotes the \emph{knowledge base}~\cite{hudsonManning18}
+consisting of 3D tensors with dimension $H \times W \times d$ for each image
+in the data set. The difference in computing $\kb_{hw}$ is that the simplified MAC uses
+an additional linear layer on top of the 2 CNN layers present in the original MAC network.
+This circumvents the need for performing additional linear transformations on the 
+knowledge base, as is done by the original MAC network in \emph{each} reasoning step.
 
 \begin{multicols}{2}
 	\noindent
 	\begin{align*}
-	\\
-	\cline{1-2}
 	&I_{ihw} = (W_{m}^{[d \times d]} m_{i-1} + b_{m}^{[d]}) \\
-	           & \qquad \quad \odot (W_{k}^{[d \times d]} k_{i-1} + b_{m}^{[d]}) \tag{r1} \\
+	           & \qquad \quad \odot (W_{k}^{[d \times d]} \kb_{hw} + b_{m}^{[d]}) \tag{r1} \\
 	&I'_{ihw} =  W_{I'}^{[d \times 2d]} [I_{ihw},\kb_{hw}]  + b_{I'}^{[d]}  \tag{r2} \\
 	&ra_{ihw} = W_{ra}^{[1 \times d]} (\cc_i \odot I'_{ihw}) + b_{ra}^{[1]} \tag{r3.1}\\
 	&rv_{ihw} = \textrm{softmax}(ra_{ihw}) \tag{r3.2}\\
 	&\rr_i = \sum_s rv_{ihw} \, \kb_{hw}  \tag{r3.3}\\
-	&\mem_i = W_{m}^{[d \times d]} [\rr_i, \mem_{i-1}]  + b_{m}^{[d]} \tag{w1}	
+	&\mem_i = W_{rm}^{[d \times d]} [\rr_i, \mem_{i-1}]  + b_{rm}^{[d]} \tag{w1}	
 	\end{align*}
 	\columnbreak
+	{\color{Plum}
 	\begin{align*}
-	&\tkb_{hw} = U_{\textsf{proj}}^{[d \times d]} \mathbf{k}_{hw} + b_{\textsf{proj}}^{[d]} \tag{r0} \\
-	\cline{1-2}
-	&I_{ihw} = \mem_{i-1} \odot \tkb_{hw} \tag{r1} \\ \\
-	&I'_{ihw} = W_{I'}^{[d \times d]} I_{ihw} + b_{I'}^{[d]} + \tkb_{hw} \tag{r2} \\
+	&I_{ihw} = \mem_{i-1} \odot \kb_{hw} \tag{r1} \\ \\
+	&I'_{ihw} = W_{I'}^{[d \times d]} I_{ihw} + b_{I'}^{[d]} + \kb_{hw} \tag{r2} \\
 	&ra_{ihw} = W_{ra}^{[1 \times d]} (\cc_i \odot I'_{ihw})  \tag{r3.1}\\
 	&rv_{ihw} = \textrm{softmax}(ra_{ihw}) \tag{r3.2}\\
-	&\rr_i = \sum_s rv_{ihw} \, \tkb_{hw}  \tag{r3.3}\\
-	&\mem_i = W_{m}^{[d \times d]} \rr_i + b_{m}^{[d]} \tag{w1}
-	\end{align*}
+	&\rr_i = \sum_s rv_{ihw} \, \kb_{hw}  \tag{r3.3}\\
+	&\mem_i = W_{rm}^{[d \times d]} \rr_i + b_{rm}^{[d]} \tag{w1}
+	\end{align*}}
 \end{multicols}
 
-Note that $\tkb_{hw}$ can be \emph{precomputed} before the reasoning steps.

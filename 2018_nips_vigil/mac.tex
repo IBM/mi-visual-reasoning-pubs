@@ -9,27 +9,31 @@ transformed the question into a sequence of vectors which is then passed through
 a bidirectional LSTM to produce a sequence of hidden state pairs. Each such pair 
 corresponds to a unique word in the question and is called the 
 \emph{contextual embedding} for that word.
-Similarly each image is initially processed using a pre-trained network (using ResNet) followed by two trainable CNN layers.\\
+Similarly each image is initially processed using a pre-trained network (using ResNet) followed by two trainable CNN layers.
+
+
+\begin{wrapfigure}{r}[5pt]{0.4\textwidth}
+	\vspace{-15pt}
+	\centering
+	\includegraphics[width=\textwidth]{img/mac_cell.pdf}
+	\caption{The MAC cell~\cite{hudsonManning18}}
+	\label{fig:mac_cell}
+	\vspace{-5pt}
+\end{wrapfigure}
+	
 The core of the network is a sequence of recurrent MAC cells. A MAC cell (Figure 1) is performing one reasoning step. At every step the network is driving the attention on one part of the question and the corresponding part of the image. This operation is made possible by the combination of 3 units working together, a control unit, a read and a write units. The control unit is updating the control state and drives the attention over the question. Given this control state, the read unit then retrieves information from the memory and drives the attention over the image.
 Finally, the write unit retrieves this visual information and updates the memory state.
-The last part of the network is the output unit. The output unit is simply a classifier that process the concatenation of the question representation and the final memory to produce a final answer.\\
+The last part of the network is the output unit. The output unit is simply a classifier that process the concatenation of the question representation and the final memory to produce a final answer.
+
 By going through this recurrent process, the network performs a reasoning strategy that learns concepts and relations between them. MAC is performing state of the art accuracy on CLEVR and CLEVR Humans datasets.
 In contrast to modular approaches (Andreas et al., 2016a;b; Hu et al., 2017; Johnson et al., 2017b), MAC is fully
 differentiable and does not require additional supervision. It is making use of a single computational cell chained in sequence rather than a collection of custom modules deployed in a rigid tree structure.
 In contrast to augmented CNN approaches (Santoro et al., 2017; Perez et al., 2017),  the MAC model provides an ability for relational reasoning with better generalization capacity, higher
 computational efficiency and enhanced transparency.
 
-
-
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.7\textwidth]{img/mac_cell.pdf}
-	\caption{The Mac Cell. The MAC recurrent cell consists of a control unit, read unit, and write unit, that operate over dual control and memory hidden states. }
-	\label{fig:mac_cell}
-\end{figure}
-
-
-
-
-
-
+%\begin{figure}[htbp]
+%	\centering
+%	\includegraphics[width=0.4\textwidth]{img/mac_cell.pdf}
+%	\caption{The MAC cell~\cite{hudsonManning18}}
+%	\label{fig:mac_cell}
+%\end{figure}
