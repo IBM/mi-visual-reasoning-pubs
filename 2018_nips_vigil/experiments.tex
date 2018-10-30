@@ -1,5 +1,6 @@
 \section{Experiments}
 
+<<<<<<< HEAD
 We propose to further analyze MAC's generalization and transfer learning abilities by testing it on the CLEVR-CoGenT dataset. It is synthesized in the same way as CLEVR but contains two conditions: in Condition A, all cubes are gray, blue, brown, or yellow and all cylinders are red, green, purple, or cyan; in Condition B, cubes and cylinders swap color palettes. Both conditions contain spheres of all colors. We also evaluate the simplified model on this dataset for comparison.
 
 The training procedure is layed out as follows: we train the MAC model (and simplified MAC) for 20 epochs on 90\% of the training sets of CLEVR \& CoGenT separately. We keep the remaining 10\% for validating the model at every epoch, and use the original validation sets as test sets, given that the ground truth labels for the true test sets are not available.
@@ -28,3 +29,6 @@ The simplified MAC reaches an accuracy of 95.3\% on CLEVR, which is close to the
 
 
 Following \cite{johnson2017inferring}, we then fine-tune both models using 3k images and 30k questions from the Condition B data.. \textit{To continue later on}.
+=======
+We propose to further analyse MAC’s generalization and transfer learning abilities by testing it on the CLEVR-CoGenT dataset. It is synthesized in the same way as CLEVR but contains two conditions: in Condition A, all cubes are gray, blue, brown, or yellow and all cylinders are red, green, purple, or cyan; in Condition B, cubes and cylinders swap color palettes. Both conditions contain spheres of all colors. The CoGenT task has been designed to give a better sense of interpretability than CLEVR Humans. By making clever conditions on the combinations of attributes it allows us to see  if the model can differentiate concepts of colors and shape.
+>>>>>>> 9dc9adf4fd02dde41daab2fa059e01d291a48e86
