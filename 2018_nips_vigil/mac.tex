@@ -1,16 +1,22 @@
 \section{MAC network and our proposed simplification}
 
-The MAC network~\cite{hudson2018compositional} is a recurrent model that performs reasoning 
-using multiple steps, where each step involves sequentially analyzing a part of the question following which attention on the image is changed suitably.
+The MAC network~\cite{hudson2018compositional} is a recurrent model that performs
+sequential reasoning, where each step involves analyzing a part of the question following 
+which attention on the image is changed suitably.
 At the end, a suitable answer is given based on this composite reasoning.
-To improve the accuracy of prediction, both the questions and images
-are preprocessed suitably. For the question,  a word-embedding is first used to
-transformed the question into a sequence of vectors which is then passed through
-a bidirectional LSTM to produce a sequence of hidden state pairs. Each such pair 
-corresponds to a unique word in the question and is called the 
-\emph{contextual embedding} for that word.
-Similarly each image is initially processed using a pre-trained network (using ResNet) followed by two trainable CNN layers.
-
+Both the question and image are transformed suitably prior to the reasoning process. 
+For the question, a sequence of vectors obtained via word-embeddings is fed
+to a bidirectional LSTM to produce a sequence of hidden state pairs. Each pair 
+corresponds to a unique word in the question and denotes its 
+\emph{contextual embedding}. The final states in each direction 
+represent the \emph{global context} of that question.
+Similarly each image is initially processed using a pre-trained network (using ResNet~\cite{he2016resnet}) to obtain a feature map. 
+This is used as an input to a trainable neural network that consists of 
+two CNN layers followed by a single linear layer\footnote{%
+This minor reformulation saves computation time instead of applying it
+in \emph{every} reasoning step.}.
+This results in a 3D tensor for each image in the data set collectively called the
+\emph{knowledge base}~\cite{hudson2018compositional}.
 
 \begin{wrapfigure}{r}[5pt]{0.4\textwidth}
 	\vspace{-15pt}
