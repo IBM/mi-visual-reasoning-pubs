@@ -80,8 +80,7 @@ knowledge base, as is done by the original MAC network in \emph{each} reasoning 
 	\end{align*}}
 \end{multicols}
 
-\begin{table}[]
-	\caption{Numbers of trainable parameters in the units of MAC and simplified MAC cells}
+\begin{table}
 	\centering
 	\begin{tabular}{ccccCcCc}
 		\toprule
@@ -94,6 +93,8 @@ knowledge base, as is done by the original MAC network in \emph{each} reasoning 
 	     Reduction [\%]  & -67\%  &   -50\%       &      -4\%  \\
 		\bottomrule
 	\end{tabular}
+	\caption{Numbers of trainable parameters in the units of MAC and simplified MAC cells}
+	\label{tab:parameters}
 \end{table}
 
-As a result we could decrease the number of trainable parameters. Table 1 shows a significant decrease in the number of parameters in the Read and Write units as well as a small drop in the Control unit. Those three units combined together compose the MAC cell which is the core of the network. It is important to emphasize that the MAC cell is the recurrent part of the network as opposed to the Input and Output unit that are call only once. That is why this reduction in the number of parameters is particularly important for the three MAC cell units and why we decided to focus on simplifying those equations.
+Our modifications resulted in a significant decrease in the number of parameters in the Read and Write units as well as a small drop in the Control unit, as presented in \tableref{tab:parameters}. Those three units combined together compose the MAC cell which is the core of the MAC network. It is important to emphasize that the MAC cell is the recurrent part of the network as opposed to the Input and Output units that are called only once. That is why we decided to focus on simplifying of those equations, whereas left the other two units unchanged.
