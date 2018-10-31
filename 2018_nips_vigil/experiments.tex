@@ -15,15 +15,15 @@ We implemented both versions of the MAC model using PyTorch v0.4.0~\cite{paszke2
 		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
 		& Dataset                & Time [h] & Acc [\%]          & Dataset & Acc [\%]  & Dataset & Acc [\%] \\
 		\midrule
-		\multirow{3}{*}{MAC}  & CLEVR                       & 31         &  --   & --                     & 96.7                  & CLEVR    & 96.2          \\
+		\multirow{3}{*}{MAC}  & CLEVR                       & 31.86         &  --   & --                     & 96.7                  & CLEVR    & 96.2          \\
 		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
-		& \multirow{2}{*}{CoGenT-A} & \multirow{2}{*}{31}     &  \multirow{2}{*}{--}  &  \multirow{2}{*}{--}    & \multirow{2}{*}{97.0} & CoGenT-A & 96.9         \\
+		& \multirow{2}{*}{CoGenT-A} & \multirow{2}{*}{31.86}     &  \multirow{2}{*}{--}  &  \multirow{2}{*}{--}    & \multirow{2}{*}{97.0} & CoGenT-A & 96.9         \\
 		\cmidrule{7-8} 
 		&                             &                                         &       &         &                & CoGenT-B & 79.5          \\
 		\midrule
-		\multirow{3}{*}{SMAC} & CLEVR                       & 28      &   --   &   --                 & 95.8               & CLEVR    & 95.3          \\
+		\multirow{3}{*}{SMAC} & CLEVR                       & 28.51      &   --   &   --                 & 95.8               & CLEVR    & 95.3          \\
 		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
-		& \multirow{2}{*}{CoGenT-A}   & \multirow{2}{*}{28}  &  \multirow{2}{*}{--}  &  \multirow{2}{*}{--}    & \multirow{2}{*}{96.1} & CoGenT-A & 95.9          \\
+		& \multirow{2}{*}{CoGenT-A}   & \multirow{2}{*}{28.55}  &  \multirow{2}{*}{--}  &  \multirow{2}{*}{--}    & \multirow{2}{*}{96.1} & CoGenT-A & 95.9          \\
 		\cmidrule{7-8} 
 		&                             &                                         &     &          &                & CogenT-B & 78.7          \\
 		\bottomrule
@@ -33,6 +33,6 @@ We implemented both versions of the MAC model using PyTorch v0.4.0~\cite{paszke2
 
 We report the obtained scores in \tableref{results}. Taking the evaluation of MAC on CLEVR as a reference experiment, it yields an accuracy of 96.2\%, obtained after 31h of training.\vmf{Not sure if we should explain in more details why there's a 3\% gap..}
 Evaluating MAC on CoGenT shows that, like previous work (\cite{johnson2017inferring}, \cite{mascharka2018transparency})], the performance is worse on Condition B than Condition A after training only using Condition A data. As \tableref{results} shows, the MAC model achieves 79.5\% accuracy on Condition B, which surpasses the previously 78.8\% reported in \cite{perez2017film}. \tk{not sure why we report this, is it state-of-the-art?}
-The simplified MAC reaches an accuracy of 95.3\% on CLEVR, which is close to the reference score. Moreover, the simplified MAC presents the advantage to train faster, showing a decrease of ~10\% in wall time. This point also holds true when training on CoGenT: not only does the simplified model trains faster, it also presents comparable performance when evaluated on both conditions.
+The simplified MAC reaches an accuracy of 95.3\% on CLEVR, which is close to the reference score. Moreover, the simplified MAC presents the advantage to train faster, showing a decrease of 10.5\% in wall time. This point also holds true when training on CoGenT: not only does the simplified model trains faster, it also presents comparable performance when evaluated on both conditions.
 
 Following \cite{johnson2017inferring}, we then fine-tune both models using 3k images and 30k questions from the Condition B data.. \textit{To continue later on}.
