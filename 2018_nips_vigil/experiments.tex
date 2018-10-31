@@ -8,25 +8,41 @@ The training procedure is layed out as follows: we train the MAC model (and simp
 We implemented both versions of the MAC model using PyTorch v0.4.0~\cite{paszke2017automatic}. We relied on the MI-Prometheus~\cite{kornuta2018accelerating} framework for training and testing both variants\footnote{The code \& the training settings are available at \url{https://github.com/IBM/mi-prometheus/}}. For training, we used NVIDIA's GeForce GTX TITAN X. We followed the implementation details indicated in the  supplemental material (Sec. A) of the original paper~\cite{hudson2018compositional}, to ensure a faithful comparison.
 
 \begin{table}[]
-	\caption{CLEVR \& CoGenT accuracies for the MAC \& simplified MAC models}
+	\caption{CLEVR \& CoGenT accuracies for the MAC \& S-MAC models}
 	\centering
 	\begin{tabular}{ccccCcCc}
 		\toprule
 		\multirow{2}{*}{Model} & \multicolumn{3}{c}{Training} &  \multicolumn{2}{c}{Fine-tuning} &  \multicolumn{2}{c}{Test} \\
 		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
-		& Dataset                & Time [h] & Acc [\%]          & Dataset & Acc [\%]  & Dataset & Acc [\%] \\
+		& Dataset                & Time [h:m] & Acc [\%]          & Dataset & Acc [\%]  & Dataset & Acc [\%] \\
 		\midrule
-		\multirow{3}{*}{MAC}  & CLEVR                       & 31   & 96.7              &  --   & --                               & CLEVR    & 96.2          \\
-		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
-		& \multirow{2}{*}{CoGenT-A} & \multirow{2}{*}{31}     & \multirow{2}{*}{97.0}   &  \multirow{2}{*}{--}  &  \multirow{2}{*}{--}    & CoGenT-A & 96.9         \\
+		\multirow{10}{*}{MAC} & \multirow{4}{*}{CLEVR}  & \multirow{4}{*}{30:52}  & \multirow{4}{*}{96.70} & \multirow{4}{*}{--}   & \multirow{4}{*}{--}  & CLEVR    & 96.17          \\
 		\cmidrule{7-8} 
-		&                             &                                         &       &         &                & CoGenT-B & 79.5          \\
+		 &                        &  &               &     &                                & CoGenT-A    &  96.22   \\
+		\cmidrule{7-8} 
+		  &                        &   &              &     &                               & CoGenT-B   & 96.27  \\
+		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
+		& \multirow{5}{*}{CoGenT-A} & \multirow{5}{*}{30:52}     & \multirow{5}{*}{97.02}   &  \multirow{2}{*}{--}  &  \multirow{2}{*}{--}    & CoGenT-A & 96.88         \\
+		\cmidrule{7-8} 
+		&                             &                                         &       &         &                & CoGenT-B & 79.54          \\
+		\cmidrule{5-6} \cmidrule{7-8} 
+		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{97.91}          & CoGenT-A &  92.06         \\
+		\cmidrule{7-8} 
+		&                             &                                         &       &         &                & CoGenT-B &    95.62       \\
 		\midrule
-		\multirow{3}{*}{SMAC} & CLEVR                       & 28       & 95.8           &   --   &   --                    & CLEVR    & 95.3          \\
-		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
-		& \multirow{2}{*}{CoGenT-A}   & \multirow{2}{*}{28}   & \multirow{2}{*}{96.1}  &  \multirow{2}{*}{--}  &  \multirow{2}{*}{--}   & CoGenT-A & 95.9          \\
+		\multirow{10}{*}{S-MAC} & \multirow{3}{*}{CLEVR}  & \multirow{3}{*}{28:30}  & \multirow{3}{*}{95.82} & \multirow{3}{*}{--}   & \multirow{3}{*}{--}  & CLEVR    & 95.29           \\
 		\cmidrule{7-8} 
-		&                             &                                         &     &          &                & CogenT-B & 78.7          \\
+		&                        &  &               &     &                                & CoGenT-A    &  95.47   \\
+		\cmidrule{7-8} 
+		&                        &   &              &     &                               & CoGenT-B   &  95.58  \\		
+		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
+		& \multirow{5}{*}{CoGenT-A}   & \multirow{5}{*}{28:33}   & \multirow{5}{*}{96.09}  &  \multirow{2}{*}{--}  &  \multirow{2}{*}{--}   & CoGenT-A & 95.91          \\
+		\cmidrule{7-8} 
+		&                             &                                         &     &          &                & CogenT-B & 78.71          \\
+		\cmidrule{5-6} \cmidrule{7-8} 
+		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{96.85}          & CoGenT-A &  x         \\
+		\cmidrule{7-8} 
+		&                             &                                         &       &         &                & CoGenT-B &    x       \\
 		\bottomrule
 	\end{tabular}
 	\label{results}
