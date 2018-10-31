@@ -81,17 +81,17 @@ knowledge base, as is done by the original MAC network in \emph{each} reasoning 
 \end{multicols}
 
 \begin{table}[]
-	\caption{Percentage decrease of the number of parameters by units in the MAC Cell between MAC and Simplified-MAC models}
+	\caption{Numbers of trainable parameters in the units of MAC and simplified MAC cells}
 	\centering
 	\begin{tabular}{ccccCcCc}
 		\toprule
-	             & Read Unit               & Write Unit &  Control Unit         \\
-		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
-		MAC number of parameters  &  787,969 &  524,800        &    6,822,913    \\
-		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8}
-	    Simplified-MAC number of parameters  & 263,168  & 262,656       &    6,560,768 \\
-	    \cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8}
-	     \% parameters reduction  & -67\%  &   -50\%       &      -4\%  \\
+	     Model        & Read Unit               & Write Unit &  Control Unit         \\
+		\midrule
+		MAC   &  787,969 &  524,800        &    6,822,913    \\
+		%\midrule
+	    simplified MAC & 263,168  & 262,656       &    6,560,768 \\
+	    \midrule
+	     Reduction [\%]  & -67\%  &   -50\%       &      -4\%  \\
 		\bottomrule
 	\end{tabular}
 \end{table}
