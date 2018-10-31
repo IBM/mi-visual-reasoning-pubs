@@ -4,29 +4,22 @@
 
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
 
-
-%% Useful packages
+% Useful packages
 \usepackage{amsmath, amssymb, amsfonts, bm}
 \usepackage{amsthm}
 \usepackage{booktabs}       % professional-quality tables
 \usepackage{mathtools}
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
-\usepackage{microtype}      % microtypography
-\usepackage{subcaption}
 \usepackage[usenames, dvipsnames]{color}
+\usepackage{multirow}
+\usepackage{hyperref}
+
 \usepackage{floatrow}
-\usepackage{graphicx}
-\usepackage{algorithm}
-\usepackage{algorithmicx}
-\usepackage[noend]{algpseudocode}
-\usepackage{multirow,bigdelim}
-\usepackage{textcomp}
-\usepackage[title]{appendix}
-\usepackage[percent]{overpic}
-\usepackage{floatrow}
+\floatsetup[table]{capposition=top}
 
 \usepackage{wrapfig}
 \usepackage{multicol}
+
 \setlength{\columnsep}{1cm}
 \setlength{\columnseprule}{0.5pt}
 \def\columnseprulecolor{\color{Plum}}
@@ -45,21 +38,6 @@
 \newcommand{\vm}[1]{\textcolor{blue}{Vincent M: #1}}
 \newcommand{\vmf}[1]{\footnote{\vm{#1}}}
 
-%\usepackage{cite}
-\usepackage[hyphens]{url}
-\urlstyle{same}
-\usepackage{hyperref}
-\hypersetup{
-	colorlinks=true, % false: boxed links; true: colored links
-	linkcolor=Red, % color of internal links
-	citecolor=ForestGreen, % color of links to bibliography
-	filecolor=Magenta, % color of file links
-	urlcolor=Cyan, % color of external links
-	bookmarksnumbered=true,
-	hyperfootnotes=true,
-	breaklinks
-}
-\usepackage[nameinlink]{cleveref}
 
 \newcommand{\cw}{\mathbf{cw}}
 \newcommand{\cc}{\mathbf{c}}
