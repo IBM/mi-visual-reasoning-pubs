@@ -11,12 +11,10 @@ corresponds to a unique word in the question and denotes its
 \emph{contextual embedding}. The final states in each direction 
 represent the \emph{global context} of that question.
 Similarly each image is initially processed using a pre-trained network (using ResNet~\cite{he2016resnet}) to obtain a feature map. 
-This is used as an input to a trainable neural network that consists of 
-two CNN layers followed by a single linear layer\footnote{%
-This minor reformulation saves computation time instead of applying it
-in \emph{every} reasoning step.}.
-This results in a 3D tensor for each image in the data set collectively called the
-\emph{knowledge base}~\cite{hudson2018compositional}.
+This is given as an input to a trainable neural network that consists of 
+two CNN layers, resulting in a 3D tensor for each image in the data set. By viewing this
+tensor a collection of 1D vectors in the last dimension, we call this
+the \emph{knowledge base} of that image.
 
 \begin{wrapfigure}{r}[5pt]{0.4\textwidth}
 	\vspace{-15pt}
@@ -27,9 +25,9 @@ This results in a 3D tensor for each image in the data set collectively called t
 	\vspace{-5pt}
 \end{wrapfigure}
 	
-The core of the network is a sequence of recurrent MAC cells. A MAC cell (Figure 1) is performing one reasoning step. At every step the network is driving the attention on one part of the question and the corresponding part of the image. This operation is made possible by the combination of 3 units working together, a control unit, a read and a write units. The control unit is updating the control state and drives the attention over the question. Given this control state, the read unit then retrieves information from the memory and drives the attention over the image.
+The core of the network is a sequence of recurrent MAC cells, each performing one reasoning step (see Figure~\ref{fig:mac_cell}). At every step the network is driving the attention on one part of the question and the corresponding part of the image. This operation is made possible by the combination of 3 units working together: a control unit, a read unit and a write unit. The control unit is updating the control state and drives the attention over the question. Given this control state, the read unit then retrieves information from the memory and drives the attention over the image.
 Finally, the write unit retrieves this visual information and updates the memory state.
-The last part of the network is the output unit. The output unit is simply a classifier that process the concatenation of the question representation and the final memory to produce a final answer.
+The last part of the network is the output unit,  a simple classifier that process the concatenation of the global context  and the final memory state to produce a final answer.
 
 By going through this recurrent process, the network performs a reasoning strategy that learns concepts and relations between them. MAC is performing state of the art accuracy on CLEVR and CLEVR Humans datasets.
 In contrast to modular approaches \cite{andreas2016learning,hu2017learning,johnson2017inferring}, MAC is fully
