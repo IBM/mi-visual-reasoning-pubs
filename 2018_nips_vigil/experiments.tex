@@ -9,21 +9,23 @@ We implemented both versions of the MAC model using PyTorch v0.4.0~\cite{paszke2
 \begin{table}[]
 	\caption{CLEVR \& CoGenT accuracies for the MAC \& simplified MAC models}
 	\centering
-	\begin{tabular}{cccccc}
+	\begin{tabular}{ccccCcCc}
 		\toprule
-		Model                 & Training set                & Training time [h] & Training acc [\%]          & Test set & Test acc [\%] \\
+		\multirow{2}{*}{Model} & \multicolumn{3}{c}{Training} &  \multicolumn{2}{c}{Fine-tuning} &  \multicolumn{2}{c}{Test} \\
+		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
+		& Set                & Time [h] & Acc [\%]          & Set & Acc [\%]  & Set & Acc [\%] \\
 		\midrule
-		\multirow{3}{*}{MAC}  & CLEVR                       & 31                                   & acc: 96.7                  & CLEVR    & 96.2          \\
-		\cmidrule{2-6} 
-		& \multirow{2}{*}{CoGenT-A} & \multirow{2}{*}{31}                    & \multirow{2}{*}{acc: 97.0} & CoGenT-A & 96.9         \\
-		\cmidrule{5-6} 
-		&                             &                                         &                              & CoGenT-B & 79.5          \\
+		\multirow{3}{*}{MAC}  & CLEVR                       & 31         &  -   & -                     & 96.7                  & CLEVR    & 96.2          \\
+		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
+		& \multirow{2}{*}{CoGenT-A} & \multirow{2}{*}{31}     &  \multirow{2}{*}{-}  &  \multirow{2}{*}{-}    & \multirow{2}{*}{97.0} & CoGenT-A & 96.9         \\
+		\cmidrule{7-8} 
+		&                             &                                         &       &         &                & CoGenT-B & 79.5          \\
 		\midrule
-		\multirow{3}{*}{SMAC} & CLEVR                       & 28                                     & acc: 95.8               & CLEVR    & 95.3          \\
-		\cmidrule{2-6} 
-		& \multirow{2}{*}{CoGenT-A}   & \multirow{2}{*}{28}                    & \multirow{2}{*}{acc: 96.1} & CoGenT-A & 95.9          \\
-		\cmidrule{5-6} 
-		&                             &                                         &                              & CogenT-B & 78.7          \\
+		\multirow{3}{*}{SMAC} & CLEVR                       & 28      &   -   &   -                 & 95.8               & CLEVR    & 95.3          \\
+		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
+		& \multirow{2}{*}{CoGenT-A}   & \multirow{2}{*}{28}  &  \multirow{2}{*}{-}  &  \multirow{2}{*}{-}    & \multirow{2}{*}{96.1} & CoGenT-A & 95.9          \\
+		\cmidrule{7-8} 
+		&                             &                                         &     &          &                & CogenT-B & 78.7          \\
 		\bottomrule
 	\end{tabular}
 	\label{results}
