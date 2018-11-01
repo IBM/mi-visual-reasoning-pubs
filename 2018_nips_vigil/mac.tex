@@ -16,8 +16,8 @@ Besides, the input unit utilizes a pre-trained ResNet~\cite{he2016resnet} follow
 
 	
 The MAC cell consists of a control unit, a read unit and a write unit (\Fig{fig:mac_cell}).
-The control unit is updating the control state $c_i$ and drives the attention over the list of \emph{contextual words} \textbf{cw} taking into account the \emph{question representation} $q$.
-Guided by $c_i$,  the read unit extracts information from the \emph{knowledge base} \textbf{k} and combines it with the previous memory state $m_{i-1}$  to produce the \emph{read vector} $r_i$.
+The control unit is updating the control state $c_i$ and drives the attention over the list of \emph{contextual words} $\cw$ taking into account the \emph{question representation} $q$.
+Guided by $c_i$,  the read unit extracts information from the \emph{knowledge base} $\kb$ and combines it with the previous memory state $m_{i-1}$  to produce the \emph{read vector} $r_i$.
 Finally, the write unit integrates $r_i$ and $m_{i-1}$ to update the memory state.
 
 %The MAC network reached state-of-the-art accuracy on the CLEVR dataset.
