@@ -2,12 +2,10 @@
 
 \section{Description of datasets}
 
-Most of the VQA datasets contain ambiguities and have strong linguistic biases that allow a model to learn answering strategies that exploit those biases, without reasoning about the visual input~\cite{Santoro2017ASN}.
+Most of the VQA datasets have strong biases. This allow models to learn strategies without reasoning about the visual input~\cite{Santoro2017ASN}.
 The CLEVR dataset~\cite{johnson2017clevr} was developed to address those issues and come back to the core challenge of visual QA which is reasoning.
-CLEVR contains images of 3D-rendered objects, such as spheres and cylinders.
-Each image is associated with a number of highly compositional questions that fall into different categories.
+CLEVR contains images of 3D-rendered objects; each image comes with a number of highly compositional questions that fall into different categories.
 Those categories fall into 5 classes of tasks: Exist, Count, Compare Integer, Query Attribute and Compare Attribute. 
-For example, query attribute questions may ask “What is the color of the sphere?”, while compare attribute questions may ask “Is the cube the same material as the cylinder? ”.
 The CLEVR dataset consists of:
 \begin{itemize}
 \item 	A training set of 70k images and 700k questions,
@@ -24,8 +22,8 @@ Each object present in the scene, aside of position, is characterized by a set o
 \end{itemize}
 resulting in 96 unique combinations.
 
-Along with CLEVR, the authors~\cite{johnson2017clevr} introduced  CLEVR-CoGenT (Compositional Generalization Test, CoGenT in short), with a goal of testing how well the models can learn and generalizer compositional concepts.
-This dataset is synthesized in the same way as CLEVR,, but contains two conditions.
+Along with CLEVR, the authors~\cite{johnson2017clevr} introduced  CLEVR-CoGenT (Compositional Generalization Test, CoGenT in short), with a goal of testing how well the models can learn and generalize compositional concepts.
+This dataset is synthesized in the same way as CLEVR, but contains two conditions.
 As shown in \tableref{tab:cogent_conditions}, in Condition A all cubes are gray, blue, brown, or yellow, whereas all cylinders are red, green, purple, or cyan; in Condition B cubes and cylinders swap color palettes.
 Both conditions contain spheres of all colors.
 CoGenT thus indicates how a model answers CLEVR questions: by memorizing combinations of traits or by learning disentangled or general representations.
