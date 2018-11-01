@@ -203,9 +203,24 @@ We decided to follow that approach and ... \tk{Vincent, please proceed :)}
 
 
 \section{Illustration of failures of MAC on CLEVR}
+Following the evaluation of MAC on CoGenT-B, we built a tool which helped us visualizing the attention of the model over the question words and the image, and thus provide insight on some cases of failure.
 
-\begin{itemize}
-\item one with color failure -- that the attention is pointing at the right object, whereas the answer is improper because he never saw this combination
-\item one with shape failure -- similarly	
-\end{itemize}
-Pictures with some description
+\begin{figure}[]
+	\centering
+	\includegraphics[width=\textwidth]{img/fail_mac_cogent_b_shape.png}
+	\caption{The question reads as: \textit{There is a large gray thing that is on the right side of the big gray cylinder left of the large ball that is on the right side if the cyan rubber sphere; what is its shape?}}
+	\label{fig:fail_mac_shape}
+\end{figure}
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=\textwidth]{img/fail_mac_cogent_b_color.png}
+	\caption{The question reads as: \textit{There is a tiny block behind the rubber thing that is right if the small brown rubber cylinder that is in front of the yellow metal cylinder; what color is it?}}
+	\label{fig:fail_mac_color}
+\end{figure}
+
+\fig{fig:fail_mac_shape} presents a question where the model is asked about the shape of the leftmost gray cylinder. The model correctly finds it, as we can see from its visual attention map, and appears to refer to it using its color (\textit{gray}), as we can see from the attention of the question words. Yet, it defaults to predicting the shape as \textit{cube}, because it never saw gray cylinders during training, but instead saw gray cubes.
+
+\fig{fig:fail_mac_color} presents a similar case, where the model is questioned about the color of the green cube at the back. MAC misses that object, and instead focuses on the nearby gray cylinder. We can hypothesize that MAC missed the green cube as it did not see this combination during training, and thus default to a combination that it knows.
+
+Those examples indicate that MAC did not correctly separate the concept of shape from the concept of color, but have a better understanding of the colors (as it found the object of interest in \fig{fig:fail_mac_shape} by its color). This could come from that fact that the shape \textit{sphere} is associated with all possible colors in the dataset. 
