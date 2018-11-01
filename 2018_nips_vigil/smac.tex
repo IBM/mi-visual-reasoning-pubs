@@ -5,12 +5,12 @@ First, we observe that when looking at the equations of different units
 together as a whole, there are several linear layers
 that are applied in sequence (with no activation in-between).
 Therefore they can actually be combined to form a single linear layer.
-The second observation uses the following heuristic assumption:
+The second observation is:
 suppose there is an affine transformation that preserves the number
 of dimensions. Then one can assume that the transformation is invertible
 so as to avoid a loss in the information. Applying this principle to 
 equations in the MAC cell results in eliminating one of the linear layers applied to
-the knowledge base in the cell. With a careful reorganization, we in fact
+the knowledge base in the cell. With a careful reorganization, we
 can compute this operation on the knowledge base right after we apply the 2 
  CNN layers on the feature maps (i.e. prior to the reasoning steps). Thus, we can work purely
 with this \emph{projected} knowledge base, that yields

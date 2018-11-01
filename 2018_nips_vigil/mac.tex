@@ -9,8 +9,8 @@
 	\vspace{-5pt}
 \end{wrapfigure}
 
-The MAC network~\cite{hudson2018compositional} is a recurrent model that performs sequential reasoning, where each step involves analyzing a part of the question followed by shifting of attention over the image.
-The core of the model is the MAC cell, supported with an input unit that processes question and image pair, and output unit which produces the answer.% (a two layer MLP).
+The MAC network~\cite{hudson2018compositional} is a recurrent model that performs sequential reasoning, where each step involves analyzing a part of the question followed by shifting the attention over the image.
+The core of the model is the MAC cell, supported with an input unit that processes the question and image pair, and output unit which produces the answer.
 The input unit  uses an LSTM~\cite{hochreiter1997long} to process the question in a word-by-word manner producing a sequence of \emph{contextual words} and a final \emph{question representation}.
 Besides, the input unit utilizes a pre-trained ResNet~\cite{he2016resnet} followed by two CNN layers to extract a feature map (referred to as \emph{knowledge base}) from the image.
 
@@ -18,13 +18,7 @@ Besides, the input unit utilizes a pre-trained ResNet~\cite{he2016resnet} follow
 The MAC cell consists of a control unit, a read unit and a write unit (\Fig{fig:mac_cell}).
 The control unit is updating the control state $c_i$ and drives the attention over the list of \emph{contextual words} $\cw$ taking into account the \emph{question representation} $q$.
 Guided by $c_i$,  the read unit extracts information from the \emph{knowledge base} $\kb$ and combines it with the previous memory state $m_{i-1}$  to produce the \emph{read vector} $r_i$.
-Finally, the write unit integrates $r_i$ and $m_{i-1}$ to update the memory state.
-
-%The MAC network reached state-of-the-art accuracy on the CLEVR dataset.
-%In contrast to augmented CNN approaches, the MAC model provides an ability for relational reasoning with better generalization capacity, higher computational efficiency and enhanced transparency.
-
-
-%In contrast to modular approaches \cite{andreas2016learning,hu2017learning,johnson2017inferring}, MAC is fully differentiable and does not require additional supervision. 
+Finally, the write unit integrates $r_i$ and $m_{i-1}$ to update the memory state. Detailed equations are described in the next section.
 
 %\begin{figure}[htbp]
 %	\centering
