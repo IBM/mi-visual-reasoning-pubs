@@ -25,7 +25,7 @@ the \emph{knowledge base} of that image.
 	\vspace{-5pt}
 \end{wrapfigure}
 	
-The core of the network is a sequence of recurrent MAC cells, each performing one reasoning step (see Figure~\ref{fig:mac_cell}). At every step the network is driving the attention on one part of the question and the corresponding part of the image. This operation is made possible by the combination of 3 units working together: a control unit, a read unit and a write unit. The control unit is updating the control state and drives the attention over the question. Given this control state, the read unit then retrieves information from the memory and drives the attention over the image.
+The core of the network is a sequence of recurrent MAC cells, each performing one reasoning step (see Figure~\ref{fig:mac_cell}). At every step the network is driving the attention on one part of the question and the corresponding part of the image. This operation is made possible by the combination of 3 units working together: a control unit, a read unit and a write unit. The control unit is updating the control state and drives the attention over the question. Given this control state, the read unit then retrieves information from the memory and drives the attention over the  \emph{knowledge base}.
 Finally, the write unit retrieves this visual information and updates the memory state.
 The last part of the network is the output unit,  a simple classifier that process the concatenation of the global context  and the final memory state to produce a final answer.
 
