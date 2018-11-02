@@ -1,35 +1,32 @@
 \subsection{Simplified MAC network}
 Our proposed modification to the MAC network is based on two heuristic
 simplifications of the MAC cell. 
-First, we observe that when looking at the equations of different units
-together as a whole, there are several linear layers
-that are applied in sequence (with no activation in-between).
-Therefore they can actually be combined to form a single linear layer.
-The second observation is:
-suppose there is an affine transformation that preserves the number
-of dimensions. Then one can assume that the transformation is invertible
-so as to avoid a loss in the information. Applying this principle to 
-equations in the MAC cell results in eliminating one of the linear layers applied to
-the knowledge base in the cell. With a careful reorganization, we
-can compute this operation on the knowledge base right after we apply the 2 
- CNN layers on the feature maps (i.e. prior to the reasoning steps). Thus, we can work purely
-with this \emph{projected} knowledge base, that yields
-noticeable savings in training time, as our experiments demonstrate
-below, without incurring too much drop in accuracy.
+First, we observe that taking the MAC cell equations as a whole, consecutive linear layers (with no activation in-between) can be combined as one linear layer.
+Next, we assume that dimension-preserving linear layers are invertible
+so as to avoid information loss. 
+Applying this principle to the equations, with a careful reorganization,
+we can apply a single linear layer to the knowledge base \emph{prior}
+to all the reasoning steps and work with this \emph{projected} knowledge base
+as-is throughout the reasoning steps.
+
+
+
+
+%Applying this principle to 
+%equations in the MAC cell results in eliminating one of the linear layers applied to
+%the knowledge base. Having reduced the number of linear projections on the knowledge base to one, we can, with a careful reorganization, compute it prior to the reasoning steps. Thus, we can work purely
+%with this \emph{projected} knowledge base. 
 
 In the description below, the original MAC cell equations are shown on the \emph{left}
 while our simplified equations are shown (in color) on the {\color{Plum} \emph{right}}.
 The equation numbering is the same as in~\cite{hudson2018compositional}.
 
 \noindent\textit{Notation.}
-Let $q$ denote the global context of the question
-and let $\cw_s$ denote the contextual embedding of a word $s$ in the question.
-For each tensor of dimension $H \times W \times d$ corresponding to an image,
-its knowledge base $\{ \kb_{hw}\}$ is the set of $d$-dimensional vectors indexed by 
+%Let $q$ denote the global context of the question
+%and let $\cw_s$ denote the contextual embedding of a word $s$ in the question.
+For each knowledge base $\kb$, a tensor of dimension $H \times W \times d$, let $\kb_{hw}$ be the $d$-dimensional vector indexed by 
 $h \in \{1,2,\dots,H\}$ and $w \in \{1,2,\dots, W\}$.
-The index/position $i$ below denotes the reasoning step. 
-Unless mentioned otherwise, the weights/biases are invariant w.r.t $i$, 
-i.e., shared across all the reasoning steps. 
+Let $i$ denote the index (position) $i$ of the reasoning step. 
 
 \noindent\textbf{Control unit:} 
 For both models, in the control unit, the question $q$ is first transformed in each step of 
@@ -55,6 +52,25 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
     \end{align*}}
 \end{multicols}
 
+\begin{table}[hb]
+	\centering
+	\begin{tabular}{ccccCcCc}
+		\toprule
+		Model        & Read Unit               & Write Unit &  Control Unit         \\
+		\midrule
+		MAC   &  787,969 &  524,800        &    525,313    \\
+		%\midrule
+		simplified MAC & 263,168  & 262,656       &    263,168 \\
+		\midrule
+		Reduction by [\%]  & 67\%  &   50\%       &      50\%  \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparing the number of position-independent parameters between MAC \& S-MAC cells. }
+	\label{tab:parameters}
+\end{table}
+
+\newpage
+
 \noindent\textbf{Read and write units:}
 \begin{multicols}{2}
 	\noindent
@@ -78,26 +94,6 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 	&\mem_i = W_{rm}^{[d \times d]} \rr_i + b_{rm}^{[d]} \tag{w1}
 	\end{align*}}
 \end{multicols}
-For the original MAC model shown on the left above, eqn.~(r1) can be slightly optimized for time
-by computing the linear layer on the knowledge base \emph{prior} to the reasoning steps.
-This induces additional space due to storing this projected knowledge base throughout the
-reasoning steps.
 
-\begin{table}
-	\centering
-	\begin{tabular}{ccccCcCc}
-		\toprule
-	     Model        & Read Unit               & Write Unit &  Control Unit         \\
-		\midrule
-		MAC   &  787,969 &  524,800        &    6,822,913    \\
-		%\midrule
-	    simplified MAC & 263,168  & 262,656       &    6,560,768 \\
-	    \midrule
-	     Reduction by [\%]  & 67\%  &   50\%       &      4\%  \\
-		\bottomrule
-	\end{tabular}
-	\caption{Numbers of trainable parameters in the units of MAC and simplified MAC cells}
-	\label{tab:parameters}
-\end{table}
-
-Our modifications resulted in a significant decrease in the number of parameters in the Read and Write units as well as a small drop in the Control unit, as presented in \tableref{tab:parameters}. Those three units combined together compose the MAC cell which is the core of the MAC network. It is important to emphasize that the MAC cell is the recurrent part of the network as opposed to the Input and Output units that are called only once. That is why we decided to focus on simplifying of those equations, whereas left the other two units unchanged.
+As seen above, being noticeably simpler, the S-MAC obtains significant reduction in the number of position-independent parameters across all units (see~\tableref{tab:parameters}).
+Our experiments demonstrate that this gives us noticeable savings in the training time. However, since the computation time is also dominated by the position-aware layers in the Control Unit as well as the input unit so the speedup is not as large as we desire.
