@@ -1,14 +1,14 @@
 \section{Experiments}
 
-We analyze MAC's generalization and transfer learning abilities by testing it on the CLEVR-CoGenT dataset. It is synthesized in the same way as CLEVR, but contains two conditions: in Condition A, all cubes are gray, blue, brown, or yellow and all cylinders are red, green, purple, or cyan; in Condition B, cubes and cylinders swap color palettes. Both conditions contain spheres of all colors. We also evaluate the simplified model on this dataset for comparison.
+We analyze MAC's generalization and transfer learning abilities by testing it on the CoGenT dataset.
+%It is synthesized in the same way as CLEVR, but contains two conditions: in Condition A, all cubes are gray, blue, brown, or yellow and all cylinders are red, green, purple, or cyan; in Condition B, cubes and cylinders swap color palettes. Both conditions contain spheres of all colors.
+We also evaluate the simplified model on this dataset for comparison.
 
 The training procedure is as follows: we train the MAC model (and simplified MAC) for 20 epochs on 90\% of the training sets of CLEVR \& CoGenT separately. We keep the remaining 10\% for validating the model at every epoch, and use the original validation sets as test sets.
 %given that the ground truth labels for the true test sets are not available.
 
-We implemented both versions of the MAC model using PyTorch v0.4.0~\cite{paszke2017automatic}. We relied on the MI-Prometheus~\cite{kornuta2018accelerating} framework for training and testing both variants\footnote{The code \& the training settings are available at \url{https://github.com/IBM/mi-prometheus/}}. For training, we used NVIDIA's GeForce GTX TITAN X. We followed the implementation details indicated in the supplemental material (Sec. A) of the original paper~\cite{hudson2018compositional}, to ensure a faithful comparison.
-
 \begin{table}[]
-	\caption{CLEVR \& CoGenT accuracies for the MAC \& S-MAC models}
+	\caption{CLEVR \& CoGenT accuracies for the MAC \& S-MAC models.}
 	\centering
 	\begin{tabular}{ccccCcCc}
 		\toprule
@@ -16,7 +16,7 @@ We implemented both versions of the MAC model using PyTorch v0.4.0~\cite{paszke2
 		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
 		& Dataset                & Time [h:m] & Acc [\%]          & Dataset & Acc [\%]  & Dataset & Acc [\%] \\
 		\midrule
-		MAC & \CLEVR  & 30:52  & 96.70 & --   & --  & CLEVR    & 96.17          \\
+		MAC & CLEVR  & 30:52  & 96.70 & --   & --  & CLEVR    & 96.17          \\
 		\midrule
 		\multirow{13}{*}{S-MAC} & \multirow{7}{*}{CLEVR}  & \multirow{7}{*}{28:30}  & \multirow{7}{*}{95.82} & \multirow{4}{*}{--}   & \multirow{4}{*}{--}  & CLEVR    & 95.29           \\
 		\cmidrule{7-8} 
@@ -42,9 +42,13 @@ We implemented both versions of the MAC model using PyTorch v0.4.0~\cite{paszke2
 	\label{results}
 \end{table}
 
-We report the obtained scores in \tableref{results}. Taking the evaluation of MAC on CLEVR as a reference experiment, it yields an accuracy of 96.2\%, obtained after 31.9h of training. The training wall time is coherent with what is reported in the original paper (roughly 30h of training for 20 epochs)\vmf{Not sure if we should explain in more details why there's a 3\% gap..}
-Evaluating MAC on CoGenT shows that, like previous work (\cite{johnson2017inferring}, \cite{mascharka2018transparency})], the performance is worse on Condition B than Condition A after training only using Condition A data. As \tableref{results} shows, the MAC model achieves 79.5\% accuracy on Condition B, and 96.9\% on Condition A.
-The simplified MAC reaches an accuracy of 95.3\% on CLEVR, which is close to the reference score. Moreover, it presents the advantage to train faster, showing a decrease of 10.5\% in wall time. This point also holds true when training on CoGenT: not only does the simplified model trains faster, it also presents comparable performance when evaluated on both conditions. The scores obtained on both conditions are coherent with the ones of MAC, indicating that the simplifications did not hinder its generalization capability.
+We implemented both versions of the MAC model using PyTorch (v0.4.0)~\cite{paszke2017automatic}. We relied on the MI-Prometheus~\cite{kornuta2018accelerating} framework for training and testing both variants\footnote{The code \& the training settings are available at \url{https://github.com/IBM/mi-prometheus/}}. For training, we used NVIDIA's GeForce GTX TITAN X GPUs. We followed the implementation details indicated in the supplemental material (Sec. A) of the original paper~\cite{hudson2018compositional}, to ensure a faithful comparison.
+
+We report the obtained scores in \tableref{results}. The evaluation of MAC on CLEVR yields an accuracy of 96.2\%, obtained after 31.9h of training, and is taken as a reference experiment. The training wall time is coherent with what is reported in the original paper (roughly 30h of training for 20 epochs).
+S-MAC reaches an accuracy of 95.3\% on CLEVR, which is close to the reference score. Moreover, it presents the advantage to train faster, as supported by the reductions in the number of parameters, showing a decrease of 10.5\% in wall time.
+
+Evaluating MAC on CoGenT shows that, like previous work \cite{johnson2017inferring, mascharka2018transparency}, the performance is worse on Condition B than Condition A after training only sing Condition A data. As \tableref{results} shows, the MAC model achieves 79.5\% accuracy on Condition B, and 96.9\% on Condition A. S-MAC obtains comparable performance (78.71\%)
+This point also holds true when training on CoGenT: not only does the simplified model trains faster, it also presents comparable performance when evaluated on both conditions. The scores obtained on both conditions are coherent with the ones of MAC, indicating that the simplifications did not hinder its generalization capability.
 
 Following (\cite{johnson2017inferring}, \cite{perez2017film}), we then fine-tune both models using 3k images and 30k questions from the Condition B data (for 10 epochs), and re-evaluate them on both conditions. This enables both models to perform much better on CoGenT-B, as we observe a 15 points increase for the accuracy. Performance on CoGenT-A is slightly worse, dropping of ~4\%. This indicates that MAC is able to learn new combinations of shape \& color without forgetting the ones it learned during the initial training.
 

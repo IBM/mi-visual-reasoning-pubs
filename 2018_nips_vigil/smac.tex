@@ -1,7 +1,7 @@
 \subsection{Simplified MAC network}
 Our proposed modification to the MAC network is based on two heuristic
 simplifications of the MAC cell. 
-First, we observe that taking the MAC cell equations as a whole, consecutive linear layers (with no activation in-between) can be combined as one linear layer.
+First, we observe that, taking the MAC cell equations as a whole, consecutive linear layers (with no activation in-between) can be combined as one linear layer.
 Next, we assume that dimension-preserving linear layers are invertible
 so as to avoid information loss. 
 Applying this principle to the equations, with a careful reorganization,
@@ -96,4 +96,4 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 \end{multicols}
 
 As seen above, being noticeably simpler, the S-MAC obtains significant reduction in the number of position-independent parameters across all units (see~\tableref{tab:parameters}).
-Our experiments demonstrate that this gives us noticeable savings in the training time. However, since the computation time is also dominated by the position-aware layers in the Control Unit as well as the input unit so the speedup is not as large as we desire.
+Our experiments demonstrate that this gives us noticeable savings in the training time. However, since the computation time is also dominated by the position-aware layers in the control unit, as well as the input unit, the speedup is not as large as we desire.
