@@ -200,8 +200,8 @@ The PG+EE (Program Generator and Execution Engine)~\cite{johnson2017inferring}  
 a Program Generator constructing an explicit, graph-like representation of the reasoning process, and an Execution Engine executing that program and producing an answer. 
 Both modules are implemented by neural networks, and were trained using a combination of backpropagation and REINFORCE~\cite{williams1992simple}.
 
-The author inform that in the first step they trained their models on Condition A, and tested them on both Condition A and Condition B. 
-Next, they fine-tuned these models on Condition B using 3K images and 30K questions, and again tested on both Conditions.
+The authors inform that in the first step they trained their models on Condition A, and tested them on both Condition A and Condition B. 
+Next, they fine-tuned these models on Condition B using 3K images and 30K questions, and again tested on both conditions.
 Sadly, it is not clear what sets exactly they used for fine-tuning (as Condition B lacks the training set).
 One possibility, as they are the authors of CLEVR and CoGenT datasets, is that they actually generated the missing sets, but didn't share them publicly.
 Besides, as they posses answers for both CoGenT Condition A and Condition B test sets, we are almost sure that they reported the accuracies on both Condition A and Condition B test sets.
@@ -220,28 +220,28 @@ whereas, as it was mentioned previously, the original PG+EE paper probably relie
 \subsection{The TbD model and training methodology}
 
 The TbD (Transparency by Design) network was introduced in~\cite{mascharka2018transparency}.
-TbD is composed out of a set of visual reasoning primitives relying on attention transformations, allowing the model to perform reasoning by composes a series of attention mask.
-The authors compare the accuracy of their model while tested on CLEVR  with several existing models, including mentioned PG + EE, CNN + GRU + FiLM and MAC, and once again indicate improvement.
+TbD is composed out of a set of visual reasoning primitives relying on attention transformations, allowing the model to perform reasoning by composing  attention masks.
+The authors compare the accuracy of their model while tested on CLEVR  with several existing models, including the previously mentioned PG + EE, CNN + GRU + FiLM and MAC, and once again indicate improvement.
 
 They also compare accuracy on CoGenT, by comparison with PG+EE.
-Despite the results show clear improvement, the section clearly lacks the most important information, i.e. which sets were used for training, fine-tuning and testing. 
-The only provided information for sure is that they used 3k images and 30k questions from the CoGenT Condition B for fine-tuning of their model following~\cite{johnson2017inferring}, but do not mention from which set they took the samples.
-
+Despite the results show improvement, the description clearly lacks the most important information, i.e. which sets were used for training, fine-tuning and testing. 
+The only provided information indicate that they used 3k images and 30k questions from the CoGenT Condition B for fine-tuning of their model, but do not mention from which set they took the samples.
+However, as they mention that they were following~\cite{johnson2017inferring}, it is possible that they used the test sets.
 
 \subsection{Our MAC and S-MAC models and methodology}
 
-Due to the fact that test set targets for both CLEVR and CoGenT aren't publicly available, the authors of~\cite{perez2017film} decided to split
-the CoGenT A Validation sets and use 30k samples for fine-tuning and the remaining part for testing.
-When testing the model on CoGenT B, we used the whole Validation set.
-In the experiments when we were using Validation B for fine-tuning, we did it analogically.
-Besides that, as we were using Validation sets for testing, we also splitted the training set and used 90\% for training and remaining 10\% for validation during training.
+Due to the fact that test set targets for both CLEVR and CoGenT aren't publicly available, we decided to follow the approach proposed in~\cite{perez2017film} and split the CoGenT A Validation set.
+As a result we used 30k samples for fine-tuning and the remaining part for testing.
+When testing the model on CoGenT B, we used the whole validation set.
+In the experiments when we were using Validation B for fine-tuning, we did the analogical operations.
+Besides that, as we were using validation sets for testing, we also splitted the training set and used 90\% for training and the remaining 10\% for validation during training.
 
 \section{Illustration of failures of MAC on CLEVR}
 Following the evaluation of MAC on CoGenT-B, we built a tool which helped us visualizing the attention of the model over the question words and the image, and thus provide insight on some cases of failure.
 
 \fig{fig:fail_mac_shape} presents a question where the model is asked about the shape of the leftmost gray cylinder. The model correctly finds it, as we can see from its visual attention map, and appears to refer to it using its color (\textit{gray}), as we can see from the attention of the question words. Yet, it defaults to predicting the shape as \textit{cube}, because it never saw gray cylinders during training, but instead saw gray cubes.
 
-\fig{fig:fail_mac_color} presents a similar case, where the model is questioned about the color of the green cube at the back. MAC misses that object, and instead focuses on the nearby gray cylinder. We can hypothesize that MAC missed the green cube as it did not see this combination during training, and thus default to a combination that it knows.
+\fig{fig:fail_mac_color} presents a similar case, where the model is questioned about the color of the green cube at the back. MAC misses that object, and instead focuses on the nearby gray cylinder. We can hypothesize that MAC missed the green cube as it did not see this combination during training, and thus defaulted to a combination that it knows.
 
 
 \begin{figure}[htbp]
