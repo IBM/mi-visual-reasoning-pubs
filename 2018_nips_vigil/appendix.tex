@@ -27,9 +27,12 @@ This dataset is generated in the same way as CLEVR with two additional condition
 As shown in \tableref{tab:cogent_conditions}, in Condition A all cubes are gray, blue, brown, or yellow, whereas all cylinders are red, green, purple, or cyan; in Condition B cubes and cylinders swap color palettes.
 For both conditions spheres can be any colors.
 
+<<<<<<< HEAD
+=======
 The CoGenT task allow us to see whether the model learns combination of attributes or general representations.
 
 
+>>>>>>> 50dc6e33ec989147db08a4ea2edf08d8ff383ffb
 The CoGenT dataset contains:
 \begin{itemize}
 \item	Training set of 70,000 images and 699,960 questions in Condition A,
@@ -57,12 +60,13 @@ The CoGenT dataset contains:
 \end{table}
 
  
+ \newpage
 \section{Full MAC and S-MAC comparison}
 
 In \tableref{tab:results_full} we present the full comparison between MAC and S-MAC models.
 
 
-\begin{table}
+\begin{table}[!h]
 	\caption{CLEVR \& CoGenT accuracies for the MAC \& S-MAC models}
 	\centering
 	\begin{tabular}{ccccCcCc}
@@ -125,11 +129,16 @@ In \tableref{tab:results_full} we present the full comparison between MAC and S-
 
 \section{Comparison of generalization capabilities}
 
-In this section we present comparison of MAC and S-MAC with selected state-of-the-art models as reported in~\cite{mascharka2018transparency} \tk{and? FiLM?}
-
+In this section we present comparison of our results on generalization capabilities with selected state-of-the-art models.
+In particular, we focused on three papers reporting state-of-the-art accuracies, i.e. PG+EE~\cite{johnson2017inferring} FiLM~\cite{perez2017film} and TbD~\cite{mascharka2018transparency}.
+Deeper analysis of the papers revealed that it is most probable that different authors used different sets for reporting the scores, which questions the correctness of the comparison.
+We find that the problems result from the fact that answers for the test sets aren't provided along with those sets, thus researchers started to use subsets of the validation set for testing. 
+The results of our research are presented in \tableref{tab:generalization_comparison}.
+In the table we had to shorten the names of the datasets.
+For example,  \textbf{A Test Full} means utilization of the whole \textbf{CoGenT Condition A Test set}, whereas  \textbf{B Valid 30k} indicates utilization of 30.000 samples from \textbf{CoGenT Condition B Validation set}.
+Question marks indicate that the paper does not provide enough information and those are the sets we assumed were used.
 
 \begin{table}[!h]
-	\caption{Generalization capabilities of selected state-of-the-art models}
 	\centering
 	\begin{tabular}{cCcCcCc}
 		\toprule
@@ -186,6 +195,7 @@ S-MAC &   &    &   &    & B Valid Full   &  78.71   \\
 
 		\bottomrule
 	\end{tabular}
+	\caption{Generalization capabilities of selected state-of-the-art models}
 	\label{tab:generalization_comparison}
 \end{table}
 
@@ -197,64 +207,49 @@ Both modules are implemented by neural networks, and were trained using a combin
 
 The author inform that in the first step they trained their models on Condition A, and tested them on both Condition A and Condition B. 
 Next, they fine-tuned these models on Condition B using 3K images and 30K questions, and again tested on both Conditions.
-Sadly, it is not clear what sets exactly they used for fine-tuning (as Condition B contains only test set, thus lack training set) and testing on Condition A (as Condition A does not offer test set).
+Sadly, it is not clear what sets exactly they used for fine-tuning (as Condition B lacks the training set).
 One possibility, as they are the authors of CLEVR and CoGenT datasets, is that they actually generated the missing sets, but didn't share them publicly.
+Besides, as they posses answers for both CoGenT Condition A and Condition B test sets, we are almost sure that they reported the accuracies on both Condition A and Condition B test sets.
 
 \subsection{The FiLM model and training methodology}
 
-\cite{perez2017film}) 
+Feature-wise Linear Modulation (in short, FiLM)~\cite{perez2017film} is an optional enhancement of a neural network model.
+The idea is to influence the behavior of existing layer(s) by introducing a feature-wise affine transformations that are conditioned on the input.
+A model composed of FiLM enhanced CNN and GRU achieved state-of-the-art results on both CLEVR and CoGenT, showing few percent of improvements over the PG+EE model.
 
-
-We train our best model architecture on Condition A and report accuracies on Conditions A and B, before and
-after fine-tuning on B, in Figure 9. Our results indicate FiLM
-surpasses other visual reasoning models at learning general
-concepts. 
-
-FiLM ValB accuracy reported on ValB without the 30K fine-tuning samples 
-Accuracy before and after fine-tuning on 30K of ValB
-
-Training A
+The problem with the presented comparison is that the authors used different sets for collecting the results, i.e. in the paper they clearly indicate that accuracies reported for Condition B after fine-tuning were calculated on CoGenT Condition B Validation set, excluding the 30k samples that were used for that fine-tuning.
+This also suggests that they probably reported scores for CoGenT Condition A Validation set,
+whereas, as it was mentioned previously, the original PG+EE paper probably relied on test sets in both cases.
 
 
 \subsection{The TbD model and training methodology}
 
-Performance comparison against the current state-of-the-
-art model on the CoGenT dataset having trained only on Condition
-A data (middle column) and after fine-tuning on a small amount
-of data with novel attributes (right column).
+The TbD (Transparency by Design) network was introduced in~\cite{mascharka2018transparency}.
+TbD is composed out of a set of visual reasoning primitives relying on attention transformations, allowing the model to perform reasoning by composes a series of attention mask.
+The authors compare the accuracy of their model while tested on CLEVR  with several existing models, including mentioned PG + EE, CNN + GRU + FiLM and MAC, and once again indicate improvement.
 
-Like pre-
-vious  work  [14],  our  performance  is  worse  on  Condition
-B than Condition A after training only using Condition A
-data.  As Table 3 shows, our model achieves 98.8\% accu-
-racy on Condition A, but only 75.4\% on Condition B. Fol-
-lowing Johnson
-et al
-. [14], we then fine-tune our model us-
-ing 3k images and 30k questions from the Condition B data.
-Whereas other models see a significant drop in performance
-on the Condition A data after fine-tuning, our model main-
-tains high performance.  As Table 3 shows, our model can
-effectively learn from a small amount of Condition B data.
-We achieve 96.9\% accuracy on Condition A and 96.3\% ac-
-curacy on Condition B after fine-tuning, far surpassing the
-highest-reported 76.1\% Condition A and 92.7\% Condition
-B accuracy.
+They also compare accuracy on CoGenT, by comparison with PG+EE.
+Despite the results show clear improvement, the section clearly lacks the most important information, i.e. which sets were used for training, fine-tuning and testing. 
+The only provided information for sure is that they used 3k images and 30k questions from the CoGenT Condition B for fine-tuning of their model following~\cite{johnson2017inferring}, but do not mention from which set they took the samples.
 
 
 \subsection{Our MAC and S-MAC models and methodology}
 
-Due to the fact that test set targets for both CLEVR and CoGenT aren't publicly available, the authors of~\cite{mascharka2018transparency} decided to split
-the CoGenT validation sets and use part of then for training, and part for testing. 
-We decided to follow that approach and ... \tk{Vincent, please proceed :)}  
-
-
-
+Due to the fact that test set targets for both CLEVR and CoGenT aren't publicly available, the authors of~\cite{perez2017film} decided to split
+the CoGenT A Validation sets and use 30k samples for fine-tuning and the remaining part for testing.
+When testing the model on CoGenT B, we used the whole Validation set.
+In the experiments when we were using Validation B for fine-tuning, we did it analogically.
+Besides that, as we were using Validation sets for testing, we also splitted the training set and used 90\% for training and remaining 10\% for validation during training.
 
 \section{Illustration of failures of MAC on CLEVR}
 Following the evaluation of MAC on CoGenT-B, we built a tool which helped us visualizing the attention of the model over the question words and the image, and thus provide insight on some cases of failure.
 
-\begin{figure}[]
+\fig{fig:fail_mac_shape} presents a question where the model is asked about the shape of the leftmost gray cylinder. The model correctly finds it, as we can see from its visual attention map, and appears to refer to it using its color (\textit{gray}), as we can see from the attention of the question words. Yet, it defaults to predicting the shape as \textit{cube}, because it never saw gray cylinders during training, but instead saw gray cubes.
+
+\fig{fig:fail_mac_color} presents a similar case, where the model is questioned about the color of the green cube at the back. MAC misses that object, and instead focuses on the nearby gray cylinder. We can hypothesize that MAC missed the green cube as it did not see this combination during training, and thus default to a combination that it knows.
+
+
+\begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{img/fail_mac_cogent_b_shape.png}
 	\caption{The question reads as: \textit{There is a large gray thing that is on the right side of the big gray cylinder left of the large ball that is on the right side if the cyan rubber sphere; what is its shape?}}
@@ -267,9 +262,5 @@ Following the evaluation of MAC on CoGenT-B, we built a tool which helped us vis
 	\caption{The question reads as: \textit{There is a tiny block behind the rubber thing that is right if the small brown rubber cylinder that is in front of the yellow metal cylinder; what color is it?}}
 	\label{fig:fail_mac_color}
 \end{figure}
-
-\fig{fig:fail_mac_shape} presents a question where the model is asked about the shape of the leftmost gray cylinder. The model correctly finds it, as we can see from its visual attention map, and appears to refer to it using its color (\textit{gray}), as we can see from the attention of the question words. Yet, it defaults to predicting the shape as \textit{cube}, because it never saw gray cylinders during training, but instead saw gray cubes.
-
-\fig{fig:fail_mac_color} presents a similar case, where the model is questioned about the color of the green cube at the back. MAC misses that object, and instead focuses on the nearby gray cylinder. We can hypothesize that MAC missed the green cube as it did not see this combination during training, and thus default to a combination that it knows.
 
 Those examples indicate that MAC did not correctly separate the concept of shape from the concept of color, but have a better understanding of the colors (as it found the object of interest in \fig{fig:fail_mac_shape} by its color). This could come from that fact that the shape \textit{sphere} is associated with all possible colors in the dataset. 
