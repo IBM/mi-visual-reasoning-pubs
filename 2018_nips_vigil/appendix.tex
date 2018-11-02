@@ -22,11 +22,13 @@ Each object present in the scene, aside of position, is characterized by a set o
 \end{itemize}
 resulting in 96 unique combinations.
 
-Along with CLEVR, the authors~\cite{johnson2017clevr} introduced  CLEVR-CoGenT (Compositional Generalization Test, CoGenT in short), with a goal of testing how well the models can learn and generalize compositional concepts.
-This dataset is synthesized in the same way as CLEVR, but contains two conditions.
+Along with CLEVR, the authors~\cite{johnson2017clevr} introduced  CLEVR-CoGenT (Compositional Generalization Test, CoGenT in short), with a goal of evaluating how well the models can generalize, learn relations and compositional concepts.
+This dataset is generated in the same way as CLEVR with two additional conditions.
 As shown in \tableref{tab:cogent_conditions}, in Condition A all cubes are gray, blue, brown, or yellow, whereas all cylinders are red, green, purple, or cyan; in Condition B cubes and cylinders swap color palettes.
-Both conditions contain spheres of all colors.
-CoGenT thus indicates how a model answers CLEVR questions: by memorizing combinations of traits or by learning disentangled or general representations.
+For both conditions spheres can be any colors.
+
+The CoGenT task give a sense on how the model solve CLEVR question. Is the model learning combination of attributes or general representations?
+
 The CoGenT dataset contains:
 \begin{itemize}
 \item	Training set of 70,000 images and 699,960 questions in Condition A,
