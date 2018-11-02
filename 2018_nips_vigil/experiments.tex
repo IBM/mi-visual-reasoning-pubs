@@ -1,68 +1,83 @@
 \section{Experiments}
 
-Our experiments were intended to understand MAC's and S-MAC's generalization as well as transfer learning abilities in different settings. We used the CLEVR and the CoGenT dataset(s) to address these different aspects.
-The first experiment studied the amount of training time and capability of the models to generalize on the same type of dataset that it was trained on. This was used mainly to both compare as a baseline for the further experiments that were intended to stuidy how well the transfer learning performed in comparision to the baseline.
-The second experiment studied the capability of the models to succeed in doing transfer learning from domain A to domain B when trained on different combinations of the training data from domain A and test data from domain B. The third experiment was intended to see whether the performance improves if the model could be further trained on a small subset of the dataset from domain B.
+Our experiments were intended to study MAC's and S-MAC's generalization as well as transfer learning abilities in different settings. We used CLEVR and CoGenT to address these different aspects.
+The first experiment studied the training time and the capability of the models to generalize on the same type of dataset that it was trained on. This was used mainly as a baseline for the further experiments that were intended to study how well the transfer learning performed in comparison to the baseline results.
+The second experiment studied the capability of the models to succeed in doing transfer learning from domain A to domain B when trained on different combinations of the respective domains. The third experiment was intended to see whether the performance improves if the model could be further trained on a small subset of the dataset from domain B.
 
-
-For all the experiments the initial training procedure is as follows: we train the MAC model (and S-MAC) for 20 epochs on 90\% of the training sets of CLEVR \& CoGenT separately. We keep the remaining 10\% for validating the model at every epoch, and use the original validation sets as test sets.
+For all experiments, the initial training procedure is as follows: we train the given model  for 20 epochs on 90\% of the training sets of CLEVR \& CoGenT separately. We keep the remaining 10\% for validating the model at every epoch, and use the original validation sets as test sets.
 %given that the ground truth labels for the true test sets are not available.
 
-\begin{table}[]
+Our implementation of both MAC models used PyTorch (v0.4.0)~\cite{paszke2017automatic}. We relied on the MI-Prometheus~\cite{kornuta2018accelerating} framework that enables fast experimentation of the cross product of models and datasets\footnote{Link available upon request, hidden here for reasons of anonymity.}. %The code \& experiment settings are available at \url{https://github.com/IBM/mi-prometheus/}}.
+We used NVIDIA's GeForce GTX TITAN X GPUs. We followed the implementation details indicated in the supplemental material (Sec. A) of the original paper~\cite{hudson2018compositional}, to ensure a faithful comparison.
+
+
+\begin{table}[t]
 	\caption{CLEVR \& CoGenT accuracies for the MAC \& S-MAC models. The [Training] column indicates wall time and final accuracy on the training set. For fine-tuning, we use 30k samples of the test set, and the remaining is kept for testing. The [Fine-tuning] column reports the used sub-set (30k samples) and the final accuracy on this sub-set during training. The [Test] column reports the used set and the obtained test accuracy. If no fine-tuning was done, the whole indicated set was used for testing.}
 	\centering
-	\begin{tabular}{ccccCcCc}
+	\begin{tabular}{cccccCcCC}
 		\toprule
-		\multirow{2}{*}{Model} & \multicolumn{3}{c}{Training} &  \multicolumn{2}{c}{Fine-tuning} &  \multicolumn{2}{c}{Test} \\
+		\multirow{2}{*}{Model} & \multicolumn{3}{c}{Training} &  \multicolumn{2}{c}{Fine-tuning} & \multicolumn{2}{c}{Test} & \multirow{2}{*}{N$^{o}$} \\
 		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
-		& Dataset                & Time [h:m] & Acc [\%]          & Dataset & Acc [\%]  & Dataset & Acc [\%] \\
+		Dataset                & Time [h:m] & Acc [\%]          & Dataset & Acc [\%]  & Dataset & Acc [\%] & \\
 		\midrule
-		MAC & CLEVR  & 30:52  & 96.70 & --   & --  & CLEVR    & 96.17          \\
-		\midrule
-		\multirow{13}{*}{S-MAC} & \multirow{7}{*}{CLEVR}  & \multirow{7}{*}{28:30}  & \multirow{7}{*}{95.82} & \multirow{4}{*}{--}   & \multirow{4}{*}{--}  & CLEVR    & 95.29           \\
-		\cmidrule{7-8} 
-		&                        &  &               &     &                                & CoGenT-A    &  95.47   \\
-		\cmidrule{7-8} 
-		&                        &   &              &     &                               & CoGenT-B   &  95.58  \\		
+		MAC & CLEVR  & 30:52  & 96.70 & --   & --  & CLEVR    & 96.17         & A \\
+		\cmidrule{1-8}
+		\cmidrule{1-8}
+				
+		 \multirow{13}{*}{S-MAC} & CLEVR  & 28:30  & 95.82 & --   & --  & CLEVR    & 95.29         & B  \\
+		 \cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
 		
-		\cmidrule{5-6} \cmidrule{7-8} 
-		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{97.67}          & CoGenT-A &  92.11         \\
-		\cmidrule{7-8} 
-		&                             &                                         &       &         &                & CoGenT-B &    92.95       \\  		
-		
+		& CoGenT-A  & 28:33   & 96.09 &  --  &  --  & CoGenT-A & 95.91        & C  \\
 		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
-		& \multirow{5}{*}{CoGenT-A}   & \multirow{5}{*}{28:33}   & \multirow{5}{*}{96.09}  &  \multirow{2}{*}{--}  &  \multirow{2}{*}{--}   & CoGenT-A & 95.91          \\
+		
+		
+		& \multirow{2}{*}{CLEVR}  & \multirow{2}{*}{28:30}  & \multirow{2}{*}{95.82} & \multirow{2}{*}{--}   & \multirow{2}{*}{--}  &   CoGenT-A    &  95.47  & D \\
 		\cmidrule{7-8} 
-		&                             &                                         &     &          &                & CogenT-B & 78.71          \\
+		&                        &   &              &     &                               & CoGenT-B   &  95.58  & E\\		
+				
+		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
+		& \multirow{4}{*}{CoGenT-A}   & \multirow{4}{*}{28:33}   & \multirow{4}{*}{96.09}  &  \multirow{1}{*}{--}  &  \multirow{1}{*}{--}   & CogenT-B & 78.71        & F  \\
 		\cmidrule{5-6} \cmidrule{7-8} 
-		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{96.85}          & CoGenT-A &  91.24         \\
+		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{96.85}          & CoGenT-A &  91.24        & G \\
 		\cmidrule{7-8} 
-		&                             &                                         &       &         &                & CoGenT-B &    94.55       \\
+		&                             &                                         &       &         &                & CoGenT-B &    94.55     & H  \\
+
+		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
+& \multirow{2}{*}{CLEVR}  & \multirow{2}{*}{28:30}  & \multirow{2}{*}{95.82} &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{97.67}          & CoGenT-A &  92.11       & I  \\
+\cmidrule{7-8} 
+&                             &                                         &       &         &                & CoGenT-B &    92.95    & J   \\  		
+
+
 		\bottomrule
 	\end{tabular}
 	\label{results}
 \end{table}
 
-Our implementation of both MAC models used PyTorch (v0.4.0)~\cite{paszke2017automatic}. We relied on the MI-Prometheus~\cite{kornuta2018accelerating} framework that enables fast experimentation of the cross product of models and datasets\footnote{Link available upon request, hidden here for reasons of anonymity.}. %The code \& experiment settings are available at \url{https://github.com/IBM/mi-prometheus/}}.
-We used NVIDIA's GeForce GTX TITAN X GPUs. We followed the implementation details indicated in the supplemental material (Sec. A) of the original paper~\cite{hudson2018compositional}, to ensure a faithful comparison.
-
 The entire set of results for both models are reported in˜\tableref{results}. 
 For the CLEVR dataset, the training wall time of MAC is consistent with what is reported in the original paper (roughly 30h of training for 20 epochs).
 S-MAC trains faster, showing a decrease of 10.5\% in wall time, due to the reductions in the 
 number of parameters as shown earlier.
+This was consistently observed across the other experiments as well.
 
-We now turn to the generalization performance. 
-The evaluation of MAC on CLEVR yields an accuracy of 96.2\%, 
+Turning to the generalization performance,  MAC on CLEVR yields an accuracy of 96.2\%, which is 
+taken as a reference experiment. S-MAC reaches an accuracy of 95.3\% on CLEVR, indicating that 
+the simplifications did not hinder its generalization capability.
+Similar performances were observed for generalization on CoGenT-A.
+
+Before fine-tuning, we wanted to estimate the best upper bounds on accuracy that we could possibly get by doing transfer learning.
+As both CoGenT datasets contain complementary subsets of colors/shapes  combinations present in CLEVR, 
+we evaluated CLEVR-trained models on the CoGenT datasets.
+Even though the CoGenT datasets were generated using more restricted parameters, the models obtained nearly equal accuracy.
+
+Evaluating MAC on CoGenT shows that, similar to~\cite{johnson2017inferring, mascharka2018transparency}, the score is worse on CoGenT-B than CoGenT-A after training on CoGenT-A data only. 
+As \tableref{results} shows, the MAC model achieves 79.5\% accuracy on CoGenT-B compared to 78.71\% for S-MAC.
 
 
 
- and is taken as a reference experiment. The training wall time is coherent with what is reported in the original paper (roughly 30h of training for 20 epochs).
-S-MAC reaches an accuracy of 95.3\% on CLEVR, which is close to the reference score. Moreover, it presents the advantage to train faster, as supported by the reductions in the number of parameters, showing a decrease of 10.5\% in wall time.
-Training both models on CoGenT A 
+We obtained comparable performances, which
 
-Evaluating MAC on CoGenT shows that, like previous work \cite{johnson2017inferring, mascharka2018transparency}, the performance is worse on Condition B than Condition A after training only sing Condition A data. As \tableref{results} shows, the MAC model achieves 79.5\% accuracy on Condition B, and 96.9\% on Condition A. S-MAC obtains comparable performance (78.71\%), and still maintains the shorter training time. The comparable performance indicate that the simplifications did not hinder its generalization capability.
+To that end, 
 
-Following \cite{johnson2017inferring, perez2017film}), we then fine-tune both models using 3k images and 30k questions from the Condition B data (for 10 epochs), and re-evaluate them on both conditions. This enables both models to perform much better on CoGenT-B, as we observe a 15 points increase for the accuracy. Performance on CoGenT-A is slightly worse, dropping of ~4\%. This seems to indicate that MAC is able to learn new combinations of shape \& color without forgetting the ones it learned during the initial training.
+Following \cite{johnson2017inferring, perez2017film}), we then fine-tune both models using 3k images and 30k questions from the CoGenT-B data (for 10 epochs), and re-evaluate them on both conditions. This enables both models to perform much better on CoGenT-B, as we observe a 15 points increase for the accuracy. Performance on CoGenT-A is slightly worse, dropping of ~4\%. This seems to indicate that MAC is able to learn new combinations of shape \& color without forgetting the ones it learned during the initial training.
 Nonetheless, MAC does not appear to separate the concepts of shape and color. We have analyzed cases of failure of MAC on CoGenT-B, which illustrate this point. Please refer to Appendix C for more details.
 
-We have conducted additional experiments to explore the 
