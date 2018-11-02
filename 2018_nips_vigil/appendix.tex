@@ -3,7 +3,7 @@
 \section{Description of datasets}
 
 Most of the VQA datasets have strong biases. This allow models to learn strategies without reasoning about the visual input~\cite{Santoro2017ASN}.
-The CLEVR dataset~\cite{johnson2017clevr} was developed to address those issues and come back to the core challenge of visual QA which is reasoning.
+The CLEVR dataset~\cite{johnson2017clevr} was developed to address those issues and come back to the core challenge of visual QA which is testing reasoning abilities.
 CLEVR contains images of 3D-rendered objects; each image comes with a number of highly compositional questions that fall into different categories.
 Those categories fall into 5 classes of tasks: Exist, Count, Compare Integer, Query Attribute and Compare Attribute. 
 The CLEVR dataset consists of:
@@ -27,7 +27,8 @@ This dataset is generated in the same way as CLEVR with two additional condition
 As shown in \tableref{tab:cogent_conditions}, in Condition A all cubes are gray, blue, brown, or yellow, whereas all cylinders are red, green, purple, or cyan; in Condition B cubes and cylinders swap color palettes.
 For both conditions spheres can be any colors.
 
-The CoGenT task give a sense on how the model solve CLEVR question. Is the model learning combination of attributes or general representations?
+The CoGenT task allow us to see whether the model learns combination of attributes or general representations.
+
 
 The CoGenT dataset contains:
 \begin{itemize}
