@@ -1,10 +1,6 @@
 \section{Conclusion}
-We have introduced SMAC, a simplified version on the MAC model. Our version proposes simplified equations and therefore we could reduce significantly the number of parameters in the MAC cell, which is the recurrent unit of the model. As a result we could decrease training time by more than two hours ( reduction by almost 10 \%)
-while maintaining an equivalent test accuracy. 
-We have also evaluated generalization capabilities of MAC and S-MAC on the CLEVR CoGenT dataset.
-The results of our experiments first show that MAC and SMAC perform equally well on all the CoGenT task. Thus the simplifications did not alter SMAC generalization capability.
-Furthermore, MAC and SMAC compare favorably with state-of-the-art models on the CoGenT taks. MAC and SMAC present competitive generalization and transfer learning capacities.
-Nevertheless, CLEVR CoGenT remains an unsolved problem. The MAC model still struggles to learn distinct concepts. We could see that MAC sometimes fail to differentiate colors and shape as two distinct features of the same object. 
+We have introduced S-MAC, a simplified variant of the MAC model. Because it has nearly half the number of parameters in the recurrent portion MAC cell, it trains faster while maintaining an equivalent test accuracy. 
 
+Our experiments on zero-short learning show that the MAC model has poor performance in line with the other models in the literature. Thus, this remains an interesting problem to investigate how we can train it to disentangle the concepts of shape and color.
 
-
+With fine-tuning, the MAC model indeed achieves much improved performance, matching state of the art. However, we have showed that correlation between the different domains must be taken into account when fine-tuning, otherwise potentially leading to decreased performance.
