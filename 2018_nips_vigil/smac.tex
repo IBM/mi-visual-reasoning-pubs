@@ -11,6 +11,23 @@ as-is throughout the reasoning steps.
 
 
 
+\begin{table}[!t]
+	\centering
+	\begin{tabular}{ccccCcCc}
+		\toprule
+		Model        & Read Unit               & Write Unit &  Control Unit         \\
+		\midrule
+		MAC   &  787,969 &  524,800        &    525,313    \\
+		%\midrule
+		simplified MAC & 263,168  & 262,656       &    263,168 \\
+		\midrule
+		Reduction by [\%]  & 67\%  &   50\%       &      50\%  \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparing the number of position-independent parameters between MAC \& S-MAC cells. }
+	\label{tab:parameters}
+\end{table}
+
 
 %Applying this principle to 
 %equations in the MAC cell results in eliminating one of the linear layers applied to
@@ -51,23 +68,6 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 	&\cc_i = \sum_s cv_{is} \, \cw_s  \tag{c2.3}
     \end{align*}}
 \end{multicols}
-
-\begin{table}[hb]
-	\centering
-	\begin{tabular}{ccccCcCc}
-		\toprule
-		Model        & Read Unit               & Write Unit &  Control Unit         \\
-		\midrule
-		MAC   &  787,969 &  524,800        &    525,313    \\
-		%\midrule
-		simplified MAC & 263,168  & 262,656       &    263,168 \\
-		\midrule
-		Reduction by [\%]  & 67\%  &   50\%       &      50\%  \\
-		\bottomrule
-	\end{tabular}
-	\caption{Comparing the number of position-independent parameters between MAC \& S-MAC cells. }
-	\label{tab:parameters}
-\end{table}
 
 \newpage
 
