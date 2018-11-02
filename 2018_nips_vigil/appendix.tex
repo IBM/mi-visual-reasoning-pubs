@@ -29,11 +29,11 @@ Both conditions contain spheres of all colors.
 CoGenT thus indicates how a model answers CLEVR questions: by memorizing combinations of traits or by learning disentangled or general representations.
 The CoGenT dataset contains:
 \begin{itemize}
-\item	A training set of 70,000 images and 699,960 questions in Condition A,
-\item	A validation set of 15,000 images and 150,000 questions in Condition A,
-\item	A validation set of 15,000 images and 149,991 questions in Condition B,
-\item	A test set of 15,000 images and 149,980 questions in Condition B,
-\item	A test set of 15,000 images and 149,992 questions in Condition B,
+\item	Training set of 70,000 images and 699,960 questions in Condition A,
+\item	Validation set of 15,000 images and 149,991 questions in Condition A,
+\item	Test set of 15,000 images and 149,980 questions in Condition A (without answers),
+\item	Validation set of 15,000 images and 150,000 questions in Condition B,
+\item	Test set of 15,000 images and 149,992 questions in Condition B (without answers),
 \item	Answers, scene graphs and functional programs for all training and validation images and questions.
 \end{itemize}
 
@@ -132,44 +132,54 @@ In this section we present comparison of MAC and S-MAC with selected state-of-th
 		\toprule
 		Model & \multicolumn{2}{c}{Training} &    \multicolumn{2}{c}{Fine-tuning} &   \multicolumn{2}{c}{Test} \\		
 		\cmidrule{2-3} \cmidrule{4-5}\cmidrule{6-7}
-		(source)& CoGenT-A set & Acc [\%]  & CoGenT-B set & Acc [\%]  & CoGenT set~ & Acc [\%] \\
+		(source)& CoGenT set & Acc [\%]  & CoGenT set & Acc [\%]  & CoGenT set~ & Acc [\%] \\
 		
 \midrule				
-& \multirow{5}{*}{Training Full?}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Test?    &   96.6  \\
+& \multirow{5}{*}{A Train Full?}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Test Full    &   96.6  \\
 \cmidrule{6-7} 
 PG+EE &   &    &   &    & B Test Full?    &   73.7  \\
 \cmidrule{4-5}\cmidrule{6-7}
-(\cite{johnson2017inferring}) &  &    & \multirow{2}{*}{B Train 30k?}  & \multirow{2}{*}{N/A}     & A Test?    &   76.1 \\
+(\cite{johnson2017inferring}) &  &    & \multirow{2}{*}{B Train 30k?}  & \multirow{2}{*}{N/A}     & A Test Full    &   76.1 \\
 \cmidrule{6-7} 
 &   &    &   &    & B Test Full?    &   92.7  \\
 		
 \midrule				
-& \multirow{5}{*}{xxx}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   AAA    &     \\
+CNN+GRU+FiLM & \multirow{5}{*}{A Train Full?}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Valid Full?    &  98.3   \\
 \cmidrule{6-7} 
-MAC &   &    &   &    & BBB    &     \\
+0-Shot &   &    &   &    & B Valid 120k    &   78.8  \\
 \cmidrule{4-5}\cmidrule{6-7}
-(\cite{hudson2018compositional}) &  &    & \multirow{2}{*}{CoGenT-B}  & \multirow{2}{*}{N/A}     & CoGenT-A    &   \\
+(\cite{perez2017film}) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{N/A}     & A Valid Full?    & 81.1  \\
 \cmidrule{6-7} 
-&   &    &   &    & CoGenT-B    &    \\
+&   &    &   &    & B Valid 120k    &  96.9  \\
 		
+
+\midrule				
+& \multirow{5}{*}{A Train Full?}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A ?    &  98.8   \\
+\cmidrule{6-7} 
+TbD + reg &   &    &   &    & B ?    &  75.4   \\
+\cmidrule{4-5}\cmidrule{6-7}
+(\cite{mascharka2018transparency}) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{N/A}     & A ?    &  96.9 \\
+\cmidrule{6-7} 
+&   &    &   &    & B ?   &  96.3  \\
+
 		
 \midrule				
-& \multirow{5}{*}{A Train 670k}   & \multirow{5}{*}{xx}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Valid 30k    &     \\
+& \multirow{5}{*}{A Train 630k}   & \multirow{5}{*}{97.02}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Valid Full    &     96.88 \\
 \cmidrule{6-7} 
-MAC &   &    &   &    & CoGenT-B    &     \\
+MAC &   &    &   &    & B Valid Full   &  79.54   \\
 \cmidrule{4-5}\cmidrule{6-7}
-(ours) &  &    & \multirow{2}{*}{CoGenT-B 30k}  & \multirow{2}{*}{N/A}     & CoGenT-A    &   \\
+(our results) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{97.91}     & A Valid Full    &  92.06 \\
 \cmidrule{6-7} 
-&   &    &   &    & CoGenT-B    &    \\
+&   &    &   &    & B Valid 120k    &   95.62 \\
 		
 \midrule				
-& \multirow{5}{*}{CoGenT-A}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   CoGenT-A    &     \\
+& \multirow{5}{*}{A Train 630k}   & \multirow{5}{*}{96.09}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Valid Full    &     95.91 \\
 \cmidrule{6-7} 
-S-MAC &   &    &   &    & CoGenT-B    &     \\
+S-MAC &   &    &   &    & B Valid Full   &  78.71   \\
 \cmidrule{4-5}\cmidrule{6-7}
-(ours) &  &    & \multirow{2}{*}{CoGenT-B 30k}  & \multirow{2}{*}{N/A}     & CoGenT-A    &   \\
+(our results) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{96.85}     & A Valid Full    &  91.24 \\
 \cmidrule{6-7} 
-&   &    &   &    & CoGenT-B    &    \\
+&   &    &   &    & B Valid 120k    &   94.55 \\
 
 		\bottomrule
 	\end{tabular}
@@ -189,7 +199,45 @@ One possibility, as they are the authors of CLEVR and CoGenT datasets, is that t
 
 \subsection{The FiLM model and training methodology}
 
+\cite{perez2017film}) 
+
+
+We train our best model architecture on Condition A and report accuracies on Conditions A and B, before and
+after fine-tuning on B, in Figure 9. Our results indicate FiLM
+surpasses other visual reasoning models at learning general
+concepts. 
+
+FiLM ValB accuracy reported on ValB without the 30K fine-tuning samples 
+Accuracy before and after fine-tuning on 30K of ValB
+
+Training A
+
+
 \subsection{The TbD model and training methodology}
+
+Performance comparison against the current state-of-the-
+art model on the CoGenT dataset having trained only on Condition
+A data (middle column) and after fine-tuning on a small amount
+of data with novel attributes (right column).
+
+Like pre-
+vious  work  [14],  our  performance  is  worse  on  Condition
+B than Condition A after training only using Condition A
+data.  As Table 3 shows, our model achieves 98.8\% accu-
+racy on Condition A, but only 75.4\% on Condition B. Fol-
+lowing Johnson
+et al
+. [14], we then fine-tune our model us-
+ing 3k images and 30k questions from the Condition B data.
+Whereas other models see a significant drop in performance
+on the Condition A data after fine-tuning, our model main-
+tains high performance.  As Table 3 shows, our model can
+effectively learn from a small amount of Condition B data.
+We achieve 96.9\% accuracy on Condition A and 96.3\% ac-
+curacy on Condition B after fine-tuning, far surpassing the
+highest-reported 76.1\% Condition A and 92.7\% Condition
+B accuracy.
+
 
 \subsection{Our MAC and S-MAC models and methodology}
 
