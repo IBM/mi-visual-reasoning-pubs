@@ -2,37 +2,19 @@
 Reasoning over visual inputs is a fundamental characteristic of human intelligence.
 Reproducing this ability with artificial systems is a challenge that requires learning relations and compositionality~\citep{hu2017learning, johnson2017inferring}. The Visual Question Answering (VQA)~\citep{antol2015vqa,malinowski2014towards,wu2017visual} task has been tailored to benchmark this type of reasoning, combining natural language processing and visual recognition.
 
-%VQA is a complex semantic task that combines natural language processing and visual recognition.
-%In order to answer the questions the system  requires to master several perceptual abilities, such as recognizing objects, attributes, and spatial relations as well as leveraging commonsense world knowledge~\citep{hudson2018compositional}.
-
-Many approaches have been explored, 
-%although they often appear to struggle on tasks with a structured and compositional nature \citep{hudson2018compositional}.
-such as modular networks, that combine modules coming from a predefined collection \cite{andreas2016learning,johnson2017inferring, mascharka2018transparency}. Attention mechanisms (\cite{bahdanau2014neural}, \cite{xu2015show}) are also frequently used to guide the focus of the system over the image and the question words.
-%Other approaches such as \vm{Ask Tomasz what he is thinking about.}.
-
-%However, they rely on externally provided structured representations and functional programs, parsers or expert demonstration, and sometimes require reinforcement learning training schemes.
-%These models' structure is inherently rigid and the use of a range of specialized modules weaken their robustness and generalization capacities.
-%\tk{Compositional models are one major direction of research in VQA... but there are 3 others (including e.g. attention) that we do not mention here, thus my concern is that the above is not well balanced... I can add more when we will understand how much space is left.}
+Many approaches have been explored, such as modular networks, that combine modules coming from a predefined collection \cite{andreas2016learning,johnson2017inferring, mascharka2018transparency}. Attention mechanisms (\cite{bahdanau2014neural}, \cite{xu2015show}) are also used to guide the focus of the system over the image and the question words.
 
 Several VQA datasets have been proposed (e.g. DAQUAR~\citep{malinowski2014multi}, VQA~\citep{antol2015vqa}); nonetheless, these datasets contain several biases (e.g. unbalanced questions or answers) that are often exploited by systems during learning~\citep{goyal2017making}.
 The CLEVR dataset~\citep{johnson2017clevr} was designed to address these issues. The synthetic nature of its images \& questions enables detailed analysis of visual reasoning, and allows for variations, to test a particular ability such as generalization or transfer learning. One variation of CLEVR, called CoGenT (Compositional Generalization Test), measures whether models learn separate representations for color and shape instead of memorizing all possible combinations.
 
 
 One of the most recent exciting models aiming at solving VQA is called Memory, Attention, and Composition (MAC)~\citep{hudson2018compositional}, which performs a sequence of attention-based reasoning operations. 
-%MAC uses three general units working in tandem to perform a reasoning step make the robustness of the model.
-%The MAC  model achieved state-of-the-art accuracy on CLEVR.
-%The authors also tested in on the difficult CLEVR Humans dataset, were the questions (regarding synthetically generated images) were written by humans. 
-Although the performance of MAC has been proven, 
-%it appeared to have difficulties with understanding what concepts the model is learning. 
-several questions arise:
+though the performance of MAC has been proven, several questions arise:
 Does the model really learn relations between objects? 
 How does the model represent these relations in its reasoning steps? 
 Is the model representing concepts like objects attributes (shape, color, size)?
 
 In this work, we further investigate the interpretability and generalization capabilities of the MAC model.
 We propose a new set of equations that simplifies the core of the model (S-MAC). It trains faster and achieves comparable accuracy on CLEVR. 
-Second, we evaluate the generalization capabilities of both MAC \& S-MAC on the CoGenT dataset. 
-%The CoGenT dataset has been designed to highlight transfer learning abilities and give a better sense of interpretability. By mixing attributes over two sub-datasets, the CLEVR CoGenT task allow us to see what relations and concepts the model has really learned. 
-%We show how MAC performs on CLEVR CoGenT and propose a study about the model failures.
-\tk{Finally, we also test MAC in a novel multi-step transfer learning setup -- if we will add it to the paper.} 
-%This work points out some of the MAC model weaknesses, in particular its failure to differentiate concepts of colors and shape. We finally discuss some improvement possibilities.
+Second, we show that both models achieve comparable performance with zero-shot learning, when trained on CoGenT-A and tested on CoGenT-B. With fine-tuning however, we obtained a significant 15 points increase in the accuracy, matching state-of-the-art results~\cite{perez2017film, mascharka2018transparency}.
+Last, we illustrate using CoGenT-B that, without adequate care, fine-tuning can actually reduce a model's accuracy.
