@@ -1,10 +1,11 @@
 \section{Experiments}
 
-We analyze MAC's generalization and transfer learning abilities by testing it on the CoGenT dataset.
-%It is synthesized in the same way as CLEVR, but contains two conditions: in Condition A, all cubes are gray, blue, brown, or yellow and all cylinders are red, green, purple, or cyan; in Condition B, cubes and cylinders swap color palettes. Both conditions contain spheres of all colors.
-We also evaluate the simplified model on this dataset for comparison.
+Our experiments were intended to understand MAC's and S-MAC's generalization as well as transfer learning abilities in different settings. We used the CLEVR and the CoGenT dataset(s) to address these different aspects.
+The first experiment studied the amount of training time and capability of the models to generalize on the same type of dataset that it was trained on. This was used mainly to both compare as a baseline for the further experiments that were intended to stuidy how well the transfer learning performed in comparision to the baseline.
+The second experiment studied the capability of the models to succeed in doing transfer learning from domain A to domain B when trained on different combinations of the training data from domain A and test data from domain B. The third experiment was intended to see whether the performance improves if the model could be further trained on a small subset of the dataset from domain B.
 
-The training procedure is as follows: we train the MAC model (and simplified MAC) for 20 epochs on 90\% of the training sets of CLEVR \& CoGenT separately. We keep the remaining 10\% for validating the model at every epoch, and use the original validation sets as test sets.
+
+For all the experiments the initial training procedure is as follows: we train the MAC model (and S-MAC) for 20 epochs on 90\% of the training sets of CLEVR \& CoGenT separately. We keep the remaining 10\% for validating the model at every epoch, and use the original validation sets as test sets.
 %given that the ground truth labels for the true test sets are not available.
 
 \begin{table}[]
@@ -42,10 +43,22 @@ The training procedure is as follows: we train the MAC model (and simplified MAC
 	\label{results}
 \end{table}
 
-We implemented both versions of the MAC model using PyTorch (v0.4.0)~\cite{paszke2017automatic}. We relied on the MI-Prometheus~\cite{kornuta2018accelerating} framework for training and testing both variants\footnote{The code \& the training settings are available at \url{https://github.com/IBM/mi-prometheus/}}. For training, we used NVIDIA's GeForce GTX TITAN X GPUs. We followed the implementation details indicated in the supplemental material (Sec. A) of the original paper~\cite{hudson2018compositional}, to ensure a faithful comparison.
+Our implementation of both MAC models used PyTorch (v0.4.0)~\cite{paszke2017automatic}. We relied on the MI-Prometheus~\cite{kornuta2018accelerating} framework that enables fast experimentation of the cross product of models and datasets\footnote{Link available upon request, hidden here for reasons of anonymity.}. %The code \& experiment settings are available at \url{https://github.com/IBM/mi-prometheus/}}.
+We used NVIDIA's GeForce GTX TITAN X GPUs. We followed the implementation details indicated in the supplemental material (Sec. A) of the original paper~\cite{hudson2018compositional}, to ensure a faithful comparison.
 
-We report the obtained scores in \tableref{results}. The evaluation of MAC on CLEVR yields an accuracy of 96.2\%, obtained after 31.9h of training, and is taken as a reference experiment. The training wall time is coherent with what is reported in the original paper (roughly 30h of training for 20 epochs).
+The entire set of results for both models are reported in˜\tableref{results}. 
+For the CLEVR dataset, the training wall time of MAC is consistent with what is reported in the original paper (roughly 30h of training for 20 epochs).
+S-MAC trains faster, showing a decrease of 10.5\% in wall time, due to the reductions in the 
+number of parameters as shown earlier.
+
+We now turn to the generalization performance. 
+The evaluation of MAC on CLEVR yields an accuracy of 96.2\%, 
+
+
+
+ and is taken as a reference experiment. The training wall time is coherent with what is reported in the original paper (roughly 30h of training for 20 epochs).
 S-MAC reaches an accuracy of 95.3\% on CLEVR, which is close to the reference score. Moreover, it presents the advantage to train faster, as supported by the reductions in the number of parameters, showing a decrease of 10.5\% in wall time.
+Training both models on CoGenT A 
 
 Evaluating MAC on CoGenT shows that, like previous work \cite{johnson2017inferring, mascharka2018transparency}, the performance is worse on Condition B than Condition A after training only sing Condition A data. As \tableref{results} shows, the MAC model achieves 79.5\% accuracy on Condition B, and 96.9\% on Condition A. S-MAC obtains comparable performance (78.71\%), and still maintains the shorter training time. The comparable performance indicate that the simplifications did not hinder its generalization capability.
 
