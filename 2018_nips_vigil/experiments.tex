@@ -8,12 +8,12 @@ The second experiment studied the capability of the models to succeed in doing t
 For all experiments, the initial training procedure is as follows: we train the given model  for 20 epochs on 90\% of the training sets of CLEVR \& CoGenT separately. We keep the remaining 10\% for validating the model at every epoch, and use the original validation sets as test sets.
 %given that the ground truth labels for the true test sets are not available.
 
-Our implementation of both MAC models used PyTorch (v0.4.0)~\cite{paszke2017automatic}. We relied on the MI-Prometheus~\cite{kornuta2018accelerating} framework that enables fast experimentation of the cross product of models and datasets\footnote{Link available upon request, hidden here for reasons of anonymity.}. %The code \& experiment settings are available at \url{https://github.com/IBM/mi-prometheus/}}.
+Our implementation of both MAC models used PyTorch (v0.4.0)~\cite{paszke2017automatic}. We relied on the MI-Prometheus~\cite{kornuta2018accelerating} framework that enables fast experimentation of the cross product of models and datasets\footnote{To reproduce the presented research please follow:  \url{https://github.com/IBM/mi-prometheus/}}.
 We used NVIDIA's GeForce GTX TITAN X GPUs. We followed the implementation details indicated in the supplemental material (Sec. A) of the original paper~\cite{hudson2018compositional}, to ensure a faithful comparison.
 
 
 \begin{table}[t]
-	\caption{CLEVR \& CoGenT accuracies for the MAC \& S-MAC models. The [Training] column indicates wall time and final accuracy on the training set. For fine-tuning, we use 30k samples of the test set, and the remaining is kept for testing. The [Fine-tuning] column reports the used sub-set (30k samples) and the final accuracy on this sub-set during training. The [Test] column reports the used set and the obtained test accuracy. If no fine-tuning was done, the whole indicated set was used for testing.}
+	\caption{CLEVR \& CoGenT accuracies for the MAC \& S-MAC models. The [Training] column indicates wall times and final accuracies on the training set. For fine-tuning, we use 30k samples of the test set, and kept the remainder for testing. The [Fine-tuning] column reports the used sub-set (30k samples) and the final accuracies on this sub-set during training. The [Test] column reports the used set and the obtained test accuracies. If no fine-tuning was done, the whole indicated set was used for testing.}
 	\centering
 	\begin{tabular}{cccccCcCC}
 		\toprule
@@ -75,4 +75,4 @@ Following \cite{johnson2017inferring, perez2017film}), we then fine-tune S-MAC u
 
 To study the pitfalls of fine-tuning, we conducted a final set of experiments, where we fine-tuned a CLEVR-trained S-MAC model on CoGenT-B for 10 epochs, as before. Surprisingly, this operation handicapped the generalization of the model not only on CoGenT-A (row i), but also on CoGenT-B (row j, a 3 point drop compared to row e). This highlights the delicate nature of fine-tuning, with respect to the correlation between the datasets. This warrants further investigations.
 
-We have analyzed cases of failure on CoGenT-B to illustrate this point. Please refer to Appendix D for more details.
+We have analyzed cases of failure on CoGenT-B to illustrate this point. Please refer to Appendix D for more details. Besides, Appendix C presents a comparison of results obtained by the S-MAC model and selected state-of-the-art models~\cite{johnson2017inferring,perez2017film,mascharka2018transparency}  on CoGenT.
