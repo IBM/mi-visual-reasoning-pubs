@@ -45,7 +45,6 @@ The CoGenT dataset contains:
 		Dataset        & Cubes              & Cylinders &  Spheres         \\
 		\midrule
 		CLEVR   &  any color &  any color        &    any color    \\
-		%\midrule
 		CLEVR CoGenT A & gray / blue / brown / yellow  & red / green / purple / cyan       &    any color  \\
 		CLEVR CoGenT B  & red / green / purple / cyan &   gray / blue / brown / yellow       &      any color  \\
 		\bottomrule
@@ -58,7 +57,8 @@ The CoGenT dataset contains:
  \newpage
 \section{Full MAC and S-MAC comparison}
 
-In \tableref{tab:results_full}, we present the full comparison table between MAC and S-MAC models.
+In \tableref{tab:results_full} we present the full comparison between MAC and S-MAC models achieved with our implementations of both models.
+In the [Row] column we indicate the results that we have  analyzed and discussed in the experiments section of the main paper.
 
 
 \begin{table}[!h]
@@ -219,11 +219,11 @@ This suggests that they probably reported scores for Condition A on the validati
 
 The TbD (Transparency by Design) network was introduced in~\cite{mascharka2018transparency}.
 TbD is composed of a set of visual reasoning primitives relying on attention transformations, allowing the model to perform reasoning by composing attention masks.
-The authors compare the accuracy of their model tested on CLEVR, alongside with several existing models, including the previously mentioned PG + EE, CNN + GRU + FiLM \& MAC, and show improvement.
+The authors compare the accuracy of their model tested on CLEVR, alongside with several existing models. In particular, they show improvement over the previously mentioned PG + EE, CNN + GRU + FiLM and MAC.
 
 They also compare their performance on CoGenT against PG+EE.
 Nonetheless, the description lacks information about the used sets for training, fine-tuning and testing. 
-They indicate that they used 3k images and 30k questions from the CoGenT Condition B for fine-tuning of their model, but do not mention from which set they took the samples.
+They indicate that they used 3k images and 30k questions from the CoGenT Condition B for fine-tuning of their model, but do not explicitly point the set they used the samples from.
 
 
 \subsection{Our MAC and S-MAC models and methodology}
@@ -235,7 +235,7 @@ When testing the model on CoGenT A, we used the whole validation set.
 Moreover, as we were using the validation sets for testing, we also splitted the training set and used 90\% for training and the remaining 10\% for validation during training.		
 
 \newpage
-\section{Illustration of failures of MAC on CLEVR}
+\section{Illustration of failures of MAC/S-MAC on CLEVR}
 Following the evaluation of MAC on CoGenT-B, we built a tool which helped us visualizing the attention of the model over the question words and the image, and thus provide insight on some cases of failure.
 
 \fig{fig:fail_mac_shape} presents a question where the model is asked about the shape of the leftmost gray cylinder. The model correctly finds it, as we can see from its visual attention map, and appears to refer to it using its color (\textit{gray}), as we can see from the attention of the question words. Yet, it defaults to predicting the shape as \textit{cube}, because it never saw gray cylinders during training, but instead saw gray cubes.

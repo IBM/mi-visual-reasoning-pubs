@@ -13,6 +13,7 @@ Our implementation of both MAC models used PyTorch (v0.4.0)~\cite{paszke2017auto
 We used NVIDIA's GeForce GTX TITAN X GPUs. We followed the implementation details indicated in the supplemental material (Sec. A) of the original paper~\cite{hudson2018compositional}, to ensure a faithful comparison.
 
 \subsection{Transfer Learning}
+\label{sec:transfer_learning}
 
 \begin{table}[t]
 	\caption{CLEVR \& CoGenT accuracies for the MAC \& S-MAC models. The [Training] column indicates wall times and final accuracies on the training set. For fine-tuning, we use 30k samples of the test set, and kept the remainder for testing. The [Fine-tuning] column reports the used sub-set (30k samples) and the final accuracies on this sub-set during training. The [Test] column reports the used set and the obtained test accuracies. If no fine-tuning was done, the whole indicated set was used for testing.}
@@ -81,6 +82,8 @@ We have analyzed cases of failure on CoGenT-B to illustrate this point. Please r
 
 
 \subsection{Illustration of failures of MAC on CLEVR}
+\label{sec:failures}
+
 Following the evaluation of MAC on CoGenT-B, we built a tool which helped us visualizing the attention of the model over the question words and the image, and thus provide insight on some cases of failure.
 
 \fig{fig:fail_mac_shape} presents a question where the model is asked about the shape of the leftmost gray cylinder. The model correctly finds it, as we can see from its visual attention map, and appears to refer to it using its color (\textit{gray}), as we can see from the attention of the question words. Yet, it defaults to predicting the shape as \textit{cube}, because it never saw gray cylinders during training, but instead saw gray cubes.

@@ -1,9 +1,10 @@
 \subsection{Comparison of generalization capabilities with other models}
+\label{sec:comparison}
 
-In this section we present a comparison of our results on generalization capabilities with selected state-of-the-art models.
+In this section, we present a comparison of our results on generalization capabilities with selected state-of-the-art models.
 In particular, we focused on three papers reporting state-of-the-art accuracies, i.e. PG+EE~\cite{johnson2017inferring} FiLM~\cite{perez2017film} and TbD~\cite{mascharka2018transparency}.
 Deeper analysis of the papers revealed that it is likely that different authors used different sets for reporting the scores, which questions the correctness of the comparison.
-We find that the problem results from the fact that ground truth answers for the test sets are not provided along with these sets; thus researchers started to use subsets of the validation set for testing. 
+We find that the problem results from the fact that ground truth answers for the test sets are not provided along with these sets; thus subsets of the validation sets were sometimes used for testing. 
 The results of our research are presented in \tableref{tab:generalization_comparison}, where we shortened the names of the datasets.
 For instance, \textbf{A Test Full} means the use of the whole \textbf{CoGenT Condition A Test set}, whereas \textbf{B Valid 30k} indicates the use of 30.000 samples from \textbf{CoGenT Condition B Validation set}.
 Question marks indicate that the paper does not provide enough information; thus the indicated sets are the ones we assumed were used.
@@ -16,53 +17,53 @@ Question marks indicate that the paper does not provide enough information; thus
 		\cmidrule{2-3} \cmidrule{4-5}\cmidrule{6-7}
 		(source)& CoGenT set & Acc [\%]  & CoGenT set & Acc [\%]  & CoGenT set~ & Acc [\%] \\
 		
-\midrule				
-& \multirow{5}{*}{A Train Full?}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Test Full    &   96.6  \\
-\cmidrule{6-7} 
-PG+EE &   &    &   &    & B Test Full?    &   73.7  \\
-\cmidrule{4-5}\cmidrule{6-7}
-(\cite{johnson2017inferring}) &  &    & \multirow{2}{*}{B Train 30k?}  & \multirow{2}{*}{N/A}     & A Test Full    &   76.1 \\
-\cmidrule{6-7} 
-&   &    &   &    & B Test Full?    &   92.7  \\
+		\midrule				
+		& \multirow{5}{*}{A Train Full?}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Test Full    &   96.6  \\
+		\cmidrule{6-7} 
+		PG+EE &   &    &   &    & B Test Full?    &   73.7  \\
+		\cmidrule{4-5}\cmidrule{6-7}
+		(\cite{johnson2017inferring}) &  &    & \multirow{2}{*}{B Train 30k?}  & \multirow{2}{*}{N/A}     & A Test Full    &   76.1 \\
+		\cmidrule{6-7} 
+		&   &    &   &    & B Test Full?    &   92.7  \\
 		
-\midrule				
-CNN+GRU+FiLM & \multirow{5}{*}{A Train Full?}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Valid Full?    &  98.3   \\
-\cmidrule{6-7} 
-0-Shot &   &    &   &    & B Valid 120k    &   78.8  \\
-\cmidrule{4-5}\cmidrule{6-7}
-(\cite{perez2017film}) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{N/A}     & A Valid Full?    & 81.1  \\
-\cmidrule{6-7} 
-&   &    &   &    & B Valid 120k    &  96.9  \\
+		\midrule				
+		CNN+GRU+FiLM & \multirow{5}{*}{A Train Full?}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Valid Full?    &  98.3   \\
+		\cmidrule{6-7} 
+		0-Shot &   &    &   &    & B Valid 120k    &   78.8  \\
+		\cmidrule{4-5}\cmidrule{6-7}
+		(\cite{perez2017film}) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{N/A}     & A Valid Full?    & 81.1  \\
+		\cmidrule{6-7} 
+		&   &    &   &    & B Valid 120k    &  96.9  \\
 		
-
-\midrule				
-& \multirow{5}{*}{A Train Full?}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A ?    &  98.8   \\
-\cmidrule{6-7} 
-TbD + reg &   &    &   &    & B ?    &  75.4   \\
-\cmidrule{4-5}\cmidrule{6-7}
-(\cite{mascharka2018transparency}) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{N/A}     & A ?    &  96.9 \\
-\cmidrule{6-7} 
-&   &    &   &    & B ?   &  96.3  \\
-
 		
-\midrule				
-& \multirow{5}{*}{A Train 630k}   & \multirow{5}{*}{97.02}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Valid Full    &     96.88 \\
-\cmidrule{6-7} 
-MAC &   &    &   &    & B Valid Full   &  79.54   \\
-\cmidrule{4-5}\cmidrule{6-7}
-(our results) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{97.91}     & A Valid Full    &  92.06 \\
-\cmidrule{6-7} 
-&   &    &   &    & B Valid 120k    &   95.62 \\
+		\midrule				
+		& \multirow{5}{*}{A Train Full?}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A ?    &  98.8   \\
+		\cmidrule{6-7} 
+		TbD + reg &   &    &   &    & B ?    &  75.4   \\
+		\cmidrule{4-5}\cmidrule{6-7}
+		(\cite{mascharka2018transparency}) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{N/A}     & A ?    &  96.9 \\
+		\cmidrule{6-7} 
+		&   &    &   &    & B ?   &  96.3  \\
 		
-\midrule				
-& \multirow{5}{*}{A Train 630k}   & \multirow{5}{*}{96.09}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Valid Full    &     95.91 \\
-\cmidrule{6-7} 
-S-MAC &   &    &   &    & B Valid Full   &  78.71   \\
-\cmidrule{4-5}\cmidrule{6-7}
-(our results) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{96.85}     & A Valid Full    &  91.24 \\
-\cmidrule{6-7} 
-&   &    &   &    & B Valid 120k    &   94.55 \\
-
+		
+		\midrule				
+		& \multirow{5}{*}{A Train 630k}   & \multirow{5}{*}{97.02}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Valid Full    &     96.88 \\
+		\cmidrule{6-7} 
+		MAC &   &    &   &    & B Valid Full   &  79.54   \\
+		\cmidrule{4-5}\cmidrule{6-7}
+		(our results) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{97.91}     & A Valid Full    &  92.06 \\
+		\cmidrule{6-7} 
+		&   &    &   &    & B Valid 120k    &   95.62 \\
+		
+		\midrule				
+		& \multirow{5}{*}{A Train 630k}   & \multirow{5}{*}{96.09}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Valid Full    &     95.91 \\
+		\cmidrule{6-7} 
+		S-MAC &   &    &   &    & B Valid Full   &  78.71   \\
+		\cmidrule{4-5}\cmidrule{6-7}
+		(our results) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{96.85}     & A Valid Full    &  91.24 \\
+		\cmidrule{6-7} 
+		&   &    &   &    & B Valid 120k    &   94.55 \\
+		
 		\bottomrule
 	\end{tabular}
 	\caption{Generalization capabilities of selected state-of-the-art models.}
@@ -75,36 +76,36 @@ The PG+EE (Program Generator and Execution Engine)~\cite{johnson2017inferring} m
 a Program Generator constructing an explicit, graph-like representation of the reasoning process, and an Execution Engine executing that program and producing an answer. 
 Both modules are implemented by neural networks, and were trained using a combination of backpropagation and REINFORCE~\cite{williams1992simple}.
 
-The authors inform that in the first step they trained their models on Condition A, and tested them on both Condition A and Condition B. 
+The authors inform that in the first step they trained their models on Condition A, and tested them on both conditions. 
 Next, they fine-tuned these models on Condition B using 3K images and 30K questions, and again tested on both conditions.
 Sadly, it is not clear which sets they used for fine-tuning (as Condition B lacks a training set).
-Being the authors of the CLEVR and CoGenT datasets, it is possible that they generated specific sets, but did not share them publicly. Additionally, as they own the ground truth answers for the test sets, it is very likely that they reported the accuracies on both Condition A and Condition B test sets.
+Being the authors of the CLEVR and CoGenT datasets, it is possible that they generated specific sets. Additionally, as they own the ground truth answers for the test sets, it is likely that they reported the accuracies on both Condition A and Condition B test sets.
 
 \subsubsection{The FiLM model and training methodology}
 
 Feature-wise Linear Modulation (in short, FiLM)~\cite{perez2017film} is an optional enhancement of a neural network model.
 The idea is to influence the behavior of existing layer(s) by introducing feature-wise affine transformations which are conditioned on the input.
-A model composed of FiLM enhanced by a CNN and a GRU achieved state-of-the-art results on both CLEVR and CoGenT, showing improvement over the PG+EE model.
+A model composed of FiLM layers enhanced by a CNN and a GRU achieved state-of-the-art results on both CLEVR and CoGenT, showing improvement over the PG+EE model.
 
-A problem with the presented comparison is that the authors used different sets for collecting the results. In the paper, they indicate that the accuracy reported for Condition B after fine-tuning was obtained on the CoGenT Condition B Validation set, excluding the 30k samples that were used for fine-tuning.
+Nonetheless, they indicate in the paper that the accuracy reported for Condition B after fine-tuning was obtained on the CoGenT Condition B Validation set, excluding the 30k samples which were used for fine-tuning.
 This suggests that they probably reported scores for Condition A on the validation set.
 
 
 \subsubsection{The TbD model and training methodology}
 
 The TbD (Transparency by Design) network was introduced in~\cite{mascharka2018transparency}.
-TbD is composed out of a set of visual reasoning primitives relying on attention transformations, allowing the model to perform reasoning by composing  attention masks.
-The authors compare the accuracy of their model tested on CLEVR, alongside with several existing models, including the previously mentioned PG + EE, CNN + GRU + FiLM and MAC, and show improvement.
+TbD is composed of a set of visual reasoning primitives relying on attention transformations, allowing the model to perform reasoning by composing attention masks.
+The authors compare the accuracy of their model tested on CLEVR, alongside with several existing models. In particular, they show improvement over the previously mentioned PG + EE, CNN + GRU + FiLM and MAC.
 
-They also compare performance on CoGenT, comparing to PG+EE.
-Nonetheless, the description lacks an important information, which is the used sets for training, fine-tuning and testing. 
-They indicate that they used 3k images and 30k questions from the CoGenT Condition B for fine-tuning of their model, but do not mention from which set they took the samples.
+They also compare their performance on CoGenT against PG+EE.
+Nonetheless, the description lacks information about the used sets for training, fine-tuning and testing. 
+They indicate that they used 3k images and 30k questions from the CoGenT Condition B for fine-tuning of their model, but do not explicitly point the set they used the samples from.
 
 
 \subsubsection{Our MAC and S-MAC models and methodology}
 
-Due to the fact that test set targets for both CLEVR and CoGenT aren't publicly available, we decided to follow the approach proposed in~\cite{perez2017film} and split the CoGenT A Validation set.
-As a result we used 30k samples for fine-tuning and the remaining part for testing.
-When testing the model on CoGenT B, we used the whole validation set.
-In the experiments when we were using Validation B for fine-tuning, we did a similar operation.
-Aside, as we were using validation sets for testing, we also splitted the training set and used 90\% for training and the remaining 10\% for validation during training.
+Due to the fact that the test sets ground truth labels for both CLEVR and CoGenT aren't publicly available, we decided to follow the approach proposed in~\cite{perez2017film} and split the CoGenT B Validation set.
+As a result we used 30k samples for fine-tuning and the remaining ones for testing.
+When testing the model on CoGenT A, we used the whole validation set.
+
+Moreover, as we were using the validation sets for testing, we also splitted the training set and used 90\% for training and the remaining 10\% for validation during training.		
