@@ -63,59 +63,59 @@ In \tableref{tab:results_full}, we present the full comparison table between MAC
 
 \begin{table}[!h]
 	\centering
-	\begin{tabular}{ccccCcCc}
+	\begin{tabular}{ccccCcCcc}
 		\toprule
-		\multirow{2}{*}{Model} & \multicolumn{3}{c}{Training} &  \multicolumn{2}{c}{Fine-tuning} &  \multicolumn{2}{c}{Test} \\
-		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
-		& Dataset                & Time [h:m] & Acc [\%]          & Dataset & Acc [\%]  & Dataset & Acc [\%] \\
+		\multirow{2}{*}{Model} & \multicolumn{3}{c}{Training} &  \multicolumn{2}{c}{Fine-tuning} & \multicolumn{2}{c}{Test} & \multirow{2}{*}{Row} \\
+		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8}
+		& Dataset                & Time [h:m] & Acc [\%]          & Dataset & Acc [\%]  & Dataset & Acc [\%] & \\
 		\midrule
-		\multirow{15}{*}{MAC} & \multirow{10}{*}{CLEVR}  & \multirow{10}{*}{30:52}  & \multirow{10}{*}{96.70} & \multirow{4}{*}{--}   & \multirow{4}{*}{--}  & CLEVR    & 96.17          \\
+		\multirow{15}{*}{MAC} & \multirow{10}{*}{CLEVR}  & \multirow{10}{*}{30:52}  & \multirow{10}{*}{96.70} & \multirow{4}{*}{--}   & \multirow{4}{*}{--}  & CLEVR    & 96.17    & (a)      \\
 		\cmidrule{7-8} 
-		&                        &  &               &     &                                & CoGenT-A    &  96.22   \\
+		&                        &  &               &     &                                & CoGenT-A    &  96.22 &  \\
 		\cmidrule{7-8} 
-		&                        &   &              &     &                               & CoGenT-B   & 96.27  \\
+		&                        &   &              &     &                               & CoGenT-B   & 96.27 & \\
 		
 		\cmidrule{5-6} \cmidrule{7-8} 
-		&                             &                                         &    &   \multirow{2}{*}{CoGenT-A}         &       \multirow{2}{*}{98.06}          & CoGenT-A &  94.60	         \\
+		&                             &                                         &    &   \multirow{2}{*}{CoGenT-A}         &       \multirow{2}{*}{98.06}          & CoGenT-A &  94.60	   &      \\
 		\cmidrule{7-8} 
-		&                             &                                         &       &         &                & CoGenT-B &    93.28       \\
+		&                             &                                         &       &         &                & CoGenT-B &    93.28   &    \\
 		\cmidrule{5-6} \cmidrule{7-8} 
-		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{98.16}          & CoGenT-A &  93.02         \\
+		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{98.16}          & CoGenT-A &  93.02    &     \\
 		\cmidrule{7-8} 
-		&                             &                                         &       &         &                & CoGenT-B &    94.44       \\  
+		&                             &                                         &       &         &                & CoGenT-B &    94.44   &    \\  
 		
 		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
-		& \multirow{5}{*}{CoGenT-A} & \multirow{5}{*}{30:52}     & \multirow{5}{*}{97.02}   &  \multirow{2}{*}{--}  &  \multirow{2}{*}{--}    & CoGenT-A & 96.88         \\
+		& \multirow{5}{*}{CoGenT-A} & \multirow{5}{*}{30:52}     & \multirow{5}{*}{97.02}   &  \multirow{2}{*}{--}  &  \multirow{2}{*}{--}    & CoGenT-A & 96.88    &     \\
 		\cmidrule{7-8} 
-		&                             &                                         &       &         &                & CoGenT-B & 79.54          \\
+		&                             &                                         &       &         &                & CoGenT-B & 79.54     &    \\
 		\cmidrule{5-6} \cmidrule{7-8} 
-		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{97.91}          & CoGenT-A &  92.06         \\
+		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{97.91}          & CoGenT-A &  92.06     &    \\
 		\cmidrule{7-8} 
-		&                             &                                         &       &         &                & CoGenT-B &    95.62       \\
+		&                             &                                         &       &         &                & CoGenT-B &    95.62   &    \\
 		\midrule
-		\multirow{15}{*}{S-MAC} & \multirow{10}{*}{CLEVR}  & \multirow{10}{*}{28:30}  & \multirow{10}{*}{95.82} & \multirow{3}{*}{--}   & \multirow{3}{*}{--}  & CLEVR    & 95.29           \\
+		\multirow{15}{*}{S-MAC} & \multirow{10}{*}{CLEVR}  & \multirow{10}{*}{28:30}  & \multirow{10}{*}{95.82} & \multirow{3}{*}{--}   & \multirow{3}{*}{--}  & CLEVR    & 95.29     & (b)      \\
 		\cmidrule{7-8} 
-		&                        &  &               &     &                                & CoGenT-A    &  95.47   \\
+		&                        &  &               &     &                                & CoGenT-A    &  95.47 & (d)  \\
 		\cmidrule{7-8} 
-		&                        &   &              &     &                               & CoGenT-B   &  95.58  \\		
+		&                        &   &              &     &                               & CoGenT-B   &  95.58 & (e) \\		
 		
 		\cmidrule{5-6} \cmidrule{7-8} 
-		&                             &                                         &    &   \multirow{2}{*}{CoGenT-A}         &       \multirow{2}{*}{97.48}          & CoGenT-A &  93.44         \\
+		&                             &                                         &    &   \multirow{2}{*}{CoGenT-A}         &       \multirow{2}{*}{97.48}          & CoGenT-A &  93.44      &   \\
 		\cmidrule{7-8} 
-		&                             &                                         &       &         &                & CoGenT-B &    92.31       \\
+		&                             &                                         &       &         &                & CoGenT-B &    92.31   &    \\
 		\cmidrule{5-6} \cmidrule{7-8} 
-		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{97.67}          & CoGenT-A &  92.11         \\
+		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{97.67}          & CoGenT-A &  92.11     & (i)    \\
 		\cmidrule{7-8} 
-		&                             &                                         &       &         &                & CoGenT-B &    92.95       \\  		
+		&                             &                                         &       &         &                & CoGenT-B &    92.95  & (j)     \\  		
 		
 		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
-		& \multirow{5}{*}{CoGenT-A}   & \multirow{5}{*}{28:33}   & \multirow{5}{*}{96.09}  &  \multirow{2}{*}{--}  &  \multirow{2}{*}{--}   & CoGenT-A & 95.91          \\
+		& \multirow{5}{*}{CoGenT-A}   & \multirow{5}{*}{28:33}   & \multirow{5}{*}{96.09}  &  \multirow{2}{*}{--}  &  \multirow{2}{*}{--}   & CoGenT-A & 95.91    & (c)      \\
 		\cmidrule{7-8} 
-		&                             &                                         &     &          &                & CogenT-B & 78.71          \\
+		&                             &                                         &     &          &                & CogenT-B & 78.71       & (f)   \\
 		\cmidrule{5-6} \cmidrule{7-8} 
-		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{96.85}          & CoGenT-A &  91.24         \\
+		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{96.85}          & CoGenT-A &  91.24   & (g)      \\
 		\cmidrule{7-8} 
-		&                             &                                         &       &         &                & CoGenT-B &    94.55       \\
+		&                             &                                         &       &         &                & CoGenT-B &    94.55   & (h)    \\
 		\bottomrule
 	\end{tabular}
 	\caption{CLEVR \& CoGenT accuracies for the MAC \& S-MAC models.}
@@ -137,8 +137,8 @@ Question marks indicate that the paper does not provide enough information; thus
 	\centering
 	\begin{tabular}{cCcCcCc}
 		\toprule
-		Model & \multicolumn{2}{c}{Training} &    \multicolumn{2}{c}{Fine-tuning} &   \multicolumn{2}{c}{Test} & \multirow{2}{*}{Row} \\
-		\cmidrule{2-3} \cmidrule{4-5}\cmidrule{6-7}\cmidrule{7-8} 
+		Model & \multicolumn{2}{c}{Training} &    \multicolumn{2}{c}{Fine-tuning} &   \multicolumn{2}{c}{Test} \\		
+		\cmidrule{2-3} \cmidrule{4-5}\cmidrule{6-7}
 		(source)& CoGenT set & Acc [\%]  & CoGenT set & Acc [\%]  & CoGenT set~ & Acc [\%] \\
 		
 \midrule				
@@ -232,7 +232,7 @@ Due to the fact that the test sets ground truth labels for both CLEVR and CoGenT
 As a result we used 30k samples for fine-tuning and the remaining ones for testing.
 When testing the model on CoGenT A, we used the whole validation set.
 
-Moreover, as we were using the validation sets for testing, we also splitted the training set and used 90\% for training and the remaining 10\% for validation during training.
+Moreover, as we were using the validation sets for testing, we also splitted the training set and used 90\% for training and the remaining 10\% for validation during training.		
 
 \newpage
 \section{Illustration of failures of MAC on CLEVR}
