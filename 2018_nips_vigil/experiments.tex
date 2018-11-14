@@ -3,7 +3,7 @@
 Our experiments were intended to study MAC's and S-MAC's generalization as well as transfer learning abilities in different settings. We used CLEVR and CoGenT to address these different aspects.
 The first experiment studied the training time and the capability of the models to generalize on the same type of dataset that it was trained on. This was used mainly as a baseline for the further experiments that were intended to study how well the transfer learning performed in comparison to the baseline results.
 The second experiment studied the capability of the models to succeed in doing transfer learning from domain A to domain B when trained on different combinations of the respective domains. The third experiment was intended to see whether the performance improves if the model could be further trained on a small subset of the dataset from domain B.
-\tableref{results} presents the most important results, focusing on S-MAC in particular; see Appendix B for the entire set.
+\tableref{results} presents the most important results, focusing on S-MAC in particular; see Appendix B for the entire table.
 
 For all experiments, the initial training procedure is as follows: we train the given model  for 20 epochs on 90\% of the training sets of CLEVR \& CoGenT separately. We keep the remaining 10\% for validating the model at every epoch, and use the original validation sets as test sets.
 %given that the ground truth labels for the true test sets are not available.
@@ -75,4 +75,4 @@ Following \cite{johnson2017inferring, perez2017film}), we then fine-tune S-MAC u
 
 To study the pitfalls of fine-tuning, we conducted a final set of experiments, where we fine-tuned a CLEVR-trained S-MAC model on CoGenT-B for 10 epochs, as before. Surprisingly, this operation handicapped the generalization of the model not only on CoGenT-A (row i), but also on CoGenT-B (row j, a 3 point drop compared to row e). This highlights the delicate nature of fine-tuning, with respect to the correlation between the datasets. This warrants further investigations.
 
-We have analyzed cases of failure on CoGenT-B to illustrate this point. Please refer to Appendix D for more details. Besides, Appendix C presents a comparison of results obtained by the S-MAC model and selected state-of-the-art models~\cite{johnson2017inferring,perez2017film,mascharka2018transparency}  on CoGenT.
+We have analyzed cases of failure on CoGenT-B to illustrate this point. Please refer to Appendix D for more details. Aside, Appendix C presents a comparison of results obtained by the S-MAC model and selected state-of-the-art models~\cite{johnson2017inferring,perez2017film,mascharka2018transparency} on CoGenT.
