@@ -12,7 +12,7 @@
 The MAC network~\cite{hudson2018compositional} is a recurrent model that performs sequential reasoning, where each step involves analyzing a part of the question followed by shifting the attention over the image.
 The core of the model is the MAC cell, supported with an input unit that processes the question and image pair, and output unit which produces the answer.
 The input unit  uses an LSTM~\cite{hochreiter1997long} to process the question in a word-by-word manner producing a sequence of \emph{contextual words} and a final \emph{question representation}.
-Besides, the input unit utilizes a pre-trained ResNet~\cite{he2016resnet} followed by two CNN layers to extract a feature map (referred to as \emph{knowledge base}) from the image.
+Additionally, the input unit uses a pre-trained ResNet~\cite{he2016resnet} followed by two CNN layers to extract a feature map (referred to as \emph{knowledge base}) from the image.
 
 	
 The MAC cell consists of a control unit, a read unit and a write unit (\Fig{fig:mac_cell}).
