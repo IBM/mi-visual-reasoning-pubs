@@ -1,6 +1,7 @@
+\pdfoutput=1
 \documentclass{article}
 
-\usepackage[final]{nips_2018}
+\usepackage[final,nonatbib]{nips_2018}
 
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
 
@@ -28,6 +29,9 @@
 \setlength{\columnseprule}{0.5pt}
 \def\columnseprulecolor{\color{Plum}}
 
+% Dir to main directory, which makes the arxiv upload easier :]
+\def\dir{..}
+
 % Simple macros.
 \def\sec#1{Sec.~\ref{sec:#1}}
 \def\Sec#1{Sec.~\ref{sec:#1}}
@@ -48,6 +52,7 @@
 \newcommand{\kb}{\mathbf{k}}
 \newcommand{\mem}{\mathbf{m}}
 \newcommand{\rr}{\mathbf{r}}
+
 
 \title{On transfer learning using a MAC model variant}
 
@@ -88,8 +93,8 @@ We introduce a variant of the MAC model (Hudson and Manning, CVPR 2018) with a s
 \input{conclusion}
 
 %\newpage
-\bibliographystyle{alpha}
-\bibliography{../vigil_bibliography}
+\bibliographystyle{abbrv}
+\bibliography{\dir/vigil_bibliography}
 
 \newpage
 \appendix
