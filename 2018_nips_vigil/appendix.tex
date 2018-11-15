@@ -58,7 +58,7 @@ The CoGenT dataset contains:
 \section{Full MAC and S-MAC comparison}
 
 In \tableref{tab:results_full} we present the full comparison between MAC and S-MAC models achieved with our implementations of both models.
-In the [Row] column we indicate the results that we have  analyzed and discussed in the experiments section of the main paper.
+In the [Row] column we indicate the results that we have analyzed and discussed in the experiments section of the main paper.
 
 
 \begin{table}[!h]
@@ -126,8 +126,8 @@ In the [Row] column we indicate the results that we have  analyzed and discussed
 \section{Comparison of the generalization capabilities on CoGenT}
 
 In this section, we present a comparison of our results on generalization capabilities with selected state-of-the-art models.
-In particular, we focused on three papers reporting state-of-the-art accuracies, i.e. PG+EE~\cite{johnson2017inferring} FiLM~\cite{perez2017film} and TbD~\cite{mascharka2018transparency}.
-Deeper analysis of the papers revealed that it is likely that different authors used different sets for reporting the scores, which questions the correctness of the comparison.
+In particular, we focused on three papers reporting state-of-the-art accuracies on CoGenT. These papers introduce the following models: PG+EE~\cite{johnson2017inferring}, FiLM~\cite{perez2017film} and TbD~\cite{mascharka2018transparency}.
+Deeper analysis of these papers revealed that it is likely that different authors used different sets for reporting the scores, which questions the correctness of the comparison.
 We find that the problem results from the fact that ground truth answers for the test sets are not provided along with these sets; thus subsets of the validation sets were sometimes used for testing. 
 The results of our research are presented in \tableref{tab:generalization_comparison}, where we shortened the names of the datasets.
 For instance, \textbf{A Test Full} means the use of the whole \textbf{CoGenT Condition A Test set}, whereas \textbf{B Valid 30k} indicates the use of 30.000 samples from \textbf{CoGenT Condition B Validation set}.
@@ -148,7 +148,7 @@ PG+EE &   &    &   &    & B Test Full?    &   73.7  \\
 \cmidrule{4-5}\cmidrule{6-7}
 (\cite{johnson2017inferring}) &  &    & \multirow{2}{*}{B Train 30k?}  & \multirow{2}{*}{N/A}     & A Test Full    &   76.1 \\
 \cmidrule{6-7} 
-&   &    &   &    & B Test Full?    &   92.7  \\
+&   &    &   &    & B Test Full    &   92.7  \\
 		
 \midrule				
 CNN+GRU+FiLM & \multirow{5}{*}{A Train Full?}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Valid Full?    &  98.3   \\
@@ -202,24 +202,24 @@ Both modules are implemented by neural networks, and were trained using a combin
 
 The authors inform that in the first step they trained their models on Condition A, and tested them on both conditions. 
 Next, they fine-tuned these models on Condition B using 3K images and 30K questions, and again tested on both conditions.
-Sadly, it is not clear which sets they used for fine-tuning (as Condition B lacks a training set).
-Being the authors of the CLEVR and CoGenT datasets, it is possible that they generated specific sets. Additionally, as they own the ground truth answers for the test sets, it is likely that they reported the accuracies on both Condition A and Condition B test sets.
++We could not ascertain which sets they used for fine-tuning (as Condition B lacks a training set).
+Being the authors of the CLEVR and CoGenT datasets, it is possible that they generated specific sets. Additionally, as they own the ground truth answers for the test sets, it can be assumed that they reported the accuracies on both Condition A and Condition B test sets, although it is not indicated in the paper.
 
 \subsection{The FiLM model and training methodology}
 
 Feature-wise Linear Modulation (in short, FiLM)~\cite{perez2017film} is an optional enhancement of a neural network model.
 The idea is to influence the behavior of existing layer(s) by introducing feature-wise affine transformations which are conditioned on the input.
-A model composed of FiLM layers enhanced by a CNN and a GRU achieved state-of-the-art results on both CLEVR and CoGenT, showing improvement over the PG+EE model.
+A model composed of CNNs and a GRU with FiLM-enhanced layers achieved state-of-the-art results on both CLEVR and CoGenT, showing improvement over the PG+EE model.
 
-Nonetheless, they indicate in the paper that the accuracy reported for Condition B after fine-tuning was obtained on the CoGenT Condition B Validation set, excluding the 30k samples which were used for fine-tuning.
-This suggests that they probably reported scores for Condition A on the validation set.
+Nonetheless, the authors indicate in the paper that the accuracy reported for Condition B after fine-tuning was obtained on the CoGenT Condition B Validation set, excluding the 30k samples which were used for fine-tuning.
+This suggests that they probably reported scores for Condition A on the validation set, not the test set.
 
 
 \subsection{The TbD model and training methodology}
 
 The TbD (Transparency by Design) network was introduced in~\cite{mascharka2018transparency}.
 TbD is composed of a set of visual reasoning primitives relying on attention transformations, allowing the model to perform reasoning by composing attention masks.
-The authors compare the accuracy of their model tested on CLEVR, alongside with several existing models. In particular, they show improvement over the previously mentioned PG + EE, CNN + GRU + FiLM and MAC.
+The authors compare the accuracy of their model tested on CLEVR, alongside with several existing models. In particular, they show improvement over the previously mentioned PG + EE, CNN + GRU + FiLM and MAC models.
 
 They also compare their performance on CoGenT against PG+EE.
 Nonetheless, the description lacks information about the used sets for training, fine-tuning and testing. 
@@ -232,7 +232,8 @@ Due to the fact that the test sets ground truth labels for both CLEVR and CoGenT
 As a result we used 30k samples for fine-tuning and the remaining ones for testing.
 When testing the model on CoGenT A, we used the whole validation set.
 
-Moreover, as we were using the validation sets for testing, we also splitted the training set and used 90\% for training and the remaining 10\% for validation during training.		
+Moreover, as we were using the validation sets for testing, we also splitted the training set and used 90\% for training and the remaining 10\% for validation during training.
++We used the same methodology for all the results presented in this paper, i.e. Table 2 in the main paper, \tableref{tab:generalization_comparison} and \tableref{tab:results_full} here.
 
 \newpage
 \section{Illustration of failures of MAC/S-MAC on CLEVR}

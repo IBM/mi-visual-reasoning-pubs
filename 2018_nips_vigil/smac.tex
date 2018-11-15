@@ -34,16 +34,17 @@ as-is throughout the reasoning steps.
 %the knowledge base. Having reduced the number of linear projections on the knowledge base to one, we can, with a careful reorganization, compute it prior to the reasoning steps. Thus, we can work purely
 %with this \emph{projected} knowledge base. 
 
+\noindent\textit{Notation.}
+%Let $q$ denote the global context of the question
+%and let $\cw_s$ denote the contextual embedding of a word $s$ in the question.
+For each knowledge base $\kb$ of dimension $H \times W \times d$, let $\kb_{hw}$ be the $d$-dimensional vector indexed by 
+$h \in \{1,2,\dots,H\}$ and $w \in \{1,2,\dots, W\}$.
+Let $i$ denote the index (position) $i$ of the reasoning step. 
+
 In the description below, the original MAC cell equations are shown on the \emph{left}
 while our simplified equations are shown (in color) on the {\color{Plum} \emph{right}}.
 The equation numbering is the same as in~\cite{hudson2018compositional}.
 
-\noindent\textit{Notation.}
-%Let $q$ denote the global context of the question
-%and let $\cw_s$ denote the contextual embedding of a word $s$ in the question.
-For each knowledge base $\kb$, a tensor of dimension $H \times W \times d$, let $\kb_{hw}$ be the $d$-dimensional vector indexed by 
-$h \in \{1,2,\dots,H\}$ and $w \in \{1,2,\dots, W\}$.
-Let $i$ denote the index (position) $i$ of the reasoning step. 
 
 \noindent\textbf{Control unit:} 
 For both models, in the control unit, the question $q$ is first transformed in each step of 
@@ -69,7 +70,7 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
     \end{align*}}
 \end{multicols}
 
-\newpage
+\vskip -0.6cm
 
 \noindent\textbf{Read and write units:}
 \begin{multicols}{2}
@@ -91,7 +92,7 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 	&ra_{ihw} = W_{ra}^{[1 \times d]} (\cc_i \odot I'_{ihw})  \tag{r3.1}\\
 	&rv_{ihw} = \textrm{softmax}(ra_{ihw}) \tag{r3.2}\\
 	&\rr_i = \sum_s rv_{ihw} \, \kb_{hw}  \tag{r3.3}\\
-	&\mem_i = W_{rm}^{[d \times d]} \rr_i + b_{rm}^{[d]} \tag{w1}
+	&\mem_i = W_{rm}^{[d \times 2d]} \rr_i + b_{rm}^{[d]} \tag{w1}
 	\end{align*}}
 \end{multicols}
 
