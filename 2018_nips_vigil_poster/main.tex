@@ -110,9 +110,9 @@
   	{\bf\textsc{On transfer learning using a MAC model variant}\vspace{0.2em}}
   % Authors
   {
-	\textbf{Alexis Asseman, Tomasz Kornuta, Ahmet S. Ozcan}\\
-	IBM Research AI, Almaden Research Center, San Jose, USA\\
-	\texttt{alexis.asseman@ibm.com}, \texttt{\{tkornut, asozcan\}@us.ibm.com}\\
+	\textbf{Vincent Marois, T.S. Jayram, Vincent Albouy, Tomasz Kornuta, \\Younes Bouhadjar, Ahmet S. Ozcan}\\
+
+	\texttt{\{vmarois,jayram,tkornut,byounes,asozcan\}@us.ibm.com},{\{vincent.albouy\}@ibm.com}\\
   }
   { % Left Eye Catcher
 \includegraphics[width=4cm]{../img/arc_logo.png}
@@ -127,131 +127,37 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \headerbox{Abstract}{name=abstract,column=0,row=0}{
-	Most advancements in terms of \textbf{time-series predictions of physical systems} is based on simulated physics.
-	Thus we are proposing a \textbf{new dataset} based on videos of a real-world, \textbf{chaotic double pendulum}.
-	We show baseline performance using an LSTM model, demonstrating the possibility of training directly on a real physical system.
+We introduce a variant of the MAC model (Hudson and Manning, ICLR 2018) with a simplified set of equations that achieves comparable accuracy, while training faster. We evaluate both models on CLEVR and CoGenT, and show that, transfer learning with fine-tuning results in a 15 point increase in accuracy, matching the state of the art. Finally, in contrast, we demonstrate that improper fine-tuning can actually reduce a model's accuracy as well.
 } %headerbox
 
-\headerbox{The Double Pendulum}{name=double-pendulum, column=0, below=abstract}{
+\headerbox{The MAC Model}{name=double-pendulum, column=0, below=abstract}{
 	\begin{figure}[H]
 		\centering
 		\subfloat[]{{
-				\includegraphics[width=0.27\textwidth]{../img/pendulum.jpg}
+				\includegraphics[width=0.60\textwidth]{../img/mac_cell.pdf}
 				\label{subfig:pendulum_picture}
 		}}
-		\quad\quad\quad
-		\subfloat[]{{
-				\def\svgwidth{0.3\textwidth}
-				\footnotesize
-				\input{../img/pendulum_dimensions.pdf_tex}
-				\label{subfig:pendulum_dimensions}
-		}}
-		\caption{A picture \ref{subfig:pendulum_picture} and the dimensions \ref{subfig:pendulum_dimensions} of the double pendulum.}
+	
+		\caption{The MAC cell}
 		\label{fig:pendulum}
 	\end{figure}
 	
-	The double pendulum is a \textbf{chaotic}\cite{levien1993} mechanical device. Even though it can be simulated, we chose to use a real one to create the Double Pendulum Chaotic Dataset. The behavior of the pendulum is influenced by environmental noise, i.e. air motion, coupling with the table, imperfections of the device, etc.
+The MAC network is a recurrent model that performs sequential reasoning,  where each step involves analyzing a part of the question followed by shifting the attention over the image. The core of the model is the MAC cell, supported with an input unit that processes the question and image pair, and output unit which produces the answer.  The input unit uses an LSTM to process the question in a word-by-word manner producing a sequence of contextual words and a final question representation. Besides, the input unit utilizes a pre-trained ResNet followed by two CNN layers to extract a feature map (referred to as knowledge base) from the image.
 }
 
-\headerbox{Data Acquisition}{name=data acquisition, column=0, below=double-pendulum}{
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.8\textwidth]{../img/camera_set_up.pdf}
-		\caption{Camera set-up.}
-		\label{fig:camera_set_up}
-	\end{figure}
-	\begin{table}[H]
-		\centering
-		\caption{Summary of the video settings}
-		\begin{tabular}{ll}
-			\toprule
-			\multicolumn{2}{c}{Camera settings}\\
-			\cmidrule{1-2}
-			Resolution & 480x480 pixels\\
-			Capture frame-rate & 400 Hz\\
-			Frame exposure time & 90 \textmu s\\
-			\cmidrule{1-2}
-			\multicolumn{2}{c}{Data properties}\\
-			\cmidrule{1-2}
-			Sequence capture duration & $\approx$ 40 s\\
-			Number of frames per sequence & $\approx$ 17500\\
-			Number of sequences & 21\\
-			\bottomrule
-		\end{tabular}
-		\label{tab:data_properties}
-	\end{table}
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.25\textwidth]{../img/0100.png}
-		\caption{A video frame.}
-		\label{fig:video_frame}
-	\end{figure}
+\headerbox{Simplified Mac Model}{name=data acquisition, column=0, below=double-pendulum}{
+
 }
 
-\headerbox{The Dataset}{name=dataset, column=1}{
-	The dataset is available as:
-	\vspace{-4pt}
-	\begin{itemize}
-		\itemsep0em 
-		\item Full length, high quality videos
-		\item Corresponding CSV files of the positions through time
-	\end{itemize}
-	And the ones above, precut as a train/test dataset, such that:
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.7\textwidth]{../img/dataset_split_2.pdf}
-		\caption{Split of the dataset (To scale).}
-		\label{fig:dataset_split}
-	\end{figure}
-	\vspace{-4pt}
-	Where the testing data is cut in sequences of \textbf{4 input frames and 200 prediction ground-truth frames}.
+\headerbox{Transfer Learning - Experiments}{name=dataset, column=1}{
 }
 
-\headerbox{ML baseline with LSTM}{name=baseline, column=1, below=dataset}{
+\headerbox{MAC failures examples on CLEVR}{name=baseline, column=1, below=dataset}{
 	{
-	\begin{minipage}[H]{0.4\textwidth}
-		\begin{figure}[H]
-			\centering
-			\caption{Diagram of the LSTM\cite{lstm-paper}-based recurrent neural network used. It takes one time-step as input and predicts the next one.}
-			\label{fig:lstm_diag}
-			\small
-			\def\svgwidth{4cm}
-			\input{../img/lstm.pdf_tex}
-		\end{figure}
-	\end{minipage}
-	\hfill
-	\begin{minipage}[H]{0.4\textwidth}
-		\begin{figure}[H]
-			\centering
-			\scalebox{0.72}{\input{../plots/lstm_sample_good.pgf}}
-			\centering
-			\caption{Example of a predicted sequence.}
-			\label{fig:lstm_result_good}
-		\end{figure}
-	\end{minipage}
-	\hfill
 	}
 
 		{
-		\begin{minipage}[H]{0.4\textwidth}
-			\begin{figure}[H]
-				\centering
-				\caption{Training convergence, using Adam\cite{adam-paper} as optimizer.}
-				\scalebox{0.72}{\input{../plots/lstm_loss.pgf}}
-				\label{fig:lstm_loss}
-			\end{figure}
-		\end{minipage}
-		\hfill
-		\begin{minipage}[H]{0.4\textwidth}
-			\begin{figure}[H]
-				\centering
-   				\scalebox{0.72}{\input{../plots/lstm_se.pgf}}
-				\label{fig:lstm_se}
-				\centering
-				\caption{Square error per time-step, averaged over all the test samples. $RMSE = 0.30$}
-			\end{figure}
-		\end{minipage}
-		\hfill
+
 	}
 }
 
