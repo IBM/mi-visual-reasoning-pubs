@@ -15,6 +15,9 @@
 \usepackage{pstricks}
 \usepackage{tikz}
 \usepackage{pgf}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{multicol}
 \usepackage{placeins} % For \FloatBarrier
 \usetikzlibrary{positioning}
 \usepackage{environ}
@@ -44,6 +47,14 @@
 \setlength{\columnsep}{1.5em} % Slightly increase the space between columns
 \setlength{\columnseprule}{0mm} % No horizontal rule between columns
 \usepackage{multirow}
+
+% For gap between cmidrules.
+\usepackage{array}
+\newcolumntype{C}{@{\extracolsep{0.1cm}}c@{\extracolsep{0pt}}}%
+
+\setlength{\columnsep}{1cm}
+\setlength{\columnseprule}{0.5pt}
+\def\columnseprulecolor{\color{Plum}}
 
 
 \newcommand{\compresslist}{ % Define a command to reduce spacing within itemize/enumerate environments, this is used right after \begin{itemize} or \begin{enumerate}
@@ -146,10 +157,81 @@ The MAC network is a recurrent model that performs sequential reasoning,  where 
 }
 
 \headerbox{Simplified Mac Model}{name=data acquisition, column=0, below=double-pendulum}{
-
+	
+	Our proposed modification to the MAC network is based on two heuristic simplifications of the
+	MAC cell. First, we observe that, taking the MAC cell equations as a whole, consecutive linear
+	layers (with no activation in-between) can be combined as one linear layer. Next, we assume that
+	dimension-preserving linear layers are invertible so as to avoid information loss. Applying this
+	principle to the equations, with a careful reorganization, we can apply a single linear layer to the
+	knowledge base prior to all the reasoning steps and work with this projected knowledge base as-is
+	throughout the reasoning steps.
+	
+	
+	
+	
+	
+	\begin{table}[H]
+		\centering
+		\caption{Comparing the number of position-independent parameters between MAC \& S-MAC cells.}
+		\begin{tabular}{llll}
+			\toprule
+			Model        & Read Unit               & Write Unit &  Control Unit         \\
+			\midrule
+			MAC   &  787,969 &  524,800        &    525,313    \\
+			%\midrule
+			simplified MAC & 263,168  & 262,656       &    263,168 \\
+			\midrule
+			Reduction by [\%]  & 67\%  &   50\%       &      50\%  \\
+			\bottomrule
+		\end{tabular}
+		\label{tab:data_properties}
+	\end{table}
 }
 
 \headerbox{Transfer Learning - Experiments}{name=dataset, column=1}{
+	\begin{table}[H]
+	\centering
+	\caption{Comparing the number of position-independent parameters between MAC \& S-MAC cells.}
+	\begin{tabular}{lllllllll}
+		\toprule
+		\multirow{2}{*}{Model} & \multicolumn{3}{c}{Training} &  \multicolumn{2}{c}{Fine-tuning} & \multicolumn{2}{c}{Test} & \multirow{2}{*}{Row} \\
+		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
+		& Dataset                & Time [h:m] & Acc [\%]          & Dataset & Acc [\%]  & Dataset & Acc [\%] & \\
+		\midrule
+		MAC & CLEVR  & 30:52  & 96.70 & --   & --  & CLEVR    & 96.17         & (a) \\
+		\cmidrule{1-8}
+		\cmidrule{1-8}
+		
+		\multirow{13}{*}{S-MAC} & CLEVR  & 28:30  & 95.82 & --   & --  & CLEVR    & 95.29         & (b)  \\
+		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
+		
+		& CoGenT-A  & 28:33   & 96.09 &  --  &  --  & CoGenT-A & 95.91        & (c)  \\
+		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
+		
+		
+		& \multirow{2}{*}{CLEVR}  & \multirow{2}{*}{28:30}  & \multirow{2}{*}{95.82} & \multirow{2}{*}{--}   & \multirow{2}{*}{--}  &   CoGenT-A    &  95.47  & (d) \\
+		\cmidrule{7-8} 
+		&                        &   &              &     &                               & CoGenT-B   &  95.58  & (e)\\		
+		
+		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
+		& \multirow{4}{*}{CoGenT-A}   & \multirow{4}{*}{28:33}   & \multirow{4}{*}{96.09}  &  \multirow{1}{*}{--}  &  \multirow{1}{*}{--}   & CogenT-B & 78.71        & (f)  \\
+		\cmidrule{5-6} \cmidrule{7-8} 
+		&                             &                                         &    &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{96.85}          & CoGenT-A &  91.24        & (g) \\
+		\cmidrule{7-8} 
+		&                             &                                         &       &         &                & CoGenT-B &    94.55     & (h)  \\
+		
+		\cmidrule{2-4} \cmidrule{5-6} \cmidrule{7-8} 
+		& \multirow{2}{*}{CLEVR}  & \multirow{2}{*}{28:30}  & \multirow{2}{*}{95.82} &   \multirow{2}{*}{CoGenT-B}         &       \multirow{2}{*}{97.67}          & CoGenT-A &  92.11       & (i) \\
+		\cmidrule{7-8} 
+		&                             &                                         &       &         &                & CoGenT-B &    92.95    & (j)  \\  		
+		
+		
+		\bottomrule
+		
+	
+	\end{tabular}
+	\label{tab:data_properties}
+\end{table}
 }
 
 \headerbox{MAC failures examples on CLEVR}{name=baseline, column=1, below=dataset}{
