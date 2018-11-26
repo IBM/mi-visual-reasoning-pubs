@@ -47,6 +47,7 @@
 \setlength{\columnsep}{1.5em} % Slightly increase the space between columns
 \setlength{\columnseprule}{0mm} % No horizontal rule between columns
 \usepackage{multirow}
+\usepackage{graphicx}
 
 % For gap between cmidrules.
 \usepackage{array}
@@ -191,6 +192,7 @@ The MAC network is a recurrent model that performs sequential reasoning,  where 
 \headerbox{Transfer Learning - Experiments}{name=dataset, column=1}{
 	\begin{table}[H]
 	\centering
+	\scalebox{0.8}{
 	\caption{Comparing the number of position-independent parameters between MAC \& S-MAC cells.}
 	\begin{tabular}{lllllllll}
 		\toprule
@@ -229,7 +231,7 @@ The MAC network is a recurrent model that performs sequential reasoning,  where 
 		\bottomrule
 		
 	
-	\end{tabular}
+	\end{tabular}}
 	\label{tab:data_properties}
 \end{table}
 }
