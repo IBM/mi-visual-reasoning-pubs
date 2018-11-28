@@ -154,11 +154,9 @@
 \headerbox{The MAC Model ~\cite{hudson2018compositional}}{name=double-pendulum, column=0, below=abstract}{
 	\begin{figure}[H]
 		\centering
-		\subfloat[]{{
-				\includegraphics[width=0.35\textwidth]{../img/mac_cell.pdf}
-				\label{subfig:pendulum_picture}
-		}}
 	
+		\includegraphics[width=0.35\textwidth]{../img/mac_cell.pdf}
+		\label{subfig:pendulum_picture}
 		\caption{The MAC cell ~\cite{hudson2018compositional}}
 		\label{fig:pendulum}
 	\end{figure}
@@ -241,6 +239,13 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 \end{multicols}
 
 
+
+\begin{description}
+	
+	\item[$\bullet$] Simplifications results in a 10\% speed up in training time.
+	
+\end{description}
+
 	
 \begin{table}[H]
 	\centering
@@ -259,16 +264,31 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 	\label{tab:data_properties}
 \end{table}
 
-
-
-
 }
 
-\headerbox{Transfer Learning - Experiments}{name=dataset, column=1}{
 
-Along with CLEVR, the authors~\cite{johnson2017clevr} introduced  CLEVR-CoGenT (Compositional Generalization Test, CoGenT in short), with a goal of evaluating how well the models can generalize, learn relations and compositional concepts.
-This dataset is generated in the same way as CLEVR, with two conditions, A and B. as shown in Table 2.
-	
+\headerbox{Datasets - CLEVR and CoGenT}{name=dataset, column=1}{
+The CLEVR task:
+		\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.33\textwidth]{../img/teaser.jpg}
+	    \end{figure}
+    
+    
+    \begin{description}
+    	\centering
+    	\item[$\cdot$] \textit{How many objects are either small cylinders or red things?}
+    	
+    \end{description}
+
+
+   \begin{description}
+   	\item[$\bullet$]Along with CLEVR, the authors~\cite{johnson2017clevr} introduced  CLEVR-CoGenT 
+   	\item[$\bullet$] The goal is to evaluate how well the models can generalize, learn relations and compositional concepts.
+   	\item[$\bullet$] This dataset is generated in the same way as CLEVR, with two conditions, A and B. as shown in Table 2.
+
+   \end{description}
+
 	\begin{table}[H]
 		\centering
 		\begin{tabular}{llll}
@@ -284,16 +304,17 @@ This dataset is generated in the same way as CLEVR, with two conditions, A and B
 		\label{tab:cogent_conditions}
 	\end{table}
 	
-	
-	
-	
-	
-	
-	
+}
+
+
+
+
+\headerbox{Transfer Learning - Experiments}{name=transfer, column=1, below=dataset}{
+
+CLEVR \& CoGenT accuracies for the MAC \& S-MAC models:
 	\begin{table}[H]
 	\centering
 	\scalebox{0.9}{
-	\caption{CLEVR \& CoGenT accuracies for the MAC \& S-MAC models. The [Training] column indicates wall times and final accuracies on the training set. For fine-tuning, we use 30k samples of the test set, and kept the remainder for testing. The [Fine-tuning] column reports the used sub-set (30k samples) and the final accuracies on this sub-set during training. The [Test] column reports the used set and the obtained test accuracies. If no fine-tuning was done, the whole indicated set was used for testing.}
 	\begin{tabular}{lllllllll}
 		\toprule
 		\multirow{2}{*}{Model} & \multicolumn{3}{c}{Training} &  \multicolumn{2}{c}{Fine-tuning} & \multicolumn{2}{c}{Test} & \multirow{2}{*}{Row} \\
@@ -334,9 +355,19 @@ This dataset is generated in the same way as CLEVR, with two conditions, A and B
 	\end{tabular}}
 	\label{tab:data_properties}
 \end{table}
+
+
+\begin{description}
+	\item[$\bullet$] The [Training] column indicates wall times and final accuracies on the training set.
+	\item[$\bullet$] The [Fine-tuning] column reports the used sub-set (30k samples) and the final accuracies on this sub-set during training
+	\item[$\bullet$] Experiments can be reproduced by following the \textbf{mi-prometheus}  documentation
+\end{description}
+
 }
 
-\headerbox{MAC limitations on CLEVR}{name=baseline, column=1, below=dataset}{
+
+
+\headerbox{MAC drawbacks on CLEVR}{name=baseline, column=1, below=transfer}{
 	
 	
 	
@@ -346,22 +377,15 @@ This dataset is generated in the same way as CLEVR, with two conditions, A and B
 			\includegraphics[width=0.6\textwidth]{../img/fail_mac_cogent_b_shape.png}
 			\label{subfig:pendulum_picture}
 	}}
-	
-	\caption{The question reads as: \textit{There is a large gray thing that is on the right side of the big gray cylinder left of the large ball that is on the right side if the cyan rubber sphere; what is its shape?}}
 	\label{fig:fail_mac_shape}
-\end{figure}
-	\begin{figure}[H]
-	\centering
-	\subfloat[]{{
-			\includegraphics[width=0.6\textwidth]{../img/fail_mac_cogent_b_color.png}
-			\label{subfig:pendulum_picture}
-	}}
 	
-	\caption{The question reads as: \textit{There is a tiny block behind the rubber thing that is right if the small brown rubber cylinder that is in front of the yellow metal cylinder; what color is it?}}
-    \label{fig:fail_mac_color}
 \end{figure}
 
+\begin{description}
+	\item[$\bullet$] The question reads as: \textit{There is a large gray thing that is on the right side of the big gray cylinder left of the large ball that is on the right side if the cyan rubber sphere; what is its shape? Predicted answer: Cylinder - Truth: Cube}
 	
+\end{description}
+
 
 
 }
