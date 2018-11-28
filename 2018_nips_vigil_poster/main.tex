@@ -151,7 +151,7 @@
 
 } %headerbox
 
-\headerbox{The MAC Model}{name=double-pendulum, column=0, below=abstract}{
+\headerbox{The MAC Model ~\cite{hudson2018compositional}}{name=double-pendulum, column=0, below=abstract}{
 	\begin{figure}[H]
 		\centering
 		\subfloat[]{{
@@ -159,7 +159,7 @@
 				\label{subfig:pendulum_picture}
 		}}
 	
-		\caption{The MAC cell}
+		\caption{The MAC cell ~\cite{hudson2018compositional}}
 		\label{fig:pendulum}
 	\end{figure}
 
@@ -193,6 +193,7 @@
 For both models, the question $q$ is first transformed in each step of 
 the reasoning using a \emph{position-aware}
 linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
+
 
 \begin{multicols}{2}
 	\noindent
@@ -240,7 +241,6 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 \end{multicols}
 
 
-
 	
 \begin{table}[H]
 	\centering
@@ -266,7 +266,7 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 
 \headerbox{Transfer Learning - Experiments}{name=dataset, column=1}{
 
-Along with CLEVR, the authors~\cite{hudson2018compositional} introduced  CLEVR-CoGenT (Compositional Generalization Test, CoGenT in short), with a goal of evaluating how well the models can generalize, learn relations and compositional concepts.
+Along with CLEVR, the authors~\cite{johnson2017clevr} introduced  CLEVR-CoGenT (Compositional Generalization Test, CoGenT in short), with a goal of evaluating how well the models can generalize, learn relations and compositional concepts.
 This dataset is generated in the same way as CLEVR, with two conditions, A and B. as shown in Table 2.
 	
 	\begin{table}[H]
@@ -367,8 +367,13 @@ This dataset is generated in the same way as CLEVR, with two conditions, A and B
 }
 
 \headerbox{References}{name=references, column=1, below=baseline}{
-\bibliographystyle{alpha}
-\bibliography{vigil_bibliograph}
+	\small
+	\vspace{-8pt}
+	\renewcommand{\refname}{}
+	\bibliographystyle{alpha}
+	\bibliography{vigil_bibliography}
+	\normalsize
+	\textsl{}
 }
 
 \end{poster}
