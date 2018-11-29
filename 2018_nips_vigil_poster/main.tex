@@ -6,46 +6,14 @@
 \usepackage[T1]{fontenc}
 
 \usepackage{graphicx} % Required for including images
-\usepackage{subfig}
 \usepackage{booktabs} % for professional tables
 \usepackage{floatrow}
-\usepackage{float}
-
-\usepackage{textgreek}
-\usepackage{pstricks}
-\usepackage{tikz}
-\usepackage{pgf}
-\usepackage{multirow}
-\usepackage{wrapfig}
-\usepackage{multicol}
-\usepackage{placeins} % For \FloatBarrier
-\usetikzlibrary{positioning}
-\usepackage{environ}
-\makeatletter
-\newsavebox{\measure@tikzpicture}
-\NewEnviron{scaletikzpicturetowidth}[1]{%
-	\def\tikz@width{#1}%
-	\def\tikzscale{1}\begin{lrbox}{\measure@tikzpicture}%
-		\BODY
-	\end{lrbox}%
-	\pgfmathparse{#1/\wd\measure@tikzpicture}%
-	\edef\tikzscale{\pgfmathresult}%
-	\BODY
-}
-\makeatother
-
 \usepackage{amsmath} % For typesetting math
-\usepackage{amssymb} % Adds new symbols to be used in math mode
-
-\usepackage{booktabs} % Top and bottom rules for tables
-\usepackage{enumitem} % Used to reduce itemize/enumerate spacing
-%\usepackage{palatino} % Use the Palatino font
-\renewcommand{\familydefault}{\sfdefault}
 \usepackage[font=small,labelfont=bf]{caption} % Required for specifying captions to tables and figures
 
 \usepackage{multicol} % Required for multiple columns
-\setlength{\columnsep}{1.5em} % Slightly increase the space between columns
-\setlength{\columnseprule}{0mm} % No horizontal rule between columns
+\setlength{\columnsep}{1cm}
+\setlength{\columnseprule}{0.5pt}
 \usepackage{multirow}
 \usepackage{graphicx}
 
@@ -53,32 +21,29 @@
 \usepackage{array}
 \newcolumntype{C}{@{\extracolsep{0.1cm}}c@{\extracolsep{0pt}}}%
 
-\setlength{\columnsep}{1cm}
-\setlength{\columnseprule}{0.5pt}
-
-
 \newcommand{\compresslist}{ % Define a command to reduce spacing within itemize/enumerate environments, this is used right after \begin{itemize} or \begin{enumerate}
 \setlength{\itemsep}{1pt}
 \setlength{\parskip}{0pt}
 \setlength{\parsep}{0pt}
 }
 
+% Defines the color used for content box headers
+\definecolor{lightblue}{cmyk}{0.83,0.24,0,0.16}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % macros for the equations
 \newcommand{\cw}{\mathbf{cw}}
 \newcommand{\cc}{\mathbf{c}}
 \newcommand{\kb}{\mathbf{k}}
 \newcommand{\mem}{\mathbf{m}}
 \newcommand{\rr}{\mathbf{r}}
-
-% Defines the color used for content box headers
-\definecolor{lightblue}{cmyk}{0.83,0.24,0,0.16}
-%\definecolor{lightblue}{rgb}{0.145,0.6666,1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Begin of Document
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Pojedyncze spacje po kropce.
+
 \frenchspacing
 
 \begin{document}
