@@ -36,8 +36,6 @@
 \newcommand{\kb}{\mathbf{k}}
 \newcommand{\mem}{\mathbf{m}}
 \newcommand{\rr}{\mathbf{r}}
-
-\newcommand{\vm}[1]{\textcolor{red}{VM: #1}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -133,8 +131,8 @@
 	
 	\begin{itemize}
 		\compresslist
-	    \item[$\bullet$] Taking the MAC cell equations as a whole, consecutive linear layers (with no activation in-between) can be combined as one linear layer.
-		\item[$\bullet$] We assume that dimension-preserving linear layers are invertible so as to avoid information loss. \vm{To reformulate?}
+	    \item[$\bullet$] Taking the MAC cell equations as a whole, consecutive linear layers (with no non-linear activation in-between) can be combined as one linear layer.
+		\item[$\bullet$] We assume that dimension-preserving linear layers are invertible so as to avoid information loss.
     \end{itemize}
 
 	This allows, with a careful reorganization, to apply a single linear layer to the \textit{knowledge base} (feature map extracted from the image) prior to all the reasoning steps and work with this projection throughout the reasoning steps.\\
