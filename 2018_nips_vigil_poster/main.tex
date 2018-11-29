@@ -55,7 +55,6 @@
 
 \setlength{\columnsep}{1cm}
 \setlength{\columnseprule}{0.5pt}
-\def\columnseprulecolor{\color{Plum}}
 
 
 \newcommand{\compresslist}{ % Define a command to reduce spacing within itemize/enumerate environments, this is used right after \begin{itemize} or \begin{enumerate}
@@ -63,6 +62,13 @@
 \setlength{\parskip}{0pt}
 \setlength{\parsep}{0pt}
 }
+
+% macros for the equations
+\newcommand{\cw}{\mathbf{cw}}
+\newcommand{\cc}{\mathbf{c}}
+\newcommand{\kb}{\mathbf{k}}
+\newcommand{\mem}{\mathbf{m}}
+\newcommand{\rr}{\mathbf{r}}
 
 % Defines the color used for content box headers
 \definecolor{lightblue}{cmyk}{0.83,0.24,0,0.16}
@@ -205,7 +211,7 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 	&\cc_i = \sum_s cv_{is} \, \cw_s  \tag{c2.3}
 	\end{align*}
 	\columnbreak
-	{\color{Plum}
+	{
 		\begin{align*}
 		&cq_i = W_{cq}^{[d \times d]} c_{i-1} + q_i  \tag{c1} \\
 		&ca_{is} = W_{ca}^{[1 \times d]} (cq_i \odot \cw_s)  \tag{c2.1}\\
@@ -229,7 +235,7 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 	&\mem_i = W_{rm}^{[d \times d]} [\rr_i, \mem_{i-1}]  + b_{rm}^{[d]} \tag{w1}	
 	\end{align*}
 	\columnbreak
-	{\color{Plum}
+	{
 		\begin{align*}
 		&I_{ihw} = m _{i-1} \odot k _{hw} \tag{r1} \\ 
 		&I'_{ihw} = W_{I'}^{[d \times d]} I_{ihw} + b_{I'}^{[d]} + \kb_{hw} \tag{r2} \\
