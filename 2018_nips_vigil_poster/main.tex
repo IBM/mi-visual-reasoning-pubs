@@ -3,7 +3,6 @@
 
 % Encoding.
 \usepackage[utf8]{inputenc}
-%\usepackage[T1]{fontenc}
 \renewcommand{\familydefault}{\sfdefault}
 \usepackage{graphicx} % Required for including images
 \usepackage{booktabs} % for professional tables
@@ -37,6 +36,8 @@
 \newcommand{\kb}{\mathbf{k}}
 \newcommand{\mem}{\mathbf{m}}
 \newcommand{\rr}{\mathbf{r}}
+
+\newcommand{\vm}[1]{\textcolor{red}{VM: #1}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -86,7 +87,7 @@
 	\includegraphics[width=4cm]{../img/ibm_research.png}
   } 
   % Title
-  	{\bf\textsc{On transfer learning using a MAC model variant}\vspace{0.2em}}
+  	{\bf\textsc{ On Transfer Learning using a MAC model variant}\vspace{0.2em}}
   % Authors
   {
 	\textbf{\null\hfill Vincent Marois \hfill T.S. Jayram \hfill Vincent Albouy \hfill Tomasz Kornuta \hfill\null}\\
@@ -101,8 +102,8 @@
 \headerbox{Summary}{name=summary,column=0,row=0}{
 \begin{itemize}
 	\compresslist
-	\item[$\bullet$] We introduce a \emph{\textbf{simplified}} variant of the MAC model (\textit{Hudson and Manning, ICLR 2018}), which achieves comparable accuracy while training \emph{\textbf{faster}}.
-	\item[$\bullet$] We evaluate both models on CLEVR \& CoGenT, and show that, \emph{\textbf{transfer learning with fine-tuning}} results in a 15 point increase in accuracy, matching the state of the art.
+	\item[$\bullet$] We introduce a \emph{\textbf{simplified}} variant of the MAC model~\cite{hudson2018compositional}, which achieves comparable accuracy while training \emph{\textbf{faster}}.
+	\item[$\bullet$] We evaluate the MAC model and the simplified variant on CLEVR \& CoGenT, and show that, \emph{\textbf{transfer learning with fine-tuning}} results in a 15 point increase in accuracy, matching the state of the art.
 	\item[$\bullet$] We also demonstrate that \emph{\textbf{improper}} fine-tuning can reduce a model's accuracy.
 	
 \end{itemize}
@@ -114,7 +115,7 @@
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.33\textwidth]{../img/mac_cell.pdf}
-		\caption{The MAC cell ~\cite{hudson2018compositional}.}
+		\caption{The MAC cell, based on~\cite{hudson2018compositional}.}
 		\label{fig:mac_cell}
 	\end{figure}
 	\vspace{-20pt}
@@ -126,14 +127,14 @@
 	\end{itemize}
 }
 
-\headerbox{Simplified Mac Model (S-MAC)}{name=s-mac, column=0, below=mac-model}{
+\headerbox{Simplified MAC Model (S-MAC)}{name=s-mac, column=0, below=mac-model}{
 	
-	Based on two heuristic simplifications:
+	The simplifications are based on two heuristics:
 	
 	\begin{itemize}
 		\compresslist
 	    \item[$\bullet$] Taking the MAC cell equations as a whole, consecutive linear layers (with no activation in-between) can be combined as one linear layer.
-		\item[$\bullet$] We assume that dimension-preserving linear layers are invertible so as to avoid information loss.
+		\item[$\bullet$] We assume that dimension-preserving linear layers are invertible so as to avoid information loss. \vm{To reformulate?}
     \end{itemize}
 
 	This allows, with a careful reorganization, to apply a single linear layer to the \textit{knowledge base} (feature map extracted from the image) prior to all the reasoning steps and work with this projection throughout the reasoning steps.\\
@@ -175,16 +176,17 @@
 		&ra_{ihw} = W_{ra}^{[1 \times d]} (\cc_i \odot I'_{ihw}) + b_{ra}^{[1]} \tag{r3.1}\\
 		&rv_{ihw} = \textrm{softmax}(ra_{ihw}) \tag{r3.2}\\
 		&\rr_i = \sum_s rv_{ihw} \, \kb_{hw}  \tag{r3.3}\\
-		&\mem_i = W_{rm}^{[d \times d]} [\rr_i, \mem_{i-1}]  + b_{rm}^{[d]} \tag{w1}
+		&\mem_i = W_{rm}^{[d \times 2d]} [\rr_i, \mem_{i-1}]  + b_{rm}^{[d]} \tag{w1}
 	\end{align*}
 	\columnbreak
 	{\begin{align*}
-		&I_{ihw} = m _{i-1} \odot k _{hw} \tag{r1} \\ 
+		&\\
+		&I_{ihw} = \mem_{i-1} \odot \kb_{hw} \tag{r1} \\ 
 		&I'_{ihw} = W_{I'}^{[d \times d]} I_{ihw} + b_{I'}^{[d]} + \kb_{hw} \tag{r2} \\
 		&ra_{ihw} = W_{ra}^{[1 \times d]} (\cc_i \odot I'_{ihw})  \tag{r3.1}\\
 		&rv_{ihw} = \textrm{softmax}(ra_{ihw}) \tag{r3.2}\\
 		&\rr_i = \sum_s rv_{ihw} \, \kb_{hw}  \tag{r3.3}\\
-		&\mem_i = W_{rm}^{[d \times 2d]} \rr_i + b_{rm}^{[d]} \tag{w1}
+		&\mem_i = W_{rm}^{[d \times d]} \rr_i + b_{rm}^{[d]} \tag{w1}
 	\end{align*}}
 \end{multicols}
 
@@ -209,30 +211,41 @@
 
 \headerbox{Links}{name=links,column=0,below=s-mac}{
 	\vspace{-15pt}
-	\begin{minipage}[H]{0.4\textwidth}
+	\null\hfill
+	\begin{minipage}[H]{0.3\textwidth}
 		\begin{figure}[H]
-			\includegraphics[width=0.4\textwidth]{../img/arxiv_paper_qr_code.png}
-			\vspace{-10pt}
-			\caption{Paper on arXiv.}
+			\includegraphics[width=0.6\textwidth]{../img/reproducible_research_qr_code.png}
+			\vspace{-15pt}
+			\caption*{\textbf{How to reproduce the experiments.}}
+			\label{fig:qr_repro_research}
+		\end{figure}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[H]{0.3\textwidth}
+		\begin{figure}[H]
+			\includegraphics[width=0.7\textwidth]{../img/arxiv_paper_qr_code.png}
+			\vspace{-15pt}
+			\caption*{Paper on arXiv.}
 			\label{fig:qr_arxiv}
 		\end{figure}
 	\end{minipage}
 	\hfill
-	\begin{minipage}[H]{0.4\textwidth}
+	\begin{minipage}[H]{0.3\textwidth}
 		\begin{figure}[H]
-			\includegraphics[width=0.4\textwidth]{../img/reproducible_research_qr_code.png}
-			\vspace{-10pt}
-			\caption{\textbf{How to reproduce the experiments.}}
-			\label{fig:qr_repro_research}
+			\includegraphics[width=0.7\textwidth]{../img/clevr_qr_code.png}
+			\vspace{-15pt}
+			\caption*{CLEVR Dataset.}
+			\label{fig:qr_clevr}
 		\end{figure}
 	\end{minipage}
+	\hfill\null
 }
 
 \headerbox{The CLEVR \& CoGenT datasets}{name=datasets, column=1}{
 	\vspace{-10pt}
 	\begin{figure}[H]
 		\includegraphics[width=0.4\textwidth]{../img/teaser.jpg}
-		\caption{\textit{How many objects are either small cylinders or red things?}}
+		\caption{\textit{How many objects are either small cylinders or red things?} -- Answer: 5.}
 		\label{fig:clevr_task}
 	\end{figure}
 	\vspace{-20pt}
@@ -307,12 +320,12 @@
 
 \begin{itemize}
 	\compresslist
-	\item[$\bullet$] Our experiments on \emph{zero-shot learning} show that both models have poor performance, in line with
+	\item[$\bullet$] Our experiments on \emph{zero-shot learning} (CoGenT-A $\rightarrow$ CoGenT-B) show that both models have poor performance, in line with
 	the other models in the literature.
 	\item[$\bullet$] With fine-tuning, both MAC models match state-of-the-art accuracy (a 15pts increase).
 	\item[$\bullet$] \textbf{S-MAC presents a 10\% speed-up in training time and comparable accuracy.}
 	\item[$\bullet$] Finetuning CLEVR-trained models on CoGenT-A or -B hurts their generalization capabilities.
-	\item[$\rightarrow$] \emph{Zero-shot learning} (CoGenT-A $\rightarrow$ CoGenT-B) remains an interesting problem to solve.
+	\item[$\rightarrow$] \emph{Zero-shot learning} remains an interesting problem to solve.
 \end{itemize}
 
 }
@@ -329,7 +342,7 @@
 		\compresslist
 		\item[$\bullet$] Asked about the shape of the leftmost \textbf{gray cylinder}, the model correctly finds it, (cf. \emph{visual attention map}), and refers to it using its color (\emph{attention over the question words}).
 		\item[$\bullet$] Yet, predicts the shape as \textbf{cube}, as it never saw \textbf{gray cylinders} during training, but saw \textbf{gray cubes}.
-		\item[$\rightarrow$] Indicate that MAC does not separate shape from color, but has a better understanding of colors (as found the object by its color).
+		\item[$\rightarrow$] This indicates that MAC does not separate shape from color, but has a better understanding of colors (as found the object by its color).
 	\end{itemize}
 }
 
