@@ -278,15 +278,24 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 
 
 \headerbox{Links}{name=links,column=0,below=data acquisition}{
-	\footnotesize
-	\begin{center}
-		\begin{tabular}{cc} 
-			\includegraphics[height=1.6 cm]{../img/github_repo_qr_code.png} &
-			\includegraphics[height=1.6 cm]{../img/doc_qr_code.png}  &
-			Github &  Reproducibility \\
-			repository & documentation
-		\end{tabular}
-	\end{center}
+	\vspace{-15pt}
+	\begin{minipage}[H]{0.4\textwidth}
+		\begin{figure}[H]
+			\includegraphics[width=0.4\textwidth]{../img/doc_qr_code.png}
+			\vspace{-10pt}
+			\caption{Documentation.}
+			\label{fig:qr_doc}
+		\end{figure}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[H]{0.4\textwidth}
+		\begin{figure}[H]
+			\includegraphics[width=0.4\textwidth]{../img/github_repo_qr_code.png}
+			\vspace{-10pt}
+			\caption{GitHub repo.}
+			\label{fig:qr_github}
+		\end{figure}
+	\end{minipage}
 }
 
 	
@@ -422,7 +431,7 @@ CLEVR \& CoGenT accuracies for the MAC \& S-MAC models:
 	\vspace{-8pt}
 	\renewcommand{\refname}{}
 	\bibliographystyle{alpha}
-	\bibliography{vigil_bibliography}
+	\bibliography{../vigil_bibliography}
 	\normalsize
 	\textsl{}
 }
