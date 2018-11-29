@@ -1,4 +1,4 @@
-\documentclass[final,paperwidth=36in,paperheight=48in,portrait,fontscale=0.35]{baposter}
+\documentclass[final,paperwidth=36in,paperheight=48in,portrait,fontscale=0.36]{baposter}
 % NIPS Workshops format
 
 % Encoding.
@@ -127,7 +127,11 @@
 	\texttt{\{vmarois,jayram,tkornut,byounes,asozcan\}@us.ibm.com},{\{vincent.albouy\}@ibm.com}\\
   }
   { % Left Eye Catcher
+  
 \includegraphics[width=4cm]{../img/arc_logo.png}
+
+
+
   }
 
 
@@ -155,7 +159,7 @@
 	\begin{figure}[H]
 		\centering
 	
-		\includegraphics[width=0.35\textwidth]{../img/mac_cell.pdf}
+		\includegraphics[width=0.33\textwidth]{../img/mac_cell.pdf}
 		\label{subfig:pendulum_picture}
 		\caption{The MAC cell ~\cite{hudson2018compositional}}
 		\label{fig:pendulum}
@@ -164,8 +168,7 @@
 \begin{description}
 	\item[$\bullet$] The MAC network is a recurrent model that performs sequential reasoning; at each step the model analyzes the question and shifts the attention over the image
 	\item[$\bullet$] The core of the model is the MAC cell, supported with an input unit that processes the question and image pair, and output unit which produces the answer.
-	\item[$\bullet$] The input unit uses an LSTM to process the question in a word-by-word manner producing a sequence of contextual words and a final question representation.
-	\item[$\bullet$] The input unit utilizes a pre-trained ResNet followed by two CNN layers to extract a feature map  from the image.
+	\item[$\bullet$] The input unit uses an LSTM to process the question  and CNN layers to extract a feature map  from the image.
 	
 \end{description}
 
@@ -173,8 +176,7 @@
 
 \headerbox{Simplified Mac Model (S-MAC)}{name=data acquisition, column=0, below=double-pendulum}{
 	
-	Our proposed modification to the MAC network is based on two heuristic simplifications of the
-	MAC cell: 
+	Our proposed modification to the MAC network is based on two heuristic simplifications:
 	
 	\begin{description}
 	
@@ -229,7 +231,7 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 	\columnbreak
 	{\color{Plum}
 		\begin{align*}
-		&I_{ihw} = \mem_{i-1} \odot \kb_{hw} \tag{r1} \\ \\
+		&I_{ihw} = m _{i-1} \odot k _{hw} \tag{r1} \\ 
 		&I'_{ihw} = W_{I'}^{[d \times d]} I_{ihw} + b_{I'}^{[d]} + \kb_{hw} \tag{r2} \\
 		&ra_{ihw} = W_{ra}^{[1 \times d]} (\cc_i \odot I'_{ihw})  \tag{r3.1}\\
 		&rv_{ihw} = \textrm{softmax}(ra_{ihw}) \tag{r3.2}\\
@@ -267,11 +269,30 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 }
 
 
+
+
+\headerbox{Links}{name=links,column=0,below=data acquisition}{
+	\footnotesize
+	\begin{center}
+		\begin{tabular}{cc} 
+			\includegraphics[height=1.6 cm]{../img/github_repo_qr_code.png} &
+			\includegraphics[height=1.6 cm]{../img/doc_qr_code.png}  &
+			Github &  Reproducibility \\
+			repository & documentation
+		\end{tabular}
+	\end{center}
+}
+
+	
+	
+	
+}
+
 \headerbox{Datasets - CLEVR and CoGenT}{name=dataset, column=1}{
 The CLEVR task:
 		\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.33\textwidth]{../img/teaser.jpg}
+		\includegraphics[width=0.35\textwidth]{../img/teaser.jpg}
 	    \end{figure}
     
     
@@ -314,7 +335,7 @@ The CLEVR task:
 CLEVR \& CoGenT accuracies for the MAC \& S-MAC models:
 	\begin{table}[H]
 	\centering
-	\scalebox{0.9}{
+	\scalebox{1}{
 	\begin{tabular}{lllllllll}
 		\toprule
 		\multirow{2}{*}{Model} & \multicolumn{3}{c}{Training} &  \multicolumn{2}{c}{Fine-tuning} & \multicolumn{2}{c}{Test} & \multirow{2}{*}{Row} \\
@@ -373,11 +394,8 @@ CLEVR \& CoGenT accuracies for the MAC \& S-MAC models:
 	
 	\begin{figure}[H]
 	\centering
-	\subfloat[]{{
-			\includegraphics[width=0.6\textwidth]{../img/fail_mac_cogent_b_shape.png}
-			\label{subfig:pendulum_picture}
-	}}
-	\label{fig:fail_mac_shape}
+				\includegraphics[width=0.65\textwidth]{../img/fail_mac_cogent_b_shape.png}
+
 	
 \end{figure}
 
