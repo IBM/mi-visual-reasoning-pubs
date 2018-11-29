@@ -211,19 +211,19 @@
 	\vspace{-15pt}
 	\begin{minipage}[H]{0.4\textwidth}
 		\begin{figure}[H]
-			\includegraphics[width=0.4\textwidth]{../img/doc_qr_code.png}
+			\includegraphics[width=0.4\textwidth]{../img/arxiv_paper_qr_code.png}
 			\vspace{-10pt}
-			\caption{Documentation.}
-			\label{fig:qr_doc}
+			\caption{Paper on arXiv.}
+			\label{fig:qr_arxiv}
 		\end{figure}
 	\end{minipage}
 	\hfill
 	\begin{minipage}[H]{0.4\textwidth}
 		\begin{figure}[H]
-			\includegraphics[width=0.4\textwidth]{../img/github_repo_qr_code.png}
+			\includegraphics[width=0.4\textwidth]{../img/reproducible_research_qr_code.png}
 			\vspace{-10pt}
-			\caption{GitHub repo.}
-			\label{fig:qr_github}
+			\caption{\textbf{How to reproduce the experiments.}}
+			\label{fig:qr_repro_research}
 		\end{figure}
 	\end{minipage}
 }
@@ -235,7 +235,7 @@
 		\caption{\textit{How many objects are either small cylinders or red things?}}
 		\label{fig:clevr_task}
 	\end{figure}
-	\vspace{-10pt}
+	\vspace{-20pt}
 	\begin{itemize}
 	  	\compresslist
 	  	\item[$\bullet$] The authors~\cite{johnson2017clevr} also introduced CLEVR-CoGenT, to evaluate how well a model can learn relations and compositional concepts.
@@ -260,8 +260,7 @@
 }
 
 \headerbox{Experiments \& Results}{name=experiments, column=1, below=datasets}{
-
-CLEVR \& CoGenT accuracies for the MAC \& S-MAC models:
+	\vspace{-10pt}
 	\begin{table}[H]
 	\centering
 	\scalebox{1}{
@@ -300,58 +299,47 @@ CLEVR \& CoGenT accuracies for the MAC \& S-MAC models:
 		
 		
 		\bottomrule
-		
-	
 	\end{tabular}}
+	\caption{CLEVR \& CoGenT accuracies for the MAC \& S-MAC models.}
 	\label{tab:data_properties}
 \end{table}
+\vspace{-20pt}
 
-
-\begin{description}
-	\item[$\bullet$] Our experiments on zero-short learning show that the MAC model has poor performance in line with
+\begin{itemize}
+	\compresslist
+	\item[$\bullet$] Our experiments on \emph{zero-shot learning} show that both models have poor performance, in line with
 	the other models in the literature.
-	\item[$\bullet$] With fine-tuning, the MAC model matches state of
-	the art accuracy
-	\item[$\bullet$]Remains an interesting problem to investigate how we can train it to disentangle the concepts of shape and color.
-	\item[$\bullet$] Experiments can be reproduced by following the \textbf{mi-prometheus}  documentation
-\end{description}
+	\item[$\bullet$] With fine-tuning, both MAC models match state-of-the-art accuracy (a 15pts increase).
+	\item[$\bullet$] \textbf{S-MAC presents a 10\% speed-up in training time and comparable accuracy.}
+	\item[$\bullet$] Finetuning CLEVR-trained models on CoGenT-A or -B hurts their generalization capabilities.
+	\item[$\rightarrow$] \emph{Zero-shot learning} (CoGenT-A $\rightarrow$ CoGenT-B) remains an interesting problem to solve.
+\end{itemize}
 
 }
 
-
-
-\headerbox{MAC drawbacks on CLEVR}{name=baseline, column=1, below=experiments}{
-	
-	
-	
+\headerbox{MAC drawbacks on CLEVR}{name=mac-failures, column=1, below=experiments}{
+	\vspace{-10pt}
 	\begin{figure}[H]
-	\centering
-				\includegraphics[width=0.60\textwidth]{../img/fail_mac_cogent_b_shape.png}
-
-	
-\end{figure}
-
-\begin{description}
-	\item[$\bullet$] The question reads as: \textit{There is a large gray thing that is on the right side of the big gray cylinder left of the large ball that is on the right side if the cyan rubber sphere; what is its shape? Predicted answer: Cylinder - Truth: Cube}
-	
-\end{description}
-
-
-
+		\includegraphics[width=0.60\textwidth]{../img/fail_mac_cogent_b_shape.png}
+		\caption{There is a large gray thing that is on the right side of the big gray cylinder left of the large ball that is on the right side if the cyan rubber sphere; what is its shape?}
+		\label{fig:mac_failure}
+	\end{figure}
+	\vspace{-20pt}
+	\begin{itemize}
+		\compresslist
+		\item[$\bullet$] Asked about the shape of the leftmost gray cylinder, the model correctly finds it, (cf. \emph{visual attention map}), and refers to it using its color (\emph{attention over the question words}).
+		\item[$\bullet$] Yet, predicts the shape as \textbf{cube}, as it never saw \emph{gray cylinders} during training, but saw \emph{gray cubes}.
+		\item[$\rightarrow$] Indicate that MAC does not separate shape from color, but has a better understanding of colors (as found the object by its color).
+	\end{itemize}
 }
 
-\headerbox{References}{name=references, column=1, below=baseline}{
+\headerbox{References}{name=references, column=1, below=mac-failures}{
 	\small
 	\vspace{-8pt}
 	\renewcommand{\refname}{}
 	\bibliographystyle{alpha}
 	\bibliography{../vigil_bibliography}
-	\normalsize
-	\textsl{}
 }
 
 \end{poster}
-
-
-
 \end{document}
