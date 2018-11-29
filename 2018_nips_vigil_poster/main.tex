@@ -286,13 +286,13 @@ linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
 	
 	
 	
-}
+
 
 \headerbox{Datasets - CLEVR and CoGenT}{name=dataset, column=1}{
 The CLEVR task:
 		\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.35\textwidth]{../img/teaser.jpg}
+		\includegraphics[width=0.31\textwidth]{../img/teaser.jpg}
 	    \end{figure}
     
     
@@ -379,8 +379,11 @@ CLEVR \& CoGenT accuracies for the MAC \& S-MAC models:
 
 
 \begin{description}
-	\item[$\bullet$] The [Training] column indicates wall times and final accuracies on the training set.
-	\item[$\bullet$] The [Fine-tuning] column reports the used sub-set (30k samples) and the final accuracies on this sub-set during training
+	\item[$\bullet$] Our experiments on zero-short learning show that the MAC model has poor performance in line with
+	the other models in the literature.
+	\item[$\bullet$] With fine-tuning, the MAC model matches state of
+	the art accuracy
+	\item[$\bullet$]Remains an interesting problem to investigate how we can train it to disentangle the concepts of shape and color.
 	\item[$\bullet$] Experiments can be reproduced by following the \textbf{mi-prometheus}  documentation
 \end{description}
 
@@ -394,7 +397,7 @@ CLEVR \& CoGenT accuracies for the MAC \& S-MAC models:
 	
 	\begin{figure}[H]
 	\centering
-				\includegraphics[width=0.65\textwidth]{../img/fail_mac_cogent_b_shape.png}
+				\includegraphics[width=0.60\textwidth]{../img/fail_mac_cogent_b_shape.png}
 
 	
 \end{figure}
