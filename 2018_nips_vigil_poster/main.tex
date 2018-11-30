@@ -100,42 +100,44 @@
 \headerbox{Contributions}{name=contributions,column=0,row=0}{
 \begin{itemize}
 	\compresslist
-	\item[$\bullet$] We introduce a \emph{\textbf{simplified}} variant of the MAC model~\cite{hudson2018compositional}, which achieves comparable accuracy while training \emph{\textbf{faster}}.
-	\item[$\bullet$] We evaluate the MAC model and the simplified variant on CLEVR \& CoGenT, and show that, \emph{\textbf{transfer learning with fine-tuning}} results in a \emph{\textbf{15 point increase}} in accuracy, matching the state of the art.
-	\item[$\bullet$] We also demonstrate that \emph{\textbf{improper}} fine-tuning can \emph{\textbf{reduce a model's accuracy}}.
+	\item We introduce a \emph{\textbf{simplified}} variant of the MAC (Memory,  Attention,
+	and Composition) model~\cite{hudson2018compositional}, which achieves comparable accuracy while training \emph{\textbf{faster}}.
+	\item We evaluate both the original MAC model and the simplified variant on CLEVR \& CoGenT datasets, and show that \emph{\textbf{transfer learning with fine-tuning}} results in a \emph{\textbf{15 point increase}} in accuracy, matching the state of the art.
+	\item We also demonstrate that \emph{\textbf{improper}} fine-tuning can \emph{\textbf{reduce a model's accuracy}}.
 	
 \end{itemize}
 
 } %headerbox
 
-\headerbox{The MAC Model ~\cite{hudson2018compositional}}{name=mac-model, column=0, below=contributions}{
-	\vspace{-10pt}
+\headerbox{The MAC model~\cite{hudson2018compositional}}{name=mac-model, column=0, below=contributions}{
+\textbf{MAC network}: a recurrent neural network performing sequential reasoning. At each step, it analyzes the question and shifts the attention over the image.
+	\vspace{-3pt}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[width=0.33\textwidth]{../img/mac_cell.pdf}
-		\caption{The MAC cell, based on~\cite{hudson2018compositional}.}
+		\includegraphics[width=0.4\textwidth]{../img/mac_cell.pdf}
+		\caption{\textbf{MAC cell} consists of a control unit, a read unit \& a write unit.}
 		\label{fig:mac_cell}
 	\end{figure}
-	\vspace{-20pt}
+	\vspace{-20pt}		 
 	\begin{itemize}
-		\compresslist
-		\item[$\bullet$] MAC network: a recurrent model performing sequential reasoning. At each step, it analyzes the question and shifts the attention over the image.
-		\item[$\bullet$] Recurrent MAC cell: consists of a control unit, a read unit \& a write unit. The control unit updates the control state $c_i$ \& drives the attention over the question words.
-		\item[$\bullet$] The read unit, guided by $c_i$ extracts information from the image. The write unit uses this information to update the memory state $m_i$.
+	\compresslist
+		\item \textbf{Control unit} updates the control state $c_i$ \& shifts the attention over question words.
+		\item \textbf{Read unit}, guided by $c_i$, extracts information from the image.
+		\item \textbf{Write unit} uses this information to update the memory state $m_i$.
 	\end{itemize}
 }
 
-\headerbox{Simplified MAC Model (S-MAC)}{name=s-mac, column=0, below=mac-model}{
+\headerbox{The Simplified MAC model (S-MAC)}{name=s-mac, column=0, below=mac-model}{
 	
-	The simplifications are based on two heuristics:
+The simplifications are based on two heuristics:
 	
-	\begin{itemize}
+\begin{itemize}
 		\compresslist
-	    \item[$\bullet$] Taking the MAC cell equations as a whole, consecutive linear layers (with no non-linear activation in-between) can be combined as one linear layer.
-		\item[$\bullet$] We assume that dimension-preserving linear layers are invertible so as to avoid information loss.
-    \end{itemize}
-
-	This allows, with a careful reorganization, to apply a single linear layer to the \textit{knowledge base} (feature map extracted from the image) prior to all the reasoning steps and work with this projection throughout the reasoning steps.\\
+	    \item Taking the MAC cell equations as a whole, all consecutive linear layers (with no non-linear activation in-between) can be combined into a single linear layer.
+		\item We assume that dimension-preserving linear layers are invertible so as to avoid information loss.
+		\item[$\Rightarrow$] This allows, with a careful reorganization, to apply a single linear layer to the \textit{knowledge base} (feature map extracted from the image) prior to all the reasoning steps and work with this projection throughout the reasoning steps.
+\end{itemize}
+	
 
 \makebox[\textwidth]{\textbf{MAC \\[5cm] S-MAC}}\\
 \vspace{-5pt}
@@ -191,7 +193,7 @@
 \vspace{-15pt}
 \begin{table}[H]
 	\centering
-	\caption{Comparing the number of position-independent parameters between MAC \& S-MAC cells.}
+	\caption{Comparison of numbers of position-independent parameters between MAC \& S-MAC cells.}
 	\begin{tabular}{llll}
 		\toprule
 		Model        & Read Unit               & Write Unit &  Control Unit         \\
@@ -243,14 +245,14 @@
 	\vspace{-10pt}
 	\begin{figure}[H]
 		\includegraphics[width=0.4\textwidth]{../img/teaser.jpg}
-		\caption{\textbf{Q}: \textit{How many objects are either small cylinders or red things?} -- \textbf{A}: 5.}
+		\caption{\textbf{Q}: \textit{How many objects are either small cylinders or red things?} \textbf{A}: 5.}
 		\label{fig:clevr_task}
 	\end{figure}
 	\vspace{-20pt}
 	\begin{itemize}
 	  	\compresslist
-	  	\item[$\bullet$] The authors~\cite{johnson2017clevr} also introduced CLEVR-CoGenT, to evaluate how well a model can learn relations and compositional concepts.
-	  	\item[$\bullet$] Similar to CLEVR, but with two conditions, as follows:
+	  	\item The authors of CLEVR~\cite{johnson2017clevr} also introduced a variant called CLEVR-CoGenT, aiming at evaluation of how well models can learn compositional concepts.
+	  	\item Similar to CLEVR, but with two conditions, as follows:
 	\end{itemize}
 	\vspace{-10pt}
 	\begin{table}[H]
@@ -270,7 +272,7 @@
 	
 }
 
-\headerbox{Experiments \& Results}{name=experiments, column=1, below=datasets}{
+\headerbox{Experiments \& results}{name=experiments, column=1, below=datasets}{
 	\vspace{-10pt}
 	\begin{table}[H]
 	\centering
@@ -318,12 +320,12 @@
 
 \begin{itemize}
 	\compresslist
-	\item[$\bullet$] Our experiments on \emph{zero-shot learning} (CoGenT-A $\rightarrow$ CoGenT-B) show that both models have poor performance, in line with
+	\item Our experiments on \emph{zero-shot learning} (CoGenT-A $\rightarrow$ CoGenT-B) show that both models have poor performance, in line with
 	the other models in the literature.
-	\item[$\bullet$] With fine-tuning, both MAC models match state-of-the-art accuracy (a 15pts increase).
-	\item[$\bullet$] \textbf{S-MAC presents a 10\% speed-up in training time and comparable accuracy.}
-	\item[$\bullet$] Finetuning CLEVR-trained models on CoGenT-A or -B hurts their generalization capabilities.
-	\item[$\rightarrow$] \emph{Zero-shot learning} remains an interesting problem to solve.
+	\item With fine-tuning, both MAC models match state-of-the-art accuracy (a 15pts increase).
+	\item \textbf{S-MAC presents a 10\% speed-up in training time and comparable accuracy.}
+	\item Finetuning CLEVR-trained models on CoGenT-A or -B hurts their generalization capabilities.
+	\item[$\Rightarrow$] \emph{Zero-shot learning} remains an interesting problem to solve.
 \end{itemize}
 
 }
@@ -338,9 +340,9 @@
 	\vspace{-20pt}
 	\begin{itemize}
 		\compresslist
-		\item[$\bullet$] Asked about the shape of the leftmost \textbf{gray cylinder}, the model correctly finds it, (cf. \emph{visual attention map}), and refers to it using its color (\emph{attention over the question words}).
-		\item[$\bullet$] Yet, predicts the shape as \textbf{cube}, as it never saw \textbf{gray cylinders} during training, but saw \textbf{gray cubes}.
-		\item[$\rightarrow$] This indicates that MAC does not separate shape from color, but has a better understanding of colors (as found the object by its color).
+		\item Asked about the shape of the leftmost \textbf{gray cylinder}, the model correctly finds it, (cf. \emph{visual attention map}), and refers to it using its color (\emph{attention over the question words}).
+		\item As it never saw \textbf{gray cylinders} during training, whereas learned the \textbf{gray cubes} compositional concept, the model predicts the shape as a \textbf{cube}.
+		\item[$\Rightarrow$] This indicates that MAC does not separate shape from color, but has a better understanding of color cues (as it found the object by its color).
 	\end{itemize}
 }
 
