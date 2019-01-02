@@ -37,13 +37,13 @@ Question marks indicate that the paper does not provide enough information; thus
 		
 		
 		\midrule				
-		& \multirow{5}{*}{A Train Full?}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A ?    &  98.8   \\
+		& \multirow{5}{*}{A Train Full}   & \multirow{5}{*}{N/A}  & \multirow{2}{*}{--} & \multirow{2}{*}{--}  &   A Test Full    &  98.8   \\
 		\cmidrule{6-7} 
-		TbD + reg &   &    &   &    & B ?    &  75.4   \\
+		TbD + reg &   &    &   &    & B Test Full    &  75.4   \\
 		\cmidrule{4-5}\cmidrule{6-7}
-		(\cite{mascharka2018transparency}) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{N/A}     & A ?    &  96.9 \\
+		(\cite{mascharka2018transparency}) &  &    & \multirow{2}{*}{B Valid 30k}  & \multirow{2}{*}{N/A}     & A Test Full    &  96.9 \\
 		\cmidrule{6-7} 
-		&   &    &   &    & B ?   &  96.3  \\
+		&   &    &   &    & B Test Full   &  96.3  \\
 		
 		
 		\midrule				
@@ -98,7 +98,11 @@ TbD is composed of a set of visual reasoning primitives relying on attention tra
 The authors compare the accuracy of their model tested on CLEVR, alongside with several existing models. In particular, they show improvement over the previously mentioned PG + EE, CNN + GRU + FiLM and MAC models.
 
 They also compare their performance on CoGenT against PG+EE.
-Nonetheless, the description lacks information about the used sets for training, fine-tuning and testing. 
+The authors (in a separate conversation) explained that they trained their models on Condition A training set and tested on Condition A and Condition B test sets respectively.
+For fine-tuning on CoGenT-B the authors used the first 3k images (Val-B indices 0-2999) in the CoGenT-B validation dataset and all of their corresponding questions.
+
+
+
 They indicate that they used 3k images and 30k questions from the CoGenT Condition B for fine-tuning of their model, but do not explicitly point the set they used the samples from.
 
 
