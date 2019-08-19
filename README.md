@@ -1,1 +1,1 @@
-# COG_publications
+# COG publications
