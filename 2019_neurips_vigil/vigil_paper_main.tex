@@ -17,7 +17,33 @@
 \usepackage{mathtools}
 \usepackage[usenames, dvipsnames]{color}
 
-\usepackage{blindtext}
+\usepackage{enumitem}
+%\setlist{leftmargin=*} 
+%\setlist[enumerate]{label=\arabic*)}
+%\setlist[enumerate, 1]{labelindent=20pt}
+
+
+% \usepackage{blindtext}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{remark}
+\newtheorem*{notation}{Notation}
+%\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{fact}{Fact}
+\newtheorem*{observation}{Observation}
+\newtheorem*{condition}{Condition}
+\newtheorem*{claim}{Claim}
+\newtheorem*{example}{Example}
+\newtheorem*{question}{Question}
 
 
 \newcommand{\tk}[1]{\textcolor{red}{TK: #1}}
@@ -25,37 +51,195 @@
 \newcommand{\tsj}[1]{\textcolor{magenta}{TSJ: #1}}
 \newcommand{\va}[1]{\textcolor{blue}{Vincent A: #1}}
 
+\newcommand{\Reals}{\mathbb{R}}
+\newcommand{\T}{\mathsf{T}}
+\DeclareMathOperator{\softmax}{\mathrm{softmax}}
+
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cH}{\mathcal{H}}
+
+\newcommand{\vect}[1]{\mathbf{#1}}
+\newcommand{\vx}{\vect{x}}
+\newcommand{\vy}{\vect{y}}
+\newcommand{\vone}{\vect{1}}
+\newcommand{\proj}{\mathrm{proj}}
+
+
 \title{A New Model}
 
-\author{
-	T.S. Jayram \And Vincent Albouy  \And Tomasz Kornuta \And Ahmet S. Ozcan}
+\author{}
 
 \begin{document}
 
 \maketitle
 
-\blindtext
+\section{VWM model}
+
+\begin{notation}
+Treat 1D tensors as column vectors and 2D tensors as matrices, where appropriate.
+\begin{enumerate}
+	\item  Let $\circ$ denote concatenation of two tensors with identical shape except possibly
+	for their last dimensions $d_1$ and $d_2$, respectively,  
+	resulting in a tensor with last dimension of $d_1+d_2$. 
+	
+	\item Let $\odot$ denote  element-wise product of two tensors of same shape,
+	i.e., Hadamard product for vectors/matrices.
+	
+	\item Let $\otimes$ denote tensor product of two tensors, 
+	i.e. Kronecker product for vectors/matrices.
+\end{enumerate}
+\end{notation}	
+
+\section{Basic layers/modules}
+
+\subsection{Linear (Affine) Layer}
+%\setlist[description]{style=nextline}
+\begin{description}
+	\item[Inputs:] either (a) $x \in \Reals^n$ or (b) $X \in  \Reals^{N \times n}$	
+	\item[Parameter:] An affine function $\cG$ with weight and bias parameters such that
+	$\cG: \Reals^n \to \Reals^m$ for case~(a)
+	and $\cG: \Reals^{N \times m} \to \Reals^{N \times m}$ for case~(b)
+		
+	\item[Output:] $y = \cG(x)  \in \Reals^m$  for case~(a) 
+		and $y = \cG(X) \in \Reals^{N \times m}$ for case~(b)
+\end{description}
+
+\subsection{Attention Module}
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Query: $q \in \Reals^d$
+		\item Keys: $K \in \Reals^{N \times d}$	
+		\item Values: $V \in \Reals^{N \times d}$	
+	\end{enumerate}
+
+	\item[Parameter:] Weight $w \in \Reals^d$
+
+	\item[Outputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Attention vector:  $u = \softmax(K(w \odot q)) \in \Reals^N$
+		\item Content vector: $c =  V^{\T} u \in \Reals^d$
+	\end{enumerate}
+\end{description}
+
+\subsection{Interaction Module}
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Base object weights: $u \in \Reals^d$
+		\item Feature objects: $F \in \Reals^{M \times d}$	
+	\end{enumerate}
+	
+	\item[Parameters:] 
+	\begin{enumerate}
+	\item[]
+	\item Base object projection linear layer: $\cG: \Reals^d \to \Reals^d$
+	\item Feature objects projection linear layer : $\cK: \Reals^{M \times d} \to \Reals^{M \times d}$
+	\item Modifier linear layer:  $\cH: \Reals^{M \times 2d} \to \Reals^{M \times d}$	
+\end{enumerate}
+		
+	\item[Output:] Modified feature objects $F' \in  \Reals^{M \times d}$ where
+	
+	\begin{enumerate}[label=\emph{\alph*})]
+		\item $U_{\proj} = \vone \otimes \cG(u)$
+		\item $F_{\proj} = \cK(F)$
+		\item $F' = \cH(U_{\proj}  \circ F_{\proj})$
+	\end{enumerate}
+\end{description}
+
+\section{VWM Cell}
+Let $S$ denote the number of reasoning steps.
+
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Reasoning step $s$
+		\item Contextual word objects contextual words, question encoding, feature maps,
+		control state, summary object, visual working memory, write head
+		\item Reasoning step index $s$
+		\item Base object weights: $u \in \Reals^d$
+		\item Feature objects: $F \in \Reals^{M \times d}$	
+	\end{enumerate}
+	
+	\item[Parameters:] 
+	\begin{enumerate}
+		\item[]
+		\item Base object projection linear layer: $\cG: \Reals^d \to \Reals^d$
+		\item Feature objects projection linear layer : $\cK: \Reals^{M \times d} \to \Reals^{M \times d}$
+		\item Modifier linear layer:  $\cH: \Reals^{M \times 2d} \to \Reals^{M \times d}$	
+	\end{enumerate}
+	
+	\item[Output:] Modified feature objects $F' \in  \Reals^{M \times d}$ where
+	\begin{enumerate}
+		\item $U_{\proj} = \vone \otimes \cG(u)$
+		\item $F_{\proj} = \cK(F)$
+		\item $F' = \cH(U_{\proj}  \circ F_{\proj})$
+	\end{enumerate}
+\end{description}
+
+
+
+
+
+
+\subsection{Question-driven Controller}
+%\setlist[description]{style=nextline}
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Previous control state: $c \in \Reals^d$	
+		\item Reasoning step index $s$
+		\item Contextual words: $CW \in \Reals^{L \times d}$
+		\item Question encoding: $q \in \Reals^d$	
+	\end{enumerate}
+	
+	\item[Parameters:] 
+	\begin{enumerate}
+		\item[]
+		\item Position-aware linear layer: $\cG_s: \Reals^d \to \Reals^d$, depending on $s$.
+		\item Concatenation layer: $\cH: \Reals^{2d} \to \Reals^d$
+		\item Attention module $\cA$
+		\item Temporal classifier:  $\cK: \Reals^d \to \Reals^4$. A two-layer feedforward
+		network with ELU activation in the hidden layer of $d$ units.	
+	\end{enumerate}
+	
+	\item[Outputs:] 
+	\begin{enumerate}
+		\item[]
+		\item New control state $c'$
+		\item control attention $ca$
+		\item Temporal class weights $\tau$
+    \end{enumerate}
+	computed as follows:
+\begin{enumerate}[label=\emph{\roman*})]
+	\item Position-aware modulation $y = \cH([c, \cG_s(q)])$
+	\item Attention: $c', ca = \cA(y)$
+	\item Temporal classification: $\tau = \cK(c')$
+\end{enumerate}
+\end{description}
+
+
+
+\begin{figure}[b]
+	\centering
+	\includegraphics[width=\textwidth]{img/model}
+	\caption{Testing}
+	\label{fig:model}
+\end{figure}
+
 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth]{img/visualization}
 	\caption{Testing}
 	\label{fig:visualization}
-\end{figure}
-
-\blindmathtrue
-
-\blindtext
-
-\blindmathfalse
-
-\section{VWM model}
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=\textwidth]{img/model}
-	\caption{Testing}
-	\label{fig:model}
 \end{figure}
 
 
