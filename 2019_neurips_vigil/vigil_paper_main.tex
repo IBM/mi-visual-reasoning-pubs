@@ -46,6 +46,8 @@
 \newtheorem*{question}{Question}
 
 
+\newcommand{\mypara}[1]{\paragraph{\fcolorbox{OliveGreen}{white}{\color{Violet}{#1}}}}
+
 \newcommand{\tk}[1]{\textcolor{red}{TK: #1}}
 \newcommand{\ao}[1]{\textcolor{green}{AO: #1}}
 \newcommand{\tsj}[1]{\textcolor{magenta}{TSJ: #1}}
@@ -67,6 +69,7 @@
 \newcommand{\proj}{\mathrm{proj}}
 
 
+
 \title{A New Model}
 
 \author{}
@@ -79,6 +82,9 @@
 
 \begin{notation}
 Treat 1D tensors as column vectors and 2D tensors as matrices, where appropriate.
+We use lower case to represent tensors but for matrix operations we will use upper case to 
+refer to 2D tensors.
+
 \begin{enumerate}
 	\item  Let $\circ$ denote concatenation of two tensors with identical shape except possibly
 	for their last dimensions $d_1$ and $d_2$, respectively,  
@@ -94,26 +100,29 @@ Treat 1D tensors as column vectors and 2D tensors as matrices, where appropriate
 
 \section{Basic layers/modules}
 
-\subsection{Linear (Affine) Layer}
-%\setlist[description]{style=nextline}
-\begin{description}
-	\item[Inputs:] either (a) $x \in \Reals^n$ or (b) $X \in  \Reals^{N \times n}$	
-	\item[Parameter:] An affine function $\cG$ with weight and bias parameters such that
-	$\cG: \Reals^n \to \Reals^m$ for case~(a)
-	and $\cG: \Reals^{N \times m} \to \Reals^{N \times m}$ for case~(b)
-		
-	\item[Output:] $y = \cG(x)  \in \Reals^m$  for case~(a) 
-		and $y = \cG(X) \in \Reals^{N \times m}$ for case~(b)
-\end{description}
+\mypara{Linear (Affine) Layer}
 
-\subsection{Attention Module}
+\begin{description}
+	\item[Inputs:] A tensor $x$ with last dimension $n$.
+	\item[Parameter:] An affine function $\cG: \Reals^n \to \Reals^m$ with 
+	weight and bias parameters.
+		
+	\item[Output:] A tensor $y$ with last dimension $m$, and remaining dimensions
+	same as that of $x$, obtained by applying $\cG$ to each 1D slice of $x$
+	along the last dimension.
+	\end{description}
+
+\hrulefill
+
+\mypara{Attention Module}
+
 \begin{description}
 	\item[Inputs:] 
 	\begin{enumerate}
 		\item[]
 		\item Query: $q \in \Reals^d$
 		\item Keys: $K \in \Reals^{N \times d}$	
-		\item Values: $V \in \Reals^{N \times d}$	
+		\item Values: $V \in \Reals^{N \times d}$. By default $V=K$, unless mentioned explicitly.	
 	\end{enumerate}
 
 	\item[Parameter:] Weight $w \in \Reals^d$
@@ -121,18 +130,21 @@ Treat 1D tensors as column vectors and 2D tensors as matrices, where appropriate
 	\item[Outputs:] 
 	\begin{enumerate}
 		\item[]
-		\item Attention vector:  $u = \softmax(K(w \odot q)) \in \Reals^N$
-		\item Content vector: $c =  V^{\T} u \in \Reals^d$
+		\item Content vector: $h =  V^{\T} u \in \Reals^d$
+		\item Attention vector:  $w = \softmax(K(w \odot q)) \in \Reals^N$
 	\end{enumerate}
 \end{description}
 
-\subsection{Interaction Module}
+\hrulefill
+
+\mypara{Interaction Module}
+
 \begin{description}
 	\item[Inputs:] 
 	\begin{enumerate}
 		\item[]
-		\item Base object weights: $u \in \Reals^d$
-		\item Feature objects: $F \in \Reals^{M \times d}$	
+		\item Base object: $b \in \Reals^d$
+		\item Feature objects: $f \in \Reals^{M \times d}$	
 	\end{enumerate}
 	
 	\item[Parameters:] 
@@ -143,16 +155,95 @@ Treat 1D tensors as column vectors and 2D tensors as matrices, where appropriate
 	\item Modifier linear layer:  $\cH: \Reals^{M \times 2d} \to \Reals^{M \times d}$	
 \end{enumerate}
 		
-	\item[Output:] Modified feature objects $F' \in  \Reals^{M \times d}$ where
+	\item[Output:] Modified feature objects 
+	$f' =  \cH( \cK(f) \odot ( \vone \otimes \cG(b))) \in  \Reals^{M \times d}$
+\end{description}
+
+\hrulefill
+
+\section{VWM Cell}
+
+\mypara{Question-driven Controller}
+
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Previous control state: $c \in \Reals^d$.	
+		\item Reasoning step index $s$.
+		\item Contextual words: $cw \in \Reals^{L \times d}$.
+		\item Question encoding: $q \in \Reals^d$.
+	\end{enumerate}
 	
-	\begin{enumerate}[label=\emph{\alph*})]
-		\item $U_{\proj} = \vone \otimes \cG(u)$
-		\item $F_{\proj} = \cK(F)$
-		\item $F' = \cH(U_{\proj}  \circ F_{\proj})$
+	\item[Parameters:] 
+	\begin{enumerate}
+		\item[]
+		\item Position-aware linear layer: $\cG_s: \Reals^d \to \Reals^d$, depending on $s$.
+		\item Concatenation layer: $\cH: \Reals^{2d} \to \Reals^d$.
+		\item Attention module $\cA$.
+		\item Temporal classifier:  $\cK: \Reals^d \to \Reals^4$. A two-layer feedforward
+		network with ELU activation in the hidden layer of $d$ units.	
+	\end{enumerate}
+	
+	\item[Outputs:] 
+	\begin{enumerate}
+		\item[]
+		\item New control state $c'$.
+		\item Control attention $ca$.
+		\item Temporal class weights $\tau$.
+    \end{enumerate}
+	computed as follows:
+\begin{enumerate}[label=\alph*.]
+	\item Position-aware modulation $y = \cH([c, \cG_s(q)])$.
+	\item Content and attention: $c', a = \cA(y, cw)$.
+	\item Temporal classification: $\tau = \cK(c')$.
+\end{enumerate}
+\end{description}
+
+\hrulefill
+
+\mypara{Question-driven Controller}
+
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Previous control state: $c \in \Reals^d$.	
+		\item Reasoning step index $s$.
+		\item Contextual words: $cw \in \Reals^{L \times d}$.
+		\item Question encoding: $q \in \Reals^d$.
+	\end{enumerate}
+	
+	\item[Parameters:] 
+	\begin{enumerate}
+		\item[]
+		\item Position-aware linear layer: $\cG_s: \Reals^d \to \Reals^d$, depending on $s$.
+		\item Concatenation layer: $\cH: \Reals^{2d} \to \Reals^d$.
+		\item Attention module $\cA$.
+		\item Temporal classifier:  $\cK: \Reals^d \to \Reals^4$. A two-layer feedforward
+		network with ELU activation in the hidden layer of $d$ units.	
+	\end{enumerate}
+	
+	\item[Outputs:] 
+	\begin{enumerate}
+		\item[]
+		\item New control state $c'$.
+		\item Control attention $ca$.
+		\item Temporal class weights $\tau$.
+	\end{enumerate}
+	computed as follows:
+	\begin{enumerate}[label=\alph*.]
+		\item Position-aware modulation $y = \cH([c, \cG_s(q)])$.
+		\item Content and attention: $c', a = \cA(y, cw)$.
+		\item Temporal classification: $\tau = \cK(c')$.
 	\end{enumerate}
 \end{description}
 
-\section{VWM Cell}
+
+\noindent\makebox[\linewidth]{\rule{\paperwidth}{1pt}}
+
+
+
 Let $S$ denote the number of reasoning steps.
 
 \begin{description}
@@ -163,49 +254,39 @@ Let $S$ denote the number of reasoning steps.
 		\item Contextual word objects contextual words, question encoding, feature maps,
 		control state, summary object, visual working memory, write head
 		\item Reasoning step index $s$
-		\item Base object weights: $u \in \Reals^d$
-		\item Feature objects: $F \in \Reals^{M \times d}$	
+		\item Base object: $b \in \Reals^d$
+		\item Feature objects: $f \in \Reals^{M \times d}$	
 	\end{enumerate}
 	
 	\item[Parameters:] 
 	\begin{enumerate}
 		\item[]
-		\item Base object projection linear layer: $\cG: \Reals^d \to \Reals^d$
-		\item Feature objects projection linear layer : $\cK: \Reals^{M \times d} \to \Reals^{M \times d}$
-		\item Modifier linear layer:  $\cH: \Reals^{M \times 2d} \to \Reals^{M \times d}$	
 	\end{enumerate}
 	
-	\item[Output:] Modified feature objects $F' \in  \Reals^{M \times d}$ where
+	\item[Output:] 
 	\begin{enumerate}
-		\item $U_{\proj} = \vone \otimes \cG(u)$
-		\item $F_{\proj} = \cK(F)$
-		\item $F' = \cH(U_{\proj}  \circ F_{\proj})$
+		\item[]
 	\end{enumerate}
 \end{description}
 
+\mypara{Question-driven Controller}
 
-
-
-
-
-\subsection{Question-driven Controller}
-%\setlist[description]{style=nextline}
 \begin{description}
 	\item[Inputs:] 
 	\begin{enumerate}
 		\item[]
-		\item Previous control state: $c \in \Reals^d$	
-		\item Reasoning step index $s$
-		\item Contextual words: $CW \in \Reals^{L \times d}$
-		\item Question encoding: $q \in \Reals^d$	
+		\item Previous control state: $c \in \Reals^d$.	
+		\item Reasoning step index $s$.
+		\item Contextual words: $CW \in \Reals^{L \times d}$.
+		\item Question encoding: $q \in \Reals^d$.
 	\end{enumerate}
 	
 	\item[Parameters:] 
 	\begin{enumerate}
 		\item[]
 		\item Position-aware linear layer: $\cG_s: \Reals^d \to \Reals^d$, depending on $s$.
-		\item Concatenation layer: $\cH: \Reals^{2d} \to \Reals^d$
-		\item Attention module $\cA$
+		\item Concatenation layer: $\cH: \Reals^{2d} \to \Reals^d$.
+		\item Attention module $\cA$.
 		\item Temporal classifier:  $\cK: \Reals^d \to \Reals^4$. A two-layer feedforward
 		network with ELU activation in the hidden layer of $d$ units.	
 	\end{enumerate}
@@ -213,18 +294,17 @@ Let $S$ denote the number of reasoning steps.
 	\item[Outputs:] 
 	\begin{enumerate}
 		\item[]
-		\item New control state $c'$
-		\item control attention $ca$
-		\item Temporal class weights $\tau$
-    \end{enumerate}
+		\item New control state $c'$.
+		\item Control attention $ca$.
+		\item Temporal class weights $\tau$.
+	\end{enumerate}
 	computed as follows:
-\begin{enumerate}[label=\emph{\roman*})]
-	\item Position-aware modulation $y = \cH([c, \cG_s(q)])$
-	\item Attention: $c', ca = \cA(y)$
-	\item Temporal classification: $\tau = \cK(c')$
-\end{enumerate}
+	\begin{enumerate}[label=\alph*.]
+		\item Position-aware modulation $y = \cH([c, \cG_s(q)])$
+		\item Content and attention: $c', ca = \cA(y)$
+		\item Temporal classification: $\tau = \cK(c')$
+	\end{enumerate}
 \end{description}
-
 
 
 \begin{figure}[b]
