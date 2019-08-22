@@ -46,7 +46,7 @@
 \newtheorem*{question}{Question}
 
 
-\newcommand{\mypara}[1]{\paragraph{\fcolorbox{OliveGreen}{white}{\color{Violet}{#1}}}}
+\newcommand{\colorbx}[1]{\noindent\scalebox{1.05}{\fcolorbox{OliveGreen}{white}{\color{Violet}{\textbf{#1}}}}}
 
 \newcommand{\tk}[1]{\textcolor{red}{TK: #1}}
 \newcommand{\ao}[1]{\textcolor{green}{AO: #1}}
@@ -100,7 +100,7 @@ refer to 2D tensors.
 
 \section{Basic layers/modules}
 
-\mypara{Linear (Affine) Layer}
+\colorbx{Linear (Affine) Layer}
 
 \begin{description}
 	\item[Inputs:] A tensor $x$ with last dimension $n$.
@@ -114,7 +114,7 @@ refer to 2D tensors.
 
 \hrulefill
 
-\mypara{Attention Module}
+\colorbx{Attention Module}
 
 \begin{description}
 	\item[Inputs:] 
@@ -137,7 +137,7 @@ refer to 2D tensors.
 
 \hrulefill
 
-\mypara{Interaction Module}
+\colorbx{Interaction Module}
 
 \begin{description}
 	\item[Inputs:] 
@@ -163,7 +163,18 @@ refer to 2D tensors.
 
 \section{VWM Cell}
 
-\mypara{Question-driven Controller}
+\colorbx{VWM Cell}
+
+This recurrent cell is executed for $T$ reasoning steps for each frame given by
+the temporal order. 
+
+Recurrent cell state at start of time $t=1,2, \dots, T$: 
+\begin{description}
+	\item[$s_t$:] Control state
+	\item[$M_t$:] Visual working memory
+	\item[$o_t$:] Summary visual object 
+\end{description} 
+\colorbx{Question-driven Controller}
 
 \begin{description}
 	\item[Inputs:] 
@@ -202,14 +213,14 @@ refer to 2D tensors.
 
 \hrulefill
 
-\mypara{Question-driven Controller}
+\colorbx{Memory Retrieval Unit}
 
 \begin{description}
 	\item[Inputs:] 
 	\begin{enumerate}
 		\item[]
 		\item Previous control state: $c \in \Reals^d$.	
-		\item Reasoning step index $s$.
+		\item Previous summary object: $s$
 		\item Contextual words: $cw \in \Reals^{L \times d}$.
 		\item Question encoding: $q \in \Reals^d$.
 	\end{enumerate}
@@ -269,7 +280,7 @@ Let $S$ denote the number of reasoning steps.
 	\end{enumerate}
 \end{description}
 
-\mypara{Question-driven Controller}
+\colorbx{Question-driven Controller}
 
 \begin{description}
 	\item[Inputs:] 
