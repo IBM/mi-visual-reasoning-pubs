@@ -1,0 +1,366 @@
+\documentclass{article}
+\usepackage{neurips_2019}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{graphicx}
+
+% Useful packages
+\usepackage{amsmath, amssymb, amsfonts, bm}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage[usenames, dvipsnames]{color}
+
+\usepackage{enumitem}
+\setlist[enumerate]{labelindent=5pt, label=\alph*)} 
+
+
+% \usepackage{blindtext}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{remark}
+\newtheorem*{notation}{Notation}
+%\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{fact}{Fact}
+\newtheorem*{observation}{Observation}
+\newtheorem*{condition}{Condition}
+\newtheorem*{claim}{Claim}
+\newtheorem*{example}{Example}
+\newtheorem*{question}{Question}
+
+
+\newcommand{\colorbx}[1]{\medskip\noindent\scalebox{1.05}{\fcolorbox{OliveGreen}{white}{\color{Violet}{\textbf{#1}}}}}
+
+\newcommand{\tk}[1]{\textcolor{red}{TK: #1}}
+\newcommand{\ao}[1]{\textcolor{green}{AO: #1}}
+\newcommand{\tsj}[1]{\textcolor{magenta}{TSJ: #1}}
+\newcommand{\va}[1]{\textcolor{blue}{Vincent A: #1}}
+
+\newcommand{\Reals}{\mathbb{R}}
+\newcommand{\T}{\mathsf{T}}
+\DeclareMathOperator{\softmax}{\mathrm{softmax}}
+
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}}
+
+\newcommand{\vect}[1]{\mathbf{#1}}
+\newcommand{\vx}{\vect{x}}
+\newcommand{\vy}{\vect{y}}
+\newcommand{\vone}{\vect{1}}
+\newcommand{\proj}{\mathrm{proj}}
+
+\newcommand{\isvis}{g^{\textrm{vis}}}
+\newcommand{\ismem}{g^{\textrm{mem}}}
+\newcommand{\imatch}{h^{\textrm{vis}}}
+\newcommand{\mmatch}{h^{\textrm{mem}}}
+
+
+\title{A New Model}
+
+\author{}
+
+\begin{document}
+
+\maketitle
+
+\section{VWM model}
+
+\begin{notation}
+Treat 1D tensors as column vectors and 2D tensors as matrices, where appropriate.
+We use lower case to represent both 1D and 2D tensors but occasionally use upper case
+for 2D tensors where matrix operations are involved.
+
+\begin{enumerate}
+	\item  Let $\circ$ denote concatenation of two tensors with identical shape except possibly
+	for their last dimensions $d_1$ and $d_2$, respectively,  
+	resulting in a tensor with last dimension of $d_1+d_2$. 
+	
+	\item Let $\odot$ denote  element-wise product of two tensors of same shape,
+	i.e., Hadamard product for vectors/matrices.
+	
+	\item Let $\otimes$ denote tensor product of two tensors, 
+	i.e. Kronecker product for vectors/matrices.
+\end{enumerate}
+\end{notation}	
+
+\section{Basic layers/modules}
+
+\colorbx{Linear (Affine) Layer}
+
+\begin{description}
+	\item[Inputs:] A tensor $x$ with last dimension $n$.
+	\item[Parameter:] An affine function $\cG: \Reals^n \to \Reals^m$ with 
+	weight and bias parameters.
+		
+	\item[Output:] A tensor $y$ with last dimension $m$, and remaining dimensions
+	same as that of $x$, obtained by applying $\cG$ to each 1D slice of $x$
+	along the last dimension.
+	\end{description}
+
+
+\colorbx{Attention Module}
+
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Query: $q \in \Reals^d$
+		\item Keys: $K \in \Reals^{N \times d}$	
+		\item Values: $V \in \Reals^{N \times d}$. By default $V=K$, unless mentioned explicitly.	
+	\end{enumerate}
+
+	\item[Parameter:] Weight $w \in \Reals^d$
+
+	\item[Outputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Content vector: $h =  V^{\T} u \in \Reals^d$
+		\item Attention vector:  $w = \softmax(K(w \odot q)) \in \Reals^N$
+	\end{enumerate}
+\end{description}
+
+
+\colorbx{Interaction Module}
+
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Base object: $b \in \Reals^d$
+		\item Feature objects: $f \in \Reals^{M \times d}$	
+	\end{enumerate}
+	
+	\item[Parameters:] 
+	\begin{enumerate}
+	\item[]
+	\item Base object projection linear layer: $\cG: \Reals^d \to \Reals^d$
+	\item Feature objects projection linear layer : $\cK: \Reals^{M \times d} \to \Reals^{M \times d}$
+	\item Modifier linear layer:  $\cH: \Reals^{M \times 2d} \to \Reals^{M \times d}$	
+\end{enumerate}
+		
+	\item[Output:] Modified feature objects 
+	$f' =  \cH( \cK(f) \odot ( \vone \otimes \cG(b))) \in  \Reals^{M \times d}$
+\end{description}
+
+\hrulefill
+
+\section{VWM Cell}
+
+The VWM recurrent cell is executed for $T$ reasoning steps for every frame in
+the temporal order.  Within a single frame, the cell state at the end of each reasoning step 
+$t=1,2, \dots, T$ is denoted by $(c_t, M_t, o_t)$, where: 
+\begin{enumerate}
+	\item $c_t \in \Reals^d$ is the control state;
+	\item $M_t \in  \Reals^{N \times d}$ is the visual working memory with $N$ slots; and
+	\item $so_t  \in \Reals^d$ is the summary visual object.
+\end{enumerate} 
+The initial state is such that both $c_0$ and $so_0$ are initialized
+to a fixed value at the start of each frame. However $M_0$ is initialized only once at
+the start of the first frame and otherwise taken to be the value of $M_T$ at the
+end of the previous frame.
+
+%The number of slots $N$ for the VWM $M_t$ is not fixed because the neural network 
+%parameters do not depend on it. It can be variable across the different datasets used
+%for training, validation and test as well as within each dataset. This, for example, enables a 
+%form of transfer learning where we can train on an easy dataset for one value of $N$
+%and study its generalization to a hard dataset using a larger value of $N$.
+
+\colorbx{Question-driven Controller}
+
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Reasoning step $t = 1,2, \dots, T$
+		\item Previous control state: $c_{t-1} \in \Reals^d$	
+		\item Contextual words: $cw \in \Reals^{L \times d}$
+		\item Question encoding: $q \in \Reals^d$
+	\end{enumerate}
+	
+	\item[Parameters:] 
+	\begin{enumerate}
+		\item[]
+		\item Reasoning step-dependent linear layer: $\cG_t: \Reals^d \to \Reals^d$, depending on $s$
+		\item Concatenation linear layer: $\cH: \Reals^{2d} \to \Reals^d$
+		\item Attention module $\cA$
+		\item Temporal classifier:  $\cK: \Reals^d \to \Reals^4$. A two-layer feedforward
+		network with ELU activation in the hidden layer of $d$ units.	
+	\end{enumerate}
+	
+	\item[Outputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Control state $c_t \in \Reals^d$
+		\item Control attention $ca_t \in \Reals^L$
+		\item Temporal class weights $\tau_t \in \Reals^4$
+    \end{enumerate}
+	
+\noindent computed as follows:
+
+\begin{enumerate}[label=\roman*)]
+	\item Modulation: $y = \cH\bigl([c_{t-1}, \cG_t(q)]\bigr)$
+	\item Control state and attention: $c_t,  ca_t= \cA(y, cw)$
+	\item Temporal classification: $\tau_t = \cK(c_t)$
+\end{enumerate}
+\end{description}
+
+
+\colorbx{Visual Retrieval Unit}
+
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Control state: $c_t \in \Reals^d$	
+		\item Previous summary object: $so_{t-1} \in \Reals^d$
+		\item Feature map of current frame: $F \in \Reals^{H \times W \times d}$
+	\end{enumerate}
+	
+	\item[Parameters:] 
+	\begin{enumerate}
+		\item[]
+		\item Interaction module $\cI$
+		\item Attention module $\cA$
+	\end{enumerate}
+	
+	\item[Outputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Visual object: $vo_t \in  \Reals^d$
+		\item Visual attention: $va_t  \in \Reals^{H \times W \times d}$
+	\end{enumerate}
+	computed as follows:\footnote{%
+		Appropriate flatten/unflatten operations are performed 
+		to match the signature of the modules.}%
+	\begin{enumerate}[label=\roman*)]
+		\item Modified feature map: $\hat{F} = \cI(so_{t-1}, F)$
+		\item Visual object and attention: $vo_t, va_t = \cA(y, \hat{F}, M_{t-1})$
+	\end{enumerate}
+\end{description}
+
+
+\colorbx{Memory Retrieval Unit}
+
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Control state: $c_t \in \Reals^d$	
+		\item Previous summary object: $so_{t-1} \in  \Reals^d$
+		\item Previous VWM $M_{t-1} \in \Reals^{N \times d}$
+	\end{enumerate}
+	
+	\item[Parameters:] 
+	\begin{enumerate}
+		\item[]
+		\item Interaction module $\cI$
+		\item Attention module $\cA$
+	\end{enumerate}
+	
+	\item[Outputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Memory object: $mo_t \in \Reals^d$
+		\item Memory attention: $ma_t \in \Reals^N$
+	\end{enumerate}
+	computed as follows:
+	\begin{enumerate}[label=\roman*)]
+		\item Modified VWM: $\hat{M}_t = \cI(so_{t-1}, M_{t-1})$
+		\item Memory object and attention: $mo_t, ma_t = \cA(y, \hat{M}_t, M_{t-1})$
+	\end{enumerate}
+\end{description}
+
+
+\colorbx{Reasoning Unit}
+
+%control_state, visual_object, memory_object, temporal_class_weights
+
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Control state: $c_t \in \Reals^d$
+		\item Visual object: $vo_t \in \Reals^d$
+		\item Memory object: $mo_t \in \Reals^d$
+	\end{enumerate}
+	
+	\item[Parameters:] Validator modules $\cG, \cK: \Reals^{2d} \to \Reals$.
+	Both $\cG, \cK$ are two-layer networks of $2d$ hidden units,
+	using ELU activation in the hidden layer, and sigmoid in the output layer.
+	
+	\item[Output:] Predicate gates: $\isvis_t, \ismem_t \in [0,1], \imatch, \mmatch$
+	\begin{enumerate}
+	\item[]
+	\item Control state: $c_t \in \Reals^d$
+	\item Visual object: $vo_t \in \Reals^d$
+	\item Memory object: $mo_t \in \Reals^d$
+	\item 
+    \end{enumerate}
+	
+\end{description}
+
+
+\colorbx{Summary Object Update Unit}
+
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Previous summary object: $so_{t-1} \in \Reals^d$
+		\item Visual object: $vo_t \in \Reals^d$
+		\item Memory object: $mo_t \in \Reals^d$
+		\item Predicate gates: $\isvis_t, \ismem_t \in [0,1]$
+	\end{enumerate}
+	
+	\item[Parameters:] Concatenation linear layer $\cH$ 
+	
+	\item[Output:] 
+	New summary object:
+	$so_t = \cH\bigl([so_{t-1}, (\isvis_t * vo_t + \ismem_t * mo_t)]\bigr) \in \Reals^d$ 
+
+\end{description}
+
+
+\noindent\makebox[\linewidth]{\rule{\paperwidth}{1pt}}
+
+
+
+\begin{figure}[b]
+	\centering
+	\includegraphics[width=\textwidth]{img/model}
+	\caption{Testing}
+	\label{fig:model}
+\end{figure}
+
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=\textwidth]{img/visualization}
+	\caption{Testing}
+	\label{fig:visualization}
+\end{figure}
+
+
+
+\newpage
+\bibliographystyle{alpha}
+
+\end{document}
