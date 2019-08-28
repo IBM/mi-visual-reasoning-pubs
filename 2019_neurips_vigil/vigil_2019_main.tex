@@ -3,7 +3,15 @@
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage[usenames, svgnames]{xcolor}
 \usepackage{hyperref}       % hyperlinks
+\hypersetup{
+	colorlinks=true,
+	linkcolor={red!80!black},
+%	citecolor={blue!80!black},
+%	urlcolor={magenta}
+}
+
 \usepackage{url}            % simple URL typesetting
 \usepackage{booktabs}       % professional-quality tables
 \usepackage{amsfonts}       % blackboard math symbols
@@ -15,7 +23,7 @@
 \usepackage{amsmath, amssymb, amsfonts, bm}
 \usepackage{amsthm}
 \usepackage{mathtools}
-\usepackage[usenames, dvipsnames]{color}
+%\usepackage[usenames, dvipsnames]{color}
 
 \usepackage{enumitem}
 \setlist[enumerate]{labelindent=5pt, label=\alph*)} 
@@ -44,7 +52,7 @@
 \newtheorem*{question}{Question}
 
 
-\newcommand{\colorbx}[1]{\medskip\noindent\scalebox{1.05}{\fcolorbox{OliveGreen}{white}{\color{Violet}{\textbf{#1}}}}}
+\newcommand{\colorbx}[1]{\medskip\noindent\scalebox{1.05}{\fcolorbox{SaddleBrown}{white}{\color{SteelBlue}{\textbf{#1}}}}}
 
 \newcommand{\tk}[1]{\textcolor{red}{TK: #1}}
 \newcommand{\ao}[1]{\textcolor{green}{AO: #1}}
@@ -67,10 +75,19 @@
 \newcommand{\vone}{\vect{1}}
 \newcommand{\proj}{\mathrm{proj}}
 
-\newcommand{\isvis}{g^{\textrm{vis}}}
-\newcommand{\ismem}{g^{\textrm{mem}}}
-\newcommand{\imatch}{h^{\textrm{vis}}}
-\newcommand{\mmatch}{h^{\textrm{mem}}}
+\newcommand{\imatch}{g^{\mathrm{vis}}}
+\newcommand{\mmatch}{g^{\mathrm{mem}}}
+
+\newcommand{\doadd}{h^{\mathrm{add}}}
+\newcommand{\doreplace}{h^{\mathrm{repl}}}
+
+\newcommand{\tlast}{\tau^{\mathrm{last}}}
+\newcommand{\tlatest}{\tau^{\mathrm{latest}}}
+\newcommand{\tnow}{\tau^{\mathrm{now}}}
+\newcommand{\tnone}{\tau^{\mathrm{none}}}
+
+\newcommand{\rhead}{w^{\mathrm{read}}}
+\newcommand{\whead}{w^{\mathrm{write}}}
 
 
 \title{A New Model}
@@ -89,6 +106,9 @@ We use lower case to represent both 1D and 2D tensors but occasionally use upper
 for 2D tensors where matrix operations are involved.
 
 \begin{enumerate}
+	\item Let 
+	$\Delta^d = \{ (x_0, x_1, \dots, x_d) : x_0 + x_1 + \dots + x_d = 1, x_i \ge 0, i = 0, 1, \dots, d\}$ denote the standard $d$-simplex.	
+	
 	\item  Let $\circ$ denote concatenation of two tensors with identical shape except possibly
 	for their last dimensions $d_1$ and $d_2$, respectively,  
 	resulting in a tensor with last dimension of $d_1+d_2$. 
@@ -169,7 +189,8 @@ the temporal order.  Within a single frame, the cell state at the end of each re
 $t=1,2, \dots, T$ is denoted by $(c_t, M_t, o_t)$, where: 
 \begin{enumerate}
 	\item $c_t \in \Reals^d$ is the control state;
-	\item $M_t \in  \Reals^{N \times d}$ is the visual working memory with $N$ slots; and
+	\item $M_t \in  \Reals^{N \times d}$ is the visual working memory with $N$ slots;
+	\item $w_t \in  \Reals^N$ is the write head; and
 	\item $so_t  \in \Reals^d$ is the summary visual object.
 \end{enumerate} 
 The initial state is such that both $c_0$ and $so_0$ are initialized
@@ -201,8 +222,12 @@ end of the previous frame.
 		\item Reasoning step-dependent linear layer: $\cG_t: \Reals^d \to \Reals^d$, depending on $s$
 		\item Concatenation linear layer: $\cH: \Reals^{2d} \to \Reals^d$
 		\item Attention module $\cA$
-		\item Temporal classifier:  $\cK: \Reals^d \to \Reals^4$. A two-layer feedforward
+		\item Temporal classifier:  $\cK: \Reals^d \to \Delta^3$. A two-layer feedforward
 		network with ELU activation in the hidden layer of $d$ units.	
+		The classes for the temporal context are labeled ``last'', ``latest'', ``now'', as well as 
+		a fourth class label ``none`` indicating no temporal context.
+		If $\tau \in \Delta^3$ is the output of the classifier, we denote the components by
+		$\tlast$, $\tlatest$, $\tnow$ and $\tnone$.
 	\end{enumerate}
 	
 	\item[Outputs:] 
@@ -213,12 +238,12 @@ end of the previous frame.
 		\item Temporal class weights $\tau_t \in \Reals^4$
     \end{enumerate}
 	
-\noindent computed as follows:
-
-\begin{enumerate}[label=\roman*)]
-	\item Modulation: $y = \cH\bigl([c_{t-1}, \cG_t(q)]\bigr)$
-	\item Control state and attention: $c_t,  ca_t= \cA(y, cw)$
-	\item Temporal classification: $\tau_t = \cK(c_t)$
+	\item[Equations:] 
+	\begin{enumerate}
+		\item[]
+		\item Modulation: $y = \cH\bigl([c_{t-1}, \cG_t(q)]\bigr)$
+		\item Control state and attention: $c_t,  ca_t= \cA(y, cw)$
+		\item Temporal classification: $\tau_t = \cK(c_t)$
 \end{enumerate}
 \end{description}
 
@@ -247,14 +272,19 @@ end of the previous frame.
 		\item Visual object: $vo_t \in  \Reals^d$
 		\item Visual attention: $va_t  \in \Reals^{H \times W \times d}$
 	\end{enumerate}
-	computed as follows:\footnote{%
-		Appropriate flatten/unflatten operations are performed 
-		to match the signature of the modules.}%
-	\begin{enumerate}[label=\roman*)]
+
+	\item[Equations:]
+	\begin{enumerate}
+		\item[]
 		\item Modified feature map: $\hat{F} = \cI(so_{t-1}, F)$
 		\item Visual object and attention: $vo_t, va_t = \cA(y, \hat{F}, M_{t-1})$
 	\end{enumerate}
 \end{description}
+
+\begin{note}
+	Appropriate flatten/unflatten operations are performed to match the signature 
+	of the modules.
+\end{note}
 
 
 \colorbx{Memory Retrieval Unit}
@@ -279,12 +309,14 @@ end of the previous frame.
 	\begin{enumerate}
 		\item[]
 		\item Memory object: $mo_t \in \Reals^d$
-		\item Memory attention: $ma_t \in \Reals^N$
+		\item Read head: $\rhead_t \in \Reals^N$
 	\end{enumerate}
-	computed as follows:
-	\begin{enumerate}[label=\roman*)]
+
+	\item[Equations:]
+	\begin{enumerate}
+		\item[]
 		\item Modified VWM: $\hat{M}_t = \cI(so_{t-1}, M_{t-1})$
-		\item Memory object and attention: $mo_t, ma_t = \cA(y, \hat{M}_t, M_{t-1})$
+		\item Memory object and attention: $mo_t, \rhead_t = \cA(y, \hat{M}_t, M_{t-1})$
 	\end{enumerate}
 \end{description}
 
@@ -300,22 +332,67 @@ end of the previous frame.
 		\item Control state: $c_t \in \Reals^d$
 		\item Visual object: $vo_t \in \Reals^d$
 		\item Memory object: $mo_t \in \Reals^d$
+		\item Temporal class weights $\tau \in \Delta^3$
 	\end{enumerate}
 	
 	\item[Parameters:] Validator modules $\cG, \cK: \Reals^{2d} \to \Reals$.
 	Both $\cG, \cK$ are two-layer networks of $2d$ hidden units,
 	using ELU activation in the hidden layer, and sigmoid in the output layer.
 	
-	\item[Output:] Predicate gates: $\isvis_t, \ismem_t \in [0,1], \imatch, \mmatch$
+	\item[Output:] Predicate gates for the current reasoning step
 	\begin{enumerate}
-	\item[]
-	\item Control state: $c_t \in \Reals^d$
-	\item Visual object: $vo_t \in \Reals^d$
-	\item Memory object: $mo_t \in \Reals^d$
-	\item 
+    	\item Object match predicate gates (i) image: $\imatch_t \in [0,1]$ and 
+    	(ii) memory: $\mmatch_t \in [0,1]$.
+		
+		\item Memory update predicate gates (i) add: $\doadd_t \in [0,1]$ and
+		(ii) replace: $\doreplace_t \in [0,1]$
     \end{enumerate}
-	
+
+	\item[Equations:]
+	\begin{enumerate}
+		\item[]
+		\item $\imatch_t \in [0,1]$:
+		It's true if there is a valid visual object. This assumes that
+		the current reasoning step refers to either ```now''  or ``latest''.
+		
+		\item$\mmatch_t \in [0,1]$:
+		It's true if there is a valid memory object. This assumes that
+		the current reasoning step refers to either ``last'',  or alternatively ``latest'' 
+		but there is no matching visual object.
+		
+		\item $\doadd_t$:
+		
+		
+		\item $\doreplace_t$: 
+\end{enumerate}
 \end{description}
+
+
+\colorbx{Memory Update Unit}
+% visual_object, visual_working_memory, read_head, write_head, do_replace, do_add_new
+
+\begin{description}
+	\item[Inputs:] 
+	\begin{enumerate}
+		\item[]
+		\item Visual object: $vo_t \in \Reals^d$
+		\item Memory object: $mo_t \in \Reals^d$
+		\item Memory update predicate gates:  $\doadd_t, \doreplace_t \in [0,1]$
+		\item Read head: $\rhead_t \in \Reals^N$
+		\item Previous VWM $M_{t-1} \in \Reals^{N \times d}$
+		\item Previous write head: $\whead_{t-1} \in \Reals^N$
+	\end{enumerate}
+
+	\item[Outputs:] 
+	\begin{enumerate}
+		\item[]
+		\item VWM $M_t \in \Reals^{N \times d}$
+		\item Read head: $\rhead_t \in \Reals^N$
+		\item Write head: $\whead_t \in \Reals^N$
+	\end{enumerate}
+
+\end{description}
+
 
 
 \colorbx{Summary Object Update Unit}
@@ -327,15 +404,15 @@ end of the previous frame.
 		\item Previous summary object: $so_{t-1} \in \Reals^d$
 		\item Visual object: $vo_t \in \Reals^d$
 		\item Memory object: $mo_t \in \Reals^d$
-		\item Predicate gates: $\isvis_t, \ismem_t \in [0,1]$
+		\item Object predicate gates: $\imatch_t, \mmatch_t \in [0,1]$
 	\end{enumerate}
 	
 	\item[Parameters:] Concatenation linear layer $\cH$ 
 	
 	\item[Output:] 
-	New summary object:
-	$so_t = \cH\bigl([so_{t-1}, (\isvis_t * vo_t + \ismem_t * mo_t)]\bigr) \in \Reals^d$ 
-
+     New summary object:
+	             $so_t = \cH\bigl([so_{t-1}, (\imatch_t * vo_t + \mmatch_t * mo_t)]\bigr) \in \Reals^d$ 
+	
 \end{description}
 
 
