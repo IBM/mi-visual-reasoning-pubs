@@ -1,7 +1,17 @@
 \section{Introduction}
 
-Intro + related work
 
+\begin{itemize}
+\item bAbI:  MemNets~\cite{weston2014memory} have access to the whole story at once
+\item the same goes to SoftPats~\cite{haurilet2019s} - they build graph per frame and then frame number is treated as one dimensions, so at the end the \textit{Traveler} can access all of them at the same time 
+\item The paper~\cite{le2019learning} focuses on SVQA and TGIF-QA -  they access all frames at once, i.e. cut the video into clips, process each frame with CNNs and then aggregate feature representations of equal-size clips obtained by a temporal attention mechanism. So in fact the model has access to all frames all the time.
+\end{itemize}
+so the time aspect is really... not dealt with?
+
+Additionally, in~\cite{song2018explore} the authors introduced a large-scale dataset caled SVQA (Synthetic Video Question Answering) consisting of (Total QA pairs: 83160/11760/23760 and Total Videos 8400/1200/2400).
+As "using all frames is time-consuming. Thus we divide each video into clips (segments) of 16 frames, with 80\% overlap between successive clips (segments)" and "We extract feature from each clip and aggregate features of all clips from one video to form a sequential video representation." -- which means that they identified the problem that you "cannot extract features from all frames" at the beginning and pass that to the model. But instead of proposing a solution that will deal with the video on per-frame basis, they "cheated". ;)
+
+IMPORTANT: \textbf{we do not have any explicit assumptions when it comes to number of frames/length of the movie}, so there is no need for cutting video into cuts etc.
 
 \subsection{Contributions}
 
