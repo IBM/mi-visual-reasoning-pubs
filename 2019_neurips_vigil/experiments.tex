@@ -1,17 +1,16 @@
 \section{Experiments}
 
-Our experiments were intended to study SAMNET's performances as well as generalizations abilities in different settings. For this purpose, we use two different versions of the COG data set, an easy one (canonical) and a hard version to explore two different level of difficulties. The canonical setting represents 4 frames input sequences, a maximum memory duration of 3, and only one distractor object per frame. Whereas the hard setting has 8 frames, a maximum memory duration of 7 and 10 distractors. We compare our model to the original COG model.
+Our experiments were intended to study SAMNet's performances as well as generalization abilities in different settings. For this purpose, we use two different versions of the COG data set, an easy one (canonical) and a hard version to explore two different level of difficulties. The canonical setting represents 4 frames input sequences, a maximum memory duration of 3, and only one distractor object per frame. Whereas the hard setting has 8 frames, a maximum memory duration of 7 and 10 distractors. We compare our model to the original COG model~\cite{cog2018}
 
 \underline {Hard dataset}:
 
 Our first goal is to improve the accuracy on the hard data set. In order to do this, we have tried different approaches.
 
-The first approach is to train a model on the hard version only and test it on the hard version. We achieve a test accuracy of … which represent a major improvement from the COG model score.
+The first approach is to train a model on the hard train set only and test it on the test set. It is the same approach used by the original COG paper ~\cite{cog2018} to evaluate performance on the hard data set. We achieve a test accuracy of … which represents a major improvement from the COG model score.
 
-The second approach is to see if we can generalize from easy to hard setting. We train a model on the canonical data set and test it on the hard data set. Doing so we can achieve comparable results than the first approach. It shows that SAMNET has good generalizations abilities. It can adapt well to different sequence lengths and number of distractors.
+The second approach is to see if we can generalize from easy to hard setting. We train a model on the canonical data set and test it on the hard data set. Doing so we can achieve comparable results than the first approach. It shows that SAMNet has good generalizations abilities. It can adapt well to different sequence lengths and number of distractors.
 
-Finally we train a model on the canonical data set, fine-tune it on the hard data set during only 25k iterations and test it on the hard data set. We can observe a significant improvement from 91.6\%  to 96.5\%  which represent the state of the art accuracy for the hard setting (classification tasks).
-
+Finally we train a model on the canonical data set, fine-tune it on the hard data set during only 25k iterations and test it on the hard data set. Thanks to fine-tuning, we can observe a significant improvement from 91.6\%  to 96.5\% test accuracy which represent the state of the art accuracy for the hard setting (classification tasks).After a short fine-tuning process, the model can generalize well to harder tasks and even surpass the accuracy from the first approach.
 
 \underline {Canonical dataset}:
 
@@ -21,16 +20,18 @@ For the canonical setting, we also could achieve a small improvement in accuracy
 
 We can also notice a major improvement for the two hardest tasks, AndCompareShape and AndCompareColor. Those two tasks represent a higher level of difficulties due to the number of objects to be remembered in order to answer the question correctly.
 We could achieve a 12\% improvement for the canonical data set and almost a 40\% improvement for the hard data set.
-We see that the external memory plays an important role in remembering objects from the past and this affects the test scores significantly.
+We see that the SAMNet's external memory plays an important role in remembering objects from the past and this affects the test scores significantly. 
 
 
 \begin{table}[t]
 	\tiny
 	
+	\caption{COG test set accuracies for  SAMNet \& COG models. For the COG section, the results marked as 'paper' comes from the original COG paper ~\cite{cog2018}, wheras the results marked as 'ours' come from our own experiments using the following implementation: https://github.com/google/cog }
+	
 	\centering
 	\begin{tabular}{ccccccccccc}
 		\toprule
-		Model & & SAMNET & && &&& COG& \\
+		Model & & SAMNet & && &&& COG& \\
 		\cmidrule{2-5} \cmidrule{7-11} 
 		&&&&&& ours & paper & ours & ours & paper\\
 		\cmidrule{7-9} \cmidrule{10-11}
