@@ -6,11 +6,11 @@ Our experiments were intended to study SAMNet's performances as well as generali
 
 Our first goal is to improve the accuracy on the hard data set. In order to do this, we have tried different approaches.
 
-The first approach is to train a model on the hard train set only and test it on the test set. It is the same approach used by the original COG paper ~\cite{cog2018} to evaluate performance on the hard data set. We achieve a test accuracy of … which represents a major improvement from the COG model score.
+The first approach is to train a model on the hard train set only and test it on the hard test set. It is the same approach used by the original COG paper ~\cite{cog2018} to evaluate performance on the hard data set. We achieve a test accuracy of … which represents a major improvement from the COG model score.
 
 The second approach is to see if we can generalize from easy to hard setting. We train a model on the canonical data set and test it on the hard data set. Doing so we can achieve comparable results than the first approach. It shows that SAMNet has good generalizations abilities. It can adapt well to different sequence lengths and number of distractors.
 
-Finally we train a model on the canonical data set, fine-tune it on the hard data set during only 25k iterations and test it on the hard data set. Thanks to fine-tuning, we can observe a significant improvement from 91.6\%  to 96.5\% test accuracy which represent the state of the art accuracy for the hard setting (classification tasks).After a short fine-tuning process, the model can generalize well to harder tasks and even surpass the accuracy from the first approach.
+Finally we train a model on the canonical data set, fine-tune it on the hard data set during only 25k iterations and test it on the hard data set. Thanks to fine-tuning, we can observe a significant improvement from 91.6\%  to 96.5\% test accuracy which represent the state of the art accuracy for the hard setting (classification tasks).After a short fine-tuning process, the model can generalize well to harder tasks and even surpass the accuracy obtained in the first approach.
 
 \underline {Canonical dataset}:
 
