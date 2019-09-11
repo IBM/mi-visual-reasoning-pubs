@@ -1,5 +1,39 @@
 \section{Introduction}
 
+In recent years there has been substantial progress in sys-tems  that  can  find  factual  answers  in  text,  starting  withIBM’s Watson system~\cite{ferrucci2010building}
+
+, and now withhigh-performing neural systems that can answer short ques-tions provided they are given a text that contains the answer(e.g., Seo et al., 2016; Wang et al., 2018).
+
+
+AI  has  achieved  remarkable  mastery  over  games  such  asChess, Go, and Poker, and evenJeopardy!, but the rich variety of standardized exams has remained a landmark chal-lenge.   Even  in  2016,  the  best  AI  system  achieved  merely 59.3\% on an 8th Grade science exam challenge (Schoenicket al., 2016).
+
+
+
+
+Playing Atari Games~\cite{mnih2015human}
+
+
+Despite several successes across many domains Deep learning~\cite{lecun2015deep} still struggles with
+
+learning algoritms
+learning reasoning~\cite{graves2016hybrid}
+
+
+
+visual reasoning~\cite{mogadala2019trends} - datasets such as COG~\cite{yang2018dataset} and 
+SVQA (Synthetic Video Question Answering)~\cite{song2018explore}
+
+
+ARISTO project~\cite{clark2019f} - based on RoBERTa~\cite{liu2019roberta} contextual word embeddings
+
+transformer-based solutions~\cite{vaswani2017attention} using self-attention
+
+
+“The current neural network approaches will find it difficult to determine which combinations of ‘later’, ‘earlier’, ‘more’, and ‘less’ constitute ‘increase’ and which constitute ‘decrease,'” Davis says. “Neural networks have no inherent idea of magnitude or of time.”
+~\cite{davis2016write}
+
+
+Visual Dialog~\cite{das2017visual} - the same, they keep the whole history of the dialog in memory
 
 \begin{itemize}
 \item bAbI:  MemNets~\cite{weston2014memory} have access to the whole story at once
@@ -11,7 +45,7 @@ so the time aspect is really... not dealt with?
 Additionally, in~\cite{song2018explore} the authors introduced a large-scale dataset caled SVQA (Synthetic Video Question Answering) consisting of (Total QA pairs: 83160/11760/23760 and Total Videos 8400/1200/2400).
 As "using all frames is time-consuming. Thus we divide each video into clips (segments) of 16 frames, with 80\% overlap between successive clips (segments)" and "We extract feature from each clip and aggregate features of all clips from one video to form a sequential video representation." -- which means that they identified the problem that you "cannot extract features from all frames" at the beginning and pass that to the model. But instead of proposing a solution that will deal with the video on per-frame basis, they "cheated". ;)
 
-IMPORTANT: \textbf{we do not have any explicit assumptions when it comes to number of frames/length of the movie}, so there is no need for cutting video into cuts etc.
+IMPORTANT: \textbf{we do not have any explicit assumptions when it comes to number of frames/length of the movie/number of distractionts}, so there is no need for cutting video into cuts etc.
 
 \subsection{Contributions}
 
