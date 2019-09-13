@@ -76,33 +76,7 @@ As we can see in Table 2 we could achieve a 12\% improvement for the canonical d
 We see that the SAMNet's external memory plays an important role in remembering objects from the past and this affects the test scores significantly. 
 
 
-\begin{figure}
-	\centering
-	\caption{This plot compares SAMNet and COG on their abilities to generalize from the canonical to the hard dataset. We show three different settings: 1) (baseline) trained on canonical, tested on canonical 2) trained on canonical, tested on hard, 3) trained on canonical,fine tuned on hard, tested on hard }
 
-\begin{tikzpicture}
-
-
-
-\tiny
-
-\begin{axis}[
-ybar,
-enlargelimits=0.15,
-legend style={at={(0.5,-0.15)},
-	anchor=north,legend columns=-1},
-ylabel={COG test accuracy in \% },
-symbolic x coords={canonical/na/canonical, canonical/na/hard, canonical/hard/hard},
-xtick=data,
-nodes near coords,
-nodes near coords align={vertical},
-]
-\addplot coordinates {(canonical/na/canonical,98) (canonical/na/hard,91.6) (canonical/hard/hard,96.5)};
-\addplot coordinates {(canonical/na/canonical,96.7) (canonical/na/hard,65.9) (canonical/hard/hard,70)};
-\legend{SAMNet ,COG Model}
-\end{axis}
-\end{tikzpicture}
-\end{figure}
 
 
 
@@ -165,5 +139,34 @@ nodes near coords align={vertical},
 	\end{tabular}
 	\label{results}
 \end{table}
+
+
+\begin{figure}
+	\centering
+	\caption{This plot compares SAMNet and COG on their abilities to generalize from the canonical to the hard dataset. We show three different settings: 1) (baseline) trained on canonical, tested on canonical 2) trained on canonical, tested on hard, 3) trained on canonical,fine tuned on hard, tested on hard }
+	
+	\begin{tikzpicture}
+	
+	
+	
+	\tiny
+	
+	\begin{axis}[
+	ybar,
+	enlargelimits=0.15,
+	legend style={at={(0.5,-0.15)},
+		anchor=north,legend columns=-1},
+	ylabel={COG test accuracy in \% },
+	symbolic x coords={canonical/na/canonical, canonical/na/hard, canonical/hard/hard},
+	xtick=data,
+	nodes near coords,
+	nodes near coords align={vertical},
+	]
+	\addplot coordinates {(canonical/na/canonical,98) (canonical/na/hard,91.6) (canonical/hard/hard,96.5)};
+	\addplot coordinates {(canonical/na/canonical,96.7) (canonical/na/hard,65.9) (canonical/hard/hard,70)};
+	\legend{SAMNet ,COG Model}
+	\end{axis}
+	\end{tikzpicture}
+\end{figure}
 
 
