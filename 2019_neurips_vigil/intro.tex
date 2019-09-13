@@ -1,33 +1,37 @@
 \section{Introduction}
 
-Fluid Intelligence:
+Integration of vision and language in deep neural network models allows learning joint representations of objects, concepts, and relations.  In addition to multimodal learning, visual grounding of language is another opportunity that the AI community is excited about, especially in the context of Harnad's "symbol grounding problem" \cite{}. 
 
-IQ may be viewed as a composite comprising multiple elements: In many theories of intelligence, a distinction is made between fluid and crystallized intelligence (8). Fluid intelligence comprises the set of abilities involved in coping with novel environments and especially in abstract reasoning; crystallized intelligence is the product of the application of these processes. Fluid intelligence is often measured by tests such as figural analogy, classification, and matrix problems, whereas crystallized intelligence is measured by tests of vocabulary and general information (9). 
-~\cite{sternberg2008increasing}
+Starting with the VQA dataset \cite{}, many tasks have emerged in the past several years\cite{mogadala2019trends}.  Since the conception of the VQA benchmark, visual reasoning is the main emphasis in these tasks, which can be expressed in language. Visual reasoning mainly deals with the comparison of object attributes, counting and other relational questions.
+In contrast to VQA, which comes with static image and question pairs, an emerging field is Video QA \cite{} that introduced the temporal aspect in the visual input.  Video input provides another opportunity to test system's ability to deal with temporal relations and reasoning.  As evident from human cognition, attention and memory are the key components that are required to solve these problems, which need to process spatial and temporal information.
 
-Cognitively, gF is thought to be related to metacognition6(knowing about and reflecting upon one’s own ongoing mentalprocesses) and to working memory4,5,7–9(the active maintenanceof domain-specific information plus domain-general attention-al or ‘executive’ control of ongoing processing). One componentof attentional control is the ability to overcome interference thatwould otherwise disrupt performance by compromising taskgoals or information held active in working memory. Individualdifferences in gF are most pronounced in behavioral measureswhen attentional control is required4,8,10. For this reason, gF isthought to be related to attentional control specifically~\cite{gray2003neural}
+The ability to deal with time is also challenge for natural language processing (NLP), for example in question answering (QA) systems and in dialog.  The current QA solutions, in certain problem settings, can work around this challenge by processing the whole text input and reason over the text using attention or other mechanisms. For example the Memory Networks \cite{weston2015towards}, solves the bAbI reasoning task by processing all the facts at once, which reside in memory and available to provide answers. Similarly, in Visual Dialog~\cite{das2017visual} the system keeps the whole history of the dialog in memory.  In real-time dialog or video QA, there may not be such opportunity or the system may be forced to record the whole history which is not always feasible.  Video reasoning datasets such as SVQA (Synthetic Video Question Answering)~\cite{song2018explore}, TGIF-QA, and COG \cite{yang2018dataset} 
+and 
+Humans have the ability to selectively pay attention and store important items or events in memory based on their goals.  Working memory and episodic memory systems are responsible for this remarkable ability. 
 
-
-In recent years there has been substantial progress in sys-tems  that  can  find  factual  answers  in  text,  starting  withIBM’s Watson system~\cite{ferrucci2010building}
-
-, and now with high-performing neural systems that can answer short ques-tions provided they are given a text that contains the answer e.g.~\cite{wang2018glue}
-
-
-AI  has  achieved  remarkable  mastery  over  games  such  asChess, Go, and Poker, and evenJeopardy!, but the rich variety of standardized exams has remained a landmark chal-lenge.   Even  in  2016,  the  best  AI  system  achieved  merely 59.3\% on an 8th Grade science exam challenge (Schoenicket al., 2016).
-
-
-
-
-Playing Atari Games~\cite{mnih2015human}
+%Fluid Intelligence:
+%
+%IQ may be viewed as a composite comprising multiple elements: In many theories of intelligence, a distinction is made between fluid and crystallized intelligence (8). Fluid intelligence comprises the set of abilities involved in coping with novel environments and especially in abstract reasoning; crystallized intelligence is the product of the application of these processes. Fluid intelligence is often measured by tests such as figural analogy, classification, and matrix problems, whereas crystallized intelligence is measured by tests of vocabulary and general information (9). 
+%~\cite{sternberg2008increasing}
+%
+%Cognitively, gF is thought to be related to metacognition6(knowing about and reflecting upon one’s own ongoing mentalprocesses) and to working memory4,5,7–9(the active maintenanceof domain-specific information plus domain-general attention-al or ‘executive’ control of ongoing processing). One componentof attentional control is the ability to overcome interference thatwould otherwise disrupt performance by compromising taskgoals or information held active in working memory. Individualdifferences in gF are most pronounced in behavioral measureswhen attentional control is required4,8,10. For this reason, gF isthought to be related to attentional control specifically~\cite{gray2003neural}
 
 
-Despite several successes across many domains Deep learning~\cite{lecun2015deep} still struggles with
-
-learning algoritms
-learning reasoning~\cite{graves2016hybrid}
-
-
-Wingrad Scheme challenge~\cite{levesque2012winograd}
+%In recent years there has been substantial progress in systems  that  can  find  factual  answers  in  text,  starting  with IBM’s Watson system~\cite{ferrucci2010building}, and now with high-performing neural systems that can answer short questions provided they are given a text that contains the answer e.g.~\cite{wang2018glue}
+%
+%
+%AI  has  achieved  remarkable  mastery  over  games  such  asChess, Go, and Poker, and evenJeopardy!, but the rich variety of standardized exams has remained a landmark chal-lenge.   Even  in  2016,  the  best  AI  system  achieved  merely 59.3\% on an 8th Grade science exam challenge (Schoenicket al., 2016).
+%
+%Playing Atari Games~\cite{mnih2015human}
+%
+%
+%Despite several successes across many domains Deep learning~\cite{lecun2015deep} still struggles with
+%
+%learning algoritms
+%learning reasoning~\cite{graves2016hybrid}
+%
+%
+%Wingrad Scheme challenge~\cite{levesque2012winograd}
 
 visual reasoning~\cite{mogadala2019trends} - datasets such as COG~\cite{yang2018dataset} and 
 SVQA (Synthetic Video Question Answering)~\cite{song2018explore}
@@ -41,9 +45,9 @@ transformer-based solutions~\cite{vaswani2017attention} using self-attention
 “The current neural network approaches will find it difficult to determine which combinations of ‘later’, ‘earlier’, ‘more’, and ‘less’ constitute ‘increase’ and which constitute ‘decrease,'” Davis says. “Neural networks have no inherent idea of magnitude or of time.”
 ~\cite{davis2016write}
 
-bAbI~\cite{weston2015towards}
 
-Visual Dialog~\cite{das2017visual} - the same, they keep the whole history of the dialog in memory
+
+
 
 \begin{itemize}
 \item bAbI:  MemNets~\cite{weston2014memory} have access to the whole story at once
