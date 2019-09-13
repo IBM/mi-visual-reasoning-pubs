@@ -7,9 +7,19 @@ All those modules are described below.
 
 \subsection{Question-driven Controller}
 \subsection{Visual Retrievial Unit}
+
+The visual retrievial unit is responsible to extract visual information from the current image given a control state coming from the Question-driven Controller. It is first projecting the past summary object and the feature maps together using the interaction module.
+It is then using the attention module as follow. The query are the control states and the keys and are the feature maps coming from the image encoder. The results of this attention is applied on the modified features maps coming from the interaction module.  
+This unit outputs the extracted object and the visual attention.
+
+\subsection{Memory Retrievial Unit}
+
+The role of the memory retrievial unit is to read and extract object from memory (Selective AttentionMemory).
+As the Visual Retrievial Unit, it uses a combination of two following submodules. The interaction module responsible to blend the extracted object and the content of the memory. The attention module then extract the corresponding object in memory if present.
+
+
 \subsection{Reasoning Unit}
 \subsection{Memory update Unit}
 \subsection{Summary Object Udpate Unit}
-\subsection{Question Encoder}
-\subsection{Image Encoder}
-\subsection{Output Unit}
+
+The image encoder, question encoder and output unit are described in the appendix.
