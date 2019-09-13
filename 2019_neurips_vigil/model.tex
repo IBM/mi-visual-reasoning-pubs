@@ -1,4 +1,16 @@
 \section{Model}
 
 
-Selective Attention Memory Network (SAMNet)
+Selective Attention Memory Network (SAMNet) is a end-to-end differentiable model made for video reasoning. It is a model based on attention mechanisms but also on a Selective Attention Memory which is able to store selected entities. This memory enables SAMNet to reason across multiple frames and perform spatio-temporal reasoning. 
+The core of SAMNet is based a recurrent cell called SAMCell. By aligning together a series of k SAMCells, the network can perform k reasoning steps. At every reasoning step the attention on the image and the question is updated. This section describes the model and the different units that composed a SAMCell. They are called the Question-driven Controller, the Visual Retrievial Unit, the Memory Retrieval Unit, the Reasoning unit, the Memory update unit, and the Summary Object Udpate Unit. 
+The model is also composed of an Image Encoder and a Question Encoder both responsible to pre-process the visual and textual inputs. The output unit is a classifier.
+All those modules are described below.
+
+\subsection{Question-driven Controller}
+\subsection{Visual Retrievial Unit}
+\subsection{Reasoning unit}
+\subsection{Memory update}
+\subsection{Summary Object Udpate Unit}
+\subsection{Question Encoder}
+\subsection{Image Encoder}
+\subsection{Output Unit}
