@@ -1,32 +1,80 @@
 \section{Experiments}
 
-Our experiments were intended to study SAMNet's performances as well as generalization abilities in different settings. For this purpose, we use two different versions of the COG data set, an easy one (canonical) and a hard version to explore two different level of difficulties. The canonical setting represents 4 frames input sequences, a maximum memory duration of 3, and only one distractor object per frame. Whereas the hard setting has 8 frames, a maximum memory duration of 7 and 10 distractors. We compare our model to the original COG model~\cite{cog2018}
+Our experiments were intended to study SAMNet's performances as well as generalization abilities in different settings. For this purpose, we use two different versions of the COG dataset, an easy one (canonical) and a hard version to explore a wide range of difficulties. The following parameters control the difficulty level: the number of frames in the input sequence, the maximum memory duration (how far is the last object to be remembered), and the number of distractors. These parameters are detailed in Table 1 for each setting. The table also shows the size of the training/validation/test split used for our experiments. The COG dataset is composed of 44 tasks that have equal number of samples.
+We compare our model SAMNet's to the original COG model  ~\cite{yang2018dataset} using their implementation (https://github.com/google/cog) and scores given by the authors. We also use the exact same training parameters detailed in the original paper.
 
-\underline {Hard dataset}:
+On the other side we trained SAMNet using IBM's Mi-Prometheus~\cite{kornuta2018accelerating}, a framework for research based on Pytorch. We trained all our models using NVIDIA’s GeForce GTX TITAN X GPUs. We trained  SAMNet for 6 epochs using 8 reasoning steps SAMCells and a hidden state size of 128. The external memory has 128-bit slots.
 
-Our first goal is to improve the accuracy on the hard data set. In order to do this, we have tried different approaches.
 
-The first approach is to train a model on the hard train set only and test it on the hard test set. It is the same approach used by the original COG paper ~\cite{cog2018} to evaluate performance on the hard data set. We achieve a test accuracy of … which represents a major improvement from the COG model score.
 
-The second approach is to see if we can generalize from easy to hard setting. We train a model on the canonical data set and test it on the hard data set. Doing so we can achieve comparable results than the first approach. It shows that SAMNet has good generalizations abilities. It can adapt well to different sequence lengths and number of distractors.
+\begin{table}[!t]
+	\centering
+	\caption{COG Dataset parameters for the canonical setting and the hard setting  }
+	\begin{tabular}{ccc}
+		\toprule
+		Dataset       &    Canonical setting   & Hard setting   \\
+		
+		\midrule
+		
+		number of frames      &    4  &  8      \\
+		
+		\midrule
+		
+		maximum memory duration      &    3   & 7      \\
+		
+		\midrule
+		
+		number of distractors     &    1   & 10    \\
+		
+		\midrule
+		
+		size of training set    &    10000320  & 10000320      \\
+		
+		\midrule
+		
+		size of validation/test set    &    500016   & 500016      \\
+		
+		\midrule
+		
+		tasks per family  training set   &    227280  & 227280    \\
+		
+		\midrule
+		
+		tasks per family  validation/test set   &    11364   & 11364      \\
+		
+	
+	
+		
+	
+	   \bottomrule
+	
+	\end{tabular}
+	
+	\label{tab:parameters}
+\end{table}
 
-Finally we train a model on the canonical data set, fine-tune it on the hard data set during only 25k iterations and test it on the hard data set. Thanks to fine-tuning, we can observe a significant improvement from 91.6\%  to 96.5\% test accuracy which represent the state of the art accuracy for the hard setting (classification tasks).After a short fine-tuning process, the model can generalize well to harder tasks and even surpass the accuracy obtained in the first approach.
 
-\underline {Canonical dataset}:
+\subsection{Training and testing Methodology}
 
-For the canonical setting, we also could achieve a small improvement in accuracy, from 97.6\% for the COG model to 98\% for SAMNET.
+First we evaluate SAMNet's performance on the canonical setting and compare it with the COG Model. As shown in Table 2 we could achieve a small improvement in accuracy, from 97.6\% for the COG model to 98\% for SAMNet.
 
-\underline {Hard tasks}:
+Our second goal is to improve the accuracy on the hard dataset. In order to do this, we have tried three different approaches.
 
-We can also notice a major improvement for the two hardest tasks, AndCompareShape and AndCompareColor. Those two tasks represent a higher level of difficulties due to the number of objects to be remembered in order to answer the question correctly.
-We could achieve a 12\% improvement for the canonical data set and almost a 40\% improvement for the hard data set.
+The first approach is to train a model on the hard training set only and test it on the hard test set. It is the same approach used by the original COG paper ~\cite{yang2018dataset} to evaluate performance on the hard dataset. We achieve a test accuracy of 91.9 \% which represents a 12\% improvement from the COG model score (see Table 2).It shows that SAMNet's design choices make a difference when it come to harder tasks with longer sequences and more distractors objects.
+
+The second approach is to see if we can generalize from the easy to the hard setting. We train a model on the canonical dataset and test it on the hard dataset. Doing so we can achieve comparable results than the first approach. It shows that SAMNet has good generalizations abilities. It can adapt well to different sequence lengths and number of distractors.
+
+Finally we train a model on the canonical data set, fine-tune it on the hard data set during only 25k iterations and test it on the hard dataset. Thanks to fine-tuning, we can observe a significant improvement from 91.6\%  to 96.5\% test accuracy which represents the state of the art accuracy for the hard setting (classification tasks).After a short fine-tuning process, the model can generalize well to harder tasks and even surpass the accuracy obtained in the first approach. We note that the third approach is two time faster than the first one and more effective.
+
+
+We can also notice a major improvement for the two hardest tasks, AndCompareShape and AndCompareColor. Those two tasks represent a higher level of difficulty due to the number of objects to be remembered in order to answer the question correctly.
+As we can see in Table 2 we could achieve a 12\% improvement for the canonical data set and almost a 40\% improvement for the hard dataset.
 We see that the SAMNet's external memory plays an important role in remembering objects from the past and this affects the test scores significantly. 
-
 
 \begin{table}[t]
 	\tiny
 	
-	\caption{COG test set accuracies for  SAMNet \& COG models. For the COG section, the results marked as 'paper' comes from the original COG paper ~\cite{cog2018}, wheras the results marked as 'ours' come from our own experiments using the following implementation: https://github.com/google/cog }
+	\caption{COG test set accuracies for  SAMNet \& COG models. For the COG section, the results marked as 'paper' comes from the original COG paper ~\cite{yang2018dataset}, whereas the results marked as 'ours' come from our own experiments using the following implementation: https://github.com/google/cog }
 	
 	\centering
 	\begin{tabular}{ccccccccccc}
