@@ -8,10 +8,10 @@ All those modules are described below.
 \subsection{Question-driven Controller}
 
 The Question-driven Controller plays an important role in the reasoning process.
-it drives the attention over the question and produces the new control states. Each new control state defines a new reasoning operation. The inputs of this unit are the past control state, the question encoding and the contextual words (see Question Encoding Unit). It uses the dot product attention between the contextual words
+It drives the attention over the question and produces the new control states. Each new control state defines a new reasoning operation. The inputs of this unit are the past control state, the question encoding and the contextual words (see Question Encoding Unit). It uses the dot product attention between the contextual words
 and the combination of the past control states and the question encoding.  This attention layer produces the new control state.
 
-This unit also output the temporal class weights that will be used in the Reasoning Unit. It gives access to a temporal information for the current words. (last,latest,now, none temporal)
+This unit also output the temporal class weights that will be used in the Reasoning Unit. It gives access to a temporal information for the current words. (last, latest, now, none temporal)
 
 \subsection{Visual Retrieval Unit}
 
