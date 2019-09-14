@@ -31,8 +31,8 @@ This unit outputs the extracted object and the visual attention.
 
 \subsection{Memory Retrieval Unit}
 
-The role of the memory retrieval unit is to read and extract object from memory (Selective Attention Memory).
-As the Visual Retrieval Unit, it uses a combination of two following submodules. The interaction module responsible to blend the extracted object and the content of the memory. The attention module then extract the corresponding object in memory if present.
+The role of the memory retrieval unit is to read and extract object from memory).
+As the Visual Retrieval Unit, it uses the combination of the two following submodules. The interaction module blends together the extracted object and the content of the memory. The attention module then extract the corresponding object in memory if present. This unit outputs the extracted object and its corresponding location, we call it the "read head".
 
 
 \subsection{Reasoning Unit}
@@ -40,8 +40,19 @@ As the Visual Retrieval Unit, it uses a combination of two following submodules.
 
 \subsection{Memory update Unit}
 
-This unit is meant to update the content of the memory. It is controlled by two booleans that decides if the object needs to be added to a new position, or replaced somewhere. 
-It also updated the position of the write head. If a new object as been added to the current write head position, the right head shifts right to a new empty slot. If the object has been replaced, the write head doesn't move.
+This unit is meant to update the content of the memory. 
+
+Three actions can happen:
+
+\begin{itemize}
+	\item There is no object to be added to memory, the memory remains unchanged
+	\item There is one object that needs to be added to memory, but a similar object is already in memory at a given location. The new object will replace the old object at this location
+	
+	\item There is one object that needs to be added to memory, and  it is a new object. It is added at the write head location.
+\end{itemize}
+
+
+This module also updates the position of the write head. If a new object as been added to the current write head position, the right head shifts right to a new empty slot. If the object has been replaced, the write head doesn't move.
 
 \subsection{Summary Object  Unit}
 
