@@ -1,13 +1,12 @@
 \section{Introduction}
 
-Integration of vision and language in deep neural network models allows learning joint representations of objects, concepts, and relations.  In addition to multimodal learning, visual grounding of language is another opportunity that the AI community is excited about, especially in the context of Harnad's "symbol grounding problem" \cite{}. 
+Integration of vision and language in deep neural network models allows learning joint representations of objects, concepts, and relations.  In addition to multimodal learning, visual grounding of language is another opportunity that the AI community is excited about, especially in the context of Harnad's "symbol grounding problem" \cite{harnad2003symbol}. 
 
 Starting with the VQA dataset \cite{}, many tasks have emerged in the past several years\cite{mogadala2019trends}.  Since the conception of the VQA benchmark, visual reasoning is the main emphasis in these tasks, which can be expressed in language. Visual reasoning mainly deals with the comparison of object attributes, counting and other relational questions.
 In contrast to VQA, which comes with static image and question pairs, an emerging field is Video QA \cite{} that introduced the temporal aspect in the visual input.  Video input provides another opportunity to test system's ability to deal with temporal relations and reasoning.  As evident from human cognition, attention and memory are the key components that are required to solve these problems, which need to process spatial and temporal information.
 
-The ability to deal with time is also challenge for natural language processing (NLP), for example in question answering (QA) systems and in dialog.  The current QA solutions, in certain problem settings, can work around this challenge by processing the whole text input and reason over the text using attention or other mechanisms. For example the Memory Networks \cite{weston2015towards}, solves the bAbI reasoning task by processing all the facts at once, which reside in memory and available to provide answers. Similarly, in Visual Dialog~\cite{das2017visual} the system keeps the whole history of the dialog in memory.  In real-time dialog or video QA, there may not be such opportunity or the system may be forced to record the whole history which is not always feasible.  Video reasoning datasets such as SVQA (Synthetic Video Question Answering)~\cite{song2018explore}, TGIF-QA, and COG \cite{yang2018dataset} 
-and 
-Humans have the ability to selectively pay attention and store important items or events in memory based on their goals.  Working memory and episodic memory systems are responsible for this remarkable ability. 
+The ability to deal with time is a challenge also for natural language processing (NLP), for example in question answering (QA) systems and in dialog applications.  The current NLP solutions, in certain problem settings, can work around this challenge by processing the entire text input and reason over it using attention \cite{vaswani2017attention} or other mechanisms. For example, Memory Networks \cite{weston2015towards}, solves the bAbI reasoning task by processing the supporting facts all at once, which reside in memory and available to provide answers. Similarly, in Visual Dialog~\cite{das2017visual} the system keeps the whole history of the dialog in memory.  In real-time dialog or video QA, there may not be such opportunity or the system may be forced to record the whole history which is not always feasible.  Video reasoning datasets such as SVQA (Synthetic Video Question Answering)~\cite{song2018explore} and COG \cite{yang2018dataset} have limited number of frames (e.g. 4-16 frames), and therefore manageable by the neural net models to process and represent all of the visual information. According to\cite{song2018explore} the authors extracted visual features from each clip and aggregated features of all clips from one video to form a sequential video representation.
+These solutions may demonstrate high accuracy and apply to specific problems, however, generalization to arbitrary length video sequences will be problematic.  Such approaches also differ from the human cognitive strategies.  Humans have the ability to selectively pay attention and store important items or events in memory based on their goals.  Working memory and episodic memory systems are responsible for this remarkable ability. 
 
 %Fluid Intelligence:
 %
@@ -33,33 +32,33 @@ Humans have the ability to selectively pay attention and store important items o
 %
 %Wingrad Scheme challenge~\cite{levesque2012winograd}
 
-visual reasoning~\cite{mogadala2019trends} - datasets such as COG~\cite{yang2018dataset} and 
-SVQA (Synthetic Video Question Answering)~\cite{song2018explore}
+%visual reasoning~\cite{mogadala2019trends} - datasets such as COG~\cite{yang2018dataset} and 
+%SVQA (Synthetic Video Question Answering)~\cite{song2018explore}
+%
+%
+%ARISTO project~\cite{clark2019f} - based on RoBERTa~\cite{liu2019roberta} contextual word embeddings
+%
+%transformer-based solutions~\cite{vaswani2017attention} using self-attention
+%
+%
+%“The current neural network approaches will find it difficult to determine which combinations of ‘later’, ‘earlier’, ‘more’, and ‘less’ constitute ‘increase’ and which constitute ‘decrease,'” Davis says. “Neural networks have no inherent idea of magnitude or of time.”
+%~\cite{davis2016write}
 
 
-ARISTO project~\cite{clark2019f} - based on RoBERTa~\cite{liu2019roberta} contextual word embeddings
-
-transformer-based solutions~\cite{vaswani2017attention} using self-attention
-
-
-“The current neural network approaches will find it difficult to determine which combinations of ‘later’, ‘earlier’, ‘more’, and ‘less’ constitute ‘increase’ and which constitute ‘decrease,'” Davis says. “Neural networks have no inherent idea of magnitude or of time.”
-~\cite{davis2016write}
 
 
 
-
-
-\begin{itemize}
-\item bAbI:  MemNets~\cite{weston2014memory} have access to the whole story at once
-\item the same goes to SoftPats~\cite{haurilet2019s} - they build graph per frame and then frame number is treated as one dimensions, so at the end the \textit{Traveler} can access all of them at the same time 
-\item The paper~\cite{le2019learning} focuses on SVQA and TGIF-QA -  they access all frames at once, i.e. cut the video into clips, process each frame with CNNs and then aggregate feature representations of equal-size clips obtained by a temporal attention mechanism. So in fact the model has access to all frames all the time.
-\end{itemize}
-so the time aspect is really... not dealt with?
-
-Additionally, in~\cite{song2018explore} the authors introduced a large-scale dataset caled SVQA (Synthetic Video Question Answering) consisting of (Total QA pairs: 83160/11760/23760 and Total Videos 8400/1200/2400).
-As "using all frames is time-consuming. Thus we divide each video into clips (segments) of 16 frames, with 80\% overlap between successive clips (segments)" and "We extract feature from each clip and aggregate features of all clips from one video to form a sequential video representation." -- which means that they identified the problem that you "cannot extract features from all frames" at the beginning and pass that to the model. But instead of proposing a solution that will deal with the video on per-frame basis, they "cheated". ;)
-
-IMPORTANT: \textbf{we do not have any explicit assumptions when it comes to number of frames/length of the movie/number of distractionts}, so there is no need for cutting video into cuts etc.
+%\begin{itemize}
+%\item bAbI:  MemNets~\cite{weston2014memory} have access to the whole story at once
+%\item the same goes to SoftPats~\cite{haurilet2019s} - they build graph per frame and then frame number is treated as one dimensions, so at the end the \textit{Traveler} can access all of them at the same time 
+%\item The paper~\cite{le2019learning} focuses on SVQA and TGIF-QA -  they access all frames at once, i.e. cut the video into clips, process each frame with CNNs and then aggregate feature representations of equal-size clips obtained by a temporal attention mechanism. So in fact the model has access to all frames all the time.
+%\end{itemize}
+%so the time aspect is really... not dealt with?
+%
+%Additionally, in~\cite{song2018explore} the authors introduced a large-scale dataset caled SVQA (Synthetic Video Question Answering) consisting of (Total QA pairs: 83160/11760/23760 and Total Videos 8400/1200/2400).
+%As "using all frames is time-consuming. Thus we divide each video into clips (segments) of 16 frames, with 80\% overlap between successive clips (segments)" and "We extract feature from each clip and aggregate features of all clips from one video to form a sequential video representation." -- which means that they identified the problem that you "cannot extract features from all frames" at the beginning and pass that to the model. But instead of proposing a solution that will deal with the video on per-frame basis, they "cheated". ;)
+%
+%IMPORTANT: \textbf{we do not have any explicit assumptions when it comes to number of frames/length of the movie/number of distractionts}, so there is no need for cutting video into cuts etc.
 
 \subsection{Contributions}
 

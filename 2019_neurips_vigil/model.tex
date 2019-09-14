@@ -5,6 +5,16 @@ The core of SAMNet is based a recurrent cell called SAMCell. By aligning togethe
 The model is also composed of an Image Encoder and a Question Encoder both responsible to pre-process the visual and textual inputs. The output unit is a classifier.
 All those modules are described below.
 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1\linewidth]{../img/architecture/samnet_architecture}
+	\caption{}
+	\label{fig:samnetarchitecture}
+\end{figure}
+	
+	
+
 \subsection{Question-driven Controller}
 
 The Question-driven Controller plays an important role in the reasoning process.
@@ -21,12 +31,20 @@ This unit outputs the extracted object and the visual attention.
 
 \subsection{Memory Retrieval Unit}
 
-The role of the memory retrievial unit is to read and extract object from memory (Selective AttentionMemory).
-As the Visual Retrievial Unit, it uses a combination of two following submodules. The interaction module responsible to blend the extracted object and the content of the memory. The attention module then extract the corresponding object in memory if present.
+The role of the memory retrieval unit is to read and extract object from memory (Selective Attention Memory).
+As the Visual Retrieval Unit, it uses a combination of two following submodules. The interaction module responsible to blend the extracted object and the content of the memory. The attention module then extract the corresponding object in memory if present.
 
 
 \subsection{Reasoning Unit}
+
+
 \subsection{Memory update Unit}
-\subsection{Summary Object Udpate Unit}
+
+This unit is meant to update the content of the memory. It is controlled by two booleans that decides if the object needs to be added to a new position, or replaced somewhere. 
+It also updated the position of the write head. If a new object as been added to the current write head position, the right head shifts right to a new empty slot. If the object has been replaced, the write head doesn't move.
+
+\subsection{Summary Object  Unit}
+
+The goal of the Summary Object 
 
 The image encoder, question encoder and output unit are described in the appendix.
