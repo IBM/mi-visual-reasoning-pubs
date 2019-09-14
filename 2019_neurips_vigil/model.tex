@@ -21,7 +21,7 @@ The Question-driven Controller plays an important role in the reasoning process.
 It drives the attention over the question and produces the new control states. Each new control state defines a new reasoning operation. The inputs of this unit are the past control state, the question encoding and the contextual words (see Question Encoding Unit). It uses the dot product attention between the contextual words
 and the combination of the past control states and the question encoding.  This attention layer produces the new control state.
 
-This unit also output the temporal class weights that will be used in the Reasoning Unit. It gives access to a temporal information for the current words. (last, latest, now, none temporal)
+This unit also outputs the temporal class weights that will be used in the Reasoning Unit. It gives access to a temporal information for the current words (last, latest, now, none temporal).
 
 \subsection{Visual Retrieval Unit}
 
@@ -54,8 +54,8 @@ Three actions can happen:
 
 This module also updates the position of the write head. If a new object as been added to the current write head position, the right head shifts right to a new empty slot. If the object has been replaced, the write head doesn't move.
 
-\subsection{Summary Object  Unit}
+\subsection{Summary  Unit}
 
-The goal of the Summary Object 
+The  Summary Unit is the last unit of the SAMCell. It is responsible to output the new summary object. It first picks which object is relevant between the object extracted from memory and the visual object extracted from the image. Once the relevant object is picked, it is combined with the former summary object through a linear layer to become the new summary object. It is the final step of the SAMCell reasoning cycle. 
 
 The image encoder, question encoder and output unit are described in the appendix.
