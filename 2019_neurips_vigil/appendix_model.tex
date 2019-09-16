@@ -1,5 +1,7 @@
 \section{Appendix}
 
+
+
 \section{VWM model}
 
 \begin{notation}
@@ -369,13 +371,12 @@ The image encoder, question encoder and output unit are described in the appendi
 
 \colorbx{Output Unit}
 
+
+
 \section{Training and Implementation Details}
 
 SAMNet is implemented on IBM's Mi-Prometheus~\cite{kornuta2018accelerating} framework based on Pytorch. 
 We trained all our models using NVIDIA’s GeForce GTX TITAN X GPUs. SAMNet was trained using 8 reasoning steps and a hidden state size of 128. The external memory has 128-bit slots for all experiments. We trained our model until convergence but we also have set a training time limit of 80 hours.
-
-
-\section{Results}
 
 
 \begin{table}[t]
@@ -439,6 +440,33 @@ We trained all our models using NVIDIA’s GeForce GTX TITAN X GPUs. SAMNet was 
 }
 
 	\label{results}
+\end{table}
+
+
+
+\begin{table}[!t]
+	\centering
+	\caption{COG Dataset parameters for the canonical setting and the hard setting  }
+	\resizebox{\textwidth}{!}{
+		
+		
+		\begin{tabular}{ccccccc}
+			\toprule
+			
+			Dataset    &  	number of frames  &  	maximum memory duration & number of distractors & size of training set & size of validation/test set    \\ 
+			\midrule
+			
+			Canonical setting & 4 & 3 & 1 & 10000320 & 500016 &   \\
+			\midrule
+			
+			Hard  setting & 8 & 7& 10 & 10000320 & 500016  \\
+			\bottomrule
+			
+		\end{tabular}
+	}
+	
+	
+	\label{tab:parameters}
 \end{table}
 
 
