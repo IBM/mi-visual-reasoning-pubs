@@ -43,9 +43,9 @@ in order to perform spatio-temporal reasoning on frames and text.
 \end{figure}	
 
 The core of SAMNet is a recurrent cell called a SAM Cell (\cref{fig:samcell}). 
-By aligning together a new series of $k$ SAM Cells per frame, the network can perform $k$ 
+By aligning together a new series of $T$ cells per frame, the network can perform $k$ 
 reasoning steps over each frame, with information flowing between frames through the external memory. 
-While processing a single frame, for $t=1,2, \dots, k$, SAMCell maintains the following information as part of its recurrent state:
+While processing a single frame, for $t=1,2, \dots, T$, SAMCell maintains the following information as part of its recurrent state:
 (a) $c_t \in \Reals^d$, the control state used to drive the reasoning over objects in the frame and memory; and
 (b) $so_t  \in \Reals^d$, the summary visual object representing the relevant object for step $t$.
 Let $M_t \in  \Reals^{N \times d}$ denote the external memory with $N$ slots at the end of step $t$.
@@ -67,9 +67,6 @@ For example in case of the COG dataset we pick 4 classes to capture the terms la
 
 \paragraph{Reasoning Unit}
 This module is the backbone of SamNet that determines what gating operations need to be performed on the external memory as well as determining whether the relevant object for reasoning is supposed to be retrieved from the current frame or from the external memory.
-
-
-
 
 This section describes the model and the different units that composed a SAMCell. They are called the Question-driven Controller, the Visual Retrieval Unit, the Memory Retrieval Unit, the Reasoning unit, the Memory update unit, and the Summary Object Udpate Unit. 
 The model is also composed of an Image Encoder and a Question Encoder both responsible to pre-process the visual and textual inputs. The output unit is a classifier.
