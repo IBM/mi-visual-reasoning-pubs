@@ -1,4 +1,4 @@
-\section{Selective Attention Memory Network (SAMNet)}
+\section{Selective Attention Memory (SAM) Network}
 
 %\begin{figure}[!b]
 %\begin{minipage}{0.43\textwidth}
@@ -25,10 +25,11 @@
 	\label{fig:samnet}
 \end{figure}	
 
-SAMNet is an end-to-end differentiable recurrent model equipped with an external memory for enabling multi-step reasoning over text and video (\cref{fig:samnet}).
-The memory is used to store relevant objects representing contextual information about words in text and visual objects in video frames. 
-Each address of the memory stores a $d$-dimensional vector, where $d$ is a global parameter.
-The memory  can be accessed through either content-addressing, via dot-product attention, or location-based addressing. 
+SAM Network (SAMNet for short) is an end-to-end differentiable recurrent model equipped with an external memory for enabling multi-step reasoning over text and video (\cref{fig:samnet}).
+The model makes a single pass over the frames in temporal order, accessing one frame at a time.
+The memory locations store relevant objects representing contextual information about words in text and visual objects extracted from video. 
+Each location of the memory stores a $d$-dimensional vector. %, where $d$ is a global parameter.
+The memory  can be accessed through either content-based addressing, via dot-product attention, or location-based addressing. 
 Coupled with gating mechanisms to be described later, this enables correct objects to be retrieved 
 in order to perform spatio-temporal reasoning on frames and text. 
 %A notable feature of this design is that the number of addresses $N$ can be set to different values during training and 
@@ -41,31 +42,35 @@ in order to perform spatio-temporal reasoning on frames and text.
 	\label{fig:samcell}
 \end{figure}	
 
-The core of SAMNet is a recurrent cell called SAMCell (\cref{fig:samcell}). 
-By aligning together a new series of $k$ SAMCells per frame, the network can perform $k$ 
+The core of SAMNet is a recurrent cell called a SAM Cell (\cref{fig:samcell}). 
+By aligning together a new series of $T$ cells per frame, the network can perform $k$ 
 reasoning steps over each frame, with information flowing between frames through the external memory. 
-While processing a single frame, for $t=1,2, \dots, k$, SAMCell maintains the following information as part of its recurrent state:
+While processing a single frame, for $t=1,2, \dots, T$, SAMCell maintains the following information as part of its recurrent state:
 (a) $c_t \in \Reals^d$, the control state used to drive the reasoning over objects in the frame and memory; and
 (b) $so_t  \in \Reals^d$, the summary visual object representing the relevant object for step $t$.
 Let $M_t \in  \Reals^{N \times d}$ denote the external memory with $N$ slots at the end of step $t$.
 Let $\whead_t \in  \Reals^N$ denote an attention vector over the memory locations;
 in a trained model, $\whead_t$ points to the location of first empty slot in memory for adding new objects.   
 
+\paragraph{Question-driven Controller.}
+
+%The Question-driven Controller plays an important role in the reasoning process.
+%It drives the attention over the question and produces the new control states. Each new control state defines a new reasoning operation. The inputs of this unit are the past control state, the question encoding and the contextual words (see Question Encoding Unit). It uses the dot product attention between the contextual words
+%and the combination of the past control states and the question encoding.  This attention layer produces the new control state.
+%
+%This unit also outputs the temporal class weights that will be used in the Reasoning Unit. It gives access to a temporal information for the current words (last, latest, now, none temporal).
+
+This module drives attention over the question to produce $k$ control states, one per reasoning operation. 
+The control state $c_t$ at step $t$ is then fed to temporal classifier, a two-layer feedforward network with ELU activation in the hidden layer of $d$ units.
+The output $\tau_t$ of the classifier is intended to represent the different temporal contexts (or lack thereof) associated with the word in focus for that step of reasoning.	
+For example in case of the COG dataset we pick 4 classes to capture the terms labeled ``last'', ``latest'', ``now'', and ``none''.
+
+\paragraph{Reasoning Unit}
+This module is the backbone of SamNet that determines what gating operations need to be performed on the external memory as well as determining whether the relevant object for reasoning is supposed to be retrieved from the current frame or from the external memory.
 
 This section describes the model and the different units that composed a SAMCell. They are called the Question-driven Controller, the Visual Retrieval Unit, the Memory Retrieval Unit, the Reasoning unit, the Memory update unit, and the Summary Object Udpate Unit. 
 The model is also composed of an Image Encoder and a Question Encoder both responsible to pre-process the visual and textual inputs. The output unit is a classifier.
 All those modules are described below.
-
-
-
-
-
-
-
-
-
-
-
 
 
 
