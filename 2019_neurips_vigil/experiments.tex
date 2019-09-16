@@ -12,48 +12,28 @@ On the other side we trained SAMNet using IBM's Mi-Prometheus~\cite{kornuta2018a
 \begin{table}[!t]
 	\centering
 	\caption{COG Dataset parameters for the canonical setting and the hard setting  }
-	\begin{tabular}{ccc}
+	\resizebox{\textwidth}{!}{
+	
+
+	\begin{tabular}{ccccccc}
 		\toprule
-		Dataset       &    Canonical setting   & Hard setting   \\
 		
-		\midrule
+		Dataset    &  	number of frames  &  	maximum memory duration & number of distractors & size of training set & size of validation/test set    \\ 
+          \midrule
 		
-		number of frames      &    4  &  8      \\
-		
-		\midrule
-		
-		maximum memory duration      &    3   & 7      \\
-		
-		\midrule
-		
-		number of distractors     &    1   & 10    \\
-		
-		\midrule
-		
-		size of training set    &    10000320  & 10000320      \\
-		
-		\midrule
-		
-		size of validation/test set    &    500016   & 500016      \\
-		
-		\midrule
-		
-		tasks per family  training set   &    227280  & 227280    \\
-		
-		\midrule
-		
-		tasks per family  validation/test set   &    11364   & 11364      \\
-		
-	
-	
-		
-	
-	   \bottomrule
+		 Canonical setting & 4 & 3 & 1 & 10000320 & 500016 &   \\
+		 \midrule
+		 
+		 Hard  setting & 8 & 7& 10 & 10000320 & 500016  \\
+		 \bottomrule
 	
 	\end{tabular}
+}
+
 	
 	\label{tab:parameters}
 \end{table}
+
 
 
 \subsection{Training and testing Methodology}
@@ -81,11 +61,11 @@ We see that the SAMNet's external memory plays an important role in remembering 
 
 
 \begin{table}[t]
-	\tiny
 	
 	\caption{COG test set accuracies for  SAMNet \& COG models. For the COG section, the results marked as 'paper' comes from the original COG paper ~\cite{yang2018dataset}, whereas the results marked as 'ours' come from our own experiments using the following implementation: https://github.com/google/cog }
 	
 	\centering
+	\resizebox{\textwidth}{!}{
 	\begin{tabular}{ccccccccccc}
 		\toprule
 		Model & & SAMNet & && && COG&& \\
@@ -97,14 +77,14 @@ We see that the SAMNet's external memory plays an important role in remembering 
 		Tested on        & canonical & hard & hard & hard &            &canonical  & hard & hard & hard  \\ 
 		\midrule
 		
-		Overall accuracy & 98.0 & 91.6 & 96.5  & running &           & 97.6  & 65.9 & running& 80.1 \\ 
+		Overall accuracy & 98.0 & 91.6 & 96.5  &  &           & 97.6  & 65.9 & & 80.1 \\ 
 		
 		\midrule 
 		
 		
-		AndCompareColor	&	93.5		&	82.7	&	89.2	&&		&81.9	&53.1&&	51.4
+		AndCompareColor	&	93.5		&	82.7	&	89.2	&&		&81.9	&57.1&  &	51.4
 \\ 
-		AndCompareShape	&	93.2 		&	83.7	&	89.7	&&	&	80.0	&57.1	&&50.7\\ 
+		AndCompareShape	&	93.2 		&	83.7	&	89.7	&&	&	80.0	&53.1	& &50.7\\ 
 
 		
 		
@@ -115,6 +95,7 @@ We see that the SAMNet's external memory plays an important role in remembering 
 		
 		\bottomrule
 	\end{tabular}
+}
 	\label{results}
 \end{table}
 
