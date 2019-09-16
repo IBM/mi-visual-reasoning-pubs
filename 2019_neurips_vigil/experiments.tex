@@ -1,3 +1,4 @@
+
 \section{Experiments}
 
 We evaluated SAMNet on the COG dataset and compared our results to the baseline model described in ~\cite{yang2018dataset}. To test the generalization ability of both models, we used the canonical (easy) and hard settings that alter the number of distractors and sequence length.  Since there was no baseline for these tests (train on canonical, test on hard), we ran our own experiments using the COG model provided by the authors.  SAMNet achieves the highest overall scores for all categories of experiments (Table 2), especially for the tests run on the hard dataset.  Among the 22 classification tasks, we highlighted the two most difficult tasks that affect the overall score.  More detailed results are provided in the Appendix.
@@ -39,15 +40,12 @@ We argue that the generalization capability of SAMNet is mainly due to the dynam
 \end{table}
 
 
-<<<<<<< HEAD
-\subsection{Training and Implementation Details}
-=======
+
+
 
 \subsection{Training and testing Methodology}
->>>>>>> f2f4bdec46590da56efa04bb9c25eb405c8c3882
 
-SAMNet is implmented on IBM's Mi-Prometheus~\cite{kornuta2018accelerating} framework based on Pytorch. 
-We trained all our models using NVIDIA’s GeForce GTX TITAN X GPUs. SAMNet was trained using 8 reasoning steps and a hidden state size of 128. The external memory has 128-bit slots for all experiments. We trained our model until convergence but we also have set a training time limit of 80 hours.
+
 
 We compared our model to the original COG model  ~\cite{yang2018dataset} using their implementation (https://github.com/google/cog) and scores provided by the authors through personal communications. We used the same training parameters detailed in the original paper and reproduced their results.  For the generalization experiments from canonical to hard, we used the verified model and obtained new results that were not reported in the reference paper.   In Table 2 COG section shows 4 columns divided into two parts: "paper" and "ours" which distinguish between the results reported in the paper vs. our own experiments.
 
@@ -63,7 +61,8 @@ After a short fine-tuning process, the transferred model could generalize well t
 
 A more granular analysis of accuracy per task shows a major improvement for the two hardest tasks, AndCompareShape and AndCompareColor. Those two tasks represent a higher level of difficulty due to the number of objects to be remembered in order to answer the question correctly.
 As we can see in Table 2 we could achieve a 12\% improvement for the canonical data set and almost a 40\% improvement for the hard dataset.
-The large improvement in these memory-intensive tasks indicate that the SAMNet's external memory plays a crucial role in our results.
+The large improvement in these memory-intensive tasks indicate that the SAMNet's external memory plays a crucial role in our results. 
+The training and implementation details are in appendix.
 
 
 
@@ -112,6 +111,7 @@ The large improvement in these memory-intensive tasks indicate that the SAMNet's
 \begin{figure}
 	\centering
 	\caption{Comparison of SAMNet and COG on their abilities to generalize from the canonical to the hard dataset. We show three different settings: 1) (baseline) trained on canonical, tested on canonical 2) trained on canonical, tested on hard, 3) trained on canonical, fine tuned on hard, tested on hard. }
+	\resizebox{6cm}{3.5cm}{%
 	
 	\begin{tikzpicture}
 	
@@ -135,6 +135,7 @@ The large improvement in these memory-intensive tasks indicate that the SAMNet's
 	\legend{SAMNet ,COG Model}
 	\end{axis}
 	\end{tikzpicture}
+}
 \end{figure}
 
 

@@ -338,6 +338,11 @@ end of the previous frame.
 
 \colorbx{Output Unit}
 
+\section{Training and Implementation Details}
+
+SAMNet is implemented on IBM's Mi-Prometheus~\cite{kornuta2018accelerating} framework based on Pytorch. 
+We trained all our models using NVIDIA’s GeForce GTX TITAN X GPUs. SAMNet was trained using 8 reasoning steps and a hidden state size of 128. The external memory has 128-bit slots for all experiments. We trained our model until convergence but we also have set a training time limit of 80 hours.
+
 
 \section{Results}
 
@@ -404,4 +409,5 @@ end of the previous frame.
 
 	\label{results}
 \end{table}
+
 
