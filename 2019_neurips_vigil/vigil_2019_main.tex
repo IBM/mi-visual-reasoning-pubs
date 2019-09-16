@@ -11,8 +11,8 @@
 \hypersetup{
 	colorlinks=true,
 	linkcolor={red!80!black},
-%	citecolor={blue!80!black},
-%	urlcolor={magenta}
+	%	citecolor={blue!80!black},
+	%	urlcolor={magenta}
 }
 
 \usepackage{url}            % simple URL typesetting
@@ -27,7 +27,6 @@
 \usepackage{amsthm}
 \usepackage{mathtools}
 %\usepackage[usenames, dvipsnames]{color}
-
 \usepackage{cleveref}
 \crefname{figure}{Figure}{Figures}
 
@@ -101,31 +100,36 @@
 \author{T.S. Jayram, Vincent Albouy, Tomasz Kornuta, Ahmet Ozcan}
 
 \begin{document}
-
-\maketitle
-\begin{abstract}
-	Learning to reason on a frame by frame basis using Selective Attention Memory. 
-\end{abstract}
 	
-
+	\maketitle
+	\begin{abstract}
+		We introduce the Selective Attention Memory Network (SAMNet), a end-to-end differentiable architecture for video reasoning. It is a recurrent model with an external memory that enables frame by frame reasoning over text and video. 
+		We show SAMNet's abilities on the COG dataset made for Video Question Answering (Guangyu Robert Yang, Igor Ganichev et al., ECCV 2018). We compare our model to the original COG model and show that SAMNet outperforms the COG model especially on the hardest version of the dataset with longer sequences and a maximum number of distractors. We also demonstrate that our model has good generalization capabilities going from easy to hard tasks.
+		
+		
+		
+		
+	\end{abstract}
 	
-
-
-
-
-
-\input{intro}
-
-\input{model}
-
-\input{experiments}
-
-
-\newpage
-\bibliographystyle{alpha}
-\bibliography{../cog_bibliography}
-
-\newpage
-\input{appendix_model}
-
+	
+	
+	
+	
+	
+	
+	
+	\input{intro}
+	
+	\input{model}
+	
+	\input{experiments}
+	
+	
+	\newpage
+	\bibliographystyle{alpha}
+	\bibliography{../cog_bibliography}
+	
+	\newpage
+	\input{appendix_model}
+	
 \end{document}
