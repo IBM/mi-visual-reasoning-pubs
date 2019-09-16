@@ -43,9 +43,9 @@ in order to perform spatio-temporal reasoning on frames and text.
 \end{figure}	
 
 The core of SAMNet is a recurrent cell called a SAM Cell (\cref{fig:samcell}). 
-By aligning together a new series of $T$ cells per frame, the network can perform $k$ 
-reasoning steps over each frame, with information flowing between frames through the external memory. 
-While processing a single frame, for $t=1,2, \dots, T$, SAMCell maintains the following information as part of its recurrent state:
+By unrolling a new series of $T$ cells for every frame, the network can perform $k$ steps of compositional
+reasoning over every frame, with information flowing between frames through the external memory. 
+While processing a single frame, for $t=1,2, \dots, T$, SAM Cell maintains the following information as part of its recurrent state:
 (a) $c_t \in \Reals^d$, the control state used to drive the reasoning over objects in the frame and memory; and
 (b) $so_t  \in \Reals^d$, the summary visual object representing the relevant object for step $t$.
 Let $M_t \in  \Reals^{N \times d}$ denote the external memory with $N$ slots at the end of step $t$.
@@ -65,15 +65,49 @@ The control state $c_t$ at step $t$ is then fed to temporal classifier, a two-la
 The output $\tau_t$ of the classifier is intended to represent the different temporal contexts (or lack thereof) associated with the word in focus for that step of reasoning.	
 For example in case of the COG dataset we pick 4 classes to capture the terms labeled ``last'', ``latest'', ``now'', and ``none''.
 
+The visual (resp. memory) retrieval unit uses the information generated above to extract a relevant object from the frame (resp. memory)
+along with an attention vector over the feature vectors of that frame (resp. over memory addresses). Note that the returned object may not be valid, 
+e.g., if the current reasoning step focuses on the phrase ``last red square'', the returned object from the current frame
+will be invalid even if it contains a red square. The attention vector over the memory $rh_t$ is also called the \emph{read head} since it will be used 
+for memory updates later.
+
 \paragraph{Reasoning Unit}
-This module is the backbone of SamNet that determines what gating operations need to be performed on the external memory as well as determining whether the relevant object for reasoning is supposed to be retrieved from the current frame or from the external memory.
+This module is the backbone of SamNet that determines what gating operations need to be performed on the external memory, postponing the actual updates
+themselves to the memory update unit. It also determines whether the relevant object for reasoning is supposed to be retrieved from the current frame or from external memory.
 
-This section describes the model and the different units that composed a SAMCell. They are called the Question-driven Controller, the Visual Retrieval Unit, the Memory Retrieval Unit, the Reasoning unit, the Memory update unit, and the Summary Object Udpate Unit. 
-The model is also composed of an Image Encoder and a Question Encoder both responsible to pre-process the visual and textual inputs. The output unit is a classifier.
-All those modules are described below.
+To determine whether we have a valid object from frame (and similarly for memory), we execute the following reasoning procedure.
+First, we take the visual attention vector $va_t$ of dimension $L$, where $L$ denotes the number of feature vectors for the frame,
+and compute a simple aggregate $vs_t = \sum_{i=1}^L [va_t(i)]^2$. It can be shown mathematically that the more localized the attention
+vector is, the higher is the aggregate value.
+We perform a similar computation on the read head attention vector over memory locations.
+We feed these 2 values along with the temporal class weights $\tau_t$ to a 3-layer feedforward classifier with hidden ELU units to extract 4 gating values
+in $[0,1]$ modulated for the current reasoning step:
+(a) $\imatch_t$, which determines whether there is a valid visual object;
+(b) $\mmatch_t$, which determines whether there is a valid memory object. 
+(c) $\doreplace_t$, which determines whether the memory should be updated by replacing a previously stored object with a new one; and
+(d) $\doadd_t$, which determines whether a new object should be added to memory.
+We stress that the network has to learn via training how to correctly implement these behaviors.
+
+\paragraph{Memory Update Unit.}
+
+%# get attention on the correct slot in memory based on the 2 predicates
+%# attention defaults to 0 if neither condition holds
+%wt = do_replace * read_head + do_add_new * write_head
+%
+%# Update visual_working_memory
+%new_visual_working_memory = (visual_working_memory * (1 - wt)[..., None]
+%+ wt[..., None] * visual_object[..., None, :])
+%
+%# compute shifted sequential head to right
+%shifted_write_head = torch.roll(write_head, shifts=1, dims=-1)
+%
+%# new sequential attention
+%new_write_head = ((shifted_write_head * do_add_new)
+%+ (write_head * (1 - do_add_new)))
+
+TO BE WRITTEN
 
 
+The  Summary Unit is the last unit of the SAM Cell. It is responsible to output the new summary object. It first picks which object is relevant between the object extracted from memory and the visual object extracted from the image. Once the relevant object is picked, it is combined with the former summary object through a linear layer to become the new summary object. It is the final step of the SAM Cell reasoning cycle. 
 
-The  Summary Unit is the last unit of the SAMCell. It is responsible to output the new summary object. It first picks which object is relevant between the object extracted from memory and the visual object extracted from the image. Once the relevant object is picked, it is combined with the former summary object through a linear layer to become the new summary object. It is the final step of the SAMCell reasoning cycle. 
-
-
+The details of the modules image encoder, question encoder and output unit are described in the appendix.
