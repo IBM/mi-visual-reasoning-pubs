@@ -57,46 +57,17 @@ The model is also composed of an Image Encoder and a Question Encoder both respo
 All those modules are described below.
 
 
-\subsection{Question-driven Controller}
-
-The Question-driven Controller plays an important role in the reasoning process.
-It drives the attention over the question and produces the new control states. Each new control state defines a new reasoning operation. The inputs of this unit are the past control state, the question encoding and the contextual words (see Question Encoding Unit). It uses the dot product attention between the contextual words
-and the combination of the past control states and the question encoding.  This attention layer produces the new control state.
-
-This unit also outputs the temporal class weights that will be used in the Reasoning Unit. It gives access to a temporal information for the current words (last, latest, now, none temporal).
-
-\subsection{Visual Retrieval Unit}
-
-The visual retrievial unit is responsible to extract visual information from the current image given a control state coming from the Question-driven Controller. It is first projecting the past summary object and the feature maps together using the interaction module.
-It is then using the attention module as follow. The query are the control states and the keys and are the feature maps coming from the image encoder. The results of this attention is applied on the modified features maps coming from the interaction module.  
-This unit outputs the extracted object and the visual attention.
-
-\subsection{Memory Retrieval Unit}
-
-The role of the memory retrieval unit is to read and extract object from memory).
-As the Visual Retrieval Unit, it uses the combination of the two following submodules. The interaction module blends together the extracted object and the content of the memory. The attention module then extract the corresponding object in memory if present. This unit outputs the extracted object and its corresponding location, we call it the "read head".
 
 
-\subsection{Reasoning Unit}
 
 
-\subsection{Memory update Unit}
-
-This unit is meant to update the content of the memory. 
-
-Three actions can happen:
-
-\begin{itemize}
-	\item There is no object to be added to memory, the memory remains unchanged
-	\item There is one object that needs to be added to memory, but a similar object is already in memory at a given location. The new object will replace the old object at this location
-	
-	\item There is one object that needs to be added to memory, and  it is a new object. It is added at the write head location.
-\end{itemize}
 
 
-This module also updates the position of the write head. If a new object as been added to the current write head position, the right head shifts right to a new empty slot. If the object has been replaced, the write head doesn't move.
 
-\subsection{Summary  Unit}
+
+
+
+
 
 The  Summary Unit is the last unit of the SAMCell. It is responsible to output the new summary object. It first picks which object is relevant between the object extracted from memory and the visual object extracted from the image. Once the relevant object is picked, it is combined with the former summary object through a linear layer to become the new summary object. It is the final step of the SAMCell reasoning cycle. 
 
