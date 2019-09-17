@@ -2,7 +2,7 @@
 
 
 
-\section{VWM model}
+\subsection{VWM model}
 
 \begin{notation}
 	Treat 1D tensors as column vectors and 2D tensors as matrices, where appropriate.
@@ -25,7 +25,7 @@
 	\end{enumerate}
 \end{notation}	
 
-\section{Basic layers/modules}
+\subsection{Basic layers/modules}
 
 \colorbx{Linear (Affine) Layer}
 
@@ -86,7 +86,7 @@
 
 \hrulefill
 
-\section{VWM cell}
+\subsection{VWM cell}
 
 The VWM recurrent cell is executed for $T$ reasoning steps for every frame in
 the temporal order.  Within a single frame, the cell state at the end of each reasoning step 
@@ -355,15 +355,7 @@ The image encoder, question encoder and output unit are described in the appendi
 
 
 
-\begin{figure}
-	\includegraphics[width=\textwidth]{img/model2}
-	\label{fig:model2}
-\end{figure}	
 
-\begin{figure}
-	\includegraphics[width=\textwidth]{img/image}
-	\label{fig:model}
-\end{figure}	
 
 \colorbx{Image Encoder}
 
@@ -442,19 +434,21 @@ The final hidden state of the biLSTM becomes the question encoding representatio
 The output unit predicts the final answer to the question. It is a 2-linear-layer-ELU classifier that produces a distribution over the possible candidates. It is based on two inputs, the final summary object $so_t$ and the question encoding $q$ that are concatenated together. 
  
 
-\section{Training and Implementation Details}
+\subsection{Training and Implementation Details}
 
+\subsubsection{Implementation Details}
 
-\subsection{Training and testing Methodology}
 
 SAMNet is implemented on IBM's Mi-Prometheus~\cite{kornuta2018accelerating} framework based on Pytorch. 
 We trained all our models using NVIDIA’s GeForce GTX TITAN X GPUs. SAMNet was trained using 8 reasoning steps and a hidden state size of 128. The external memory has 128-bit slots for all experiments. We trained our model until convergence but we also have set a training time limit of 80 hours.
+
+\subsubsection{Training and testing Methodology}
 
 We compared our model to the original COG model  ~\cite{yang2018dataset} using their implementation (https://github.com/google/cog) and scores provided by the authors through personal communications. We used the same training parameters detailed in the original paper and reproduced their results.  For the generalization experiments from canonical to hard, we used the verified model and obtained new results that were not reported in the reference paper.   In Table 1 COG section shows 4 columns divided into two parts: "paper" and "ours" which distinguish between the results reported in the paper vs. our own experiments.
 
 Our experiments focused on the 22 classification tasks provided by the COG dataset. More details about the dataset are given in Table 2. First we evaluated SAMNet's performance on the canonical setting and compared it with the COG Model. As shown in Table 1 we could achieve a small improvement in accuracy, from 97.6\% for the COG model to 98\% for SAMNet. Next we focused on the hard setting of the dataset which increases the number of distractors from 1 to 10 and the number of frames from 4 to 8.
 
-The first approach was to train a model on the hard training set, and test it on the hard test set. This is the same approach used by the COG paper ~\cite{yang2018dataset} to evaluate performance on the hard dataset. We achieve a test accuracy of 91.9 \% which represents a 12\% improvement from the COG model score (see Table 1).
+The first approach was to train a model on the hard training set, and test it on the hard test set. This is the same approach used by the COG paper ~\cite{yang2018dataset} to evaluate performance on the hard dataset. We achieve a test accuracy of 96.1 \% which represents a 16\% improvement from the COG model score (see Table 1).
 %It shows that SAMNet's design choices make a difference when it come to harder tasks with longer sequences and more distractors objects.
 
 The second approach was to see if the models can generalize from the easy to the hard setting. For this experiment, we trained a model on the canonical dataset, and directly tested on the hard dataset.  This experiment highlighted the most significant difference between SAMNet and the baseline COG model.
@@ -463,11 +457,11 @@ Finally we trained a model on the canonical data set, fine-tuned it on the hard 
 After a short fine-tuning process, the transferred model could generalize well to harder tasks and even surpass the accuracy obtained in the first approach. We note that the third approach is also twice faster than the first one, and it is more effective in terms of accuracy.
 
 A more granular analysis of accuracy per task shows a major improvement for the two hardest tasks, AndCompareShape and AndCompareColor. Those two tasks represent a higher level of difficulty due to the number of objects to be remembered in order to answer the question correctly.
-As we can see in Table 1 we could achieve a 12\% improvement for the canonical data set and almost a 40\% improvement for the hard dataset.
+As we can see in Table 1 we could achieve a 12\% improvement for the canonical data set and almost a 30\% improvement for the hard dataset.
 The large improvement in these memory-intensive tasks indicate that the SAMNet's external memory plays a crucial role in our results. 
 The training and implementation details are in appendix.
 
-\begin{table}[t]
+\begin{table}[htb]
 \caption{COG test set accuracies for SAMNet \& COG models. Below `paper' denotes results from~\cite{yang2018dataset} 
 	while `code' denotes results of our experiments using their implementation~\cite{yang2018implement}}
 \centering
@@ -518,7 +512,7 @@ The training and implementation details are in appendix.
 
 
 
-\begin{table}[!t]
+\begin{table}[htb]
 \caption{COG Dataset parameters for the canonical setting and the hard setting  }
 \centering
 \begin{adjustbox}{width=\textwidth}
@@ -539,3 +533,15 @@ The training and implementation details are in appendix.
 \end{table}
 
 
+
+\subsection{Visualization}
+
+\begin{figure}[!htb]
+	\includegraphics[width=\textwidth]{img/model2}
+	\label{fig:model2}
+\end{figure}	
+
+\begin{figure}[!htb]
+	\includegraphics[width=\textwidth]{img/image}
+	\label{fig:model}
+\end{figure}	
