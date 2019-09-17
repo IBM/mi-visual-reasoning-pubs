@@ -18,9 +18,9 @@
 %The model is also composed of an Image Encoder and a Question Encoder both responsible to pre-process the visual and textual inputs. The output unit is a classifier.
 %All those modules are described below.
 
-\begin{wrapfigure}{R}{0.8\textwidth}
+\begin{wrapfigure}{r}{0.78\textwidth}
 	\centering
-	\includegraphics[width=0.78\textwidth]{../img/architecture/samnet_architecture4}
+	\includegraphics[width=0.76\textwidth]{../img/architecture/samnet_architecture4}
 	\caption{General architecture of SAMNet}
 	\label{fig:samnet}
 \end{wrapfigure}
@@ -32,18 +32,18 @@
 %	\label{fig:samnet}
 %\end{figure}	
 
-SAM Network (SAMNet for short) is an end-to-end differentiable recurrent model equipped with an external memory for enabling multi-step reasoning over text and video (\cref{fig:samnet}).
+SAM Network (SAMNet for short) is an end-to-end differentiable recurrent model equipped with an external memory~(\cref{fig:samnet}).
 The model makes a single pass over the frames in temporal order, accessing one frame at a time.
 The memory locations store relevant objects representing contextual information about words in text and visual objects extracted from video. 
 Each location of the memory stores a $d$-dimensional vector. %, where $d$ is a global parameter.
-The memory  can be accessed through either content-based addressing, via dot-product attention, or location-based addressing. 
-Coupled with gating mechanisms to be described later, this enables correct objects to be retrieved 
-in order to perform spatio-temporal reasoning on frames and text. 
+The memory can be accessed through either content-based addressing, via dot-product attention, or location-based addressing. 
+Using gating mechanisms, correct objects can be retrieved 
+in order to perform multi-step spatio-temporal reasoning over text and video.  
 %A notable feature of this design is that the number of addresses $N$ can be set to different values during training and 
 %testing to fit the characteristics of data.
 
 
-\begin{wrapfigure}{R}{0.8\textwidth}
+\begin{wrapfigure}{r}{0.8\textwidth}
 	\centering
 	\includegraphics[width=0.78\textwidth]{../img/architecture/samcell_reasoning}
 	\caption{Single reasoning step in SAMCell}
@@ -58,9 +58,10 @@ in order to perform spatio-temporal reasoning on frames and text.
 %\end{figure}	
 
 The core of SAMNet is a recurrent cell called a SAM Cell (\cref{fig:samcell}). 
-By unrolling a new series of $T$ cells for every frame, the network can perform $k$ steps of compositional
-reasoning over every frame, with information flowing between frames through the external memory. 
-While processing a single frame, for $t=1,2, \dots, T$, SAM Cell maintains the following information as part of its recurrent state:
+Unrolling a new series of $T$ cells for every frame enables $T$ steps of compositional
+reasoning.
+Information flows between frames through the external memory. 
+During the $t$-th reasoning step, for $t=1,2, \dots, T$, SAM Cell maintains the following information as part of its recurrent state:
 (a) $c_t \in \Reals^d$, the control state used to drive the reasoning over objects in the frame and memory; and
 (b) $so_t  \in \Reals^d$, the summary visual object representing the relevant object for step $t$.
 Let $M_t \in  \Reals^{N \times d}$ denote the external memory with $N$ slots at the end of step $t$.
@@ -69,26 +70,29 @@ in a trained model, $\whead_t$ points to the location of first empty slot in mem
 
 \noindent{\textbf{Question-driven Controller.}}
 This module drives attention over the question to produce $k$ control states, one per reasoning operation. 
-The control state $c_t$ at step $t$ is then fed to temporal classifier, a two-layer feedforward network with ELU activation in the hidden layer of $d$ units.
+The control state $c_t$ at step $t$ is then fed to a \emph{temporal classifier}, 
+a two-layer feedforward network with ELU activation used in the hidden layer of $d$ units.
 The output $\tau_t$ of the classifier is intended to represent the different temporal contexts (or lack thereof) associated with the word in focus for that step of reasoning.	
-For example in case of the COG dataset we pick 4 classes to capture the terms labeled ``last'', ``latest'', ``now'', and ``none''.
+For the COG dataset we pick 4 classes to capture the terms labeled ``last'', ``latest'', ``now'', and ``none''.
 
-The visual (resp. memory) retrieval unit uses the information generated above to extract a relevant object $vo_t$ from the frame (resp. $mo_t$ from memory)
-along with an attention vector over the feature vectors of that frame (resp. over memory addresses). Note that the returned object may not be valid, 
-e.g., if the current reasoning step focuses on the phrase ``last red square'', the returned object from the current frame
-will be invalid even if it contains a red square. The attention vector over the memory $rh_t$ is also called the \emph{read head} since it will be used 
-for memory updates later.
+The visual retrieval unit uses the information generated above to extract a relevant object $vo_t$ from the frame.
+A similar operation on memory yields the object $mo_t$. The memory operation is based on an attention mechanism,
+and resembles content-based addressing on memory. Therefore, we obtain an attention vector over memory addresses
+that we interpret to be the \emph{read head}, denoted by $\rhead_t$.
+Note that the returned objects may be invalid, 
+e.g., if the current reasoning step focuses on the phrase ``last red square'', $vo_t$ is invalid 
+even if the current frame contains a red square. 
 
 \noindent{\textbf{Reasoning Unit.}}
 %\paragraph{Reasoning Unit.}
-This module is the backbone of SamNet that determines what gating operations need to be performed on the external memory, postponing the actual updates
-themselves to the memory update unit. It also determines whether the relevant object for reasoning is supposed to be retrieved from the current frame or from external memory.
+This module is the backbone of SamNet that determines what gating operations need to be performed on the external memory, as well as
+determining the location of the correct object for reasoning.
 
 To determine whether we have a valid object from frame (and similarly for memory), we execute the following reasoning procedure.
 First, we take the visual attention vector $va_t$ of dimension $L$, where $L$ denotes the number of feature vectors for the frame,
 and compute a simple aggregate $vs_t = \sum_{i=1}^L [va_t(i)]^2$. It can be shown mathematically that the more localized the attention
 vector is, the higher is the aggregate value.
-We perform a similar computation on the read head attention vector over memory locations.
+We perform a similar computation on the read head $rh_t$ over memory locations.
 We feed these 2 values along with the temporal class weights $\tau_t$ to a 3-layer feedforward classifier with hidden ELU units to extract 4 gating values
 in $[0,1]$ modulated for the current reasoning step:
 (a) $\imatch_t$, which determines whether there is a valid visual object;
@@ -109,16 +113,16 @@ where $vo_t$ denotes the object returned by the visual retrieval unit.
 Here $J$ denotes the all ones matrix, $\odot$ denotes the Hadamard product and $\otimes$ denotes the Kronecker product. 
 Note that the memory is unchanged in the case where $w_t = 0$, i.e., $M_t = M_{t-1}$.
 We finally update the write head so that it points to the succeeding address if an object was added to memory or otherwise stay the same.
-Let $\whead'_{t-1}$ denote the circular shift to the right of $\whead_{t-1}$ which corresponds to the soft version of this operation.
-Then we update the write head according to the equation:
+Let $\whead'_{t-1}$ denote the circular shift to the right of $\whead_{t-1}$ which corresponds to the soft version of the head update.
+Then:
 \[ \whead_t = \doadd \cdot \whead'_{t-1} + (1-\doadd) \cdot \whead_{t-1} \]
 
 \noindent{\textbf{Summary Update Unit.}}
 %\paragraph{Summary Update Unit.}
-This unit updates the summary object to be the outcome of the $t$-th reasoning step.
+This unit updates the (recurrent) summary object to equal the outcome of the $t$-th reasoning step.
 We first determine whether the relevant object $ro_t$ should be obtained from memory or the frame according to:
 \[ ro_t = \imatch_t \cdot vo_t + \mmatch_t \cdot mo_t \]
-Note that $ro_t$ could be a null object (i.e. 0 vector) in case neither of the gates evaluate to true.
+Note that $ro_t$ is allowed to be a null object (i.e. 0 vector) in case neither of the gates evaluate to true.
 Finally, $so_t$ is the output of a simple linear layer whose inputs are $ro_t$ and the previous summary object $so_{t-1}$.
 This serves to retain additional information that was in $so_{t-1}$, e.g., if it held the partial result of a complex query with Boolean connectives.
 

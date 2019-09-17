@@ -1,16 +1,19 @@
 \section{Introduction}
 
-Integration of vision and language in deep neural network models allows the system to learn joint representations of objects, concepts, and relations.  Potentially, this approach can address Harnad's "symbol grounding problem" \cite{harnad2003symbol} and lead to visually grounded language learning.
+Integration of vision and language in deep neural network models allows the system to learn joint representations of objects, concepts, and relations.  Potentially, this approach can address Harnad's ``symbol grounding problem''~\cite{harnad2003symbol} and lead to visually grounded language learning.
 %In addition to multimodal learning, visual grounding of language is another opportunity that the AI community is excited about, especially in the context of Harnad's "symbol grounding problem" \cite{harnad2003symbol}. 
 
-Starting with the Visual Question Answering (VQA) dataset \cite{}, a variety of tasks that integrate vision and language have emerged in the past several years\cite{mogadala2019trends}.  As a departure from the simpler vision problems like classification and object detection, visual reasoning has become the core emphasis in these tasks. Visual reasoning mainly deals with the comparison of object attributes, counting and other relational questions.
+Starting with the Visual Question Answering (VQA) dataset~\cite{antol2015}, a variety of tasks that integrate vision and language have emerged in the past several years~\cite{mogadala2019trends}.  Going beyond classification and object detection, the core emphasis in these tasks is 
+\emph{visual reasoning} that tackles spatial aspects such as comparison of object attributes, counting and other relational questions.
 
-In contrast to VQA, which comes with static image and question pairs, another emerging direction is Video QA \cite{}, which introduces the aspect of time.  In addition to spatial reasoning, video input provides an opportunity to work on temporal relations and reasoning.  As evident from human cognition, attention and memory are the key competencies required to solve these problems, and unsurprisingly, the AI research is rapidly growing in these areas.
+In contrast to VQA, which comes with static image and question pairs, another emerging direction is Video QA \cite{}, that 
+provides an additional opportunity to work on \emph{temporal} relations and reasoning.  As evident from human cognition, attention and memory are the key competencies required to solve these problems, and unsurprisingly, the AI research is rapidly growing in these areas.
 
-The ability to deal with time can pose a challenge for natural language processing (NLP) as well; for instance, in question answering (QA) and dialog applications.  The current NLP solutions, in certain problem settings, can work around this challenge by processing the entire text input and reason over it multiple times using attention \cite{vaswani2017attention} or other mechanisms. For example, solutions to the bAbI reasoning task (e.g. Memory Networks \cite{weston2015towards}), typically involve processing the supporting facts all at once, which reside in memory and available to provide answers. Similarly, in Visual Dialog~\cite{das2017visual} the system keeps the whole history of the dialog in memory.  In real-time dialog or video QA, there may not be such an opportunity to have the question and entire input all at once in the beginning.  
+The ability to deal with time can pose a challenge for natural language processing (NLP), e.g. in question answering (QA) and dialog applications.  
+Current NLP solutions, in certain problem settings, work around this challenge by processing the entire text input and reason over it multiple times using attention \cite{vaswani2017attention} or other mechanisms. For example, solutions to the bAbI reasoning task (e.g. Memory Networks \cite{weston2015towards}), typically involve processing the supporting facts all at once, which reside in memory and available to provide answers. Similarly, in Visual Dialog~\cite{das2017visual} the system keeps the whole history of the dialog in memory.  In real-time dialog or video QA, there may not be such an opportunity to have the question and entire visual data all at once in the beginning.  
 
-Video reasoning datasets such as SVQA (Synthetic Video Question Answering)~\cite{song2018explore} and COG \cite{yang2018dataset} have limited number of frames (e.g. 4-16 frames), and therefore manageable by the neural net models to process and represent all of the visual information.  As an example, according to\cite{song2018explore} the authors extracted visual features from each frame and aggregated features of all clips from one video to form a sequential video representation.
-These solutions may demonstrate high accuracy, however, generalization to arbitrary length video sequences will be problematic.  Such approaches also differ from the human cognitive strategies.  Humans have the ability to selectively pay attention and store salient items or events in memory based on their goals.  Working memory and episodic memory systems are responsible for this remarkable ability. 
+Video reasoning datasets such as SVQA (Synthetic Video Question Answering)~\cite{song2018explore} and COG~\cite{yang2018dataset} have limited number of frames (e.g. 4-16 frames), and therefore manageable by the neural net models to process and represent all of the visual information.  As an example, according to~\cite{song2018explore} the authors extracted visual features from each frame and aggregated features of all clips from one video to form a sequential video representation.
+%Such approaches also differ from the human cognitive strategies.  Humans have the ability to selectively pay attention and store salient items or events in memory based on their goals.  Working memory and episodic memory systems are responsible for this remarkable ability. 
 
 %Fluid Intelligence:
 %
@@ -64,28 +67,38 @@ These solutions may demonstrate high accuracy, however, generalization to arbitr
 %
 %IMPORTANT: \textbf{we do not have any explicit assumptions when it comes to number of frames/length of the movie/number of distractionts}, so there is no need for cutting video into cuts etc.
 
-\subsection{Contributions}
-This work introduces a new model that can dynamically process video input frame-by-frame, reason over images and remember the salient concepts to answer questions.  Our results based on the COG dataset \cite{yang2018dataset} indicate that the model is capable of:
+\paragraph{Contributions.}
+%Such approaches also differ from the human cognitive strategies.  Humans have the ability to selectively pay attention and store salient items or events in memory based on their goals.  Working memory and episodic memory systems are responsible for this remarkable ability. 
+
+Inspired by human cognitive capacity to selectively pay attention and store salient information in memory,
+we introduce a new model that can dynamically process video input frame-by-frame, reason over images and remember the salient concepts to answer questions.  Our results based on the COG dataset \cite{yang2018dataset} indicate that the model is capable of:
+(1) learning the temporal association, i.e., grounding the time-related words with meaning;
+	%\item Learning the concept of time
+	%\item time context being by-product of gates
+	%\end{itemize}
+(2) learning complex, multi-step reasoning that involves grounding of words and visual representations of objects/attributes;
+(3) selectively control the flow of information to and from the memory to answer questions; and
+(4) updating the memory only with relevant visual information depending on the temporal context.
 %\begin{itemize}
 %\item \textbf{Time aspect}:
-\begin{itemize}
-\item Learning the temporal association - grounding the time-related words with meaning
-%\item Learning the concept of time
-%\item time context being by-product of gates
-%\end{itemize}
-
-\item Learning complex, multi-step reasoning that involves grounding of words and visual representations of objects/attributes
 %\begin{itemize}
-%\item Learning complex, multi-step reasoning that involves grounding of words and visual representations/objects
-\item Selectively control the flow of information to and from the memory to answer questions
+%\item Learning the temporal association - grounding the time-related words with meaning
+%%\item Learning the concept of time
+%%\item time context being by-product of gates
+%%\end{itemize}
+%
+%\item Learning complex, multi-step reasoning that involves grounding of words and visual representations of objects/attributes
+%%\begin{itemize}
+%%\item Learning complex, multi-step reasoning that involves grounding of words and visual representations/objects
+%\item Selectively control the flow of information to and from the memory to answer questions
+%%\end{itemize}
+%%\item \textbf{Selective Attention Memory}:
+%%\begin{itemize}
+%\item Updating the memory only with relevant visual information depending on the temporal context
+%%\item content based and location based addressing for reading and writing
+%%\item new memory interface/gating designed in such a way enabling the model to control the flow of current visual information and content of the memory in a selective way
+%
 %\end{itemize}
-%\item \textbf{Selective Attention Memory}:
-%\begin{itemize}
-\item Updating the memory content only with relevant visual information depending on the temporal context
-%\item content based and location based addressing for reading and writing
-%\item new memory interface/gating designed in such a way enabling the model to control the flow of current visual information and content of the memory in a selective way
-
-\end{itemize}
 %\end{itemize}
 
 

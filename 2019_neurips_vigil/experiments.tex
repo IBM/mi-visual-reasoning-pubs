@@ -41,35 +41,35 @@ We argue that the generalization capability of SAMNet is mainly due to the dynam
 \end{table}
 
 
-\begin{figure}
-	\centering
-	\caption{Comparison of SAMNet and COG on their abilities to generalize from the canonical to the hard dataset. We show three different settings: 1) (baseline) trained on canonical, tested on canonical 2) trained on canonical, tested on hard, 3) trained on canonical, fine tuned on hard, tested on hard. }
-	\resizebox{6cm}{4.5cm}{%
-		
-		\begin{tikzpicture}
-		
-		
-		
-		\tiny
-		
-		\begin{axis}[
-		ybar,
-		enlargelimits=0.15,
-		legend style={at={(0.5,-0.15)},
-			anchor=north,legend columns=-1},
-		ylabel={COG test accuracy in \% },
-		symbolic x coords={canonical/na/canonical, canonical/na/hard, canonical/hard/hard},
-		xtick=data,
-		nodes near coords,
-		nodes near coords align={vertical},
-		]
-		\addplot coordinates {(canonical/na/canonical,98) (canonical/na/hard,91.6) (canonical/hard/hard,96.5)};
-		\addplot coordinates {(canonical/na/canonical,96.7) (canonical/na/hard,65.9) (canonical/hard/hard,70)};
-		\legend{SAMNet ,COG Model}
-		\end{axis}
-		\end{tikzpicture}
-	}
-\end{figure}
+%\begin{figure}
+%	\centering
+%	\caption{Comparison of SAMNet and COG on their abilities to generalize from the canonical to the hard dataset. We show three different settings: 1) (baseline) trained on canonical, tested on canonical 2) trained on canonical, tested on hard, 3) trained on canonical, fine tuned on hard, tested on hard. }
+%	\resizebox{6cm}{4.5cm}{%
+%		
+%		\begin{tikzpicture}
+%		
+%		
+%		
+%		\tiny
+%		
+%		\begin{axis}[
+%		ybar,
+%		enlargelimits=0.15,
+%		legend style={at={(0.5,-0.15)},
+%			anchor=north,legend columns=-1},
+%		ylabel={COG test accuracy in \% },
+%		symbolic x coords={canonical/na/canonical, canonical/na/hard, canonical/hard/hard},
+%		xtick=data,
+%		nodes near coords,
+%		nodes near coords align={vertical},
+%		]
+%		\addplot coordinates {(canonical/na/canonical,98) (canonical/na/hard,91.6) (canonical/hard/hard,96.5)};
+%		\addplot coordinates {(canonical/na/canonical,96.7) (canonical/na/hard,65.9) (canonical/hard/hard,70)};
+%		\legend{SAMNet ,COG Model}
+%		\end{axis}
+%		\end{tikzpicture}
+%	}
+%\end{figure}
 
 
 
