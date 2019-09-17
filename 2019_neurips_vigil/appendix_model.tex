@@ -470,9 +470,9 @@ The training and implementation details are in appendix.
 \begin{table}[t]
 \caption{COG test set accuracies for SAMNet \& COG models. Below `paper' denotes results from~\cite{yang2018dataset} 
 	while `code' denotes results of our experiments using their implementation~\cite{yang2018implement}}
-\resizebox{\textwidth}{!}{
 \centering
-\begin{tabular}{ccccccccccc}
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{lcccccccccc}
 	\toprule
 	Model & & SAMNet & && && COG&& \\
 	\cmidrule{2-5} \cmidrule{7-11} 
@@ -512,36 +512,30 @@ The training and implementation details are in appendix.
 	SimpleCompareColor		&	100.0	&	91.6	&	99.80	&	99.9	&	&	100.0	&	64.2	&	90.4	&	99.3 \\
 	\bottomrule
 \end{tabular}
-}
-
+\end{adjustbox}
 \label{results}
 \end{table}
 
 
 
 \begin{table}[!t]
-	\centering
-	\caption{COG Dataset parameters for the canonical setting and the hard setting  }
-	\resizebox{\textwidth}{!}{
-		
-		
-		\begin{tabular}{ccccccc}
-			\toprule
-			
-			Dataset    &  	number of frames  &  	maximum memory duration & number of distractors & size of training set & size of validation/test set    \\ 
-			\midrule
-			
-			Canonical setting & 4 & 3 & 1 & 10000320 & 500016 &   \\
-			\midrule
-			
-			Hard  setting & 8 & 7& 10 & 10000320 & 500016  \\
-			\bottomrule
-			
-		\end{tabular}
-	}
+\caption{COG Dataset parameters for the canonical setting and the hard setting  }
+\centering
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{ccccccc}
+	\toprule
 	
+	Dataset    &  	number of frames  &  	maximum memory duration & number of distractors & size of training set & size of validation/test set    \\ 
+	\midrule
 	
-	\label{tab:parameters}
+	Canonical setting & 4 & 3 & 1 & 10000320 & 500016 &   \\
+	\midrule
+	
+	Hard  setting & 8 & 7& 10 & 10000320 & 500016  \\
+	\bottomrule	
+\end{tabular}
+\end{adjustbox}
+\label{tab:parameters}
 \end{table}
 
 
