@@ -1,33 +1,19 @@
 \section{Experiments}
 
-\begin{table}[t]
-\caption{COG test set accuracies for SAMNet \& COG models. Below `paper' denotes results from~\cite{yang2018dataset} 
-	while `code' denotes results of our experiments using their implementation~\cite{yang2018implement}}
-\centering
-\begin{adjustbox}{width=\textwidth}
-\begin{tabular}{ccccccccccc}
-	\toprule
-	Model & & SAMNet & && && COG&& \\
-	\cmidrule{2-5} \cmidrule{7-11} 
-	&&&&& & paper & code & code & paper&\\
-	\cmidrule{7-9} \cmidrule{10-11}
-	Trained on       & canonical & canonical & canonical & hard &           &  canonical  & canonical  & canonical & hard \\ 
-	Fine tuned on  & - & - & hard  & - &           & -   & - & hard & - \\ 
-	Tested on        & canonical & hard & hard & hard &            &canonical  & hard & hard & hard  \\ 
-	\midrule	
-	Overall accuracy & 98.0 & 91.6 & 96.5  & 96.1 &         & 97.6  & 65.9 & 78.1& 80.1 \\ 	
-	\midrule 	
-	AndCompareColor	&	93.5		&	82.7	&	89.2	&  80.6 &		&81.9	&57.1&60.7  &	51.4 \\ 
-	AndCompareShape	&	93.2 		&	83.7	&	89.7	& 80.1 &	&	80.0	&53.1	&50.3 &50.7 \\ 
-	\bottomrule
-\end{tabular}
-\end{adjustbox}
-%\resizebox{\textwidth}{!}{
-%	}
-\label{tab:results}
-\end{table}
+We evaluated SAMNet on the COG dataset~\cite{yang2018dataset}.
+Our experiments were intended to study SAMNet's performance as well as generalization abilities in different settings.
+For this purpose, we used two different variants of the COG dataset: an easy one (Canonical) and a Hard version to explore a wide range of difficulties.
+The main differences are: the number of frames in the input sequence (4 vs 8) and the maximum number of distractors (i.e. objects not important from the point of view of the answer) per frame (1 vs 10).
+%More details on the dataset, its variants and tasks can be found in the Appendix.
 
-\begin{figure}
+
+%
+%We compare our model to the original COG model  ~\cite{yang2018dataset} using their implementation (https://github.com/google/cog) and scores given by the authors. We also use the exact same training parameters detailed in the original paper.
+%
+%On the other side we trained SAMNet using IBM's Mi-Prometheus~\cite{kornuta2018accelerating}, a framework for research based on Pytorch. We trained all our models using NVIDIA’s GeForce GTX TITAN X GPUs. We trained  SAMNet using 8 reasoning steps SAMCells and a hidden state size of 128. The external memory has 128-bit slots. We trained our model until convergence but we also have set a training time limit of 80 hours.
+
+
+\begin{figure}[htbp]
 	\centering
   \begin{subfigure}{\textwidth}
     \includegraphics[width=0.99\textwidth]{results/samnet_cog_orig_canonical_no_labels.png}
@@ -36,27 +22,38 @@
   \begin{subfigure}{\textwidth}
 	\includegraphics[width=\textwidth]{results/samnet_cog_orig_hard.png}
   \end{subfigure}%
-\caption{Comparison of performances of SAMNet (blue) with original results achieved by the COG model (gray) on Canonical (top) and Hard (bottom) variants of the COG dataset.}
-\label{fig:samnet}
+\caption{Comparison of test set accuracies of SAMNet (blue) with original results achieved by the COG model (gray) on Canonical (top) and Hard (bottom) variants of the COG dataset.}
+\label{fig:samnet_cog_detailed}
 \end{figure}
 
-\begin{wrapfigure}{r}{0.5\textwidth}
+\begin{wrapfigure}{r}{0.4\textwidth}
 	\centering
-	\includegraphics[width=0.5\textwidth]{results/samnet_cog_overall_transfer.png}
-	\caption{Comparison of SAMNet (blue) and COG model (gray) on their abilities to generalize from the canonical to the hard dataset. Light gray indicates original results, whereas right gray indicates the accuracy of COG models that we have trained on our own using the original code.}
-	\label{fig:samcell}
+	\includegraphics[width=0.4\textwidth]{results/samnet_cog_overall_transfer.png}
+	\caption{Total accuracies of SAMNet (blue) and COG models (light/dark gray) when testing generalization from Canonical to Hard variants of the dataset.}
+	\label{fig:samnet_cog_overall_transfer}
 \end{wrapfigure}
 
-We evaluated SAMNet on the COG dataset and compared our results to the baseline model described in ~\cite{yang2018dataset}. To test the generalization ability of both models, we used the canonical (easy) and hard settings that alter the number of distractors and sequence length.  Since there was no baseline for these tests (train on canonical, test on hard), we ran our own experiments using the COG model provided by the authors.  SAMNet achieves the highest overall scores for all categories of experiments (\cref{tab:results}), especially for the tests run on the hard dataset.  Among the 22 classification tasks, we highlighted the two most difficult tasks that affect the overall score.  More detailed results are provided in the Appendix.
+We have implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on Pytorch~\cite{paszke2017automatic}. 
+In our experiments we have focused on 22 classification tasks and compared our results with the baseline model, as presented in \cref{fig:samnet_cog_detailed}.
+For the Canonical variant (top row), we have achieved similar accuracies for majority of tasks (with the total average accuracy of 98.0\% in comparison of 97.6\% achieved by the COG model), with big improvements (around 13 points) for \textit{AndCompare} tasks.
+As those tasks focus on compositional questions referring to two objects, we hypothesize that our model achieved better accuracy due to the ability to selectively pick and store the relevant objects from the past frames in the memory.
+Despite there are some tasks in which our model reached slightly lower accuracies,
+% (between 0.2 and 1.8 points)
+when comparing performances on the Hard variant, it clearly dominates COG baseline on all tasks, with improvements varying from 0.5 to more than 30 points.
 
-We argue that the generalization capability of SAMNet is mainly due to the dynamic frame-by-frame processing of the input sequence.  The mechanisms introduced in SAMCell (e.g., Memory retrieval and update units) learn to operate independent of the total number of frames and allow to generalize to longer video lengths. As shown in Figure 3, when trained on the easy dataset, SAMNet still performs 91.6\% when tested on the hard dataset, whereas COG drops from 97.6\% to 65.9\%   The visualization of the trained SAMNet model (see Appendix) indicates that the model learns the concept of time, helping it to control the flow of information from visual input to the memory.  Therefore, the memory is updated efficiently instead of storing all information across all frames.
+The goal of the next set of experiments was to test the generalization ability when it comes to both length of sequence and number of distractors.
+For that purpose we have compared the accuracies of both models when trained on the Canonical variant and tested on Hard (\cref{fig:samnet_cog_overall_transfer}).
+As the original paper haven't included such experiments, we have performed them on our own---light gray color indicates the original results, whereas dark gray indicates the accuracies of COG models that we have achieved by training (finetuning/testing) them on our own using the original code provided by the authors.
+For sanity check, in the first column we report both best achieved score and the score reported in the paper when training and testing on Canonical variant, without any fine-tuning (N/A in the second row from the bottom).
+In a pure \textit{transfer learning} setup (second column), our model shows enormous generalization ability, reaching 91.6\% accuracy on test set.
+We have also tested both models in a setup where model trained on a Canonical variant underwent additional fine-tuning (for a single epoch) on Hard variant (third column).
+In this case, the SAMNet model also reached much better performance, and, interestingly, achieved better scores from the model trained and tested on exclusively on Hard variant.
+Summarizing, the achieved results clearly indicate that the mechanisms introduced in SAMNet  enable it to learn to operate independently of the total number of frames or number of distractions, and allow it to generalize to longer videos and more complex scenes.
 
-
-%Our experiments were intended to study SAMNet's performances as well as generalization abilities in different settings. For this purpose, we use two different versions of the COG dataset, an easy one (canonical) and a hard version to explore a wide range of difficulties. The following parameters control the difficulty level: the number of frames in the input sequence, the maximum memory duration (how far is the last object to be remembered), and the number of distractors. These parameters are detailed in Table 1 for each setting. The table also shows the size of the training/validation/test split used for our experiments. The COG dataset is composed of 44 tasks that have equal number of samples.
-%We chose to focus our effort only on the the 22 classification tasks.
-%We compare our model to the original COG model  ~\cite{yang2018dataset} using their implementation (https://github.com/google/cog) and scores given by the authors. We also use the exact same training parameters detailed in the original paper.
-%
-%On the other side we trained SAMNet using IBM's Mi-Prometheus~\cite{kornuta2018accelerating}, a framework for research based on Pytorch. We trained all our models using NVIDIA’s GeForce GTX TITAN X GPUs. We trained  SAMNet using 8 reasoning steps SAMCells and a hidden state size of 128. The external memory has 128-bit slots. We trained our model until convergence but we also have set a training time limit of 80 hours.
+%we used the canonical (easy) and hard settings that alter the number of distractors and sequence length.  Since there was no baseline for these tests (train on canonical, test on hard), we ran our own experiments using the COG model provided by the authors.  SAMNet achieves the highest overall scores for all categories of experiments (\cref{fig:samnet_cog_overall_transfer}), especially for the tests run on the hard dataset.  Among the 22 classification tasks, we highlighted the two most difficult tasks that affect the overall score. 
+%We argue that the generalization capability of SAMNet is mainly due to the dynamic frame-by-frame processing of the input sequence. 
+%The mechanisms introduced in SAMCell learn to operate independently of the total number of frames and allow to generalize to longer video lengths.
+%As shown in \cref{fig:samnet_cog_overall_transfer}, when trained on the easy dataset, SAMNet still performs 91.6\% when tested on the hard dataset, whereas COG drops from 97.6\% to 65.9\%   The visualization of the trained SAMNet model (see Appendix) indicates that the model learns the concept of time, helping it to control the flow of information from visual input to the memory.  Therefore, the memory is updated efficiently instead of storing all information across all frames.
 
 
 
