@@ -18,12 +18,19 @@
 %The model is also composed of an Image Encoder and a Question Encoder both responsible to pre-process the visual and textual inputs. The output unit is a classifier.
 %All those modules are described below.
 
-\begin{figure}[hbtp]
+\begin{wrapfigure}{R}{0.8\textwidth}
 	\centering
-	\includegraphics[width=\textwidth]{../img/architecture/samnet_architecture4}
+	\includegraphics[width=0.78\textwidth]{../img/architecture/samnet_architecture4}
 	\caption{General architecture of SAMNet}
 	\label{fig:samnet}
-\end{figure}	
+\end{wrapfigure}
+
+%\begin{figure}[hbtp]
+%	\centering
+%	\includegraphics[width=0.7\textwidth]{../img/architecture/samnet_architecture4}
+%	\caption{General architecture of SAMNet}
+%	\label{fig:samnet}
+%\end{figure}	
 
 SAM Network (SAMNet for short) is an end-to-end differentiable recurrent model equipped with an external memory for enabling multi-step reasoning over text and video (\cref{fig:samnet}).
 The model makes a single pass over the frames in temporal order, accessing one frame at a time.
@@ -35,12 +42,20 @@ in order to perform spatio-temporal reasoning on frames and text.
 %A notable feature of this design is that the number of addresses $N$ can be set to different values during training and 
 %testing to fit the characteristics of data.
 
-\begin{figure}[hbtp]
+
+\begin{wrapfigure}{R}{0.8\textwidth}
 	\centering
-	\includegraphics[width=\textwidth]{../img/architecture/samcell_reasoning}
+	\includegraphics[width=0.78\textwidth]{../img/architecture/samcell_reasoning}
 	\caption{Single reasoning step in SAMCell}
 	\label{fig:samcell}
-\end{figure}	
+\end{wrapfigure}
+
+%\begin{figure}[hbtp]
+%	\centering
+%	\includegraphics[width=0.7\textwidth]{../img/architecture/samcell_reasoning}
+%	\caption{Single reasoning step in SAMCell}
+%	\label{fig:samcell}
+%\end{figure}	
 
 The core of SAMNet is a recurrent cell called a SAM Cell (\cref{fig:samcell}). 
 By unrolling a new series of $T$ cells for every frame, the network can perform $k$ steps of compositional
@@ -52,26 +67,20 @@ Let $M_t \in  \Reals^{N \times d}$ denote the external memory with $N$ slots at 
 Let $\whead_t \in  \Reals^N$ denote an attention vector over the memory locations;
 in a trained model, $\whead_t$ points to the location of first empty slot in memory for adding new objects.   
 
-\paragraph{Question-driven Controller.}
-
-%The Question-driven Controller plays an important role in the reasoning process.
-%It drives the attention over the question and produces the new control states. Each new control state defines a new reasoning operation. The inputs of this unit are the past control state, the question encoding and the contextual words (see Question Encoding Unit). It uses the dot product attention between the contextual words
-%and the combination of the past control states and the question encoding.  This attention layer produces the new control state.
-%
-%This unit also outputs the temporal class weights that will be used in the Reasoning Unit. It gives access to a temporal information for the current words (last, latest, now, none temporal).
-
+\noindent{\textbf{Question-driven Controller.}}
 This module drives attention over the question to produce $k$ control states, one per reasoning operation. 
 The control state $c_t$ at step $t$ is then fed to temporal classifier, a two-layer feedforward network with ELU activation in the hidden layer of $d$ units.
 The output $\tau_t$ of the classifier is intended to represent the different temporal contexts (or lack thereof) associated with the word in focus for that step of reasoning.	
 For example in case of the COG dataset we pick 4 classes to capture the terms labeled ``last'', ``latest'', ``now'', and ``none''.
 
-The visual (resp. memory) retrieval unit uses the information generated above to extract a relevant object from the frame (resp. memory)
+The visual (resp. memory) retrieval unit uses the information generated above to extract a relevant object $vo_t$ from the frame (resp. $mo_t$ from memory)
 along with an attention vector over the feature vectors of that frame (resp. over memory addresses). Note that the returned object may not be valid, 
 e.g., if the current reasoning step focuses on the phrase ``last red square'', the returned object from the current frame
 will be invalid even if it contains a red square. The attention vector over the memory $rh_t$ is also called the \emph{read head} since it will be used 
 for memory updates later.
 
-\paragraph{Reasoning Unit}
+\noindent{\textbf{Reasoning Unit.}}
+%\paragraph{Reasoning Unit.}
 This module is the backbone of SamNet that determines what gating operations need to be performed on the external memory, postponing the actual updates
 themselves to the memory update unit. It also determines whether the relevant object for reasoning is supposed to be retrieved from the current frame or from external memory.
 
@@ -88,26 +97,29 @@ in $[0,1]$ modulated for the current reasoning step:
 (d) $\doadd_t$, which determines whether a new object should be added to memory.
 We stress that the network has to learn via training how to correctly implement these behaviors.
 
-\paragraph{Memory Update Unit.}
+\noindent{\textbf{Memory Update Unit.}}
+We first determine the exact location where an object could be added to the memory using the following equation:
+\[ w_t = \doreplace \cdot \rhead_t + \doadd \cdot \whead_{t-1} \]
+Above, $w_t$ denotes the pseudo-attention vector that represents the ``location'' where the memory update should happen.
+The sum of components of $w$ is at most equal to 1; and $w_t$ can even equal 0 whenever neither condition
+of adding a new object nor replacing an existing object holds true.
+We then update the memory accordingly as:
+\[ M_t = M_{t-1} \odot (J - w_t \otimes \mathbf{1}) + w_t \otimes vo_t,\]
+where $vo_t$ denotes the object returned by the visual retrieval unit. 
+Here $J$ denotes the all ones matrix, $\odot$ denotes the Hadamard product and $\otimes$ denotes the Kronecker product. 
+Note that the memory is unchanged in the case where $w_t = 0$, i.e., $M_t = M_{t-1}$.
+We finally update the write head so that it points to the succeeding address if an object was added to memory or otherwise stay the same.
+Let $\whead'_{t-1}$ denote the circular shift to the right of $\whead_{t-1}$ which corresponds to the soft version of this operation.
+Then we update the write head according to the equation:
+\[ \whead_t = \doadd \cdot \whead'_{t-1} + (1-\doadd) \cdot \whead_{t-1} \]
 
-%# get attention on the correct slot in memory based on the 2 predicates
-%# attention defaults to 0 if neither condition holds
-%wt = do_replace * read_head + do_add_new * write_head
-%
-%# Update visual_working_memory
-%new_visual_working_memory = (visual_working_memory * (1 - wt)[..., None]
-%+ wt[..., None] * visual_object[..., None, :])
-%
-%# compute shifted sequential head to right
-%shifted_write_head = torch.roll(write_head, shifts=1, dims=-1)
-%
-%# new sequential attention
-%new_write_head = ((shifted_write_head * do_add_new)
-%+ (write_head * (1 - do_add_new)))
+\noindent{\textbf{Summary Update Unit.}}
+%\paragraph{Summary Update Unit.}
+This unit updates the summary object to be the outcome of the $t$-th reasoning step.
+We first determine whether the relevant object $ro_t$ should be obtained from memory or the frame according to:
+\[ ro_t = \imatch_t \cdot vo_t + \mmatch_t \cdot mo_t \]
+Note that $ro_t$ could be a null object (i.e. 0 vector) in case neither of the gates evaluate to true.
+Finally, $so_t$ is the output of a simple linear layer whose inputs are $ro_t$ and the previous summary object $so_{t-1}$.
+This serves to retain additional information that was in $so_{t-1}$, e.g., if it held the partial result of a complex query with Boolean connectives.
 
-TO BE WRITTEN
-
-
-The  Summary Unit is the last unit of the SAM Cell. It is responsible to output the new summary object. It first picks which object is relevant between the object extracted from memory and the visual object extracted from the image. Once the relevant object is picked, it is combined with the former summary object through a linear layer to become the new summary object. It is the final step of the SAM Cell reasoning cycle. 
-
-The details of the modules image encoder, question encoder and output unit are described in the appendix.
+For more details of the various modules, please see the appendix.

@@ -1,6 +1,6 @@
 \section{Experiments}
 
-We evaluated SAMNet on the COG dataset and compared our results to the baseline model described in ~\cite{yang2018dataset}. To test the generalization ability of both models, we used the canonical (easy) and hard settings that alter the number of distractors and sequence length.  Since there was no baseline for these tests (train on canonical, test on hard), we ran our own experiments using the COG model provided by the authors.  SAMNet achieves the highest overall scores for all categories of experiments (Table 2), especially for the tests run on the hard dataset.  Among the 22 classification tasks, we highlighted the two most difficult tasks that affect the overall score.  More detailed results are provided in the Appendix.
+We evaluated SAMNet on the COG dataset and compared our results to the baseline model described in ~\cite{yang2018dataset}. To test the generalization ability of both models, we used the canonical (easy) and hard settings that alter the number of distractors and sequence length.  Since there was no baseline for these tests (train on canonical, test on hard), we ran our own experiments using the COG model provided by the authors.  SAMNet achieves the highest overall scores for all categories of experiments (\cref{tab:results}), especially for the tests run on the hard dataset.  Among the 22 classification tasks, we highlighted the two most difficult tasks that affect the overall score.  More detailed results are provided in the Appendix.
 
 We argue that the generalization capability of SAMNet is mainly due to the dynamic frame-by-frame processing of the input sequence.  The mechanisms introduced in SAMCell (e.g., Memory retrieval and update units) learn to operate independent of the total number of frames and allow to generalize to longer video lengths. As shown in Figure 3, when trained on the easy dataset, SAMNet still performs 91.6\% when tested on the hard dataset, whereas COG drops from 97.6\% to 65.9\%   The visualization of the trained SAMNet model (see Appendix) indicates that the model learns the concept of time, helping it to control the flow of information from visual input to the memory.  Therefore, the memory is updated efficiently instead of storing all information across all frames.
 
@@ -12,48 +12,32 @@ We argue that the generalization capability of SAMNet is mainly due to the dynam
 %On the other side we trained SAMNet using IBM's Mi-Prometheus~\cite{kornuta2018accelerating}, a framework for research based on Pytorch. We trained all our models using NVIDIA’s GeForce GTX TITAN X GPUs. We trained  SAMNet using 8 reasoning steps SAMCells and a hidden state size of 128. The external memory has 128-bit slots. We trained our model until convergence but we also have set a training time limit of 80 hours.
 
 
-
-
-
-
-
 \begin{table}[t]
-	
-	\caption{COG test set accuracies for  SAMNet \& COG models. For the COG section, the results marked as 'paper' comes from the original COG paper ~\cite{yang2018dataset}, whereas the results marked as 'ours' come from our own experiments using the following implementation: https://github.com/google/cog }
-	
-	\centering
-	\resizebox{\textwidth}{!}{
-		\begin{tabular}{ccccccccccc}
-			\toprule
-			Model & & SAMNet & && && COG&& \\
-			\cmidrule{2-5} \cmidrule{7-11} 
-			&&&&& & paper & ours & ours & paper&\\
-			\cmidrule{7-9} \cmidrule{10-11}
-			Trained on       & canonical & canonical & canonical & hard &           &  canonical  & canonical  & canonical & hard \\ 
-			Fine tuned on  & - & - & hard  & - &           & -   & - & hard & - \\ 
-			Tested on        & canonical & hard & hard & hard &            &canonical  & hard & hard & hard  \\ 
-			\midrule
-			
-			Overall accuracy & 98.0 & 91.6 & 96.5  &  &           & 97.6  & 65.9 & 78.1& 80.1 \\ 
-			
-			\midrule 
-			
-			
-			AndCompareColor	&	93.5		&	82.7	&	89.2	& &		&81.9	&57.1&60.7  &	51.4
-			\\ 
-			AndCompareShape	&	93.2 		&	83.7	&	89.7	&&	&	80.0	&53.1	&50.3 &50.7\\ 
-			
-			
-			
-			
-			
-			
-			
-			
-			\bottomrule
-		\end{tabular}
-	}
-	\label{results}
+\caption{COG test set accuracies for SAMNet \& COG models. Below `paper' denotes results from~\cite{yang2018dataset} 
+	while `code' denotes results of our experiments using their implementation~\cite{yang2018implement}}
+
+\centering
+\begin{adjustbox}{width=\textwidth}
+\begin{tabular}{ccccccccccc}
+	\toprule
+	Model & & SAMNet & && && COG&& \\
+	\cmidrule{2-5} \cmidrule{7-11} 
+	&&&&& & paper & code & code & paper&\\
+	\cmidrule{7-9} \cmidrule{10-11}
+	Trained on       & canonical & canonical & canonical & hard &           &  canonical  & canonical  & canonical & hard \\ 
+	Fine tuned on  & - & - & hard  & - &           & -   & - & hard & - \\ 
+	Tested on        & canonical & hard & hard & hard &            &canonical  & hard & hard & hard  \\ 
+	\midrule	
+	Overall accuracy & 98.0 & 91.6 & 96.5  &  &           & 97.6  & 65.9 & 78.1& 80.1 \\ 	
+	\midrule 	
+	AndCompareColor	&	93.5		&	82.7	&	89.2	& &		&81.9	&57.1&60.7  &	51.4 \\ 
+	AndCompareShape	&	93.2 		&	83.7	&	89.7	&&	&	80.0	&53.1	&50.3 &50.7 \\ 
+	\bottomrule
+\end{tabular}
+\end{adjustbox}
+%\resizebox{\textwidth}{!}{
+%	}
+\label{tab:results}
 \end{table}
 
 
