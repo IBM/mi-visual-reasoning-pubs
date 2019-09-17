@@ -46,7 +46,7 @@ in order to perform multi-step spatio-temporal reasoning over text and video.
 \begin{wrapfigure}{r}{0.8\textwidth}
 	\centering
 	\includegraphics[width=0.78\textwidth]{../img/architecture/samcell_reasoning}
-	\caption{Single reasoning step in SAMCell}
+	\caption{Unfolded reasoning steps with operations performed by the SAMCell}
 	\label{fig:samcell}
 \end{wrapfigure}
 
@@ -87,7 +87,6 @@ even if the current frame contains a red square.
 %\paragraph{Reasoning Unit.}
 This module is the backbone of SamNet that determines what gating operations need to be performed on the external memory, as well as
 determining the location of the correct object for reasoning.
-
 To determine whether we have a valid object from frame (and similarly for memory), we execute the following reasoning procedure.
 First, we take the visual attention vector $va_t$ of dimension $L$, where $L$ denotes the number of feature vectors for the frame,
 and compute a simple aggregate $vs_t = \sum_{i=1}^L [va_t(i)]^2$. It can be shown mathematically that the more localized the attention
@@ -102,7 +101,7 @@ in $[0,1]$ modulated for the current reasoning step:
 We stress that the network has to learn via training how to correctly implement these behaviors.
 
 \noindent{\textbf{Memory Update Unit.}}
-We first determine the exact location where an object could be added to the memory using the following equation:
+Unit first determines the memory location where an object could be added:
 \[ w_t = \doreplace \cdot \rhead_t + \doadd \cdot \whead_{t-1} \]
 Above, $w_t$ denotes the pseudo-attention vector that represents the ``location'' where the memory update should happen.
 The sum of components of $w$ is at most equal to 1; and $w_t$ can even equal 0 whenever neither condition
@@ -126,4 +125,4 @@ Note that $ro_t$ is allowed to be a null object (i.e. 0 vector) in case neither 
 Finally, $so_t$ is the output of a simple linear layer whose inputs are $ro_t$ and the previous summary object $so_{t-1}$.
 This serves to retain additional information that was in $so_{t-1}$, e.g., if it held the partial result of a complex query with Boolean connectives.
 
-For more details of the various modules, please see the appendix.
+%For more details of the various modules, please see the appendix.

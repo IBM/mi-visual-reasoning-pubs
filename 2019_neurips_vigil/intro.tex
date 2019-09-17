@@ -1,18 +1,18 @@
 \section{Introduction}
 
 Integration of vision and language in deep neural network models allows the system to learn joint representations of objects, concepts, and relations.  Potentially, this approach can address Harnad's ``symbol grounding problem''~\cite{harnad2003symbol} and lead to visually grounded language learning.
-%In addition to multimodal learning, visual grounding of language is another opportunity that the AI community is excited about, especially in the context of Harnad's "symbol grounding problem" \cite{harnad2003symbol}. 
+Starting with Image Question Answering~\cite{malinowski2014multi,antol2015} and Image Captioning~\cite{karpathy2015deep}, a variety of tasks that integrate vision and language have emerged in the past several years~\cite{mogadala2019trends}. 
+Those directions include e.g., Video QA~\cite{MovieQA} and Video Action Recognition~\cite{monfort2019moments}, that provide an additional challenge of understanding \emph{temporal} aspects, and Video Reasoning~\cite{song2018explore,yang2018dataset}, that tackles both spatial (comparison of object attributes, counting and other relational question) and temporal aspects and relations (e.g. appearing or disappearing of objects).
+To deal with the temporal aspect people typically employ cutting the whole video into clips, e.g., in~\cite{song2018explore} the model extracts visual features from each frame and aggregates features first into clips, followed by aggregation over the whole video to form a single video representation.
+Still, when reasoning and producing the answer, the system in fact has \textit{access to all frames}. 
+%As evident from human cognition, attention and memory are the key competencies required to solve these problems, and unsurprisingly, the AI research is rapidly growing in these areas.
+%The ability to deal with temporal casuality can pose a challenge for also in pure natural language processing (NLP) settings, e.g. in question answering (QA) and dialog applications.  
+%Current NLP solutions, in many problem settings, work around this challenge by processing the entire text input and reason over it multiple times using attention \cite{vaswani2017attention} or other mechanisms.
+%For example, typical solutions to the bAbI reasoning task, such as Memory Networks \cite{weston2015towards}, involve processing all the supporting facts at once and keeping them in memory all the time while searching for the answer.
+Similarly, in Visual Dialog~\cite{das2017visual} the system keeps the whole history of the dialog in memory.
+However, in real-time dialog or video monitoring, it is impossible to keep the entire history of conversation nor all frames from the beginning of the recording.  
+In this paper we focus on Visual Reasoning, however, instead of enabling the system to access all input frames at every reasoning step, we decided to follow a totally different, nevertheless more natural approach: we enable the model to access each frame only once in order to extract and remember only the  objects that are relevant from the point of view of the task. 
 
-Starting with the Visual Question Answering (VQA) dataset~\cite{antol2015}, a variety of tasks that integrate vision and language have emerged in the past several years~\cite{mogadala2019trends}.  Going beyond classification and object detection, the core emphasis in these tasks is 
-\emph{visual reasoning} that tackles spatial aspects such as comparison of object attributes, counting and other relational questions.
-
-In contrast to VQA, which comes with static image and question pairs, another emerging direction is Video QA \cite{}, that 
-provides an additional opportunity to work on \emph{temporal} relations and reasoning.  As evident from human cognition, attention and memory are the key competencies required to solve these problems, and unsurprisingly, the AI research is rapidly growing in these areas.
-
-The ability to deal with time can pose a challenge for natural language processing (NLP), e.g. in question answering (QA) and dialog applications.  
-Current NLP solutions, in certain problem settings, work around this challenge by processing the entire text input and reason over it multiple times using attention \cite{vaswani2017attention} or other mechanisms. For example, solutions to the bAbI reasoning task (e.g. Memory Networks \cite{weston2015towards}), typically involve processing the supporting facts all at once, which reside in memory and available to provide answers. Similarly, in Visual Dialog~\cite{das2017visual} the system keeps the whole history of the dialog in memory.  In real-time dialog or video QA, there may not be such an opportunity to have the question and entire visual data all at once in the beginning.  
-
-Video reasoning datasets such as SVQA (Synthetic Video Question Answering)~\cite{song2018explore} and COG~\cite{yang2018dataset} have limited number of frames (e.g. 4-16 frames), and therefore manageable by the neural net models to process and represent all of the visual information.  As an example, according to~\cite{song2018explore} the authors extracted visual features from each frame and aggregated features of all clips from one video to form a sequential video representation.
 %Such approaches also differ from the human cognitive strategies.  Humans have the ability to selectively pay attention and store salient items or events in memory based on their goals.  Working memory and episodic memory systems are responsible for this remarkable ability. 
 
 %Fluid Intelligence:
