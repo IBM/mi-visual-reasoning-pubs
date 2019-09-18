@@ -110,11 +110,11 @@ end of the previous frame.
 
 \colorbx{Question-driven Controller}
 
-The Question-driven Controller plays an important role in the reasoning process.
-It drives the attention over the question and produces the new control states. Each new control state defines a new reasoning operation. The inputs of this unit are the past control state, the question encoding and the contextual words (see Question Encoding Unit). It uses the dot product attention between the contextual words
-and the combination of the past control states and the question encoding.  This attention layer produces the new control state.
-
-This unit also outputs the temporal class weights that will be used in the Reasoning Unit. It gives access to a temporal information for the current words (last, latest, now, none temporal).
+%The Question-driven Controller plays an important role in the reasoning process.
+%It drives the attention over the question and produces the new control states. Each new control state defines a new reasoning operation. The inputs of this unit are the past control state, the question encoding and the contextual words (see Question Encoding Unit). It uses the dot product attention between the contextual words
+%and the combination of the past control states and the question encoding.  This attention layer produces the new control state.
+%
+%This unit also outputs the temporal class weights that will be used in the Reasoning Unit. It gives access to a temporal information for the current words (last, latest, now, none temporal).
 
 \begin{description}
 	\item[Inputs:] 
@@ -160,9 +160,9 @@ This unit also outputs the temporal class weights that will be used in the Reaso
 
 \colorbx{Visual Retrieval Unit}
 
-The visual retrievial unit is responsible to extract visual information from the current image given a control state coming from the Question-driven Controller. It is first projecting the past summary object and the feature maps together using the interaction module.
-It is then using the attention module as follow. The query are the control states and the keys and are the feature maps coming from the image encoder. The results of this attention is applied on the modified features maps coming from the interaction module.  
-This unit outputs the extracted object and the visual attention.
+%The visual retrievial unit is responsible to extract visual information from the current image given a control state coming from the Question-driven Controller. It is first projecting the past summary object and the feature maps together using the interaction module.
+%It is then using the attention module as follow. The query are the control states and the keys and are the feature maps coming from the image encoder. The results of this attention is applied on the modified features maps coming from the interaction module.  
+%This unit outputs the extracted object and the visual attention.
 
 \begin{description}
 	\item[Inputs:] 
@@ -203,8 +203,8 @@ This unit outputs the extracted object and the visual attention.
 
 \colorbx{Memory Retrieval Unit}
 
-The role of the memory retrieval unit is to read and extract object from memory).
-As the Visual Retrieval Unit, it uses the combination of the two following submodules. The interaction module blends together the extracted object and the content of the memory. The attention module then extract the corresponding object in memory if present. This unit outputs the extracted object and its corresponding location, we call it the "read head".
+%The role of the memory retrieval unit is to read and extract object from memory).
+%As the Visual Retrieval Unit, it uses the combination of the two following submodules. The interaction module blends together the extracted object and the content of the memory. The attention module then extract the corresponding object in memory if present. This unit outputs the extracted object and its corresponding location, we call it the "read head".
 
 \begin{description}
 	\item[Inputs:] 
@@ -265,41 +265,39 @@ As the Visual Retrieval Unit, it uses the combination of the two following submo
 		(ii) replace: $\doreplace_t \in [0,1]$
 	\end{enumerate}
 	
-	\item[Equations:]
-	\begin{enumerate}
-		\item[]
-		\item $\imatch_t \in [0,1]$:
-		It's true if there is a valid visual object. This assumes that
-		the current reasoning step refers to either ```now''  or ``latest''.
-		
-		\item$\mmatch_t \in [0,1]$:
-		It's true if there is a valid memory object. This assumes that
-		the current reasoning step refers to either ``last'',  or alternatively ``latest'' 
-		but there is no matching visual object.
-		
-		\item $\doadd_t$:
-		
-		
-		\item $\doreplace_t$: 
-	\end{enumerate}
+%	\item[Equations:]
+%	\begin{enumerate}
+%		\item[]
+%		\item $\imatch_t \in [0,1]$:
+%		It's true if there is a valid visual object in the current temporal context.
+%		
+%		\item $\mmatch_t \in [0,1]$:
+%		It's true if there is a valid memory object in the current temporal context.
+%		
+%		\item $\doadd_t \in [0,1]$: 
+%		It's true if the current visual object should be added as a new object to memory.
+%		
+%		\item $\doreplace_t \in [0,1]$: 
+%		It's true if the current visual object should replace an existing object in memory.
+%	\end{enumerate}
 \end{description}
 
 
 \colorbx{Memory Update Unit}
 
-This unit is meant to update the content of the memory. 
-
-Three actions can happen:
-
-\begin{itemize}
-	\item There is no object to be added to memory, the memory remains unchanged
-	\item There is one object that needs to be added to memory, but a similar object is already in memory at a given location. The new object will replace the old object at this location
-	
-	\item There is one object that needs to be added to memory, and  it is a new object. It is added at the write head location.
-\end{itemize}
-
-
-This module also updates the position of the write head. If a new object as been added to the current write head position, the right head shifts right to a new empty slot. If the object has been replaced, the write head doesn't move.
+%This unit is meant to update the content of the memory. 
+%
+%Three actions can happen:
+%
+%\begin{itemize}
+%	\item There is no object to be added to memory, the memory remains unchanged
+%	\item There is one object that needs to be added to memory, but a similar object is already in memory at a given location. The new object will replace the old object at this location
+%	
+%	\item There is one object that needs to be added to memory, and  it is a new object. It is added at the write head location.
+%\end{itemize}
+%
+%
+%This module also updates the position of the write head. If a new object as been added to the current write head position, the right head shifts right to a new empty slot. If the object has been replaced, the write head doesn't move.
 % visual_object, visual_working_memory, read_head, write_head, do_replace, do_add_new
 
 \begin{description}
@@ -328,9 +326,9 @@ This module also updates the position of the write head. If a new object as been
 
 \colorbx{Summary Object Update Unit}
 
-The  Summary Unit is the last unit of the SAMCell. It is responsible to output the new summary object. It first picks which object is relevant between the object extracted from memory and the visual object extracted from the image. Once the relevant object is picked, it is combined with the former summary object through a linear layer to become the new summary object. It is the final step of the SAMCell reasoning cycle. 
-
-The image encoder, question encoder and output unit are described in the appendix.
+%The  Summary Unit is the last unit of the SAMCell. It is responsible to output the new summary object. It first picks which object is relevant between the object extracted from memory and the visual object extracted from the image. Once the relevant object is picked, it is combined with the former summary object through a linear layer to become the new summary object. It is the final step of the SAMCell reasoning cycle. 
+%
+%The image encoder, question encoder and output unit are described in the appendix.
 
 \begin{description}
 	\item[Inputs:] 
@@ -368,11 +366,6 @@ The image encoder, question encoder and output unit are described in the appendi
 	$F_k$
 \end{description}
 
-
-
-
-
-
 The Image Encoder unit is responsible to preprocess the sequence of images one at the time. It is a 4 layer convolutional neural network. Every layer is composed of the following sequence of operations:
 
 \begin{enumerate}
@@ -384,8 +377,6 @@ The Image Encoder unit is responsible to preprocess the sequence of images one a
 
 The first layer has 3 inputs channels and 32 output channels. Layer 2 has 32 and 64. Layer 3 has 64 and 64. Finally, layer 4 has 64 inputs channels and 128 output channels .
 The resulting tensor (feature maps) are of dimensions [batch size, $H*W =7*7$, $dim$=128]. 
-
-
 
 
 \colorbx{Question Encoder}
@@ -409,8 +400,6 @@ The resulting tensor (feature maps) are of dimensions [batch size, $H*W =7*7$, $
 	
 \end{description}
 
-
-
 The strings questions are first embedded ($torch.NN.Embeddings$) and then passed through a $d$-dimensional biLSTM ($d$=128).
 The final hidden state of the biLSTM becomes the question encoding representation $q$. Whereas the biLSTM outputs are projected via a linear layer to become the final words encodings named contextual words $cw$. 
 
@@ -428,8 +417,6 @@ The final hidden state of the biLSTM becomes the question encoding representatio
 	\item[Output:] 
 	prediction 
 \end{description}
-
-
 
 The output unit predicts the final answer to the question. It is a 2-linear-layer-ELU classifier that produces a distribution over the possible candidates. It is based on two inputs, the final summary object $so_t$ and the question encoding $q$ that are concatenated together. 
  
@@ -536,12 +523,67 @@ The training and implementation details are in appendix.
 
 \subsection{Visualization}
 
-\begin{figure}[!htb]
-	\includegraphics[width=\textwidth]{img/model2}
-	\label{fig:model2}
-\end{figure}	
+We illustrate the key reasoning steps taken by the model with the following example.
+Let the question be: ``Does color of u now equal the color of the latest circle?''
+and let the frames be as shown in~\cref{fig:frame-seq}.
+The answer is true in the last frame because the latest circle can be found in Frame 2. 
+\begin{figure}[!h]
+\begin{minipage}{0.25\textwidth}
+\centering
+\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 1"}
+\label{fig:frame-1}
+\end{minipage}\hfill
+\begin{minipage}{0.25\textwidth}
+	\centering
+	\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 2"}
+	\label{fig:frame-1}
+\end{minipage}\hfill
+\begin{minipage}{0.25\textwidth}
+	\centering
+	\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 3"}
+	\label{fig:frame-1}
+\end{minipage}\hfill
+\begin{minipage}{0.25\textwidth}
+	\centering
+	\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 4"}
+		\label{fig:frame-1}
+\end{minipage}
+\caption{Sample sequence of input frames} 
+\label{fig:frame-seq}
+\end{figure}
 
-\begin{figure}[!htb]
-	\includegraphics[width=\textwidth]{img/image}
-	\label{fig:model}
-\end{figure}	
+SAMNet gives the correct answer for this example and we can interpret its reasoning process via a movie that we can generate.
+The key steps in that reasoning process are shown below. Working backwards, the following shows what happens in the key steps
+of the reasoning process.
+In Step 1 of processing Frame 4 (see~\cref{fig:frame-4-step-1}), we see that the object representing the letter u is where the attention 
+is, both in text and in image. We also see that the temporal classifier gives the highest weight to the context ``now''.
+\begin{figure}[!h]
+\centering
+  \includegraphics[width=\textwidth]{"../img/visualization/sample 2/Frame 4 Step 1"}
+\caption{State of SAMNet in a particular reasoning step} 
+\label{fig:frame-4-step-1}
+\end{figure}
+
+Now there is no circle in this frame even though it is a valid candidate . This is detected by SAMNet,
+as shown in~\cref{fig:frame-4-step-6}. Even though the textual attention is on the right word
+and the temporal classification is ``latest'', there
+is no valid visual attention.
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\textwidth]{"../img/visualization/sample 2/Frame 4 Step 6"}
+	\caption{State of SAMNet in a particular reasoning step} 
+	\label{fig:frame-4-step-6}
+\end{figure}
+
+But in Step 6 of processing Frame 2 (see~\cref{fig:frame-2-step-6}), 
+we see that the object representing the circle is where the attention is.
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\textwidth]{"../img/visualization/sample 2/Frame 2 Step 6"}
+	\caption{State of SAMNet in a particular reasoning step} 
+	\label{fig:frame-2-step-6}
+\end{figure}
+Moreover, the ``Add New`` gate value is high enough that the valid object representing
+the visual encoding of the circle is stored in memory. Note that this is not perfect:
+this value should have been close to 1 but the model is still able to use it for 
+correct prediction.
