@@ -16,17 +16,17 @@ The main differences are the number of frames in the input sequence (4 vs. 8) an
 \begin{figure}[htbp]
 	\centering
   \begin{subfigure}{\textwidth}
-    \includegraphics[width=0.99\textwidth]{results/samnet_cog_orig_canonical_no_labels.png}
+    \includegraphics[width=0.92\textwidth]{results/samnet_cog_orig_canonical_no_labels.png}
   \end{subfigure}%
   \newline
   \begin{subfigure}{\textwidth}
-	\includegraphics[width=\textwidth]{results/samnet_cog_orig_hard.png}
+	\includegraphics[width=0.93\textwidth]{results/samnet_cog_orig_hard.png}
   \end{subfigure}%
 \caption{Comparison of test set accuracies of SAMNet (blue) with original results achieved by the COG model (gray) on Canonical (top) and Hard (bottom) variants of the COG dataset.}
 \label{fig:samnet_cog_detailed}
 \end{figure}
 
-\begin{wrapfigure}{r}{0.4\textwidth}
+\begin{wrapfigure}{r}{0.36\textwidth}
 	\centering
 	\includegraphics[width=0.4\textwidth]{results/samnet_cog_overall_transfer.png}
 	\caption{Total accuracies of SAMNet (blue) and COG models (light/dark gray) when testing generalization from Canonical to Hard variants of the dataset.}
@@ -48,7 +48,7 @@ For sanity check, in the first column, we report both the best-achieved score an
 In a pure \textit{transfer learning} setup (second column), our model shows enormous generalization ability, reaching 91.6\% accuracy on the test set.
 We have also tested both models in a setup where the model trained on a Canonical variant underwent additional fine-tuning (for a single epoch) on the Hard variant (third column).
 In this case, the SAMNet model also reached much better performance, and, interestingly, achieved better scores from the model trained and tested exclusively on the Hard variant.
-In summary, the results clearly indicate that the mechanisms introduced in SAMNet  enable it to learn to operate independently of the total number of frames or number of distractions, and allow it to generalize to longer videos and more complex scenes.
+In summary, the results clearly indicate that the mechanisms introduced in SAMNet  enable it to learn to operate independently of the total number of frames or number of distractions, and allow it to generalize to longer videos and more complex scenes. One other strength of SAMNet is its interpretability. Observing attention maps (see Appendix 4.5) shows that SAMNet can effectively perform multi-step reasoning over questions and frames as intended. It also accurately classify temporal contexts as designed. However we notice that the model can sometime discover alternative strategies that were not in the intended design but the answers are still correct. More details are given in Appendix 4.5
 
 %we used the canonical (easy) and hard settings that alter the number of distractors and sequence length.  Since there was no baseline for these tests (train on canonical, test on hard), we ran our own experiments using the COG model provided by the authors.  SAMNet achieves the highest overall scores for all categories of experiments (\cref{fig:samnet_cog_overall_transfer}), especially for the tests run on the hard dataset.  Among the 22 classification tasks, we highlighted the two most difficult tasks that affect the overall score. 
 %We argue that the generalization capability of SAMNet is mainly due to the dynamic frame-by-frame processing of the input sequence. 
