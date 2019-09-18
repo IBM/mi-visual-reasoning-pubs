@@ -85,16 +85,16 @@ even if the current frame contains a red square.
 
 \noindent{\textbf{Reasoning Unit.}}
 %\paragraph{Reasoning Unit.}
-This module is the backbone of SamNet that determines what gating operations need to be performed on the external memory, as well as
+This module is the backbone of SAMNet that determines what gating operations need to be performed on the external memory, as well as
 determining the location of the correct object for reasoning.
-To determine whether we have a valid object from frame (and similarly for memory), we execute the following reasoning procedure.
+To determine whether we have a valid object from the frame (and similarly for memory), we execute the following reasoning procedure.
 First, we take the visual attention vector $va_t$ of dimension $L$, where $L$ denotes the number of feature vectors for the frame,
 and compute a simple aggregate\footnote{%
 	This is closely related to Tsallis entropy of order 2 and to R\'{e}nyi entropy.}: %
 $vs_t = \sum_{i=1}^L [va_t(i)]^2$. It can be shown mathematically that the more localized the attention
 vector is, the higher is the aggregate value.
 We perform a similar computation on the read head $rh_t$ over memory locations.
-We feed these 2 values along with the temporal class weights $\tau_t$ to a 3-layer feedforward classifier with hidden ELU units to extract 4 gating values
+We feed these two values along with the temporal class weights $\tau_t$ to a 3-layer feedforward classifier with hidden ELU units to extract 4 gating values
 in $[0,1]$ modulated for the current reasoning step:
 (a) $\imatch_t$, which determines whether there is a valid visual object;
 (b) $\mmatch_t$, which determines whether there is a valid memory object. 
