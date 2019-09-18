@@ -59,7 +59,7 @@ in order to perform multi-step spatio-temporal reasoning over text and video.
 
 The core of SAMNet is a recurrent cell called a SAM Cell (\cref{fig:samcell}). 
 Unrolling a new series of $T$ cells for every frame enables $T$ steps of compositional
-reasoning.
+reasoning, similar to~\cite{hudson2018compositional}.
 Information flows between frames through the external memory. 
 During the $t$-th reasoning step, for $t=1,2, \dots, T$, SAM Cell maintains the following information as part of its recurrent state:
 (a) $c_t \in \Reals^d$, the control state used to drive the reasoning over objects in the frame and memory; and
@@ -89,7 +89,9 @@ This module is the backbone of SamNet that determines what gating operations nee
 determining the location of the correct object for reasoning.
 To determine whether we have a valid object from frame (and similarly for memory), we execute the following reasoning procedure.
 First, we take the visual attention vector $va_t$ of dimension $L$, where $L$ denotes the number of feature vectors for the frame,
-and compute a simple aggregate $vs_t = \sum_{i=1}^L [va_t(i)]^2$. It can be shown mathematically that the more localized the attention
+and compute a simple aggregate\footnote{%
+	This is closely related to Tsallis entropy of order 2 and to R\'{e}nyi entropy.}: %
+$vs_t = \sum_{i=1}^L [va_t(i)]^2$. It can be shown mathematically that the more localized the attention
 vector is, the higher is the aggregate value.
 We perform a similar computation on the read head $rh_t$ over memory locations.
 We feed these 2 values along with the temporal class weights $\tau_t$ to a 3-layer feedforward classifier with hidden ELU units to extract 4 gating values
