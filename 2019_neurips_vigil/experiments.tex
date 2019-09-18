@@ -26,9 +26,9 @@ The main differences are the number of frames in the input sequence (4 vs. 8) an
 \label{fig:samnet_cog_detailed}
 \end{figure}
 
-\begin{wrapfigure}{r}{0.36\textwidth}
+\begin{wrapfigure}{r}{0.45\textwidth}
 	\centering
-	\includegraphics[width=0.4\textwidth]{results/samnet_cog_overall_transfer.png}
+	\includegraphics[width=0.45\textwidth]{results/samnet_cog_overall_transfer.png}
 	\caption{Total accuracies of SAMNet (blue) and COG models (light/dark gray) when testing generalization from Canonical to Hard variants of the dataset.}
 	\label{fig:samnet_cog_overall_transfer}
 \end{wrapfigure}
@@ -44,7 +44,7 @@ when comparing performances on the Hard variant, it dominates COG baseline on al
 The goal of the next set of experiments was to test the generalization ability concerning the sequence length and number of distractors.
 For that purpose, we have compared the accuracies of both models when trained on the Canonical variant and tested on Hard (\cref{fig:samnet_cog_overall_transfer}).
 As the original paper does not include such experiments, we have performed them on our own.  The light gray color indicates the original results, whereas dark gray indicates the accuracies of COG models that we have trained (fine-tuning/testing) using the original code provided by the authors.
-For sanity check, in the first column, we report both the best-achieved score and the score reported in the paper when training and testing on Canonical variant, without any fine-tuning (N/A in the second row from the bottom).
+For sanity check, in the first column, we report both the best-achieved score and the score reported in the paper when training and testing on Canonical variant, without any fine-tuning.
 In a pure \textit{transfer learning} setup (second column), our model shows enormous generalization ability, reaching 91.6\% accuracy on the test set.
 We have also tested both models in a setup where the model trained on a Canonical variant underwent additional fine-tuning (for a single epoch) on the Hard variant (third column).
 In this case, the SAMNet model also reached much better performance, and, interestingly, achieved better scores from the model trained and tested exclusively on the Hard variant.
