@@ -1,0 +1,109 @@
+\section{Introduction}
+
+Integration of vision and language in deep neural network models allows the system to learn joint representations of objects, concepts, and relations.  Potentially, this approach can address Harnad's \textit{symbol grounding problem}~\cite{harnad2003symbol} and lead to visually grounded language learning.
+Starting with Image Question Answering~\cite{malinowski2014multi,antol2015} and Image Captioning~\cite{karpathy2015deep}, a variety of tasks that integrate vision and language have emerged in the past several years~\cite{mogadala2019trends}. 
+Those directions include e.g., Video QA~\cite{MovieQA} and Video Action Recognition~\cite{monfort2019moments}, that provide an additional challenge of understanding \emph{temporal} aspects, and Video Reasoning~\cite{song2018explore,yang2018dataset}, that tackles both spatial (comparison of object attributes, counting and other relational question) and temporal aspects and relations (e.g. object disappearance).
+To deal with the temporal aspect most studies typically cut the whole video into clips; e.g., in~\cite{song2018explore} the model extracts visual features from each frame and aggregates features first into clips, followed by aggregation over clips to form a single video representation.
+Still, when reasoning and producing the answer, the system in fact has \textit{access to all frames}. 
+%As evident from human cognition, attention and memory are the key competencies required to solve these problems, and unsurprisingly, the AI research is rapidly growing in these areas.
+%The ability to deal with temporal casuality can pose a challenge for also in pure natural language processing (NLP) settings, e.g. in question answering (QA) and dialog applications.  
+%Current NLP solutions, in many problem settings, work around this challenge by processing the entire text input and reason over it multiple times using attention \cite{vaswani2017attention} or other mechanisms.
+%For example, typical solutions to the bAbI reasoning task, such as Memory Networks \cite{weston2015towards}, involve processing all the supporting facts at once and keeping them in memory all the time while searching for the answer.
+Similarly, in Visual Dialog~\cite{das2017visual} the system memorizes the whole dialog history.
+However, in real-time dialog or video monitoring, it is not always possible to keep the entire history of conversation nor all frames from the beginning of the recording.  
+
+%Such approaches also differ from the human cognitive strategies.  Humans have the ability to selectively pay attention and store salient items or events in memory based on their goals.  Working memory and episodic memory systems are responsible for this remarkable ability. 
+
+%Fluid Intelligence:
+%
+%IQ may be viewed as a composite comprising multiple elements: In many theories of intelligence, a distinction is made between fluid and crystallized intelligence (8). Fluid intelligence comprises the set of abilities involved in coping with novel environments and especially in abstract reasoning; crystallized intelligence is the product of the application of these processes. Fluid intelligence is often measured by tests such as figural analogy, classification, and matrix problems, whereas crystallized intelligence is measured by tests of vocabulary and general information (9). 
+%~\cite{sternberg2008increasing}
+%
+%Cognitively, gF is thought to be related to metacognition6(knowing about and reflecting upon one’s own ongoing mentalprocesses) and to working memory4,5,7–9(the active maintenanceof domain-specific information plus domain-general attention-al or ‘executive’ control of ongoing processing). One componentof attentional control is the ability to overcome interference thatwould otherwise disrupt performance by compromising taskgoals or information held active in working memory. Individualdifferences in gF are most pronounced in behavioral measureswhen attentional control is required4,8,10. For this reason, gF isthought to be related to attentional control specifically~\cite{gray2003neural}
+
+
+%In recent years there has been substantial progress in systems  that  can  find  factual  answers  in  text,  starting  with IBM’s Watson system~\cite{ferrucci2010building}, and now with high-performing neural systems that can answer short questions provided they are given a text that contains the answer e.g.~\cite{wang2018glue}
+%
+%
+%AI  has  achieved  remarkable  mastery  over  games  such  asChess, Go, and Poker, and evenJeopardy!, but the rich variety of standardized exams has remained a landmark chal-lenge.   Even  in  2016,  the  best  AI  system  achieved  merely 59.3\% on an 8th Grade science exam challenge (Schoenicket al., 2016).
+%
+%Playing Atari Games~\cite{mnih2015human}
+%
+%
+%Despite several successes across many domains Deep learning~\cite{lecun2015deep} still struggles with
+%
+%learning algoritms
+%learning reasoning~\cite{graves2016hybrid}
+%
+%
+%Wingrad Scheme challenge~\cite{levesque2012winograd}
+
+%visual reasoning~\cite{mogadala2019trends} - datasets such as COG~\cite{yang2018dataset} and 
+%SVQA (Synthetic Video Question Answering)~\cite{song2018explore}
+%
+%
+%ARISTO project~\cite{clark2019f} - based on RoBERTa~\cite{liu2019roberta} contextual word embeddings
+%
+%transformer-based solutions~\cite{vaswani2017attention} using self-attention
+%
+%
+%“The current neural network approaches will find it difficult to determine which combinations of ‘later’, ‘earlier’, ‘more’, and ‘less’ constitute ‘increase’ and which constitute ‘decrease,'” Davis says. “Neural networks have no inherent idea of magnitude or of time.”
+%~\cite{davis2016write}
+
+
+
+
+
+%\begin{itemize}
+%\item bAbI:  MemNets~\cite{weston2014memory} have access to the whole story at once
+%\item the same goes to SoftPats~\cite{haurilet2019s} - they build graph per frame and then frame number is treated as one dimensions, so at the end the \textit{Traveler} can access all of them at the same time 
+%\item The paper~\cite{le2019learning} focuses on SVQA and TGIF-QA -  they access all frames at once, i.e. cut the video into clips, process each frame with CNNs and then aggregate feature representations of equal-size clips obtained by a temporal attention mechanism. So in fact the model has access to all frames all the time.
+%\end{itemize}
+%so the time aspect is really... not dealt with?
+%
+%Additionally, in~\cite{song2018explore} the authors introduced a large-scale dataset caled SVQA (Synthetic Video Question Answering) consisting of (Total QA pairs: 83160/11760/23760 and Total Videos 8400/1200/2400).
+%As "using all frames is time-consuming. Thus we divide each video into clips (segments) of 16 frames, with 80\% overlap between successive clips (segments)" and "We extract feature from each clip and aggregate features of all clips from one video to form a sequential video representation." -- which means that they identified the problem that you "cannot extract features from all frames" at the beginning and pass that to the model. But instead of proposing a solution that will deal with the video on per-frame basis, they "cheated". ;)
+%
+%IMPORTANT: \textbf{we do not have any explicit assumptions when it comes to number of frames/length of the movie/number of distractionts}, so there is no need for cutting video into cuts etc.
+
+\paragraph{Contributions.}
+%Such approaches also differ from the human cognitive strategies.  Humans have the ability to selectively pay attention and store salient items or events in memory based on their goals.  Working memory and episodic memory systems are responsible for this remarkable ability. 
+In this paper we focus on Visual Reasoning, however, however, instead of enabling the system to access all input frames at every reasoning step, we decided to follow a totally different, nevertheless more natural approach.
+Inspired by human cognitive capacity to selectively pay attention and store salient information in memory,
+we introduce a new model that can dynamically processes video input frame-by-frame, reasons over a given image and remembers the salient concepts to answer questions.
+Our results based on the COG dataset \cite{yang2018dataset} indicate that the model is capable of:
+(1) learning the temporal association, i.e., grounding the time-related words with meaning;
+	%\item Learning the concept of time
+	%\item time context being by-product of gates
+	%\end{itemize}
+(2) learning complex, multi-step reasoning that involves grounding of words and visual representations of objects/attributes;
+(3) selectively control the flow of information to and from the memory to answer questions; and
+(4) updating the memory only with relevant visual information depending on the temporal context.
+%\begin{itemize}
+%\item \textbf{Time aspect}:
+%\begin{itemize}
+%\item Learning the temporal association - grounding the time-related words with meaning
+%%\item Learning the concept of time
+%%\item time context being by-product of gates
+%%\end{itemize}
+%
+%\item Learning complex, multi-step reasoning that involves grounding of words and visual representations of objects/attributes
+%%\begin{itemize}
+%%\item Learning complex, multi-step reasoning that involves grounding of words and visual representations/objects
+%\item Selectively control the flow of information to and from the memory to answer questions
+%%\end{itemize}
+%%\item \textbf{Selective Attention Memory}:
+%%\begin{itemize}
+%\item Updating the memory only with relevant visual information depending on the temporal context
+%%\item content based and location based addressing for reading and writing
+%%\item new memory interface/gating designed in such a way enabling the model to control the flow of current visual information and content of the memory in a selective way
+%
+%\end{itemize}
+%\end{itemize}
+
+
+
+
+
+
+
