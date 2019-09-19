@@ -3,7 +3,7 @@
 We have implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on Pytorch~\cite{paszke2017automatic}. 
 We evaluated the model on the COG dataset~\cite{yang2018dataset}, a video reasoning~\cite{mogadala2019trends} dataset developed for the purpose of research on relational and temporal reasoning.
 Our experiments were designed to study SAMNet's performance as well as its generalization abilities in different settings.
-For this purpose, we used two different variants of the COG dataset (\cref{fig:cog_variants}): an easy one (Canonical) and a Hard version to explore a wide range of difficulties.
+For this purpose, we used two different variants of the COG dataset (\cref{tab:cog_variants}): an easy one (Canonical) and a Hard version to explore a wide range of difficulties.
 The main differences are the number of frames in the input sequence (4 vs. 8) and the maximum number of distractors (i.e., objects not relevant for the answer) per a single frame (1 vs. 10).
 
 
@@ -34,28 +34,32 @@ The main differences are the number of frames in the input sequence (4 vs. 8) an
 
 \subsection{Performance comparison with the COG baseline}
 
+In our experiments we have trained SAMNet using 8 reasoning steps and external memory having 8 address locations, each being a vector of 128 floats.
+We have also carried out experiments with different numbers of reasoning steps and memory size, but this goes beyond the scope of this paper.
+In here, we have focused on 22 classification tasks and compared our results with the baseline model.
+The most important results are highlighted in~\cref{fig:samnet_cog_detailed}, whereas full comparison is presented in \cref{tab:results-full}.
+
 \begin{figure}[htbp]
 	\centering
   \begin{subfigure}{\textwidth}
-    \includegraphics[width=0.92\textwidth]{../results/samnet_cog_orig_canonical_no_labels.png}
+    \includegraphics[width=0.99\textwidth]{../results/samnet_cog_orig_canonical_no_labels.png}
   \end{subfigure}%
   \newline
   \begin{subfigure}{\textwidth}
-	\includegraphics[width=0.93\textwidth]{../results/samnet_cog_orig_hard.png}
+	\includegraphics[width=\textwidth]{../results/samnet_cog_orig_hard.png}
   \end{subfigure}%
 \caption{Comparison of test set accuracies of SAMNet (blue) with original results achieved by the COG model (gray) on Canonical (top) and Hard (bottom) variants of the COG dataset.}
 \label{fig:samnet_cog_detailed}
 \end{figure}
 
 
-In our experiments, we have focused on 22 classification tasks and compared our results with the baseline model, as presented in \cref{fig:samnet_cog_detailed}.
 For the Canonical variant (top row), we have achieved similar accuracies for the majority of tasks (with the total average accuracy of 98.0\% in comparison of 97.6\% achieved by the COG model), with significant improvements (around 13 points) for \textit{AndCompare} tasks.
 As those tasks focus on compositional questions referring to two objects, we hypothesize that our model achieved better accuracy due to the ability to selectively pick and store the relevant objects from the past frames in the memory.
 Despite there are some tasks in which our model reached slightly lower accuracies,
 % (between 0.2 and 1.8 points)
 when comparing performances on the Hard variant, it dominates COG baseline on all tasks, with improvements varying from 0.5 to more than 30 points.
 
-\begin{table}[htb]
+\begin{table}[t!]
 \caption{COG test set accuracies for SAMNet \& COG models. Below `paper' denotes results from~
 	while `code' denotes results of our experiments using their implementation~\cite{yang2018implement}}
 \centering
@@ -101,13 +105,13 @@ when comparing performances on the Hard variant, it dominates COG baseline on al
 	\bottomrule
 \end{tabular}
 \end{adjustbox}
-\label{results}
+\label{tab:results-full}
 \end{table}
 
 
-\begin{wrapfigure}{r}{0.45\textwidth}
+\begin{wrapfigure}{r}{0.5\textwidth}
 	\centering
-	\includegraphics[width=0.45\textwidth]{../results/samnet_cog_overall_transfer.png}
+	\includegraphics[width=0.5\textwidth]{../results/samnet_cog_overall_transfer.png}
 	\caption{Total accuracies of SAMNet (blue) and COG models (light/dark gray) when testing generalization from Canonical to Hard variants of the dataset.}
 	\label{fig:samnet_cog_overall_transfer}
 \end{wrapfigure}
@@ -129,34 +133,51 @@ In summary, the results clearly indicate that the mechanisms introduced in SAMNe
 
 
 \subsection{Analysis of the reasoning strategy}
-
+As a result of training the SAMNet developed a quite complex reasoning.
 We illustrate the key reasoning steps taken by the model with the following example.
-Let the question be: ``Does color of u now equal the color of the latest circle?''
+
+Let the question be: ``'
 and let the frames be as shown in~\cref{fig:frame-seq}.
 The answer is true in the last frame because the latest circle can be found in Frame 2. 
+
+\captionsetup[subfigure]{labelformat=empty}
 \begin{figure}[!h]
-\begin{minipage}{0.25\textwidth}
-\centering
-\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 1"}
-\label{fig:frame-1}
-\end{minipage}\hfill
-\begin{minipage}{0.25\textwidth}
+  \begin{center}
+  Question: \textbf{Does color of u now equal the color of the latest circle?}
+  \end{center}
+  \vskip -0.4cm
+  \null\hfill
+  \begin{subfigure}{0.25\textwidth}
+	\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 1"}
+	\caption{Frame: \textbf{1}\newline Ground Truth: \textbf{invalid}}
+	\label{fig:frame-1}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}{0.25\textwidth}
 	\centering
 	\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 2"}
-	\label{fig:frame-1}
-\end{minipage}\hfill
-\begin{minipage}{0.25\textwidth}
+	\caption{Frame: \textbf{2}\newline Ground Truth: \textbf{false}}
+	\label{fig:frame-2}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}{0.25\textwidth}
 	\centering
 	\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 3"}
-	\label{fig:frame-1}
-\end{minipage}\hfill
-\begin{minipage}{0.25\textwidth}
+	\caption{Frame: \textbf{3}\newline Ground Truth: \textbf{true}}
+	\label{fig:frame-3}
+  \end{subfigure}%
+  \hfill
+  \begin{subfigure}{0.25\textwidth}
 	\centering
 	\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 4"}
-		\label{fig:frame-1}
-\end{minipage}
-\caption{Sample sequence of input frames} 
-\label{fig:frame-seq}
+	\caption{Frame: \textbf{4}\newline Ground Truth: \textbf{true}}
+	\label{fig:frame-4}
+  \end{subfigure}%
+  \hfill\null
+  \newline
+  \centering
+\caption{The video-question pair selected for analysis.} 
+\label{fig:frame-seq}  
 \end{figure}
 
 SAMNet gives the correct answer for this example and we can interpret its reasoning process via a movie that we can generate.
