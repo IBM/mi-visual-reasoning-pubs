@@ -426,7 +426,7 @@ The output unit predicts the final answer to the question. It is a 2-linear-laye
 \subsubsection{Implementation Details}
 
 
-SAMNet is implemented on IBM's Mi-Prometheus~\cite{kornuta2018accelerating} framework based on Pytorch. 
+SAMNet is implemented using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on Pytorch. 
 We trained all our models using NVIDIA’s GeForce GTX TITAN X GPUs. SAMNet was trained using 8 reasoning steps and a hidden state size of 128. The external memory has 128-bit slots for all experiments. We trained our model until convergence but we also have set a training time limit of 80 hours.
 
 \subsubsection{Training and testing Methodology}
@@ -519,71 +519,3 @@ The training and implementation details are in appendix.
 \label{tab:parameters}
 \end{table}
 
-
-
-\subsection{Visualization}
-
-We illustrate the key reasoning steps taken by the model with the following example.
-Let the question be: ``Does color of u now equal the color of the latest circle?''
-and let the frames be as shown in~\cref{fig:frame-seq}.
-The answer is true in the last frame because the latest circle can be found in Frame 2. 
-\begin{figure}[!h]
-\begin{minipage}{0.25\textwidth}
-\centering
-\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 1"}
-\label{fig:frame-1}
-\end{minipage}\hfill
-\begin{minipage}{0.25\textwidth}
-	\centering
-	\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 2"}
-	\label{fig:frame-1}
-\end{minipage}\hfill
-\begin{minipage}{0.25\textwidth}
-	\centering
-	\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 3"}
-	\label{fig:frame-1}
-\end{minipage}\hfill
-\begin{minipage}{0.25\textwidth}
-	\centering
-	\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 4"}
-		\label{fig:frame-1}
-\end{minipage}
-\caption{Sample sequence of input frames} 
-\label{fig:frame-seq}
-\end{figure}
-
-SAMNet gives the correct answer for this example and we can interpret its reasoning process via a movie that we can generate.
-The key steps in that reasoning process are shown below. Working backwards, the following shows what happens in the key steps
-of the reasoning process.
-In Step 1 of processing Frame 4 (see~\cref{fig:frame-4-step-1}), we see that the object representing the letter u is where the attention 
-is, both in text and in image. We also see that the temporal classifier gives the highest weight to the context ``now''.
-\begin{figure}[!h]
-\centering
-  \includegraphics[width=\textwidth]{"../img/visualization/sample 2/Frame 4 Step 1"}
-\caption{State of SAMNet in a particular reasoning step} 
-\label{fig:frame-4-step-1}
-\end{figure}
-
-Now there is no circle in this frame even though it is a valid candidate . This is detected by SAMNet,
-as shown in~\cref{fig:frame-4-step-6}. Even though the textual attention is on the right word
-and the temporal classification is ``latest'', there
-is no valid visual attention.
-\begin{figure}[!h]
-	\centering
-	\includegraphics[width=\textwidth]{"../img/visualization/sample 2/Frame 4 Step 6"}
-	\caption{State of SAMNet in a particular reasoning step} 
-	\label{fig:frame-4-step-6}
-\end{figure}
-
-But in Step 6 of processing Frame 2 (see~\cref{fig:frame-2-step-6}), 
-we see that the object representing the circle is where the attention is.
-\begin{figure}[!h]
-	\centering
-	\includegraphics[width=\textwidth]{"../img/visualization/sample 2/Frame 2 Step 6"}
-	\caption{State of SAMNet in a particular reasoning step} 
-	\label{fig:frame-2-step-6}
-\end{figure}
-Moreover, the ``Add New`` gate value is high enough that the valid object representing
-the visual encoding of the circle is stored in memory. Note that this is not perfect:
-this value should have been close to 1 but the model is still able to use it for 
-correct prediction.

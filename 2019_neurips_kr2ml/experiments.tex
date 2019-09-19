@@ -16,8 +16,8 @@ The main differences are the number of frames in the input sequence (4 vs. 8) an
 	& of   & memory & number of & of & of & of  \\
 	& frames & duration & distractors & training set & validation set & test set \\
 	\midrule
-	Canonical & 4 & 3 & 1 & 10000320 & 500016? & 422400? \\	
-	Hard  & 8 & 7 & 10 & 10000320 & 500016?  & 422400? \\
+	Canonical & 4 & 3 & 1 & 10000320 & 500016? & 500016? \\	
+	Hard  & 8 & 7 & 10 & 10000320 & 500016?  & 500016? \\
 	\bottomrule	
 \end{tabular}
 \label{tab:cog_variants}
@@ -132,18 +132,8 @@ In summary, the results clearly indicate that the mechanisms introduced in SAMNe
 %The mechanisms introduced in SAMCell learn to operate independently of the total number of frames and allow to generalize to longer video lengths.
 %As shown in \cref{fig:samnet_cog_overall_transfer}, when trained on the easy dataset, SAMNet still performs 91.6\% when tested on the hard dataset, whereas COG drops from 97.6\% to 65.9\%   The visualization of the trained SAMNet model (see Appendix) indicates that the model learns the concept of time, helping it to control the flow of information from visual input to the memory.  Therefore, the memory is updated efficiently instead of storing all information across all frames.
 
-
-
-\subsection{Analysis of the reasoning strategy}
-As a result of training the SAMNet developed a quite complex reasoning.
-We illustrate the key reasoning steps taken by the model with the following example.
-
-Let the question be: ``'
-and let the frames be as shown in~\cref{fig:frame-seq}.
-The answer is true in the last frame because the latest circle can be found in Frame 2. 
-
 \captionsetup[subfigure]{labelformat=empty}
-\begin{figure}[!h]
+\begin{figure}[!b]
   \begin{center}
   Question: \textbf{Does color of u now equal the color of the latest circle?}
   \end{center}
@@ -151,7 +141,7 @@ The answer is true in the last frame because the latest circle can be found in F
   \null\hfill
   \begin{subfigure}{0.25\textwidth}
 	\includegraphics[width=0.9\linewidth]{"../img/visualization/sample 2/Frame 1"}
-	\caption{Frame: \textbf{1}\newline Ground Truth: \textbf{invalid}}
+	\caption{Frame: \textbf{1}\newline Ground Truth: \textbf{false}}
 	\label{fig:frame-1}
   \end{subfigure}%
   \hfill
@@ -178,26 +168,58 @@ The answer is true in the last frame because the latest circle can be found in F
   \hfill\null
   \newline
   \centering
-\caption{The video-question pair selected for analysis.} 
-\label{fig:frame-seq}  
+\caption{A sample from the COG dataset selected for the following analysis.} 
+\label{fig:example}  
 \end{figure}
 
-SAMNet gives the correct answer for this example and we can interpret its reasoning process via a movie that we can generate.
-The key steps in that reasoning process are shown below. Working backwards, the following shows what happens in the key steps
-of the reasoning process.
-In Step 1 of processing Frame 4 (see~\cref{fig:frame-4-step-1}), we see that the object representing the letter u is where the attention 
-is, both in text and in image. We also see that the temporal classifier gives the highest weight to the context ``now''.
+\subsection{Analysis of the reasoning strategy}
+As a result of training the SAMNet developed a quite complex reasoning.
+We illustrate the key reasoning steps taken by the model with the example presented in \cref{fig:example}.
+First let us analyze, independently of SAMNet, what are the key operations that need to be performed in order to provide the answers. 
+As the question concerns \textbf{latest} in the \textbf{Frame 1}, one should look for both \textbf{u} and \textbf{circle} objects and look at their colors (different), thus provide answer: \textbf{false}.
+Next one should also memorize the presence of \textbf{pink circle} and move to next Frame.
+Analogically, in \textbf{Frame 2} there are both objects present, both with different colors, so the answer is once again \textbf{false}.
+Besides, from that point we do not care anymore about the \textbf{pink circle} and remember the presence of \textbf{yellow circle} instead.
+This is of utmost importance for the following two frames, as there are no circles down there at all.
+So when analyzing \textbf{Frames 3} and \textbf{4} one need to recall the \textbf{yellow circle} from the memory and compare its color with the color of \textbf{u}'s -- as in both cases they are yellow, thus  both answers should be \textbf{true}.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\textwidth]{"../img/visualization/sample 2/Frame 2 Step 1"}
+	\caption{State of the SAM Cell after 1-st step of reasoning on Frame 2.} 
+	\label{fig:frame-2-step-1}
+\end{figure}
+
+As full step-by-step analysis would significantly exceed the page limits, we have cherry picked three steps of reasoning performed by our SAMNet model.
+Let us start from \textbf{1}-st reasoning step on Frame \textbf{2}, as visualized in \cref{fig:frame-2-step-1}.
+First thing worth noting is that there is already an object stored in memory address 1 (write head is always pointing at "free memory slot", in this case the 2nd slot seems to be partially "polluted" by the object from slot 1).
+Second, the attention over both the question and image is clearly focusing over \textbf{u} -- despite we have never trained the system with "word \textbf{u}"-"visual object \textbf{u}" pairs, the SAM Network managed to develop visual grounding on its own.
+Third, the time context is clearly focused on \text{Now} -- once again, during the training we have never indicated that the system should pay attention to this (or any other) particular word and the system learned to catch that context on its own (i.e. learned to use the provided mechanisms in the correct way).
+
 \begin{figure}[!h]
 \centering
-  \includegraphics[width=\textwidth]{"../img/visualization/sample 2/Frame 4 Step 1"}
-\caption{State of SAMNet in a particular reasoning step} 
-\label{fig:frame-4-step-1}
+  \includegraphics[width=\textwidth]{"../img/visualization/sample 2/Frame 2 Step 6"}
+\caption{State of the SAM Cell after 6-th step of reasoning on Frame 2.} 
+\label{fig:frame-2-step-6}
 \end{figure}
 
-Now there is no circle in this frame even though it is a valid candidate . This is detected by SAMNet,
-as shown in~\cref{fig:frame-4-step-6}. Even though the textual attention is on the right word
-and the temporal classification is ``latest'', there
-is no valid visual attention.
+Next let us analyze \textbf{6}-th reasoning step presented~\cref{fig:frame-2-step-6}.
+At that point the system focuses its attention on the second object important from the point of view of the question: \textbf{yellow circle}.
+Analogically, the question and visual attention are almost perfectly aligned with the word and object, and, besides, the system caught that the time context of the object is \textbf{Latest}.
+Additionally, the "Add New" gate is on, the memory address 2 has a different content and write head moved to the next address -- sadly in here we also observe the "pollution" of addresses 3 and 4.
+But despite that, those are still clear indicators that the system has stored the \textbf{yellow circle} in the external memory.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=\textwidth]{"../img/visualization/sample 2/Frame 4 Step 1"}
+	\caption{State of SAMNet in a particular reasoning step} 
+	\label{fig:frame-4-step-1}
+\end{figure}
+
+Let us now fast-forward to analogical reasoning steps in Frame \textbf{6}.
+In the \textbf{1}-st reasoning step (\cref{fig:frame-4-step-1}) we can once again that  system correctly grounded visual object and temporal context.
+
+
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=\textwidth]{"../img/visualization/sample 2/Frame 4 Step 6"}
@@ -205,16 +227,21 @@ is no valid visual attention.
 	\label{fig:frame-4-step-6}
 \end{figure}
 
-But in Step 6 of processing Frame 2 (see~\cref{fig:frame-2-step-6}), 
+
 we see that the object representing the circle is where the attention is.
-\begin{figure}[!h]
-	\centering
-	\includegraphics[width=\textwidth]{"../img/visualization/sample 2/Frame 2 Step 6"}
-	\caption{State of SAMNet in a particular reasoning step} 
-	\label{fig:frame-2-step-6}
-\end{figure}
 Moreover, the ``Add New`` gate value is high enough that the valid object representing
 the visual encoding of the circle is stored in memory. Note that this is not perfect:
 this value should have been close to 1 but the model is still able to use it for 
 correct prediction.
 
+
+In Step 1 of processing Frame 4 (see~\cref{fig:frame-4-step-1}), we see that the object representing the letter u is where the attention 
+is, both in text and in image. We also see that the temporal classifier gives the highest weight to the context ``now''.
+
+Now there is no circle in this frame even though it is a valid candidate . This is detected by SAMNet,
+as shown in~\cref{fig:frame-4-step-6}. Even though the textual attention is on the right word
+and the temporal classification is ``latest'', there
+is no valid visual attention.
+
+
+Summarizing, the system has learned to reason using neural representations similarly as a human would operate on abstract symbols when solving the same task, including objects that are memorized and recalled from the memory.
