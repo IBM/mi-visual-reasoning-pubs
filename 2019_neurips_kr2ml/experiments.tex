@@ -125,7 +125,6 @@ For sanity check, in the first column, we report both the best-achieved score an
 In a pure \textit{transfer learning} setup (second column), our model shows enormous generalization ability, reaching 91.6\% accuracy on the test set.
 We have also tested both models in a setup where the model trained on a Canonical variant underwent additional fine-tuning (for a single epoch) on the Hard variant (third column).
 In this case, the SAMNet model also reached much better performance, and, interestingly, achieved better scores from the model trained and tested exclusively on the Hard variant.
-In summary, the results clearly indicate that the mechanisms introduced in SAMNet  enable it to learn to operate independently of the total number of frames or number of distractions, and allow it to generalize to longer videos and more complex scenes. One other strength of SAMNet is its interpretability. Observing attention maps (see Appendix) shows that SAMNet can effectively perform multi-step reasoning over questions and frames as intended. It also accurately classifies temporal contexts as designed. However we notice that the model can sometime discover alternative strategies that were not in the intended design but the answers are still correct. More details are given in the Appendix.
 
 %we used the canonical (easy) and hard settings that alter the number of distractors and sequence length.  Since there was no baseline for these tests (train on canonical, test on hard), we ran our own experiments using the COG model provided by the authors.  SAMNet achieves the highest overall scores for all categories of experiments (\cref{fig:samnet_cog_overall_transfer}), especially for the tests run on the hard dataset.  Among the 22 classification tasks, we highlighted the two most difficult tasks that affect the overall score. 
 %We argue that the generalization capability of SAMNet is mainly due to the dynamic frame-by-frame processing of the input sequence. 
@@ -173,15 +172,17 @@ In summary, the results clearly indicate that the mechanisms introduced in SAMNe
 \end{figure}
 
 \subsection{Analysis of the reasoning strategy}
-As a result of training the SAMNet developed a quite complex reasoning.
-We illustrate the key reasoning steps taken by the model with the example presented in \cref{fig:example}.
-First let us analyze, independently of SAMNet, what are the key operations that need to be performed in order to provide the answers. 
-As the question concerns \textbf{latest} in the \textbf{Frame 1}, one should look for both \textbf{u} and \textbf{circle} objects and look at their colors (different), thus provide answer: \textbf{false}.
-Next one should also memorize the presence of \textbf{pink circle} and move to next Frame.
-Analogically, in \textbf{Frame 2} there are both objects present, both with different colors, so the answer is once again \textbf{false}.
-Besides, from that point we do not care anymore about the \textbf{pink circle} and remember the presence of \textbf{yellow circle} instead.
-This is of utmost importance for the following two frames, as there are no circles down there at all.
-So when analyzing \textbf{Frames 3} and \textbf{4} one need to recall the \textbf{yellow circle} from the memory and compare its color with the color of \textbf{u}'s -- as in both cases they are yellow, thus  both answers should be \textbf{true}.
+As a result of training the SAMNet developed a quite complex reasoning strategy.
+We will illustrate the key reasoning steps taken by the model on the example presented in \cref{fig:example}.
+We have decided to pick the sample from the "AndCompareColor" task, as, despite the clear improvement over the COG baseline model, our SAMNet model seems to still struggle with those type of questions.	
+
+First, let us analyze, independently of SAMNet, what are the key operations that one would need to perform in order to provide the correct answers. 
+As the question concerns both the \textbf{now} and \textbf{latest} temporal contexts, in the Frame \textbf{1} one should look for both \textbf{u} and \textbf{circle} objects, look at their colors (different), and provide the answer \textbf{false}.
+Next, one should also memorize the \textbf{pink circle} and move to next Frame.
+Analogically, in Frame \textbf{2} there are both objects present, both with different colors, so the answer is once again \textbf{false}.
+However, from that point we do not care anymore about the \textbf{pink circle} and should remember the \textbf{yellow circle} instead.
+This is of utmost importance for the following two frames, as there are no circles present there.
+So when analyzing Frames \textbf{3} and \textbf{4} one need to recall the \textbf{yellow circle} from the memory and compare its color with the color of \textbf{u}'s -- as in both cases they are yellow, thus  both answers should be \textbf{true}.
 
 \begin{figure}[!h]
 	\centering
@@ -190,11 +191,14 @@ So when analyzing \textbf{Frames 3} and \textbf{4} one need to recall the \textb
 	\label{fig:frame-2-step-1}
 \end{figure}
 
-As full step-by-step analysis would significantly exceed the page limits, we have cherry picked three steps of reasoning performed by our SAMNet model.
-Let us start from \textbf{1}-st reasoning step on Frame \textbf{2}, as visualized in \cref{fig:frame-2-step-1}.
-First thing worth noting is that there is already an object stored in memory address 1 (write head is always pointing at "free memory slot", in this case the 2nd slot seems to be partially "polluted" by the object from slot 1).
-Second, the attention over both the question and image is clearly focusing over \textbf{u} -- despite we have never trained the system with "word \textbf{u}"-"visual object \textbf{u}" pairs, the SAM Network managed to develop visual grounding on its own.
-Third, the time context is clearly focused on \text{Now} -- once again, during the training we have never indicated that the system should pay attention to this (or any other) particular word and the system learned to catch that context on its own (i.e. learned to use the provided mechanisms in the correct way).
+As full step-by-step analysis (8 reasoning steps for each of 4 frames) would significantly exceed the page limits, we have cherry picked four steps of reasoning performed by our SAMNet model.
+Let us start from \textbf{1}-st reasoning step on Frame \textbf{2}, as visualized in \cref{fig:frame-2-step-1} and focus on different aspects of the model.
+First, the attention over both the question and image is clearly focusing over the \textbf{u} -- despite we have never trained the system with "word \textbf{u}"-"visual object \textbf{u}" pairs, the SAM Network managed to develop visual grounding on its own.
+Second, the time context is clearly focused on \text{Now} -- once again, during the training we have never instructed that the system should pay attention to this (or any other) particular word and the system learned to catch the temporal context on its own (i.e. learned to use the provided mechanisms in the correct way).
+Third, as write head is always pointing at "free memory slot", we can notice that there is an object already stored in memory under address 1.
+This is the \textbf{pink circle} object memorized during the analysis of the Frame \textbf{1}.
+However, we can also notice that the 2nd slot seems to be partially "polluted" by the object from slot 1, which indicates that the write head was not perfectly focused on a single memory address (similarly to the current state).
+
 
 \begin{figure}[!h]
 \centering
@@ -203,11 +207,12 @@ Third, the time context is clearly focused on \text{Now} -- once again, during t
 \label{fig:frame-2-step-6}
 \end{figure}
 
-Next let us analyze \textbf{6}-th reasoning step presented~\cref{fig:frame-2-step-6}.
-At that point the system focuses its attention on the second object important from the point of view of the question: \textbf{yellow circle}.
-Analogically, the question and visual attention are almost perfectly aligned with the word and object, and, besides, the system caught that the time context of the object is \textbf{Latest}.
-Additionally, the "Add New" gate is on, the memory address 2 has a different content and write head moved to the next address -- sadly in here we also observe the "pollution" of addresses 3 and 4.
-But despite that, those are still clear indicators that the system has stored the \textbf{yellow circle} in the external memory.
+Next, let us analyze the \textbf{6}-th reasoning step presented~\cref{fig:frame-2-step-6}.
+Here the system clearly focuses its attention on the second object important from the point of view of the question: the \textbf{yellow circle}.
+Analogically, the question and visual attention are almost perfectly aligned with the word and object, and, besides, the system  properly caught the time context of the object: \textbf{Latest}.
+Additionally, the "Add New" gate is on, the memory address 2 has a different content and write head moved to the next address.
+Those are clear indicators that the system has stored the \textbf{yellow circle} in the external memory.
+Sadly, also  in here we observe the "pollution" of addresses 3 and 4.
 
 \begin{figure}[!h]
 	\centering
@@ -217,8 +222,8 @@ But despite that, those are still clear indicators that the system has stored th
 \end{figure}
 
 Let us now fast-forward to analogical reasoning steps in Frame \textbf{6}.
-In the \textbf{1}-st reasoning step (\cref{fig:frame-4-step-1}) we can once again that  system correctly grounded visual object and temporal context.
-
+In the \textbf{1}-st reasoning step (\cref{fig:frame-4-step-1}) we can once again observe that  system correctly grounded the visual object \textbf{u} and detected the correct temporal context \textbf{Now}.
+Besides that, we can notice that memory content remained more or less unchanged, despite the fact that write head shifted to the next memory address (it also became more soft, pointing at addresses 4 and 5).
 
 \begin{figure}[!h]
 	\centering
@@ -227,21 +232,9 @@ In the \textbf{1}-st reasoning step (\cref{fig:frame-4-step-1}) we can once agai
 	\label{fig:frame-4-step-6}
 \end{figure}
 
-
-we see that the object representing the circle is where the attention is.
-Moreover, the ``Add New`` gate value is high enough that the valid object representing
-the visual encoding of the circle is stored in memory. Note that this is not perfect:
-this value should have been close to 1 but the model is still able to use it for 
-correct prediction.
-
-
-In Step 1 of processing Frame 4 (see~\cref{fig:frame-4-step-1}), we see that the object representing the letter u is where the attention 
-is, both in text and in image. We also see that the temporal classifier gives the highest weight to the context ``now''.
-
-Now there is no circle in this frame even though it is a valid candidate . This is detected by SAMNet,
-as shown in~\cref{fig:frame-4-step-6}. Even though the textual attention is on the right word
-and the temporal classification is ``latest'', there
-is no valid visual attention.
-
-
-Summarizing, the system has learned to reason using neural representations similarly as a human would operate on abstract symbols when solving the same task, including objects that are memorized and recalled from the memory.
+In \textbf{6}-th reasoning step (\cref{fig:frame-4-step-6}) there are several things worth discussing.
+First, question attention is pointing at the word \textbf{circle}, but the visual attention is clearly avoiding all the objects. 
+This is because there is no circle.
+However, as the system properly identified the temporal context as \textbf{Latest}, instead of using the visual object, it uses the object retrieved from the memory -- please notice that the read head, despite not being perfectly crisp, is pointing at addresses 3-5, where it previously stored the \textbf{yellow circle} during the analysis of Frame \textbf{2}.
+Moreover, the ``Add New`` gate value is high enough so it once again updates the memory, with void object. 
+But please notice that the content of those memory addresses is negligible, and at the end the SAMNet model is still able return the correct prediction.
