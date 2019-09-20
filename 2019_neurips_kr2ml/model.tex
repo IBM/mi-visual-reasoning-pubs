@@ -18,44 +18,34 @@
 %The model is also composed of an Image Encoder and a Question Encoder both responsible to pre-process the visual and textual inputs. The output unit is a classifier.
 %All those modules are described below.
 
-\begin{wrapfigure}{r}{0.80\textwidth}
+\begin{figure}[b!]
 	\centering
-	\includegraphics[width=0.78\textwidth]{../img/architecture/samnet_architecture4}
+	\includegraphics[width=\textwidth]{../img/architecture/samnet_architecture4}
 	\caption{General architecture of SAMNet}
 	\label{fig:samnet}
-\end{wrapfigure}
-
-%\begin{figure}[hbtp]
-%	\centering
-%	\includegraphics[width=0.7\textwidth]{../img/architecture/samnet_architecture4}
-%	\caption{General architecture of SAMNet}
-%	\label{fig:samnet}
-%\end{figure}	
+\end{figure}
 
 SAM Network (SAMNet for short) is an end-to-end differentiable recurrent model equipped with an external memory~(\cref{fig:samnet}).
-The model makes a single pass over the frames in temporal order, accessing one frame at a time.
+At the conceptual level SAMNet draws from two core ideas:
+compositional reasoning as proposed e.g. in MAC (Memory-Attention-Composition) Network~\cite{hudson2018compositional,marois2018transfer}
+and utilization of external memory in Memory-Augmented Neural Networks such as NTM (Neural Turing Machine)~\cite{graves2014neural}, DNC (Differentiable Neural Computer)~\cite{graves2016hybrid} or DWM (Differentiable Working Memory)~\cite{jayram2018learning}.
+
+A distinctive feature of the SAM Network is that it makes a single pass over the frames in temporal order, accessing one frame at a time.
 The memory locations store relevant objects representing contextual information about words in text and visual objects extracted from video. 
 Each location of the memory stores a $d$-dimensional vector. %, where $d$ is a global parameter.
 The memory can be accessed through either content-based addressing, via dot-product attention, or location-based addressing. 
 Using gating mechanisms, correct objects can be retrieved 
 in order to perform multi-step spatio-temporal reasoning over text and video.  
-%A notable feature of this design is that the number of addresses $N$ can be set to different values during training and 
-%testing to fit the characteristics of data.
+A notable feature of this design is that the number of addresses $N$ can be set to different values during training and testing to fit the characteristics of data.
 
 
-\begin{wrapfigure}{r}{0.8\textwidth}
+\begin{figure}[t!]
 	\centering
-	\includegraphics[width=0.78\textwidth]{../img/architecture/samcell_reasoning}
+	\includegraphics[width=\textwidth]{../img/architecture/samcell_reasoning}
 	\caption{Unfolded reasoning steps with operations performed by the SAMCell}
 	\label{fig:samcell}
-\end{wrapfigure}
+\end{figure}
 
-%\begin{figure}[hbtp]
-%	\centering
-%	\includegraphics[width=0.7\textwidth]{../img/architecture/samcell_reasoning}
-%	\caption{Single reasoning step in SAMCell}
-%	\label{fig:samcell}
-%\end{figure}	
 
 The core of SAMNet is a recurrent cell called a SAM Cell (\cref{fig:samcell}). 
 Unrolling a new series of $T$ cells for every frame enables $T$ steps of compositional
@@ -127,4 +117,4 @@ Note that $ro_t$ is allowed to be a null object (i.e. 0 vector) in case neither 
 Finally, $so_t$ is the output of a simple linear layer whose inputs are $ro_t$ and the previous summary object $so_{t-1}$.
 This serves to retain additional information that was in $so_{t-1}$, e.g., if it held the partial result of a complex query with Boolean connectives.
 
-For details of the modules not covered here, please see the appendix.
+%For details of the modules not covered here, please see the appendix.

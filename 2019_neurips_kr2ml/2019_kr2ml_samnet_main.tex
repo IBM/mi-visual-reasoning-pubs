@@ -1,0 +1,144 @@
+\documentclass{article}
+\usepackage{neurips_2019}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage[usenames, svgnames]{xcolor}
+\usepackage{hyperref}       % hyperlinks
+\usepackage{bchart}
+\usepackage{pgfplots}
+\pgfplotsset{width=7 cm,compat=1.5}
+\hypersetup{
+	colorlinks=true,
+	linkcolor={red!80!black},
+	%	citecolor={blue!80!black},
+	%	urlcolor={magenta}
+}
+
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{subcaption}
+\usepackage{graphicx}
+
+% Useful packages
+\usepackage{amsmath, amssymb, amsfonts, bm}
+\usepackage{amsthm}
+\usepackage{mathtools}
+%\usepackage[usenames, dvipsnames]{color}
+\usepackage{cleveref}
+\crefname{figure}{Figure}{Figures}
+\crefname{table}{Table}{Tables}
+
+\usepackage{enumitem}
+\setlist{leftmargin=*} 
+%\setlist[enumerate]{labelindent=5pt, label=\alph*)} 
+
+\usepackage{wrapfig}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+
+
+% \usepackage{blindtext}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{remark}
+\newtheorem*{notation}{Notation}
+%\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{fact}{Fact}
+\newtheorem*{observation}{Observation}
+\newtheorem*{condition}{Condition}
+\newtheorem*{claim}{Claim}
+\newtheorem*{example}{Example}
+\newtheorem*{question}{Question}
+
+
+\newcommand{\colorbx}[1]{\medskip\noindent\scalebox{1.05}{\fcolorbox{SaddleBrown}{white}{\color{SteelBlue}{\textbf{#1}}}}}
+
+\newcommand{\tk}[1]{\textcolor{red}{TK: #1}}
+\newcommand{\ao}[1]{\textcolor{green}{AO: #1}}
+\newcommand{\tsj}[1]{\textcolor{magenta}{TSJ: #1}}
+\newcommand{\va}[1]{\textcolor{blue}{Vincent A: #1}}
+
+\newcommand{\Reals}{\mathbb{R}}
+\newcommand{\T}{\mathsf{T}}
+\DeclareMathOperator{\softmax}{\mathrm{softmax}}
+
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cI}{\mathcal{I}}
+
+\newcommand{\vect}[1]{\mathbf{#1}}
+\newcommand{\vx}{\vect{x}}
+\newcommand{\vy}{\vect{y}}
+\newcommand{\vone}{\vect{1}}
+\newcommand{\proj}{\mathrm{proj}}
+
+\newcommand{\imatch}{g^{\mathrm{v}}}
+\newcommand{\mmatch}{g^{\mathrm{m}}}
+
+\newcommand{\doadd}{h^{\mathrm{a}}}
+\newcommand{\doreplace}{h^{\mathrm{r}}}
+
+\newcommand{\tlast}{\tau^{\mathrm{last}}}
+\newcommand{\tlatest}{\tau^{\mathrm{latest}}}
+\newcommand{\tnow}{\tau^{\mathrm{now}}}
+\newcommand{\tnone}{\tau^{\mathrm{none}}}
+
+\newcommand{\rhead}{rh}
+\newcommand{\whead}{wh}
+
+
+\title{Learning multi-step spatio-temporal reasoning with Selective Attention Memory Network}
+
+\author{T.S. Jayram, Tomasz Kornuta, Vincent Albouy, Emre Sevgen, Ahmet Ozcan}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Visual reasoning in videos requires understanding temporal concepts in addition to the objects and their relations in a given frame.  
+%Selective attention and memory are the essential faculties, which humans rely on to accomplish this task.  
+In analogy with human reasoning, we present Selective Attention Memory Network (SAMNet), an end-to-end differentiable recurrent 
+model equipped with external memory.  
+SAMNet can perform multi-step reasoning on a frame-by-frame basis, and dynamically control information flow to the memory 
+to store context-relevant representations and from the memory to answer questions. 
+We tested our model on the COG dataset (a multi-frame visual question answering test).
+We compare our model to the original COG model and show that SAMNet outperforms the original COG baseline model especially on the hardest version of the dataset with longer sequences and a maximum number of distractors.
+We also demonstrate that our model has extraordinary generalization capabilities going from easy to hard tasks, without and with additional fine-tuning.
+%, and outperformed the state of the art baseline for hard tasks and in terms of generalization over video length and scene complexity.
+%	We introduce the Selective Attention Memory Network (SAMNet), a end-to-end differentiable architecture for video reasoning. It is a recurrent model with an external memory that enables frame by frame reasoning over text and video. 
+%		We show SAMNet's abilities on the COG dataset made for Video Question Answering (Guangyu Robert Yang, Igor Ganichev et al., ECCV 2018). 
+\end{abstract}
+
+\input{intro}
+
+\input{model}
+
+\input{experiments}
+
+\input{summary}
+
+\section*{Acknowledgement}
+The authors would like to thank to the authors of COG paper (Igor Ganichev in particular) for sharing the detailed results with performances achieved by their COG baseline model.
+	
+%\newpage
+\bibliographystyle{abbrv}
+\bibliography{../cog_bibliography}
+
+%\newpage
+%\input{appendix_model}
+
+\end{document}
