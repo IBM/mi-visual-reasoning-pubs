@@ -4,18 +4,15 @@ In this paper we have introduced a novel Memory-Augmented Neural Network model c
 SAMNet was designed with the goal of learning to reason over video sequences and to answer questions about the content of the frames.
 When applied to the COG video reasoning dataset, the model outperformed the baseline model, showing significant improvements on the Hard variant of the dataset.
 The results indicate that the mechanisms introduced in SAMNet  enable it to operate independent of the total number of frames or the number of distractions, and allow it to generalize to longer videos and more complex scenes. 
-
-Another strength of SAMNet is its interpretability.
 Observing attention maps shows that SAMNet can effectively perform multi-step reasoning over questions and frames as intended. 
-Despite being trained only on image-question pairs with complex, compositional questions, SAMNet clearly learned to associate visual symbols with words and accurately classify temporal contexts as designed.
+Despite being trained only on image-question pairs with complex, compositional questions, SAMNet clearly learns
+to associate visual symbols with words and accurately classify temporal contexts as designed.
 Besides, the model's reasoning using neural representations appears to be similar to how a human would operate on abstract symbols when solving the same task, including memorizing and recalling symbols (object embeddings) from the memory when needed.
-
-Even though the model is not storing all objects present in the scene, sometimes it is not working in the way we intended with the gating and reasoning mechanisms.
-We have hand-picked a sample from the "AndCompareColor" task that the model seems to be struggling (based on accuracy).
-Despite giving correct answers, we have observed that the model seems to struggle with the utilization of the memory in the intended way, which sometimes results in adding the same object under two or more addresses or adding "void" objects.
+This is not perfect however and the system can sometimes store spurious objects despite the gating and reasoning mechanisms,
+but still give correct answers.
 This indicates at least two directions for possible further improvements.
-First is ameliorating content-based addressing with masking, similar to the improvements made for DNC proposed by ~\cite{csordas2019improved}.
-Second is implementing variable number of reasoning steps instead of hard-coded 8 steps, which could utilize Adaptive Computation Time (ACT)~\cite{graves2016adaptive}.
+The first is to ameliorate content-based addressing with masking, similar to the improvements made for DNC proposed by ~\cite{csordas2019improved}.
+Second is to implement variable number of reasoning steps, instead of hard-coded 8 steps, which could utilize Adaptive Computation Time (ACT)~\cite{graves2016adaptive}.
 
 
 
