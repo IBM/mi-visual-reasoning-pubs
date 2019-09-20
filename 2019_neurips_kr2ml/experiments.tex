@@ -16,8 +16,8 @@ The main differences are the number of frames in the input sequence (4 vs. 8) an
 	& of   & memory & number of & of & of & of  \\
 	& frames & duration & distractors & training set & validation set & test set \\
 	\midrule
-	Canonical & 4 & 3 & 1 & 10000320 & 500016? & 500016? \\	
-	Hard  & 8 & 7 & 10 & 10000320 & 500016?  & 500016? \\
+	Canonical & 4 & 3 & 1 & 10000320 & 500016? & 500016 \\	
+	Hard  & 8 & 7 & 10 & 10000320 & 500016?  & 500016 \\
 	\bottomrule	
 \end{tabular}
 \label{tab:cog_variants}
@@ -168,7 +168,7 @@ Sadly, also  in here we observe the "pollution" of addresses 3 and 4.
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.95\textwidth]{"../img/visualization/sample 2/Frame 4 Step 1"}
-	\caption{State of SAMNet in a particular reasoning step} 
+	\caption{State of the SAM Cell after 1-st step of reasoning on Frame 4.} 
 	\label{fig:frame-4-step-1}
 \end{figure}
 
@@ -179,7 +179,7 @@ Besides that, we can notice that memory content remained more or less unchanged,
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.95\textwidth]{"../img/visualization/sample 2/Frame 4 Step 6"}
-	\caption{State of SAMNet in a particular reasoning step} 
+	\caption{State of the SAM Cell after 6-th step of reasoning on Frame 4.} 
 	\label{fig:frame-4-step-6}
 \end{figure}
 
