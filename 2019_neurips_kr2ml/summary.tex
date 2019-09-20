@@ -1,6 +1,23 @@
 \section{Conclusions}
 
-In summary, the results clearly indicate that the mechanisms introduced in SAMNet  enable it to learn to operate independently of the total number of frames or number of distractions, and allow it to generalize to longer videos and more complex scenes. One other strength of SAMNet is its interpretability. Observing attention maps (see Appendix) shows that SAMNet can effectively perform multi-step reasoning over questions and frames as intended. It also accurately classifies temporal contexts as designed. However we notice that the model can sometime discover alternative strategies that were not in the intended design but the answers are still correct. More details are given in the Appendix.
+In this paper we have introduced a novel Memory-Augmented Neural Network model called SAMNet.
+SAMNet was designed with the goal of learning reasoning over video sequences and answering the questions on the content of the frames.
+When applied to the COG video reasoning dataset, the model achieved over-performed the baseline model, showing significant improvements on the Hard variant of the dataset.
+The results clearly indicate that the mechanisms introduced in SAMNet  enable it to learn to operate independently of the total number of frames or number of distractions, and allow it to generalize to longer videos and more complex scenes. 
+
+One other strengths of SAMNet is its interpretability.
+Observing attention maps shows that SAMNet can effectively perform multi-step reasoning over questions and frames as intended. 
+Despite being trained only on image-question pairs with complex, compositional questions, SAMNet clearly learned to associate visual symbols with words and accurately classify temporal contexts as designed.
+Besides, when the system has learned to reason using neural representations similarly as a human would operate on abstract symbols when solving the same task, including memorizing and recalling symbols (object embeddings) from the memory when needed.
+
+Despite the model clearly is not storing all objects present in the scene, sometimes it is not working in a way that we intended when designing the gating and reasoning mechanisms.
+We have cherry-picked a sample from the "AndCompareColor" task that the model seems to be struggling (when looking at pure accuracies).
+Despite in the example all answers were still correct, we have observed that the model seems to struggle with the utilization of the memory in the correct way, that sometimes results in adding the same object under two or more addresses or adding "void" objects.
+This indicates at least two directions for possible further improvements.
+First is fixing content-based addressing with masking, similarly to the improvements to addressing in DNC proposed in~\cite{csordas2019improved}.
+Second is using variable number of reasoning steps instead of hard-coded 8 steps.
+One of the possible solutions to that problem is incorporation of Adaptive Computation Time (ACT)~\cite{graves2016adaptive}.
 
 
-Summarizing, the system has learned to reason using neural representations similarly as a human would operate on abstract symbols when solving the same task, including objects that are memorized and recalled from the memory.
+
+
