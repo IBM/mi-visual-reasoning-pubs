@@ -102,7 +102,7 @@
 \newcommand{\whead}{wh}
 
 
-\title{Learning multi-step spatio-temporal reasoning with Selective Attention Memory Network}
+\title{Learning Multi-Step Spatio-Temporal Reasoning with Selective Attention Memory Network}
 
 \author{T.S. Jayram, Tomasz Kornuta, Vincent Albouy, Emre Sevgen, Ahmet Ozcan}
 
@@ -111,12 +111,17 @@
 \begin{abstract}
 Visual reasoning in videos requires understanding temporal concepts in addition to the objects and their relations in a given frame.  
 %Selective attention and memory are the essential faculties, which humans rely on to accomplish this task.  
-In analogy with human reasoning, we present Selective Attention Memory Network (SAMNet), an end-to-end differentiable recurrent 
+%In analogy with human reasoning, we present Selective Attention Memory Network (SAMNet), an end-to-end differentiable recurrent 
+%model equipped with external memory.  
+To that end,
+we present Selective Attention Memory Network (SAMNet), an end-to-end differentiable recurrent 
 model equipped with external memory.  
+In analogy with human reasoning, 
 SAMNet can perform multi-step reasoning on a frame-by-frame basis, and dynamically control information flow to the memory 
 to store context-relevant representations and from the memory to answer questions. 
 We tested our model on the COG dataset (a multi-frame visual question answering test).
-We compare our model to the original COG model and show that SAMNet outperforms the original COG baseline model especially on the hardest version of the dataset with longer sequences and a maximum number of distractors.
+SAMNet outperforms the the original COG model, 
+especially on the hardest version of the dataset with longer sequences and a maximum number of distractors.
 We also demonstrate that our model has extraordinary generalization capabilities going from easy to hard tasks, without and with additional fine-tuning.
 %, and outperformed the state of the art baseline for hard tasks and in terms of generalization over video length and scene complexity.
 %	We introduce the Selective Attention Memory Network (SAMNet), a end-to-end differentiable architecture for video reasoning. It is a recurrent model with an external memory that enables frame by frame reasoning over text and video. 
@@ -138,7 +143,7 @@ The authors would like to thank to the authors of COG paper (Igor Ganichev in pa
 \bibliographystyle{abbrv}
 \bibliography{../cog_bibliography}
 
-%\newpage
-%\input{appendix_model}
+\newpage
+\input{appendix}
 
 \end{document}
