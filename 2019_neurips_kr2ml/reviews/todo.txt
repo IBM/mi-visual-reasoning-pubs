@@ -1,0 +1,25 @@
+--------------------------- MAJOR ----------------------------
+
+(--) R2: think the parts on problem formulation and proposed architecture should be explained clearly and in details.
+
+(--) R2: Presented with the question, how does the model encode this question? Are these set of questions pre-defined? Is the model first presented with the question at once and then followed by video frames (question sentence, then video frames) or is the model presented with (one word in a question, one frame) sequentially?
+
+(--) R2: In figure 2, what is contextual words (cw)? How are the feature maps extracted from the video frames? Is the feature extraction network going to be fine-tuned in the reasoning task?
+
+(--) R2: What is the loss function for training the network?
+
+(--) R2: line 106-107, what is the activation function used in w_t in order to make sure it is between [0,1]?
+
+
+--------------------------- MINOR ----------------------------
+
+(--) R1: The authors might consider including references to multistep reasoning in natural language question answering such as:
+
+Rajarshi Das, Shehzaad Dhuliawala, Manzil Zaheer, Andrew McCallum
+Multi-step Retriever-Reader Interaction for Scalable Open-domain Question Answering.
+ICLR 2019
+
+
+------------------------- COMMENTS ---------------------------
+
+R2: Authors evaluate the model's generalization capabilities by comparing the performance of canonical and hard variants of the dataset. This is one interesting aspect. Another potential aspect could be composition of questions/object attributes? e.g. does color of u now equal the color the latest circle AND the latest square?

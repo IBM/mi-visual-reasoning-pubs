@@ -1,0 +1,79 @@
+We are delighted to inform you that your paper (47) "Learning multi-step spatio-temporal reasoning with Selective Attention Memory Network" has been selected for an oral presentation at KR2ML! Presentations will be allocated 12min with an additional 3min for questions. You are welcome to create a poster as well if you would like to partake in the scheduled poster sessions.
+
+Further, we have re-opened the submission site for new versions and invite you to provide a camera-ready version of your work by October 31st.
+
+CAMERA-READY VERSION
+
+- Please submit final versions to EasyChair by October 31. 
+
+- If you do not want your paper to be published on our homepage (which is non-archival), please let us know per email by October 31.
+
+- You do not have to condense your paper to any page limit. For example, if you submitted a full paper, but it was accepted as poster, please submit the full version.
+
+PRESENTATION
+
+- You can check your slot in the schedule if you sent us your neurips.cc account information (some of the ones we received were not found) and if you have your name in that account. But please be aware that the schedule is tentative still. In order to get the registrations, all authors who plan to attend are listed as presenters. We will update this to one presenter per paper once we have the registration spots.
+
+https://urldefense.proofpoint.com/v2/url?u=https-3A__neurips.cc_Conferences_2019_Schedule-3FshowEvent-3D13169&d=DwIEaQ&c=jf_iaSHvJObTbx-siA1ZOg&r=XsVy56k39EvMsg_-iQDmlaQu4g4ysVxWJ3UzXxUYuAo&m=lWC3-yBPaksSPwEFGzPTi8hXdpRCtWTBkBpFNvk9BgM&s=8v9sdxlzn74q454x4uJCbCbqk-l3MX6cWaHzcMs4cgU&e=  
+
+- Oral presentations will be allocated 12+3 minutes (Talk + Q&A).
+
+POSTERS
+
+- Papers accepted for oral presentation can present posters too.
+
+- Posters should be on light weight paper, not laminated. NeurIPS will provide the tape. Posters must not be larger than 36W x 48H inches or 90 x 122 cm. That is portrait mode.
+
+
+
+SUBMISSION: 47
+TITLE: Learning multi-step spatio-temporal reasoning with Selective Attention Memory Network
+
+
+----------------------- REVIEW 1 ---------------------
+SUBMISSION: 47
+TITLE: Learning multi-step spatio-temporal reasoning with Selective Attention Memory Network
+AUTHORS: T. S. Jayram, Tomasz Kornuta, Vincent Albouy, Emre Sevgen and Ahmet Ozcan
+
+----------- Overall evaluation -----------
+SCORE: 4 (should be presented oral)
+----- TEXT:
+This submission is a full paper submission.
+
+The authors present a new model, Select Attention Memory Network (SAMNet), that performs multi-step reasoning over frames of videos. A key component of the model is the SAM Cell, which models the reasoning steps of the approach. The SAM cell models the natural language question, the objects in the frame and in the memory representation, and a summary visual object representing the relevant object for the given reasoning step. The authors evaluate their approach on the COG dataset and achieve state-of-the-art results. The authors also perform experiments that demonstrate their models’ ability to generalize by training/evaluating on subsets of the COG dataset (determined by difficulty (number of frames & number of distractors)).  
+
+This is a very strong submission. The paper is very well written and the authors introduce an interesting and novel model and achieve state-of-the-art results.
+
+The authors might consider including references to multistep reasoning in natural language question answering such as:
+
+Rajarshi Das, Shehzaad Dhuliawala, Manzil Zaheer, Andrew McCallum
+Multi-step Retriever-Reader Interaction for Scalable Open-domain Question Answering.
+ICLR 2019
+
+
+
+----------------------- REVIEW 2 ---------------------
+SUBMISSION: 47
+TITLE: Learning multi-step spatio-temporal reasoning with Selective Attention Memory Network
+AUTHORS: T. S. Jayram, Tomasz Kornuta, Vincent Albouy, Emre Sevgen and Ahmet Ozcan
+
+----------- Overall evaluation -----------
+SCORE: 1 (borderline paper, could be a poster)
+----- TEXT:
+The paper proposes an attention memory network for multi-step reasoning task on a frame-by-frame basis. The idea of using external memory to learn the spatial-temporal reasoning task is interesting.
+
+However, I think the parts on problem formulation and proposed architecture should be explained clearly and in details. For example:
+
+1. Presented with the question, how does the model encode this question? Are these set of questions pre-defined? Is the model first presented with the question at once and then followed by video frames (question sentence, then video frames) or is the model presented with (one word in a question, one frame) sequentially?
+
+2. In figure 2, what is contextual words (cw)? How are the feature maps extracted from the video frames? Is the feature extraction network going to be fine-tuned in the reasoning task?
+
+3. What is the loss function for training the network?
+
+4. line 106-107, what is the activation function used in w_t in order to make sure it is between [0,1]?
+
+Authors evaluate the model's generalization capabilities by comparing the performance of canonical and hard variants of the dataset. This is one interesting aspect. Another potential aspect could be composition of questions/object attributes? e.g. does color of u now equal the color the latest circle AND the latest square?
+
+
+
+All messages have been deselected. Focus has returned to the message list.

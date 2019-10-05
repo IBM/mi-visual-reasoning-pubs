@@ -1,0 +1,34 @@
+--------------------------- MAJOR ----------------------------
+
+(--) R1: the first two sentences of the introduction are a bit strong :). VQA, captioning etc. are tasks that may help us tackling the long-standing goal of symbol grounding problem. Although those tasks do ground symbols, we do not (yet) transfer this grounding to other problems. More generally, there are several bold statement in the papers, "more natural approach", "Inspired by human cognitive science", "capable of learning temporal association", "it dominates COG baseline", "it can be shown mathematically" etc. "results clearly indicates" that kind of undermine the reading
+
+
+(--) R2: the style of the mathematical equations: readers are usually familiar with bolded notation for vectors and matrices, so I recommend the authors update their symbols accordingly for the camera-ready version, in case of acceptance. 
+
+(--) R2: I strongly advise that the two figures on page 2 be (made smaller, if necessary, and) placed outside the text region, since the latter is very hard to read.
+
+
+--------------------------- MINOR ----------------------------
+
+(--) R1: I would recommend to add a related work section to speak in ore details about Neural Turing Machine, MAC etc.
+
+------------------------- COMMENTS ---------------------------
+
+
+R1: The paper introduce a new neural architectures based on SAMCell for the COG dataset, and it perfectly fit the ViGIL audience.
+
+
+R1: Some nice citations from AI folks:
+'''
+[the paper proposal] is not to create a problem-solving program, or a natural language comprehension system with the representation as target. It is tempting to make such demonstrations from time to time. (They impress people; and it is satisfying to have actually made something which works, like building model railways; and one’s students can get Ph.D.’s that way.) But they divert attention from the main goal. In fact, I believe they have several more dangerous effects. It is perilously easy to conclude that, because one has a program which works (in some sense), its representation of its knowledge must be more or less correct (in some sense). Now this is true, in some sense. But a representation may be adequate to support a limited kind of inference, and completely unable to be extended to support a slightly more general kind of behaviour.
+Hayes 1978, The second naive physics manifesto.
+'''
+
+R2: This paper proposes SAMNet, a video reasoning method inspired by the MAC-cell paradigm, that contains a memory module used to store contextual information from previous frames. The authors conduct experiments on the COG dataset, a multi-frame VQA benchmark. Here, they achieve improvement over most tasks in the canonical COG evaluation setting and consistent gains for a more challenging variant. The paper is nicely written and the reasoning steps are well explained. 
+
+R2: All in all, this is a nice direction for video QA settings and I recommend this study for acceptance.
+
+
+
+
+
