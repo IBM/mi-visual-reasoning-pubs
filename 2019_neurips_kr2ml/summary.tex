@@ -1,0 +1,19 @@
+\section{Conclusions}
+
+In this paper we have introduced a novel Memory-Augmented Neural Network model called SAMNet.
+SAMNet was designed with the goal of learning to reason over video sequences and to answer questions about the content of the frames.
+When applied to the COG video reasoning dataset, the model outperformed the baseline model, showing significant improvements on the Hard variant of the dataset.
+The results indicate that the mechanisms introduced in SAMNet  enable it to operate independent of the total number of frames or the number of distractions, and allow it to generalize to longer videos and more complex scenes. 
+Observing attention maps shows that SAMNet can effectively perform multi-step reasoning over questions and frames as intended. 
+Despite being trained only on image-question pairs with complex, compositional questions, SAMNet clearly learns
+to associate visual symbols with words and accurately classify temporal contexts as designed.
+Besides, the model's reasoning using neural representations appears to be similar to how a human would operate on abstract symbols when solving the same task, including memorizing and recalling symbols (object embeddings) from the memory when needed.
+This is not perfect however and the system can sometimes store spurious objects despite the gating and reasoning mechanisms,
+but still give correct answers.
+This indicates at least two directions for possible further improvements.
+The first is to ameliorate content-based addressing with masking, similar to the improvements made for DNC proposed by ~\cite{csordas2019improved}.
+Second is to implement variable number of reasoning steps, instead of hard-coded 8 steps, which could utilize Adaptive Computation Time (ACT)~\cite{graves2016adaptive}.
+
+
+
+
