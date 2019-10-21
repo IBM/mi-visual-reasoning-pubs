@@ -1,0 +1,55 @@
+\section{Description of datasets}
+\label{sec:datasets}
+
+Most of the VQA datasets have strong biases. This allow models to learn strategies without reasoning about the visual input~\cite{Santoro2017ASN}.
+The CLEVR dataset~\cite{johnson2017clevr} was developed to address those issues and come back to the core challenge of visual QA which is testing reasoning abilities.
+CLEVR contains images of 3D-rendered objects; each image comes with a number of highly compositional questions that fall into different categories.
+Those categories fall into 5 classes of tasks: Exist, Count, Compare Integer, Query Attribute and Compare Attribute. 
+The CLEVR dataset consists of:
+\begin{itemize}
+\item 	A training set of 70k images and 700k questions,
+\item	A validation set of 15k images and 150k questions,
+\item	A test  set of 15k images and 150k questions about objects,
+\item	Answers, scene graphs and functional programs for all train and val images and questions.
+\end{itemize}
+Each object present in the scene, aside of position, is characterized by a set of four attributes:
+\begin{itemize}
+\item 2 sizes: large, small,
+\item 3 shapes: square, cylinder, sphere,
+\item 2 material types: rubber, metal,
+\item 8 color types: gray, blue, brown, yellow, red, green, purple, cyan,
+\end{itemize}
+resulting in 96 unique combinations.
+
+Along with CLEVR, the authors~\cite{johnson2017clevr} introduced  CLEVR-CoGenT (Compositional Generalization Test, CoGenT in short), with a goal of evaluating how well the models can generalize, learn relations and compositional concepts.
+This dataset is generated in the same way as CLEVR with two additional conditions.
+As shown in \tableref{tab:cogent_conditions}, in Condition A all cubes are gray, blue, brown, or yellow, whereas all cylinders are red, green, purple, or cyan; in Condition B cubes and cylinders swap color palettes.
+For both conditions spheres can be any colors.
+
+
+\begin{table}[b!]
+	\centering
+	\begin{tabular}{cccc}
+		\toprule
+		Dataset        & Cubes              & Cylinders &  Spheres         \\
+		\midrule
+		CLEVR   &  any color &  any color        &    any color    \\
+		%\midrule
+		CLEVR CoGenT A & gray / blue / brown / yellow  & red / green / purple / cyan       &    any color  \\
+		CLEVR CoGenT B  & red / green / purple / cyan &   gray / blue / brown / yellow       &      any color  \\
+		\bottomrule
+	\end{tabular}
+	\caption{Colors/shapes combinations present in CLEVR, CoGenT-A and CoGenT-B datasets.}
+	\label{tab:cogent_conditions}
+\end{table}
+
+The CoGenT dataset contains:
+\begin{itemize}
+\item	Training set of 70,000 images and 699,960 questions in Condition A,
+\item	Validation set of 15,000 images and 149,991 questions in Condition A,
+\item	Test set of 15,000 images and 149,980 questions in Condition A (without answers),
+\item	Validation set of 15,000 images and 150,000 questions in Condition B,
+\item	Test set of 15,000 images and 149,992 questions in Condition B (without answers),
+\item	Scene graphs and functional programs for all training/validation images/questions.
+\end{itemize}
+

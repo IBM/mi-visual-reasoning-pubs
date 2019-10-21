@@ -1,0 +1,6 @@
+\section{Conclusion}
+We have introduced S-MAC, a simplified variant of the MAC model. Because it has nearly half the number of parameters in the recurrent portion MAC cell, it trains faster while maintaining an equivalent test accuracy. 
+
+Our experiments on zero-short learning show that the MAC model has poor performance in line with the other models in the literature. Thus, this remains an interesting problem to investigate how we can train it to disentangle the concepts of shape and color.
+
+With fine-tuning, the MAC model indeed achieves much improved performance, matching state of the art. However, we have showed that correlation between the different domains must be taken into account when fine-tuning, otherwise potentially leading to decreased performance.

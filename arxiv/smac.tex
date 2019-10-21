@@ -1,0 +1,98 @@
+\subsection{Simplified MAC network}
+Our proposed modification to the MAC network is based on two heuristic
+simplifications of the MAC cell. 
+First, we observe that, taking the MAC cell equations as a whole, consecutive linear layers (with no activation in-between) can be combined as one linear layer.
+Next, we assume that dimension-preserving linear layers are invertible
+so as to avoid information loss. 
+Applying this principle to the equations, with a careful reorganization,
+we can apply a single linear layer to the knowledge base \emph{prior}
+to all the reasoning steps and work with this \emph{projected} knowledge base
+as-is throughout the reasoning steps.
+
+
+%Applying this principle to 
+%equations in the MAC cell results in eliminating one of the linear layers applied to
+%the knowledge base. Having reduced the number of linear projections on the knowledge base to one, we can, with a careful reorganization, compute it prior to the reasoning steps. Thus, we can work purely
+%with this \emph{projected} knowledge base. 
+
+\noindent\textit{Notation.}
+%Let $q$ denote the global context of the question
+%and let $\cw_s$ denote the contextual embedding of a word $s$ in the question.
+For each knowledge base $\kb$ of dimension $H \times W \times d$, let $\kb_{hw}$ be the $d$-dimensional vector indexed by 
+$h \in \{1,2,\dots,H\}$ and $w \in \{1,2,\dots, W\}$.
+Let $i$ denote the index of the reasoning steps. 
+
+In the description below, the original MAC cell equations are shown on the \emph{left}
+while our simplified equations are shown (in color) on the {\color{Plum} \emph{right}}.
+The equation numbering is the same as in~\cite{hudson2018compositional}.
+
+\noindent\textbf{Control unit:} 
+For both models, in the control unit, the question $q$ is first transformed in each step of 
+the reasoning using a \emph{position-aware}
+linear layer depending on $i$: $q_i = U_i^{[d \times 2d]} q + b_i^{[d]}$.
+
+\begin{multicols}{2}
+	\noindent
+	\begin{align*}
+	&cq_i = W_{cq}^{[d \times 2d]} [c_{i-1}, q_i] + b_{cq}^{[d]}  \tag{c1} \\
+	&ca_{is} = W_{ca}^{[1 \times d]} (cq_i \odot \cw_s) + b_{ca}^{[1]}
+	\tag{c2.1}\\
+	&cv_{is} = \textrm{softmax}(ca_{is}) \tag{c2.2}\\
+	&\cc_i = \sum_s cv_{is} \, \cw_s  \tag{c2.3}
+	\end{align*}
+	\columnbreak
+	{\color{Plum}
+	\begin{align*}
+	&cq_i = W_{cq}^{[d \times d]} c_{i-1} + q_i  \tag{c1} \\
+	&ca_{is} = W_{ca}^{[1 \times d]} (cq_i \odot \cw_s)  \tag{c2.1}\\
+	&cv_{is} = \textrm{softmax}(ca_{is}) \tag{c2.2}\\
+	&\cc_i = \sum_s cv_{is} \, \cw_s  \tag{c2.3}
+    \end{align*}}
+\end{multicols}
+
+\vskip -0.6cm
+\noindent\textbf{Read and write units:}
+\begin{multicols}{2}
+	\noindent
+	\begin{align*}
+	&I_{ihw} = (W_{m}^{[d \times d]} \mem_{i-1} + b_{m}^{[d]}) \\
+	           & \qquad \quad \odot (W_{k}^{[d \times d]} \kb_{hw} + b_{k}^{[d]}) \tag{r1} \\
+	&I'_{ihw} =  W_{I'}^{[d \times 2d]} [I_{ihw},\kb_{hw}]  + b_{I'}^{[d]}  \tag{r2} \\
+	&ra_{ihw} = W_{ra}^{[1 \times d]} (\cc_i \odot I'_{ihw}) + b_{ra}^{[1]} \tag{r3.1}\\
+	&rv_{ihw} = \textrm{softmax}(ra_{ihw}) \tag{r3.2}\\
+	&\rr_i = \sum_s rv_{ihw} \, \kb_{hw}  \tag{r3.3}\\
+	&\mem_i = W_{rm}^{[d \times 2d]} [\rr_i, \mem_{i-1}]  + b_{rm}^{[d]} \tag{w1}	
+	\end{align*}
+	\columnbreak
+	{\color{Plum}
+	\begin{align*}
+	&I_{ihw} = \mem_{i-1} \odot \kb_{hw} \tag{r1} \\ \\
+	&I'_{ihw} = W_{I'}^{[d \times d]} I_{ihw} + b_{I'}^{[d]} + \kb_{hw} \tag{r2} \\
+	&ra_{ihw} = W_{ra}^{[1 \times d]} (\cc_i \odot I'_{ihw})  \tag{r3.1}\\
+	&rv_{ihw} = \textrm{softmax}(ra_{ihw}) \tag{r3.2}\\
+	&\rr_i = \sum_s rv_{ihw} \, \kb_{hw}  \tag{r3.3}\\
+	&\mem_i = W_{rm}^{[d \times d]} \rr_i + b_{rm}^{[d]} \tag{w1}
+	\end{align*}}
+\end{multicols}
+
+As seen above, being noticeably simpler, the S-MAC obtains significant reduction in the number of position-independent parameters across all units (see~\tableref{tab:parameters}).
+Our experiments demonstrate that this gives us noticeable savings in the training time. However, since the computation time is also dominated by the position-aware layers in the control unit, as well as the input unit, the speedup is not as large as we desire.
+
+
+\begin{table}[!t]
+	\centering
+	\begin{tabular}{ccccCcCc}
+		\toprule
+		Model        & Read Unit               & Write Unit &  Control Unit         \\
+		\midrule
+		MAC   &  787,969 &  524,800        &    525,313    \\
+		%\midrule
+		simplified MAC & 263,168  & 262,656       &    263,168 \\
+		\midrule
+		Reduction by [\%]  & 67\%  &   50\%       &      50\%  \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparison of the number of position-independent parameters in MAC \& S-MAC cells.}
+	\label{tab:parameters}
+\end{table}
+
