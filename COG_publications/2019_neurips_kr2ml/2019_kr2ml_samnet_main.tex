@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{neurips_2019}
+\usepackage[final]{neurips_2019}
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
@@ -82,10 +82,10 @@
 \newcommand{\cH}{\mathcal{H}}
 \newcommand{\cI}{\mathcal{I}}
 
-\newcommand{\vect}[1]{\mathbf{#1}}
-\newcommand{\vx}{\vect{x}}
-\newcommand{\vy}{\vect{y}}
-\newcommand{\vone}{\vect{1}}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
+\newcommand{\vone}{\vec{1}}
 \newcommand{\proj}{\mathrm{proj}}
 
 \newcommand{\imatch}{g^{\mathrm{v}}}
@@ -99,13 +99,16 @@
 \newcommand{\tnow}{\tau^{\mathrm{now}}}
 \newcommand{\tnone}{\tau^{\mathrm{none}}}
 
-\newcommand{\rhead}{rh}
-\newcommand{\whead}{wh}
+\newcommand{\rhead}{\vec{rh}}
+\newcommand{\whead}{\vec{wh}}
 
 
 \title{Learning Multi-Step Spatio-Temporal Reasoning with Selective Attention Memory Network}
 
-\author{T.S. Jayram, Tomasz Kornuta, Vincent Albouy, Emre Sevgen, Ahmet Ozcan}
+\author{T.S. Jayram, Tomasz Kornuta, Vincent Albouy, Emre Sevgen, Ahmet Ozcan\\
+	IBM Research AI\\
+	Almaden Research Center, San Jose, CA 95120, USA
+}
 
 \begin{document}
 \maketitle

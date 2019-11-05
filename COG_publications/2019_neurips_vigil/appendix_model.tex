@@ -1,437 +1,434 @@
-\section{Appendix}
+\section{Supplementary Material}
 
 
-
-\subsection{VWM model}
-
-\begin{notation}
-	Treat 1D tensors as column vectors and 2D tensors as matrices, where appropriate.
-	We use lower case to represent both 1D and 2D tensors but occasionally use upper case
-	for 2D tensors where matrix operations are involved.
-	
-	\begin{enumerate}
-		\item Let 
-		$\Delta^d = \{ (x_0, x_1, \dots, x_d) : x_0 + x_1 + \dots + x_d = 1, x_i \ge 0, i = 0, 1, \dots, d\}$ denote the standard $d$-simplex.	
-		
-		\item  Let $\circ$ denote concatenation of two tensors with identical shape except possibly
-		for their last dimensions $d_1$ and $d_2$, respectively,  
-		resulting in a tensor with last dimension of $d_1+d_2$. 
-		
-		\item Let $\odot$ denote  element-wise product of two tensors of same shape,
-		i.e., Hadamard product for vectors/matrices.
-		
-		\item Let $\otimes$ denote tensor product of two tensors, 
-		i.e. Kronecker product for vectors/matrices.
-	\end{enumerate}
-\end{notation}	
-
-\subsection{Basic layers/modules}
-
-\colorbx{Linear (Affine) Layer}
-
-\begin{description}
-	\item[Inputs:] A tensor $x$ with last dimension $n$.
-	\item[Parameter:] An affine function $\cG: \Reals^n \to \Reals^m$ with 
-	weight and bias parameters.
-	
-	\item[Output:] A tensor $y$ with last dimension $m$, and remaining dimensions
-	same as that of $x$, obtained by applying $\cG$ to each 1D slice of $x$
-	along the last dimension.
-\end{description}
-
-
-\colorbx{Attention Module}
-
-\begin{description}
-	\item[Inputs:] 
-	\begin{enumerate}
-		\item[]
-		\item Query: $q \in \Reals^d$
-		\item Keys: $K \in \Reals^{N \times d}$	
-		\item Values: $V \in \Reals^{N \times d}$. By default $V=K$, unless mentioned explicitly.	
-	\end{enumerate}
-	
-	\item[Parameter:] Weight $w \in \Reals^d$
-	
-	\item[Outputs:] 
-	\begin{enumerate}
-		\item[]
-		\item Content vector: $h =  V^{\T} u \in \Reals^d$
-		\item Attention vector:  $w = \softmax(K(w \odot q)) \in \Reals^N$
-	\end{enumerate}
-\end{description}
-
-
-\colorbx{Interaction Module}
-
-\begin{description}
-	\item[Inputs:] 
-	\begin{enumerate}
-		\item[]
-		\item Base object: $b \in \Reals^d$
-		\item Feature objects: $f \in \Reals^{M \times d}$	
-	\end{enumerate}
-	
-	\item[Parameters:] 
-	\begin{enumerate}
-		\item[]
-		\item Base object projection linear layer: $\cG: \Reals^d \to \Reals^d$
-		\item Feature objects projection linear layer : $\cK: \Reals^{M \times d} \to \Reals^{M \times d}$
-		\item Modifier linear layer:  $\cH: \Reals^{M \times 2d} \to \Reals^{M \times d}$	
-	\end{enumerate}
-	
-	\item[Output:] Modified feature objects 
-	$f' =  \cH( \cK(f) \odot ( \vone \otimes \cG(b))) \in  \Reals^{M \times d}$
-\end{description}
-
-\hrulefill
-
-\subsection{VWM cell}
-
-The VWM recurrent cell is executed for $T$ reasoning steps for every frame in
-the temporal order.  Within a single frame, the cell state at the end of each reasoning step 
-$t=1,2, \dots, T$ is denoted by $(c_t, M_t, o_t)$, where: 
-\begin{enumerate}
-	\item $c_t \in \Reals^d$ is the control state;
-	\item $M_t \in  \Reals^{N \times d}$ is the visual working memory with $N$ slots;
-	\item $w_t \in  \Reals^N$ is the write head; and
-	\item $so_t  \in \Reals^d$ is the summary visual object.
-\end{enumerate} 
-The initial state is such that both $c_0$ and $so_0$ are initialized
-to a fixed value at the start of each frame. However $M_0$ is initialized only once at
-the start of the first frame and otherwise taken to be the value of $M_T$ at the
-end of the previous frame.
-
-%The number of slots $N$ for the VWM $M_t$ is not fixed because the neural network 
-%parameters do not depend on it. It can be variable across the different datasets used
-%for training, validation and test as well as within each dataset. This, for example, enables a 
-%form of transfer learning where we can train on an easy dataset for one value of $N$
-%and study its generalization to a hard dataset using a larger value of $N$.
-
-\colorbx{Question-driven Controller}
-
-%The Question-driven Controller plays an important role in the reasoning process.
-%It drives the attention over the question and produces the new control states. Each new control state defines a new reasoning operation. The inputs of this unit are the past control state, the question encoding and the contextual words (see Question Encoding Unit). It uses the dot product attention between the contextual words
-%and the combination of the past control states and the question encoding.  This attention layer produces the new control state.
 %
-%This unit also outputs the temporal class weights that will be used in the Reasoning Unit. It gives access to a temporal information for the current words (last, latest, now, none temporal).
-
-\begin{description}
-	\item[Inputs:] 
-	\begin{enumerate}
-		\item[]
-		\item Reasoning step $t = 1,2, \dots, T$
-		\item Previous control state: $c_{t-1} \in \Reals^d$	
-		\item Contextual words: $cw \in \Reals^{L \times d}$
-		\item Question encoding: $q \in \Reals^d$
-	\end{enumerate}
-	
-	\item[Parameters:] 
-	\begin{enumerate}
-		\item[]
-		\item Reasoning step-dependent linear layer: $\cG_t: \Reals^d \to \Reals^d$, depending on $s$
-		\item Concatenation linear layer: $\cH: \Reals^{2d} \to \Reals^d$
-		\item Attention module $\cA$
-		\item Temporal classifier:  $\cK: \Reals^d \to \Delta^3$. A two-layer feedforward
-		network with ELU activation in the hidden layer of $d$ units.	
-		The classes for the temporal context are labeled ``last'', ``latest'', ``now'', as well as 
-		a fourth class label ``none`` indicating no temporal context.
-		If $\tau \in \Delta^3$ is the output of the classifier, we denote the components by
-		$\tlast$, $\tlatest$, $\tnow$ and $\tnone$.
-	\end{enumerate}
-	
-	\item[Outputs:] 
-	\begin{enumerate}
-		\item[]
-		\item Control state $c_t \in \Reals^d$
-		\item Control attention $ca_t \in \Reals^L$
-		\item Temporal class weights $\tau_t \in \Reals^4$
-	\end{enumerate}
-	
-	\item[Equations:] 
-	\begin{enumerate}
-		\item[]
-		\item Modulation: $y = \cH\bigl([c_{t-1}, \cG_t(q)]\bigr)$
-		\item Control state and attention: $c_t,  ca_t= \cA(y, cw)$
-		\item Temporal classification: $\tau_t = \cK(c_t)$
-	\end{enumerate}
-\end{description}
-
-
-\colorbx{Visual Retrieval Unit}
-
-%The visual retrievial unit is responsible to extract visual information from the current image given a control state coming from the Question-driven Controller. It is first projecting the past summary object and the feature maps together using the interaction module.
-%It is then using the attention module as follow. The query are the control states and the keys and are the feature maps coming from the image encoder. The results of this attention is applied on the modified features maps coming from the interaction module.  
-%This unit outputs the extracted object and the visual attention.
-
-\begin{description}
-	\item[Inputs:] 
-	\begin{enumerate}
-		\item[]
-		\item Control state: $c_t \in \Reals^d$	
-		\item Previous summary object: $so_{t-1} \in \Reals^d$
-		\item Feature map of current frame: $F \in \Reals^{H \times W \times d}$
-	\end{enumerate}
-	
-	\item[Parameters:] 
-	\begin{enumerate}
-		\item[]
-		\item Interaction module $\cI$
-		\item Attention module $\cA$
-	\end{enumerate}
-	
-	\item[Outputs:] 
-	\begin{enumerate}
-		\item[]
-		\item Visual object: $vo_t \in  \Reals^d$
-		\item Visual attention: $va_t  \in \Reals^{H \times W \times d}$
-	\end{enumerate}
-	
-	\item[Equations:]
-	\begin{enumerate}
-		\item[]
-		\item Modified feature map: $\hat{F} = \cI(so_{t-1}, F)$
-		\item Visual object and attention: $vo_t, va_t = \cA(y, \hat{F}, M_{t-1})$
-	\end{enumerate}
-\end{description}
-
-\begin{note}
-	Appropriate flatten/unflatten operations are performed to match the signature 
-	of the modules.
-\end{note}
-
-
-\colorbx{Memory Retrieval Unit}
-
-%The role of the memory retrieval unit is to read and extract object from memory).
-%As the Visual Retrieval Unit, it uses the combination of the two following submodules. The interaction module blends together the extracted object and the content of the memory. The attention module then extract the corresponding object in memory if present. This unit outputs the extracted object and its corresponding location, we call it the "read head".
-
-\begin{description}
-	\item[Inputs:] 
-	\begin{enumerate}
-		\item[]
-		\item Control state: $c_t \in \Reals^d$	
-		\item Previous summary object: $so_{t-1} \in  \Reals^d$
-		\item Previous VWM $M_{t-1} \in \Reals^{N \times d}$
-	\end{enumerate}
-	
-	\item[Parameters:] 
-	\begin{enumerate}
-		\item[]
-		\item Interaction module $\cI$
-		\item Attention module $\cA$
-	\end{enumerate}
-	
-	\item[Outputs:] 
-	\begin{enumerate}
-		\item[]
-		\item Memory object: $mo_t \in \Reals^d$
-		\item Read head: $\rhead_t \in \Reals^N$
-	\end{enumerate}
-	
-	\item[Equations:]
-	\begin{enumerate}
-		\item[]
-		\item Modified VWM: $\hat{M}_t = \cI(so_{t-1}, M_{t-1})$
-		\item Memory object and attention: $mo_t, \rhead_t = \cA(y, \hat{M}_t, M_{t-1})$
-	\end{enumerate}
-\end{description}
-
-
-\colorbx{Reasoning Unit}
-
-%control_state, visual_object, memory_object, temporal_class_weights
-
-\begin{description}
-	\item[Inputs:] 
-	\begin{enumerate}
-		\item[]
-		\item Control state: $c_t \in \Reals^d$
-		\item Visual object: $vo_t \in \Reals^d$
-		\item Memory object: $mo_t \in \Reals^d$
-		\item Temporal class weights $\tau \in \Delta^3$
-	\end{enumerate}
-	
-	\item[Parameters:] Validator modules $\cG, \cK: \Reals^{2d} \to \Reals$.
-	Both $\cG, \cK$ are two-layer networks of $2d$ hidden units,
-	using ELU activation in the hidden layer, and sigmoid in the output layer.
-	
-	\item[Output:] Predicate gates for the current reasoning step
-	\begin{enumerate}
-		\item Object match predicate gates (i) image: $\imatch_t \in [0,1]$ and 
-		(ii) memory: $\mmatch_t \in [0,1]$.
-		
-		\item Memory update predicate gates (i) add: $\doadd_t \in [0,1]$ and
-		(ii) replace: $\doreplace_t \in [0,1]$
-	\end{enumerate}
-	
+%\subsection{VWM model}
+%
+%\begin{notation}
+%	Treat 1D tensors as column vectors and 2D tensors as matrices, where appropriate.
+%	We use lower case to represent both 1D and 2D tensors but occasionally use upper case
+%	for 2D tensors where matrix operations are involved.
+%	
+%	\begin{enumerate}
+%		\item Let 
+%		$\Delta^d = \{ (x_0, x_1, \dots, x_d) : x_0 + x_1 + \dots + x_d = 1, x_i \ge 0, i = 0, 1, \dots, d\}$ denote the standard $d$-simplex.	
+%		
+%		\item  Let $\circ$ denote concatenation of two tensors with identical shape except possibly
+%		for their last dimensions $d_1$ and $d_2$, respectively,  
+%		resulting in a tensor with last dimension of $d_1+d_2$. 
+%		
+%		\item Let $\odot$ denote  element-wise product of two tensors of same shape,
+%		i.e., Hadamard product for vectors/matrices.
+%		
+%		\item Let $\otimes$ denote tensor product of two tensors, 
+%		i.e. Kronecker product for vectors/matrices.
+%	\end{enumerate}
+%\end{notation}	
+%
+%\subsection{Basic layers/modules}
+%
+%\colorbx{Linear (Affine) Layer}
+%
+%\begin{description}
+%	\item[Inputs:] A tensor $x$ with last dimension $n$.
+%	\item[Parameter:] An affine function $\cG: \Reals^n \to \Reals^m$ with 
+%	weight and bias parameters.
+%	
+%	\item[Output:] A tensor $y$ with last dimension $m$, and remaining dimensions
+%	same as that of $x$, obtained by applying $\cG$ to each 1D slice of $x$
+%	along the last dimension.
+%\end{description}
+%
+%
+%\colorbx{Attention Module}
+%
+%\begin{description}
+%	\item[Inputs:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Query: $q \in \Reals^d$
+%		\item Keys: $K \in \Reals^{N \times d}$	
+%		\item Values: $V \in \Reals^{N \times d}$. By default $V=K$, unless mentioned explicitly.	
+%	\end{enumerate}
+%	
+%	\item[Parameter:] Weight $w \in \Reals^d$
+%	
+%	\item[Outputs:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Content vector: $h =  V^{\T} u \in \Reals^d$
+%		\item Attention vector:  $w = \softmax(K(w \odot q)) \in \Reals^N$
+%	\end{enumerate}
+%\end{description}
+%
+%
+%\colorbx{Interaction Module}
+%
+%\begin{description}
+%	\item[Inputs:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Base object: $b \in \Reals^d$
+%		\item Feature objects: $f \in \Reals^{M \times d}$	
+%	\end{enumerate}
+%	
+%	\item[Parameters:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Base object projection linear layer: $\cG: \Reals^d \to \Reals^d$
+%		\item Feature objects projection linear layer : $\cK: \Reals^{M \times d} \to \Reals^{M \times d}$
+%		\item Modifier linear layer:  $\cH: \Reals^{M \times 2d} \to \Reals^{M \times d}$	
+%	\end{enumerate}
+%	
+%	\item[Output:] Modified feature objects 
+%	$f' =  \cH( \cK(f) \odot ( \vone \otimes \cG(b))) \in  \Reals^{M \times d}$
+%\end{description}
+%
+%\hrulefill
+%
+%\subsection{VWM cell}
+%
+%The VWM recurrent cell is executed for $T$ reasoning steps for every frame in
+%the temporal order.  Within a single frame, the cell state at the end of each reasoning step 
+%$t=1,2, \dots, T$ is denoted by $(c_t, M_t, o_t)$, where: 
+%\begin{enumerate}
+%	\item $\vec{c}_t \in \Reals^d$ is the control state;
+%	\item $\vec{M}_t \in  \Reals^{N \times d}$ is the visual working memory with $N$ slots;
+%	\item $\vec{w}_t \in  \Reals^N$ is the write head; and
+%	\item $\vec{so}_t  \in \Reals^d$ is the summary visual object.
+%\end{enumerate} 
+%The initial state is such that both $\vec{c}_0$ and $\vec{so}_0$ are initialized
+%to a fixed value at the start of each frame. However $\vec{M}_0$ is initialized only once at
+%the start of the first frame and otherwise taken to be the value of $\vec{M}_T$ at the
+%end of the previous frame.
+%
+%%The number of slots $N$ for the VWM $M_t$ is not fixed because the neural network 
+%%parameters do not depend on it. It can be variable across the different datasets used
+%%for training, validation and test as well as within each dataset. This, for example, enables a 
+%%form of transfer learning where we can train on an easy dataset for one value of $N$
+%%and study its generalization to a hard dataset using a larger value of $N$.
+%
+%\colorbx{Question-driven Controller}
+%
+%%The Question-driven Controller plays an important role in the reasoning process.
+%%It drives the attention over the question and produces the new control states. Each new control state defines a new reasoning operation. The inputs of this unit are the past control state, the question encoding and the contextual words (see Question Encoding Unit). It uses the dot product attention between the contextual words
+%%and the combination of the past control states and the question encoding.  This attention layer produces the new control state.
+%%
+%%This unit also outputs the temporal class weights that will be used in the Reasoning Unit. It gives access to a temporal information for the current words (last, latest, now, none temporal).
+%
+%\begin{description}
+%	\item[Inputs:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Reasoning step $t = 1,2, \dots, T$
+%		\item Previous control state: $\vec{c}_{t-1} \in \Reals^d$	
+%		\item Contextual words: $\vec{cw} \in \Reals^{L \times d}$
+%		\item Question encoding: $q \in \Reals^d$
+%	\end{enumerate}
+%	
+%	\item[Parameters:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Reasoning step-dependent linear layer: $\cG_t: \Reals^d \to \Reals^d$, depending on $s$
+%		\item Concatenation linear layer: $\cH: \Reals^{2d} \to \Reals^d$
+%		\item Attention module $\cA$
+%		\item Temporal classifier:  $\cK: \Reals^d \to \Delta^3$. A two-layer feedforward
+%		network with ELU activation in the hidden layer of $d$ units.	
+%		The classes for the temporal context are labeled ``last'', ``latest'', ``now'', as well as 
+%		a fourth class label ``none`` indicating no temporal context.
+%		If $\tau \in \Delta^3$ is the output of the classifier, we denote the components by
+%		$\tlast$, $\tlatest$, $\tnow$ and $\tnone$.
+%	\end{enumerate}
+%	
+%	\item[Outputs:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Control state $\vec{c}_t \in \Reals^d$
+%		\item Control attention $\vec{ca}_t \in \Reals^L$
+%		\item Temporal class weights $\tau_t \in \Reals^4$
+%	\end{enumerate}
+%	
+%	\item[Equations:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Modulation: $y = \cH\bigl([c_{t-1}, \cG_t(q)]\bigr)$
+%		\item Control state and attention: $c_t,  ca_t= \cA(y, cw)$
+%		\item Temporal classification: $\tau_t = \cK(c_t)$
+%	\end{enumerate}
+%\end{description}
+%
+%
+%\colorbx{Visual Retrieval Unit}
+%
+%%The visual retrievial unit is responsible to extract visual information from the current image given a control state coming from the Question-driven Controller. It is first projecting the past summary object and the feature maps together using the interaction module.
+%%It is then using the attention module as follow. The query are the control states and the keys and are the feature maps coming from the image encoder. The results of this attention is applied on the modified features maps coming from the interaction module.  
+%%This unit outputs the extracted object and the visual attention.
+%
+%\begin{description}
+%	\item[Inputs:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Control state: $c_t \in \Reals^d$	
+%		\item Previous summary object: $so_{t-1} \in \Reals^d$
+%		\item Feature map of current frame: $F \in \Reals^{H \times W \times d}$
+%	\end{enumerate}
+%	
+%	\item[Parameters:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Interaction module $\cI$
+%		\item Attention module $\cA$
+%	\end{enumerate}
+%	
+%	\item[Outputs:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Visual object: $vo_t \in  \Reals^d$
+%		\item Visual attention: $va_t  \in \Reals^{H \times W \times d}$
+%	\end{enumerate}
+%	
 %	\item[Equations:]
 %	\begin{enumerate}
 %		\item[]
-%		\item $\imatch_t \in [0,1]$:
-%		It's true if there is a valid visual object in the current temporal context.
-%		
-%		\item $\mmatch_t \in [0,1]$:
-%		It's true if there is a valid memory object in the current temporal context.
-%		
-%		\item $\doadd_t \in [0,1]$: 
-%		It's true if the current visual object should be added as a new object to memory.
-%		
-%		\item $\doreplace_t \in [0,1]$: 
-%		It's true if the current visual object should replace an existing object in memory.
+%		\item Modified feature map: $\hat{F} = \cI(so_{t-1}, F)$
+%		\item Visual object and attention: $vo_t, va_t = \cA(y, \hat{F}, M_{t-1})$
 %	\end{enumerate}
-\end{description}
-
-
-\colorbx{Memory Update Unit}
-
-%This unit is meant to update the content of the memory. 
+%\end{description}
 %
-%Three actions can happen:
+%\begin{note}
+%	Appropriate flatten/unflatten operations are performed to match the signature 
+%	of the modules.
+%\end{note}
 %
-%\begin{itemize}
-%	\item There is no object to be added to memory, the memory remains unchanged
-%	\item There is one object that needs to be added to memory, but a similar object is already in memory at a given location. The new object will replace the old object at this location
+%
+%\colorbx{Memory Retrieval Unit}
+%
+%%The role of the memory retrieval unit is to read and extract object from memory).
+%%As the Visual Retrieval Unit, it uses the combination of the two following submodules. The interaction module blends together the extracted object and the content of the memory. The attention module then extract the corresponding object in memory if present. This unit outputs the extracted object and its corresponding location, we call it the "read head".
+%
+%\begin{description}
+%	\item[Inputs:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Control state: $c_t \in \Reals^d$	
+%		\item Previous summary object: $so_{t-1} \in  \Reals^d$
+%		\item Previous VWM $M_{t-1} \in \Reals^{N \times d}$
+%	\end{enumerate}
 %	
-%	\item There is one object that needs to be added to memory, and  it is a new object. It is added at the write head location.
-%\end{itemize}
+%	\item[Parameters:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Interaction module $\cI$
+%		\item Attention module $\cA$
+%	\end{enumerate}
+%	
+%	\item[Outputs:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Memory object: $mo_t \in \Reals^d$
+%		\item Read head: $\rhead_t \in \Reals^N$
+%	\end{enumerate}
+%	
+%	\item[Equations:]
+%	\begin{enumerate}
+%		\item[]
+%		\item Modified VWM: $\hat{M}_t = \cI(so_{t-1}, M_{t-1})$
+%		\item Memory object and attention: $mo_t, \rhead_t = \cA(y, \hat{M}_t, M_{t-1})$
+%	\end{enumerate}
+%\end{description}
 %
 %
-%This module also updates the position of the write head. If a new object as been added to the current write head position, the right head shifts right to a new empty slot. If the object has been replaced, the write head doesn't move.
-% visual_object, visual_working_memory, read_head, write_head, do_replace, do_add_new
-
-\begin{description}
-	\item[Inputs:] 
-	\begin{enumerate}
-		\item[]
-		\item Visual object: $vo_t \in \Reals^d$
-		\item Memory object: $mo_t \in \Reals^d$
-		\item Memory update predicate gates:  $\doadd_t, \doreplace_t \in [0,1]$
-		\item Read head: $\rhead_t \in \Reals^N$
-		\item Previous VWM $M_{t-1} \in \Reals^{N \times d}$
-		\item Previous write head: $\whead_{t-1} \in \Reals^N$
-	\end{enumerate}
-	
-	\item[Outputs:] 
-	\begin{enumerate}
-		\item[]
-		\item VWM $M_t \in \Reals^{N \times d}$
-		\item Read head: $\rhead_t \in \Reals^N$
-		\item Write head: $\whead_t \in \Reals^N$
-	\end{enumerate}
-	
-\end{description}
-
-
-
-\colorbx{Summary Object Update Unit}
-
-%The  Summary Unit is the last unit of the SAMCell. It is responsible to output the new summary object. It first picks which object is relevant between the object extracted from memory and the visual object extracted from the image. Once the relevant object is picked, it is combined with the former summary object through a linear layer to become the new summary object. It is the final step of the SAMCell reasoning cycle. 
+%\colorbx{Reasoning Unit}
 %
-%The image encoder, question encoder and output unit are described in the appendix.
-
-\begin{description}
-	\item[Inputs:] 
-	\begin{enumerate}
-		\item[]
-		\item Previous summary object: $so_{t-1} \in \Reals^d$
-		\item Visual object: $vo_t \in \Reals^d$
-		\item Memory object: $mo_t \in \Reals^d$
-		\item Object predicate gates: $\imatch_t, \mmatch_t \in [0,1]$
-	\end{enumerate}
-	
-	\item[Parameters:] Concatenation linear layer $\cH$ 
-	
-	\item[Output:] 
-	New summary object:
-	$so_t = \cH\bigl([so_{t-1}, (\imatch_t * vo_t + \mmatch_t * mo_t)]\bigr) \in \Reals^d$ 
-	
-\end{description}
-
-
-\noindent\makebox[\linewidth]{\rule{\paperwidth}{1pt}}
-
-
-
-
-
-\colorbx{Image Encoder}
-
-\begin{description}
-	\item[Inputs:] 
-	Images
-	
-	\item[Output:] 
-	Features maps:
-	$F_k$
-\end{description}
-
-The Image Encoder unit is responsible to preprocess the sequence of images one at the time. It is a 4 layer convolutional neural network. Every layer is composed of the following sequence of operations:
-
-\begin{enumerate}
-	\item 2D convolution ($stride=1$) 
-	\item 2D max pooling
-	\item 2D batch normalization
-	\item Relu (only for the first 3 layers)
-\end{enumerate}
-
-The first layer has 3 inputs channels and 32 output channels. Layer 2 has 32 and 64. Layer 3 has 64 and 64. Finally, layer 4 has 64 inputs channels and 128 output channels .
-The resulting tensor (feature maps) are of dimensions [batch size, $H*W =7*7$, $dim$=128]. 
-
-
-\colorbx{Question Encoder}
-
-
-\begin{description}
-	\item[Inputs:] 
-	\begin{enumerate}
-		\item question string $question$
-		\item question lengths $question_l$
-		
-	\end{enumerate}
-	
-	
-	\item[Output:] 
-	\begin{enumerate}
-		\item contextual word embeddingg $cw$
-		\item question encoding $q$
-		
-	\end{enumerate}
-	
-\end{description}
-
-The strings questions are first embedded ($torch.NN.Embeddings$) and then passed through a $d$-dimensional biLSTM ($d$=128).
-The final hidden state of the biLSTM becomes the question encoding representation $q$. Whereas the biLSTM outputs are projected via a linear layer to become the final words encodings named contextual words $cw$. 
-
-\colorbx{Output Unit}
-
-\begin{description}
-	\item[Inputs:] 
-	\begin{enumerate}
-		\item question encoding $q$
-		\item summary object $so_t$
-
-	\end{enumerate}
-	
-	
-	\item[Output:] 
-	prediction 
-\end{description}
-
-The output unit predicts the final answer to the question. It is a 2-linear-layer-ELU classifier that produces a distribution over the possible candidates. It is based on two inputs, the final summary object $so_t$ and the question encoding $q$ that are concatenated together. 
- 
+%%control_state, visual_object, memory_object, temporal_class_weights
+%
+%\begin{description}
+%	\item[Inputs:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Control state: $c_t \in \Reals^d$
+%		\item Visual object: $vo_t \in \Reals^d$
+%		\item Memory object: $mo_t \in \Reals^d$
+%		\item Temporal class weights $\tau \in \Delta^3$
+%	\end{enumerate}
+%	
+%	\item[Parameters:] Validator modules $\cG, \cK: \Reals^{2d} \to \Reals$.
+%	Both $\cG, \cK$ are two-layer networks of $2d$ hidden units,
+%	using ELU activation in the hidden layer, and sigmoid in the output layer.
+%	
+%	\item[Output:] Predicate gates for the current reasoning step
+%	\begin{enumerate}
+%		\item Object match predicate gates (i) image: $\imatch_t \in [0,1]$ and 
+%		(ii) memory: $\mmatch_t \in [0,1]$.
+%		
+%		\item Memory update predicate gates (i) add: $\doadd_t \in [0,1]$ and
+%		(ii) replace: $\doreplace_t \in [0,1]$
+%	\end{enumerate}
+%	
+%%	\item[Equations:]
+%%	\begin{enumerate}
+%%		\item[]
+%%		\item $\imatch_t \in [0,1]$:
+%%		It's true if there is a valid visual object in the current temporal context.
+%%		
+%%		\item $\mmatch_t \in [0,1]$:
+%%		It's true if there is a valid memory object in the current temporal context.
+%%		
+%%		\item $\doadd_t \in [0,1]$: 
+%%		It's true if the current visual object should be added as a new object to memory.
+%%		
+%%		\item $\doreplace_t \in [0,1]$: 
+%%		It's true if the current visual object should replace an existing object in memory.
+%%	\end{enumerate}
+%\end{description}
+%
+%
+%\colorbx{Memory Update Unit}
+%
+%%This unit is meant to update the content of the memory. 
+%%
+%%Three actions can happen:
+%%
+%%\begin{itemize}
+%%	\item There is no object to be added to memory, the memory remains unchanged
+%%	\item There is one object that needs to be added to memory, but a similar object is already in memory at a given location. The new object will replace the old object at this location
+%%	
+%%	\item There is one object that needs to be added to memory, and  it is a new object. It is added at the write head location.
+%%\end{itemize}
+%%
+%%
+%%This module also updates the position of the write head. If a new object as been added to the current write head position, the right head shifts right to a new empty slot. If the object has been replaced, the write head doesn't move.
+%% visual_object, visual_working_memory, read_head, write_head, do_replace, do_add_new
+%
+%\begin{description}
+%	\item[Inputs:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Visual object: $vo_t \in \Reals^d$
+%		\item Memory object: $mo_t \in \Reals^d$
+%		\item Memory update predicate gates:  $\doadd_t, \doreplace_t \in [0,1]$
+%		\item Read head: $\rhead_t \in \Reals^N$
+%		\item Previous VWM $M_{t-1} \in \Reals^{N \times d}$
+%		\item Previous write head: $\whead_{t-1} \in \Reals^N$
+%	\end{enumerate}
+%	
+%	\item[Outputs:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item VWM $M_t \in \Reals^{N \times d}$
+%		\item Read head: $\rhead_t \in \Reals^N$
+%		\item Write head: $\whead_t \in \Reals^N$
+%	\end{enumerate}
+%	
+%\end{description}
+%
+%
+%
+%\colorbx{Summary Object Update Unit}
+%
+%%The  Summary Unit is the last unit of the SAMCell. It is responsible to output the new summary object. It first picks which object is relevant between the object extracted from memory and the visual object extracted from the image. Once the relevant object is picked, it is combined with the former summary object through a linear layer to become the new summary object. It is the final step of the SAMCell reasoning cycle. 
+%%
+%%The image encoder, question encoder and output unit are described in the appendix.
+%
+%\begin{description}
+%	\item[Inputs:] 
+%	\begin{enumerate}
+%		\item[]
+%		\item Previous summary object: $so_{t-1} \in \Reals^d$
+%		\item Visual object: $vo_t \in \Reals^d$
+%		\item Memory object: $mo_t \in \Reals^d$
+%		\item Object predicate gates: $\imatch_t, \mmatch_t \in [0,1]$
+%	\end{enumerate}
+%	
+%	\item[Parameters:] Concatenation linear layer $\cH$ 
+%	
+%	\item[Output:] 
+%	New summary object:
+%	$so_t = \cH\bigl([so_{t-1}, (\imatch_t * vo_t + \mmatch_t * mo_t)]\bigr) \in \Reals^d$ 
+%	
+%\end{description}
+%
+%
+%\noindent\makebox[\linewidth]{\rule{\paperwidth}{1pt}}
+%
+%
+%
+%
+%
+%\colorbx{Image Encoder}
+%
+%\begin{description}
+%	\item[Inputs:] 
+%	Images
+%	
+%	\item[Output:] 
+%	Features maps:
+%	$F_k$
+%\end{description}
+%
+%The Image Encoder unit is responsible to preprocess the sequence of images one at the time. It is a 4 layer convolutional neural network. Every layer is composed of the following sequence of operations:
+%
+%\begin{enumerate}
+%	\item 2D convolution ($stride=1$) 
+%	\item 2D max pooling
+%	\item 2D batch normalization
+%	\item Relu (only for the first 3 layers)
+%\end{enumerate}
+%
+%The first layer has 3 inputs channels and 32 output channels. Layer 2 has 32 and 64. Layer 3 has 64 and 64. Finally, layer 4 has 64 inputs channels and 128 output channels .
+%The resulting tensor (feature maps) are of dimensions [batch size, $H*W =7*7$, $dim$=128]. 
+%
+%
+%\colorbx{Question Encoder}
+%
+%
+%\begin{description}
+%	\item[Inputs:] 
+%	\begin{enumerate}
+%		\item question string $question$
+%		\item question lengths $question_l$
+%		
+%	\end{enumerate}
+%	
+%	
+%	\item[Output:] 
+%	\begin{enumerate}
+%		\item contextual word embeddingg $cw$
+%		\item question encoding $q$
+%		
+%	\end{enumerate}
+%	
+%\end{description}
+%
+%The strings questions are first embedded ($torch.NN.Embeddings$) and then passed through a $d$-dimensional biLSTM ($d$=128).
+%The final hidden state of the biLSTM becomes the question encoding representation $q$. Whereas the biLSTM outputs are projected via a linear layer to become the final words encodings named contextual words $cw$. 
+%
+%\colorbx{Output Unit}
+%
+%\begin{description}
+%	\item[Inputs:] 
+%	\begin{enumerate}
+%		\item question encoding $q$
+%		\item summary object $so_t$
+%
+%	\end{enumerate}
+%	
+%	
+%	\item[Output:] 
+%	prediction 
+%\end{description}
+%
+%The output unit predicts the final answer to the question. It is a 2-linear-layer-ELU classifier that produces a distribution over the possible candidates. It is based on two inputs, the final summary object $so_t$ and the question encoding $q$ that are concatenated together. 
+% 
 
 \subsection{Training and Implementation Details}
-
-\subsubsection{Implementation Details}
-
 
 SAMNet is implemented on IBM's Mi-Prometheus~\cite{kornuta2018accelerating} framework based on Pytorch. 
 We trained all our models using NVIDIA’s GeForce GTX TITAN X GPUs. SAMNet was trained using 8 reasoning steps and a hidden state size of 128. The external memory has 128-bit slots for all experiments. We trained our model until convergence but we also have set a training time limit of 80 hours.
 
 \subsubsection{Training and testing Methodology}
 
-We compared our model to the original COG model  ~\cite{yang2018dataset} using their implementation (https://github.com/google/cog) and scores provided by the authors through personal communications. We used the same training parameters detailed in the original paper and reproduced their results.  For the generalization experiments from canonical to hard, we used the verified model and obtained new results that were not reported in the reference paper.   In Table 1 COG section shows 4 columns divided into two parts: "paper" and "ours" which distinguish between the results reported in the paper vs. our own experiments.
+We compared our model to the original COG model~\cite{yang2018dataset} using their implementation (https://github.com/google/cog) and scores provided by the authors through personal communications. We used the same training parameters detailed in the original paper and reproduced their results.  For the generalization experiments from canonical to hard, we used the verified model and obtained new results that were not reported in the reference paper.   In Table 1 COG section shows 4 columns divided into two parts: "paper" and "ours" which distinguish between the results reported in the paper vs. our own experiments.
 
 Our experiments focused on the 22 classification tasks provided by the COG dataset. More details about the dataset are given in Table 2. First we evaluated SAMNet's performance on the canonical setting and compared it with the COG Model. As shown in Table 1 we could achieve a small improvement in accuracy, from 97.6\% for the COG model to 98\% for SAMNet. Next we focused on the hard setting of the dataset which increases the number of distractors from 1 to 10 and the number of frames from 4 to 8.
 

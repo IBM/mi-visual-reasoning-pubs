@@ -1,6 +1,6 @@
 \section{Introduction}
 
-Integration of vision and language in deep neural network models allows the system to learn joint representations of objects, concepts, and relations.  Potentially, this approach can address Harnad's \textit{symbol grounding problem}~\cite{harnad2003symbol} and lead to visually grounded language learning.
+Integration of vision and language in deep neural network models allows the system to learn joint representations of objects, concepts, and relations.  Potentially, this approach can lead us towards Harnad's \textit{symbol grounding problem}~\cite{harnad2003symbol} but we are quite far from achieving the full capabilities of visually grounded language learning.
 
 Recently, there is a growing interest in neuro-symbolic approaches, which can combine the power of representation learning and symbolic logic that is interpretable \citep{mao2019neurosymbolic}. These approaches focus on \textit{symbol manipulation} rather than learning \textit{grounded symbols}.  Furthermore, symbolic priors (e.g., domain knowledge) and integration of logic depend on hand-crafted modules.  In the near term, this direction is certainly promising and can address some of the shortcomings of machine learning (i.e., the lack of explainability)\citep{vedantam2019probabilistic}.  However, in the long run, the desire is to learn grounded representations, which may lead to the emergence of symbols \citep{taniguchi2018symbol}.
 
@@ -74,17 +74,15 @@ For example, typical solutions to the bAbI reasoning task, such as Memory Networ
 
 \paragraph{Contributions.}
 %Such approaches also differ from the human cognitive strategies.  Humans have the ability to selectively pay attention and store salient items or events in memory based on their goals.  Working memory and episodic memory systems are responsible for this remarkable ability. 
-In this paper we focus on Visual Reasoning, however, instead of enabling the system to access all input frames at every reasoning step, we decided to follow a totally different, nevertheless more natural approach.
-Inspired by human cognitive capacity to selectively pay attention and store salient information in memory,
-we introduce a new model that can dynamically processes video input frame-by-frame, reasons over a given image and remembers the salient concepts required for answering the questions.
-Our results based on the COG dataset \cite{yang2018dataset} indicate that the model is capable of:
-(1) learning the temporal association, i.e., grounding the time-related words with meaning;
-	%\item Learning the concept of time
-	%\item time context being by-product of gates
-	%\end{itemize}
-(2) learning complex, multi-step reasoning that involves grounding of words and visual representations of objects/attributes;
+In this paper, we introduce a new model for visual reasoning that can dynamically process video input frame-by-frame, reason over each frame and store the salient concepts in memory so as to order to answer questions.
+Our experiments based on the COG dataset \cite{yang2018dataset} indicate that the model can:
+(1) form temporal associations, i.e., grounding the time-related words with meaning;
+%\item Learning the concept of time
+%\item time context being by-product of gates
+%\end{itemize}
+(2) learn complex, multi-step reasoning that involves grounding of words and visual representations of objects/attributes;
 (3) selectively control the flow of information to and from the memory to answer questions; and
-(4) updating the memory only with relevant visual information depending on the temporal context.
+(4) update the memory only with relevant visual information depending on the temporal context.
 %\begin{itemize}
 %\item \textbf{Time aspect}:
 %\begin{itemize}

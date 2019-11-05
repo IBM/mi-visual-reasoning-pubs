@@ -39,7 +39,7 @@ We have also carried out experiments with different numbers of reasoning steps a
 In here, we have focused on 22 classification tasks and compared our results with the baseline model.
 The most important results are highlighted in~\cref{fig:samnet_cog_detailed}, whereas full comparison with all accuracies can be found in~\cref{tab:all-results} at the end of the section.
 
-\begin{figure}[htbp]
+\begin{figure}[!t]
 	\centering
   \begin{subfigure}{\textwidth}
     \includegraphics[width=0.99\textwidth]{../results/samnet_cog_orig_canonical_no_labels.png}
@@ -55,19 +55,19 @@ The most important results are highlighted in~\cref{fig:samnet_cog_detailed}, wh
 
 For the Canonical variant (top row), we have achieved similar accuracies for the majority of tasks (with the total average accuracy of 98.0\% in comparison of 97.6\% achieved by the COG model), with significant improvements (around 13 points) for \textit{AndCompare} tasks.
 As those tasks focus on compositional questions referring to two objects, we hypothesize that our model achieved better accuracy due to the ability to selectively pick and store the relevant objects from the past frames in the memory.
-Despite there are some tasks in which our model reached slightly lower accuracies,
+Despite there being some tasks in which our model reached slightly lower accuracies,
 % (between 0.2 and 1.8 points)
-when comparing performances on the Hard variant, it dominates COG baseline on all tasks, with improvements varying from 0.5 to more than 30 points.
+when comparing performances on the Hard variant, it improves upon the COG baseline on all tasks, with improvements varying from 0.5 to more than 30 points.
 
 
 \subsection{Generalization capabilities}
 
-\begin{wrapfigure}{r}{0.5\textwidth}
+\begin{figure}[!b]
 	\centering
-	\includegraphics[width=0.5\textwidth]{../results/samnet_cog_overall_transfer.png}
+	\includegraphics[width=0.75\textwidth]{../results/samnet_cog_overall_transfer.png}
 	\caption{Total accuracies of SAMNet (blue) and COG models (light/dark gray) when testing generalization from Canonical to Hard variants of the dataset.}
 	\label{fig:samnet_cog_overall_transfer}
-\end{wrapfigure}
+\end{figure}
 
 The goal of the next set of experiments was to test the generalization ability concerning the sequence length and number of distractors.
 For that purpose, we have compared the accuracies of both models when trained on the Canonical variant and tested on Hard (\cref{fig:samnet_cog_overall_transfer}).
