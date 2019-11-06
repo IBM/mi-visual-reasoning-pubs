@@ -1,0 +1,65 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Include other packages here, before hyperref.
+\usepackage{lipsum} % for dummy text only
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
+
+\cvprfinalcopy % *** Uncomment this line for the final submission
+
+\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+\ifcvprfinal\pagestyle{empty}\fi
+\begin{document}
+
+%%%%%%%%% TITLE
+\title{Generalization in Compositional and Relational Reasoning}
+
+%%%%%%%%% AUTHORS
+% WILL NEED TO REARRANGE THE AUTHORS LIST & GET CORRECT INSTITUTIONS / EMAILS
+\author{T.S. Jayram \and Vincent Albouy \and Tomasz Kornuta  \and Emre Sevgen \and Ahmet Ozcan \and Vincent Marois\\
+IBM Research AI\\
+Almaden Research Center, San Jose, CA 95120, USA\\
+Thomas J. Watson Research Center, Yorktown Heights, NY 10598, USA\\
+{\tt\small {jayram,  asozcan}@us.ibm.com}
+{\tt\small {tkornuta, sesevgen}@gmail.com}
+{\tt\small vincent.marois@ibm.com}
+}
+
+\maketitle
+
+%%%%%%%%% ABSTRACT
+\begin{abstract}
+   \lipsum[1]
+\end{abstract}
+
+%%%%%%%%% BODY TEXT
+\input{introduction}
+
+\input{related_work}
+
+\input{experiments}
+
+\input{summary}
+
+{\small
+\bibliographystyle{ieee_fullname}
+\bibliography{bibliography}
+}
+
+\newpage
+\input{appendix}
+
+\end{document}
