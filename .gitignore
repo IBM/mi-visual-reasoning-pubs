@@ -239,3 +239,6 @@ TSWLatexianTemp*
 
 # generated if using elsarticle.cls
 *.spl
+
+# macOS
+*.DS_Store
