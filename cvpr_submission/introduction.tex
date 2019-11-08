@@ -1,5 +1,55 @@
 \section{Introduction}
 
+Deep Learning~\cite{lecun2015deep}
+
+An assumption of traditional machine learning methodologies is the training data and testing data are taken from the same domain, such that the input feature space and data distribution characteristics are the same. However, in some real-world machine learning scenarios, this assumption does not hold. There are cases where training data is expensive or difficult to collect.
+
+Transfer learning is used to improve a learner from one domain by transferring information from a related domain~\cite{pan2009survey}.
+
+There can be  different types of transfer learnings in deep learning,
+most popular being 
+
+In Computer Vision:
+
+It became a standard to pretrain an image encoder or feature detector on ImageNet~\cite{deng2009imagenet} which is image classification task, and transfer it to unrelated domains and applications, such as e.g. visual question answering in medical domain~\cite{kornuta2019leveraging} or pixel-wise image segmentation of cars~\cite{iglovikov2018ternausnet}
+
+
+Transfer learning is a cornerstone of computer vision,
+yet little work has been done to evaluate the relationship
+between architecture and transfer~\cite{kornblith2019better}.
+Here, we compare the performance of 16 classification networks on 12 image classification datasets. We find that, when networks are used as fixed feature extractors or fine-tuned, there is a strong correlation between ImageNet accuracy and transfer accuracy.
+
+
+The tremendous success of ImageNet-trained deep features on a wide range of transfer tasks raises the question:
+what is it about the ImageNet dataset that makes the learnt
+features as good as they are?~\cite{huh2016makes}
+
+We proposes a fully computational approach for modeling the structure of space of visual tasks. This is done via
+finding (first and higher-order) transfer learning dependencies across a dictionary of twenty six 2D, 2.5D, 3D, and
+semantic tasks in a latent space. The product is a computational taxonomic map for task transfer learning~\cite{zamir2018taskonomy}
+
+In Language:
+
+Analogically, the NLP community was using shallow word embeddings such as word2vec~\cite{mikolov2013distributed} or GloVe~\cite{pennington2014glove}.
+The latter work came with a repository of pretrained models that became a standard for several years.
+Recently, we can observe an explosion of deep contextualized word representations such as ELMo (based on bidirectional LSTM)~\cite{peters2018deep} or BERT (based on Transformer)~\cite{devlin2018bert}
+
+Repositories with dozens of pretrained BERT variations such as HugginFace~\cite{wolf2019transformers} -- a new standard
+
+
+
+Conclusion:
+TL for image, video(?) and language engoders are standard.
+Are widely used for Visual Reasoning. But those tasks require some kind of fusion/higher level reasoning.
+ 
+Lack of studies of impact of transfer learning for higher-level, abstract reasoning?
+
+From one point, some preliminary results:
+ - CLEVR showing results on CoGenT-a/b~\cite{johnson2017clevr} - this is more "object generalization"
+ - COG paper showing interesting results with "task generalization" when training on all tasks excluding the one used for test~\cite{yang2018dataset}
+
+
+\subsection{old}
 Integration of vision and language in deep neural network models allows the system to learn joint representations of objects, concepts, and relations.  Potentially, this approach can lead us towards Harnad's \textit{symbol grounding problem}~\cite{harnad2003symbol} but we are quite far from achieving the full capabilities of visually grounded language learning.
 
 Recently, there is a growing interest in neuro-symbolic approaches, which can combine the power of representation learning and symbolic logic that is interpretable \cite{mao2019neurosymbolic}. These approaches focus on \textit{symbol manipulation} rather than learning \textit{grounded symbols}.  Furthermore, symbolic priors (e.g., domain knowledge) and integration of logic depend on hand-crafted modules.  In the near term, this direction is certainly promising and can address some of the shortcomings of machine learning (i.e., the lack of explainability)\cite{vedantam2019probabilistic}.  However, in the long run, the desire is to learn grounded representations, which may lead to the emergence of symbols \cite{taniguchi2018symbol}.
