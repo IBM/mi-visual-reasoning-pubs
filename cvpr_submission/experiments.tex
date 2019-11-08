@@ -1,3 +1,36 @@
 \section{Experiments}
 
 \subsection{Generalization capabilities}
+
+\subsubsection{CoGenT tasks}
+
+\begin{table}[htb]
+	\centering
+	\noindent
+	\begin{adjustbox}{width=0.5\textwidth}
+	\begin{tabular}{c c c c c c c }\toprule
+		\multicolumn{1}{c }{\textbf{}} & \multicolumn{6}{c }{\textbf{Test Accuracy (\%)}} \\  
+		\multicolumn{1}{c }{\textbf{}} & \multicolumn{6}{c }{on \texttt{valA} -- 150,000 samples} \\ 
+		\cmidrule(lr){2-7}
+		\multicolumn{1}{ c }{\textbf{Experiments}} & \textbf{Overall}& \textbf{Exist}  & \textbf{Count} & \textbf{CompareInteger} & \textbf{CompareAttribute} & \textbf{QueryAttribute}\\ 
+		\cmidrule(lr){1-1}
+		\cmidrule(lr){2-7}
+		\multicolumn{1}{ c }{All tasks} & 95.32 & 98.4 	& 86.75	& 96.0	& 98.65	& 98.02 \\ 
+		\cmidrule(lr){1-7}
+		\multicolumn{1}{ c }{All tasks but Exist} & 90.33 	& 60.42	& 86.12	& 96.18	& 98.52 & 98.60 \\ 
+		\multicolumn{1}{ c }{All tasks but Count} & 74.59 	& 97.51	& 0.0	& 94.37	& 98.42 & 98.47 \\ 
+		\multicolumn{1}{ c }{All tasks but CompareInteger} & 91.53 	& 98.22	& 86.09	& 56.35	& 98.78 & 98.40 \\ 
+		\multicolumn{1}{ c }{All tasks but CompareAttribute} & 81.92 	& 98.32	& 86.36	& 95.86	& 23.18 & 98.44 \\ 
+		\multicolumn{1}{ c }{All tasks but QueryAttribute} & 42.17 	& 76.79	& 54.64	& 79.87 & 64.13 & 0.0 \\ 
+		\cmidrule(lr){1-7}
+		\multicolumn{1}{ c }{Exist only} & 26.07 & 74.20	& 0.0	& 59.79	& 59.15 & 0.0 \\ 
+	    \multicolumn{1}{ c }{Count only} & 14.89  & 0.0	& 62.78	& 0.0 & 0.0 & 0.0 \\ 
+	    \multicolumn{1}{ c }{CompareInteger only} & 23.44 & 48.15	& 0.0	& 77.98	& 54.08 & 0.0 \\ 
+	    \multicolumn{1}{ c }{CompareAttribute only} & 23.50 & 51.93	& 0.0 & 59.06 & 61.73 & 0.0 \\ 
+	\multicolumn{1}{ c }{QueryAttribute only} & 34.64 	& 0.0	& 0.0	& 0.0 & 0.0 & 97.08 \\ 
+		\bottomrule
+	\end{tabular}
+    \end{adjustbox}
+	\caption{\textbf{CoGenT \texttt{valA} accuracies for all tasks when training on one task only or all but one task.}}
+	\label{tab:CoGenT_results}
+\end{table}
