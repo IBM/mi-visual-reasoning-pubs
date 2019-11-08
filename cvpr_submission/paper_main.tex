@@ -28,9 +28,11 @@
 
 %% User's macros %%
 \usepackage{cleveref}
-\crefname{figure}{Figure}{Figures}
-\crefname{table}{Table}{Tables}
-\crefname{appendix}{Appendix}{Appendices}
+\def\sec#1{Sec.~\ref{#1}}
+\def\Sec#1{Sec.~\ref{#1}}
+\def\fig#1{Fig.~\ref{#1}}
+\def\Fig#1{Fig.~\ref{#1}}
+\def\tableref#1{Table~\ref{#1}}
 
 \newcommand{\tk}[1]{\textcolor{red}{TK: #1}}
 \newcommand{\ao}[1]{\textcolor{green}{AO: #1}}

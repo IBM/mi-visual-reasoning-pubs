@@ -4,6 +4,11 @@
 
 \subsubsection{CoGenT tasks}
 
+We have reimplemented and trained the MAC model~\cite{hudson2018compositional} using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on PyTorch~\cite{paszke2017automatic}.
+For all experiments, the training procedure is as follows: we train the MAC model for 20 epochs on 90\% of the training set of CoGenT. We keep the remaining 10\% for validating the model at every epoch, and use the original validation sets (CoGenT-A  \& -B) as test sets.
+We used NVIDIA's GeForce GTX TITAN X GPUs. We followed the implementation details indicated in the supplemental material (Sec. A) of the original paper~\cite{hudson2018compositional}, to ensure a faithful comparison.
+
+
 \begin{table}[htb]
 	\centering
 	\noindent
@@ -31,6 +36,29 @@
 		\bottomrule
 	\end{tabular}
     \end{adjustbox}
-	\caption{\textbf{CoGenT \texttt{valA} accuracies for all tasks when training on one task only or all but one task.}}
+	\caption{CoGenT accuracies for all tasks when training on one task only or all but one task.}
 	\label{tab:CoGenT_results}
 \end{table}
+
+We first ran a control experiment, where the model is trained, then tested on all tasks. We take the results as references for the following experiments. The accuracy per task is coherent with the human performance~\cite{johnson2017clevr}, where we observe that \textit{Count} is the most challenging task.
+
+The next set of experiments excludes one task from the training set, and tests the model on all. Comparing these experiments against the reference one allows to observe whether the model is able to solve the held-out task using information from the other tasks.
+We observe here a first distinction between the five tasks: 
+\begin{itemize}
+	\item \textit{Exist}, \textit{CompareInteger}, \textit{CompareAttribute}: Even with no training data for these tasks, the model is able to answer correctly the majority of the questions for \textit{Exist} \& \textit{CompareInteger} and one-quarter of the \textit{CompareAttribute} questions.
+	\item \textit{Count} \& \textit{QueryAttribute}: When not present in the training data, the model cannot answer any of these questions correctly.
+\end{itemize}
+
+This first observation hints at a transfer of information between tasks -- to a limited degree. A subsequent set of experiments is then to train on only one task at a time and test on all. This will allow us to quantify what is the benefit provided by training on a certain task when solving others.
+
+The last section of \tableref{tab:CoGenT_results} contains the results of this set of experiments.
+We note the following:
+\begin{itemize}
+	\item A distinction between tasks is again observed: \{\textit{Exist}, \textit{CompareInteger}, \textit{CompareAttribute}\}, \{\textit{Count}\}, \{\textit{QueryAttribute}\},
+	\item The tasks \{\textit{Exist}, \textit{CompareInteger}, \textit{CompareAttribute}\} seem to be benefiting from one another: When trained on one, the model is able to answer correctly the majority of questions in the two other tasks.
+	\item \textit{QueryAttribute} and \textit{Count} are very distinct: the model is able to answer these questions correctly only when it was trained on them. Additionally, training solely on these tasks do not appear to benefit the other 3 tasks.
+	\item Nevertheless, not including \textit{QueryAttribute} results in a test accuracy drop of 17 to 30+ pts on the other tasks. \textit{QueryAttribute} could thus be qualified as a "necessary but not sufficient" training task. This could be mitigated by the fact that \textit{QueryAttribute} is the largest task (by number of questions). Hence, removing it from the training set reduces the number of samples by a third.
+\end{itemize}
+
+
+
