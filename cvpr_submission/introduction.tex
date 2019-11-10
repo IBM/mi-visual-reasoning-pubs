@@ -1,34 +1,15 @@
 \section{Introduction}
+During recent year neural networks, being the core of the so-called Deep Learning~\cite{lecun2015deep} revolution, became dominating solutions across many domains, from  speech recognition~\cite{graves2013speech}, to image classification~\cite{krizhevsky2012imagenet} to object detection~\cite{redmon2016you} to question answering~\cite{weston2014memory} to machine translation~\cite{bahdanau2014neural}.
+At their core, being statistical models~\cite{ripley1993statistical,warner1996understanding}, neural networks rely on the assumption that training and testing data are sampled from the same domain, i.e. operating in the same input space and with similar data distribution characteristics.
+However, in many real-world scenarios, this assumption does not hold and besides, as modern neural models often have  milions of trainable parameters (weights), their trainng reguires a vaist amount of data, which for some domains (e.g. medical) can be very expensive and/or extremely difficult to collect.
+One of the widely accepted solutions for the mentioned problems is Transfer Learning~\cite{pan2009survey,weiss2016survey}, a technique that enables improving of a model by transferring \emph{information} from one domain to the other. 
 
-Deep Learning~\cite{lecun2015deep}
+%pan2009survey: we categorize transfer learning under three sub-settings: inductive transfer learning, transductive transfer learning and unsupervised transfer learning, 
 
-An assumption of traditional machine learning methodologies is the training data and testing data are taken from the same domain, such that the input feature space and data distribution characteristics are the same. However, in some real-world machine learning scenarios, this assumption does not hold. There are cases where training data is expensive or difficult to collect.
+In Computer Vision, it became a standard to pretrain an image encoder (such as VGG~\cite{simonyan2014very}) on a large scale dataset (like ImageNet~\cite{deng2009imagenet}), and transfer its weights to unrelated domains and tasks, such as e.g. Visual Question Answering (VQA) in medical domain~\cite{kornuta2019leveraging} or pixel-wise image segmentation of cars~\cite{iglovikov2018ternausnet}.
+The fact that such a transfer improves performance is quite fascinating taking into account that both domain (natural images vs medical or images with cars) and task (image classification vs VQA or image segmentation) change (inductive transfer learning according to the taxonomy from~\cite{pan2009survey}).
 
-Transfer learning is used to improve a learner from one domain by transferring information from a related domain~\cite{pan2009survey}.
-
-There can be  different types of transfer learnings in deep learning,
-most popular being 
-
-In Computer Vision:
-
-It became a standard to pretrain an image encoder or feature detector on ImageNet~\cite{deng2009imagenet} which is image classification task, and transfer it to unrelated domains and applications, such as e.g. visual question answering in medical domain~\cite{kornuta2019leveraging} or pixel-wise image segmentation of cars~\cite{iglovikov2018ternausnet}
-
-
-Transfer learning is a cornerstone of computer vision,
-yet little work has been done to evaluate the relationship
-between architecture and transfer~\cite{kornblith2019better}.
-Here, we compare the performance of 16 classification networks on 12 image classification datasets. We find that, when networks are used as fixed feature extractors or fine-tuned, there is a strong correlation between ImageNet accuracy and transfer accuracy.
-
-
-The tremendous success of ImageNet-trained deep features on a wide range of transfer tasks raises the question:
-what is it about the ImageNet dataset that makes the learnt
-features as good as they are?~\cite{huh2016makes}
-
-We proposes a fully computational approach for modeling the structure of space of visual tasks. This is done via
-finding (first and higher-order) transfer learning dependencies across a dictionary of twenty six 2D, 2.5D, 3D, and
-semantic tasks in a latent space. The product is a computational taxonomic map for task transfer learning~\cite{zamir2018taskonomy}
-
-In Language:
+Similarly, NLP...
 
 Analogically, the NLP community was using shallow word embeddings such as word2vec~\cite{mikolov2013distributed} or GloVe~\cite{pennington2014glove}.
 The latter work came with a repository of pretrained models that became a standard for several years.
@@ -37,6 +18,23 @@ Recently, we can observe an explosion of deep contextualized word representation
 Repositories with dozens of pretrained BERT variations such as HugginFace~\cite{wolf2019transformers} -- a new standard
 
 
+
+The tremendous success of ImageNet-trained deep features on a wide range of transfer tasks raises the question:
+what is it about the ImageNet dataset that makes the learnt
+features as good as they are?~\cite{huh2016makes}
+
+Transfer learning is a cornerstone of computer vision,
+yet little work has been done to evaluate the relationship
+between architecture and transfer~\cite{kornblith2019better}.
+Here, we compare the performance of 16 classification networks on 12 image classification datasets. We find that, when networks are used as fixed feature extractors or fine-tuned, there is a strong correlation between ImageNet accuracy and transfer accuracy.
+
+We proposes a fully computational approach for modeling the structure of space of visual tasks. This is done via
+finding (first and higher-order) transfer learning dependencies across a dictionary of twenty six 2D, 2.5D, 3D, and
+semantic tasks in a latent space. The product is a computational taxonomic map for task transfer learning~\cite{zamir2018taskonomy}
+
+
+
+Visual Question Answering (VQA)~\cite{malinowski2014multi,antol2015vqa} is a new exciting problem domain, where the system is expected to answer questions expressed in natural language by taking into account the content of the image.
 
 Conclusion:
 TL for image, video(?) and language engoders are standard.
