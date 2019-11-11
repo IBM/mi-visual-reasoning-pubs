@@ -6,51 +6,68 @@ One of the widely accepted solutions for the mentioned problems is Transfer Lear
 
 %pan2009survey: we categorize transfer learning under three sub-settings: inductive transfer learning, transductive transfer learning and unsupervised transfer learning, 
 
-In Computer Vision, it became a standard to pretrain an image encoder (such as VGG~\cite{simonyan2014very}) on a large scale dataset (like ImageNet~\cite{deng2009imagenet}), and transfer its weights to unrelated domains and tasks, such as e.g. Visual Question Answering (VQA) in medical domain~\cite{kornuta2019leveraging} or pixel-wise image segmentation of cars~\cite{iglovikov2018ternausnet}.
-The fact that such a transfer improves performance is quite fascinating taking into account that both domain (natural images vs medical or images with cars) and task (image classification vs VQA or image segmentation) change (inductive transfer learning according to the taxonomy from~\cite{pan2009survey}).
+In Computer Vision, it became a standard to pretrain an image encoder (such as VGG~\cite{simonyan2014very}) on large scale datasets (like ImageNet~\cite{deng2009imagenet}), and transfer its weights to unrelated domains and tasks, such as e.g. Visual Question Answering (VQA) in medical domain~\cite{kornuta2019leveraging} or pixel-wise image segmentation of cars~\cite{iglovikov2018ternausnet}.
+The fact that such a transfer improves performance is quite fascinating, taking into account that both domain (natural images vs medical or images with cars) and task (image classification vs VQA or image segmentation) change (inductive transfer learning according to the taxonomy from~\cite{pan2009survey}).
 
-Similarly, NLP...
+A similar development can be observed in the Natural Language Processing (NLP) community.
+Using shallow word embeddings, such as word2vec~\cite{mikolov2013distributed} or GloVe~\cite{pennington2014glove}, pretrained on several large corpuses coming from e.g. Wikipedia or Twitter, became a standard procedure when working with different NLP domains and tasks.
+Recently, we can observe an explosion of deep contextualized word representations such as ELMo (based on bidirectional LSTM)~\cite{peters2018deep} or BERT (based on the Transformer architecture)~\cite{devlin2018bert}.
+Analogically to the pretrained image encoders, the community made an effort to ease the access to repositories with dozens of pretrained BERT variations, HugginFace~\cite{wolf2019transformers} being one of most notable examples.
 
-Analogically, the NLP community was using shallow word embeddings such as word2vec~\cite{mikolov2013distributed} or GloVe~\cite{pennington2014glove}.
-The latter work came with a repository of pretrained models that became a standard for several years.
-Recently, we can observe an explosion of deep contextualized word representations such as ELMo (based on bidirectional LSTM)~\cite{peters2018deep} or BERT (based on Transformer)~\cite{devlin2018bert}
+The success of transfer learning raises several questions, such as specifics of datasets used for the pretraining (in particular, ImageNet~\cite{huh2016makes}), or correlation of performances of models with different architectures in the source and target domains~\cite{kornblith2019better}.
+One of most systematic works analysing the impact of transfer learning in Computer Vision is the computational taxonomic map for task transfer learning~\cite{zamir2018taskonomy}, aiming at discovering the dependencies across a dictionary of twenty six 2D, 2.5D, 3D, and
+semantic tasks.
 
-Repositories with dozens of pretrained BERT variations such as HugginFace~\cite{wolf2019transformers} -- a new standard
+The impact of transfer learning is even more important in the case of multi-modal tasks~\cite{mogadala2019trends} combining both of the mentioned modalities (i.e. vision and language).
+One of the most popular problem domain is Visual Question Answering (VQA)~\cite{malinowski2014multi,antol2015vqa}, where the system is expected to answer questions expressed in natural language by taking into account the content of a single image (Image Question Answering) or a video (Video Question Answering).
+In a typical VQA model, disregarding whether it is performing an early fusion of embeddings of those two modalities~\cite{malinowski2018visual} or multi-step reasoning~\cite{hudson2018compositional}, using pretrained image encode and word embeddings is de facto standard, proven empirically its dominance over the models trained from the scratch.
 
+In this paper, however, we decided to focus on a slightly different  aspect of transfer learning.
+As both Image and Video QA can be seen as meta-problems, where the system has to develop a different reasoning process depending on the type/family of question (task), we asked ourselves whether mastering one task type/family can help with mastering others.
 
+\paragraph{Contributions}
 
-The tremendous success of ImageNet-trained deep features on a wide range of transfer tasks raises the question:
-what is it about the ImageNet dataset that makes the learnt
-features as good as they are?~\cite{huh2016makes}
+The contributions of this paper are as follows.
+We propose a new model called SAMNet, that achieves state-of-the-art results on two datasets for Visual Reasoning, namely CLEVR~\cite{johnson2017clevr}, a diagnostic dataset for Image QA, and COG~\cite{yang2018dataset}, a Video QA reasoning.
+Next we show how different tasks impact when transfering the whole pretrained model in three main setups.
+In the first one focus on transfer learning within the Image QA domain and perform experiment similar to Taskonomy~\cite{zamir2018taskonomy} and analyse how training exclusively on one task family helps with mastering other family, with once but crucial difference: we transfer and fine-tune the whole model (not only the encoder).
+In the second we show a complementary results in a multi-task learning setup, when the model is trained on all-but-one task and then tested on this task (with and without finetuning).
+Finally, we present a set of experiments aimed at analysis of the impact of transfer learning in Video QA, when domain changes drastically and system has to deal with longer videos with higher complexity (understood as number of distractors present in each frame).
+%Surprisingly, our model with only small fine-tuning, managed to the master Hard variant and achieved higher accuracy than the model trained explicitly on Hard variant from the scratch.
 
-Transfer learning is a cornerstone of computer vision,
-yet little work has been done to evaluate the relationship
-between architecture and transfer~\cite{kornblith2019better}.
-Here, we compare the performance of 16 classification networks on 12 image classification datasets. We find that, when networks are used as fixed feature extractors or fine-tuned, there is a strong correlation between ImageNet accuracy and transfer accuracy.
+\tk{Have I addressed that correctly? I am not sure whether I have covered TL with CoGenT-A and CoGenT-B variants...}
+%A) Task generalization
+%- answers (CLEVR)
+%B) Domain adaptation
+%- CoGenT A -> CoGenT B (CLEVR)
+%- sequence lenght  (COG)
+%- image complexity (distractors) (COG)
 
-We proposes a fully computational approach for modeling the structure of space of visual tasks. This is done via
-finding (first and higher-order) transfer learning dependencies across a dictionary of twenty six 2D, 2.5D, 3D, and
-semantic tasks in a latent space. The product is a computational taxonomic map for task transfer learning~\cite{zamir2018taskonomy}
-
-
-
-Visual Question Answering (VQA)~\cite{malinowski2014multi,antol2015vqa} is a new exciting problem domain, where the system is expected to answer questions expressed in natural language by taking into account the content of the image.
-
-Conclusion:
-TL for image, video(?) and language engoders are standard.
-Are widely used for Visual Reasoning. But those tasks require some kind of fusion/higher level reasoning.
+%All those experiments in fact analyse different aspects 
  
-Lack of studies of impact of transfer learning for higher-level, abstract reasoning?
+%Lack of studies of impact of transfer learning for higher-level, abstract reasoning?
 
-From one point, some preliminary results:
- - CLEVR showing results on CoGenT-a/b~\cite{johnson2017clevr} - this is more "object generalization"
- - COG paper showing interesting results with "task generalization" when training on all tasks excluding the one used for test~\cite{yang2018dataset}
+%From one point, some preliminary results:
+% - CLEVR showing results on CoGenT-a/b~\cite{johnson2017clevr} - this is more "object generalization"
+ %- COG paper showing interesting results with "task generalization" when training on all tasks excluding the one used for test~\cite{yang2018dataset}
 
 
-\subsection{old}
-Integration of vision and language in deep neural network models allows the system to learn joint representations of objects, concepts, and relations.  Potentially, this approach can lead us towards Harnad's \textit{symbol grounding problem}~\cite{harnad2003symbol} but we are quite far from achieving the full capabilities of visually grounded language learning.
+%I want to claim that therer are three different approaches to "master count".
+%1) Train and test only on count
+%2) Train on alll the tasks including count
+%3) Do not train on count at all and then test on count
 
-Recently, there is a growing interest in neuro-symbolic approaches, which can combine the power of representation learning and symbolic logic that is interpretable \cite{mao2019neurosymbolic}. These approaches focus on \textit{symbol manipulation} rather than learning \textit{grounded symbols}.  Furthermore, symbolic priors (e.g., domain knowledge) and integration of logic depend on hand-crafted modules.  In the near term, this direction is certainly promising and can address some of the shortcomings of machine learning (i.e., the lack of explainability)\cite{vedantam2019probabilistic}.  However, in the long run, the desire is to learn grounded representations, which may lead to the emergence of symbols \cite{taniguchi2018symbol}.
+
+%conclusions:
+%when you are doing transfer make sure that the target answers are the same!
+%otherwise: binary y/n vs numers 0-7 vs names of attributes
+
+
+
+\section{Related work -- import}
+%Integration of vision and language in deep neural network models allows the system to learn joint representations of objects, concepts, and relations.  Potentially, this approach can lead us towards Harnad's \textit{symbol grounding problem}~\cite{harnad2003symbol} but we are quite far from achieving the full capabilities of visually grounded language learning.
+
+%Recently, there is a growing interest in neuro-symbolic approaches, which can combine the power of representation learning and symbolic logic that is interpretable \cite{mao2019neurosymbolic}. These approaches focus on \textit{symbol manipulation} rather than learning \textit{grounded symbols}.  Furthermore, symbolic priors (e.g., domain knowledge) and integration of logic depend on hand-crafted modules.  In the near term, this direction is certainly promising and can address some of the shortcomings of machine learning (i.e., the lack of explainability)\cite{vedantam2019probabilistic}.  However, in the long run, the desire is to learn grounded representations, which may lead to the emergence of symbols \cite{taniguchi2018symbol}.
 
 Starting with Image Question Answering~\cite{malinowski2014multi,antol2015} and Image Captioning~\cite{karpathy2015deep}, a variety of tasks that integrate vision and language have appeared in the past several years~\cite{mogadala2019trends}. 
 Those directions include e.g., Video QA~\cite{MovieQA} and Video Action Recognition~\cite{monfort2019moments}, that provide an additional challenge of understanding \emph{temporal} aspects, and Video Reasoning~\cite{song2018explore,yang2018dataset}, that tackles both spatial (comparison of object attributes, counting and other relational question) and temporal aspects and relations (e.g. object disappearance).
@@ -65,5 +82,3 @@ The ability to deal with temporal casuality can pose a challenge for also in pur
 Current NLP solutions, in many problem settings, work around this challenge by processing the entire text input and reason over it multiple times using attention \cite{vaswani2017attention} or other mechanisms.
 For example, typical solutions to the bAbI reasoning task, such as Memory Networks \cite{weston2014memory}, involve processing all the supporting facts at once and keeping them in memory all the time while searching for the answer.
 
-
-\paragraph{Contributions}
