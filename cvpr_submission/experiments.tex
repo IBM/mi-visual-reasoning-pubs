@@ -1,17 +1,26 @@
 \section{Experiments}
 
-\subsection{Generalization capabilities}
+\subsection{Multi-task learning}
 
-\subsubsection{CoGenT tasks}
+\subsubsection{CLEVR tasks}
+\vm{Will have to rephrase this in accordance with Jayram's definition.}
 
-We have reimplemented and trained the MAC model~\cite{hudson2018compositional} using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on PyTorch~\cite{paszke2017automatic}.
-For all experiments, the training procedure is as follows: we train the MAC model for 20 epochs on 90\% of the training set of CoGenT. We keep the remaining 10\% for validating the model at every epoch, and use the original validation sets (CoGenT-A  \& -B) as test sets.
-We used NVIDIA's GeForce GTX TITAN X GPUs. We followed the implementation details indicated in the supplemental material (Sec. A) of the original paper~\cite{hudson2018compositional}, to ensure a faithful comparison.
+We have trained SAMNet using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on PyTorch~\cite{paszke2017automatic}, on the training set of the condition A of the CLEVR dataset (CLEVR-CoGenT)~\cite{johnson2017clevr}.
+For all experiments, the training procedure is as follows: we train the model for 20 epochs on 90\% of the training set of CoGenT. We keep the remaining 10\% for validating the model at every epoch, and use the original validation sets (CoGenT-A  \& -B) as test sets. We used NVIDIA's GeForce GTX TITAN X GPUs.
 
+We consider as task groups the question categories defined by the authors: \textit{Exist}, \textit{Count}, \textit{CompareInteger}, \textit{CompareAttribute}, \textit{QueryAttribute}. In order to investigate the potential benefits of multi-task learning, we conducted the following experiments:
 
+\begin{itemize}
+	\item We first trained SAMNet on a single task group, and tested on this same task group. These 5 experiments (one per task group) fit into the traditional Deep Learning procedure of training and testing on the same task, or on samples drawn from the same distribution over an input domain (single-task learning).
+	\item Following, we trained SAMNet on all task groups jointly, and evaluated its performance on each group separately. The underlying hypothesis for this experiment is that learning jointly on all task groups would improve the performance on each task group.
+	\item Finally, we finetuned a model, trained on all task groups jointly, on each of the task groups separately. We are interested in two observations here: how significant is the performance gain, if any, on the finetuned task? And complementary, how significant is the performance drop, if any, on the other tasks? 
+\end{itemize}
+
+The results of these experiments are available in \Tab{tab:CoGenT_results}. 
 \begin{table}[htb]
 	\centering
 	\noindent
+	\caption{CLEVR-CoGenT accuracies for all 5 tasks when training on solely one task, jointly training on all tasks and finetuning on each task. For all experiments, the validation and test sets are identical.}\label{tab:CoGenT_results}
 	\begin{adjustbox}{width=0.5\textwidth}
 	\begin{tabular}{c c c c c c c }\toprule
 		\multicolumn{1}{c }{\textbf{}} & \multicolumn{6}{c }{\textbf{Test Accuracy (\%)}} \\  
@@ -20,45 +29,66 @@ We used NVIDIA's GeForce GTX TITAN X GPUs. We followed the implementation detail
 		\multicolumn{1}{ c }{\textbf{Experiments}} & \textbf{Overall}& \textbf{Exist}  & \textbf{Count} & \textbf{CompareInteger} & \textbf{CompareAttribute} & \textbf{QueryAttribute}\\ 
 		\cmidrule(lr){1-1}
 		\cmidrule(lr){2-7}
-		\multicolumn{1}{ c }{All tasks} & 95.32 & 98.4 	& 86.75	& 96.0	& 98.65	& 98.02 \\ 
-		\cmidrule(lr){1-7}
-		\multicolumn{1}{ c }{All tasks but Exist} & 90.33 	& 60.42	& 86.12	& 96.18	& 98.52 & 98.60 \\ 
-		\multicolumn{1}{ c }{All tasks but Count} & 74.59 	& 97.51	& 0.0	& 94.37	& 98.42 & 98.47 \\ 
-		\multicolumn{1}{ c }{All tasks but CompareInteger} & 91.53 	& 98.22	& 86.09	& 56.35	& 98.78 & 98.40 \\ 
-		\multicolumn{1}{ c }{All tasks but CompareAttribute} & 81.92 	& 98.32	& 86.36	& 95.86	& 23.18 & 98.44 \\ 
-		\multicolumn{1}{ c }{All tasks but QueryAttribute} & 42.17 	& 76.79	& 54.64	& 79.87 & 64.13 & 0.0 \\ 
-		\cmidrule(lr){1-7}
 		\multicolumn{1}{ c }{Exist only} & 26.07 & 74.20	& 0.0	& 59.79	& 59.15 & 0.0 \\ 
-	    \multicolumn{1}{ c }{Count only} & 14.89  & 0.0	& 62.78	& 0.0 & 0.0 & 0.0 \\ 
-	    \multicolumn{1}{ c }{CompareInteger only} & 23.44 & 48.15	& 0.0	& 77.98	& 54.08 & 0.0 \\ 
-	    \multicolumn{1}{ c }{CompareAttribute only} & 23.50 & 51.93	& 0.0 & 59.06 & 61.73 & 0.0 \\ 
-	\multicolumn{1}{ c }{QueryAttribute only} & 34.64 	& 0.0	& 0.0	& 0.0 & 0.0 & 97.08 \\ 
+		\multicolumn{1}{ c }{Count only} & 14.89  & 0.0	& 62.78	& 0.0 & 0.0 & 0.0 \\ 
+		\multicolumn{1}{ c }{CompareInteger only} & 23.44 & 48.15	& 0.0	& 77.98	& 54.08 & 0.0 \\ 
+		\multicolumn{1}{ c }{CompareAttribute only} & 23.50 & 51.93	& 0.0 & 59.06 & 61.73 & 0.0 \\ 
+		\multicolumn{1}{ c }{QueryAttribute only} & 34.64 	& 0.0	& 0.0	& 0.0 & 0.0 & 97.08 \\ 		
+		\cmidrule(lr){1-1}
+		\cmidrule(lr){2-7}
+
+		\multicolumn{1}{ c }{All tasks} & 95.32 & 98.4 	& 86.75	& 96.0	& 98.65	& 98.02 \\ 
+		\cmidrule(lr){1-1}
+		\cmidrule(lr){2-7}
+
+		\multicolumn{1}{ c }{\textit{Trained on all tasks -- Finetune on $t$}} & &  & &  & &\\ 
+		\multicolumn{1}{ c }{Exist} &  & & & & & \\ 
+		\multicolumn{1}{ c }{Count} &  & & & & & \\
+		\multicolumn{1}{ c }{CompareInteger} &  & & & & & \\
+		\multicolumn{1}{ c }{CompareAttribute} &  & & & & & \\
+		\multicolumn{1}{ c }{QueryAttribute} &  & & & & & \\
+
 		\bottomrule
 	\end{tabular}
     \end{adjustbox}
-	\caption{CoGenT accuracies for all tasks when training on one task only or all but one task.}
-	\label{tab:CoGenT_results}
 \end{table}
 
-We first ran a control experiment, where the model is trained, then tested on all tasks. We take the results as references for the following experiments. The accuracy per task is coherent with the human performance~\cite{johnson2017clevr}, where we observe that \textit{Count} is the most challenging task.
+Looking at the first section of \tab{tab:CoGenT_results}, we observe, unsurprisingly, that a model trained on a single task will do better on this task than on the others when being tested. Nevertheless, we also note that a model, trained on \textit{Exist} only, obtains a score slightly better than random on \textit{CompareInteger} \& \textit{CompareAttribute}. This is due to the fact that these 3 task groups share the same labels space ('yes', 'no'). \textit{Count} and \textit{QueryAttribute} have isolated labels space (('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10') and the set of object attributes values respectively) and we thus observe an accuracy of zero for these tasks, except when trained on these.
 
-The next set of experiments excludes one task from the training set, and tests the model on all. Comparing these experiments against the reference one allows to observe whether the model is able to solve the held-out task using information from the other tasks.
-We observe here a first distinction between the five tasks: 
-\begin{itemize}
-	\item \textit{Exist}, \textit{CompareInteger}, \textit{CompareAttribute}: Even with no training data for these tasks, the model is able to answer correctly the majority of the questions for \textit{Exist} \& \textit{CompareInteger} and one-quarter of the \textit{CompareAttribute} questions.
-	\item \textit{Count} \& \textit{QueryAttribute}: When not present in the training data, the model cannot answer any of these questions correctly.
-\end{itemize}
+Training SAMNet on all tasks jointly, then testing it on each task, shows significant improvement on 4 out of 5 tasks, ranging from 18 points to 37 points. \textit{QueryAttribute} does not benefit from such an improvement, only seeing an increase of one point in terms of test accuracy. This suggests that \textit{QueryAttribute} is \textit{self-sufficient}, as the model is performing similarly between single-task learning and multi-task learning.
 
-This first observation hints at a transfer of information between tasks -- to a limited degree. A subsequent set of experiments is then to train on only one task at a time and test on all. This will allow us to quantify what is the benefit provided by training on a certain task when solving others.
-
-The last section of \tableref{tab:CoGenT_results} contains the results of this set of experiments.
-We note the following:
-\begin{itemize}
-	\item A distinction between tasks is again observed: \{\textit{Exist}, \textit{CompareInteger}, \textit{CompareAttribute}\}, \{\textit{Count}\}, \{\textit{QueryAttribute}\},
-	\item The tasks \{\textit{Exist}, \textit{CompareInteger}, \textit{CompareAttribute}\} seem to be benefiting from one another: When trained on one, the model is able to answer correctly the majority of questions in the two other tasks.
-	\item \textit{QueryAttribute} and \textit{Count} are very distinct: the model is able to answer these questions correctly only when it was trained on them. Additionally, training solely on these tasks do not appear to benefit the other 3 tasks.
-	\item Nevertheless, not including \textit{QueryAttribute} results in a test accuracy drop of 17 to 30+ pts on the other tasks. \textit{QueryAttribute} could thus be qualified as a "necessary but not sufficient" training task. This could be mitigated by the fact that \textit{QueryAttribute} is the largest task (by number of questions). Hence, removing it from the training set reduces the number of samples by a third.
-\end{itemize}
+Finally, we finetuned the model trained on all tasks on each task separately, for up to one epoch. The interest here is to observe if finetuning on a specific task can further boost the accuracy on this particular, while preserving the performance on other tasks (and thus the overall performance as well) similar.
 
 
+\begin{table}[htb]
+	\centering
+	\noindent
+	\begin{adjustbox}{width=0.5\textwidth}
+		\begin{tabular}{c c c c c c c }\toprule
+			\multicolumn{1}{c }{\textbf{}} & \multicolumn{6}{c }{\textbf{Test Accuracy (\%)}} \\  
+			\multicolumn{1}{c }{\textbf{}} & \multicolumn{6}{c }{on \texttt{valA} -- 150,000 samples} \\ 
+			\cmidrule(lr){2-7}
+			\multicolumn{1}{ c }{\textbf{Experiments}} & \textbf{Overall}& \textbf{Exist}  & \textbf{Count} & \textbf{CompareInteger} & \textbf{CompareAttribute} & \textbf{QueryAttribute}\\ 
+			\cmidrule(lr){1-1}
+			\cmidrule(lr){2-7}
+			\multicolumn{1}{ c }{All tasks but Exist} & 90.33 	& 60.42	& 86.12	& 96.18	& 98.52 & 98.60 \\ 
+			\multicolumn{1}{ c }{All tasks but Count} & 74.59 	& 97.51	& 0.0	& 94.37	& 98.42 & 98.47 \\ 
+			\multicolumn{1}{ c }{All tasks but CompareInteger} & 91.53 	& 98.22	& 86.09	& 56.35	& 98.78 & 98.40 \\ 
+			\multicolumn{1}{ c }{All tasks but CompareAttribute} & 81.92 	& 98.32	& 86.36	& 95.86	& 23.18 & 98.44 \\ 
+			\multicolumn{1}{ c }{All tasks but QueryAttribute} & 42.17 	& 76.79	& 54.64	& 79.87 & 64.13 & 0.0 \\ 
 
+			\cmidrule(lr){1-1}
+			\cmidrule(lr){2-7}
+			\multicolumn{1}{ c }{\textbf{Trained on all tasks but $t$ -- Finetune on $t$ }} & &  & &  & &\\ 
+			\multicolumn{1}{ c }{Exist} & 86.24 & 98.04 & 56.59 & 87.99 & 94.17 & 97.14 \\ 
+			\multicolumn{1}{ c }{Count} & 46.97 & 2.80 & 78.73 & 15.60 & 35.06 & 56.60 \\
+			\multicolumn{1}{ c }{CompareInteger} & 73.46 & 72.89 & 42.42 & 92.07 & 68.32 & 91.90 \\
+			\multicolumn{1}{ c }{CompareAttribute} & 48.16 & 85.77 & 30.84 & 77.20 & 97.72 & 13.21 \\
+			\multicolumn{1}{ c }{QueryAttribute} & 35.26 & 38.65 & 4.22 & 31.56 & 5.08 & 70.67 \\
+		\bottomrule
+	\end{tabular}
+\end{adjustbox}
+\caption{CoGenT accuracies with finetuning.}\label{tab:CoGenT_finetuning_results}
+\end{table}
+
+End of section
