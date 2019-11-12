@@ -1,3 +1,22 @@
+\section{Related work -- import}
+%Integration of vision and language in deep neural network models allows the system to learn joint representations of objects, concepts, and relations.  Potentially, this approach can lead us towards Harnad's \textit{symbol grounding problem}~\cite{harnad2003symbol} but we are quite far from achieving the full capabilities of visually grounded language learning.
+
+%Recently, there is a growing interest in neuro-symbolic approaches, which can combine the power of representation learning and symbolic logic that is interpretable \cite{mao2019neurosymbolic}. These approaches focus on \textit{symbol manipulation} rather than learning \textit{grounded symbols}.  Furthermore, symbolic priors (e.g., domain knowledge) and integration of logic depend on hand-crafted modules.  In the near term, this direction is certainly promising and can address some of the shortcomings of machine learning (i.e., the lack of explainability)\cite{vedantam2019probabilistic}.  However, in the long run, the desire is to learn grounded representations, which may lead to the emergence of symbols \cite{taniguchi2018symbol}.
+
+Starting with Image Question Answering~\cite{malinowski2014multi,antol2015} and Image Captioning~\cite{karpathy2015deep}, a variety of tasks that integrate vision and language have appeared in the past several years~\cite{mogadala2019trends}. 
+Those directions include e.g., Video QA~\cite{MovieQA} and Video Action Recognition~\cite{monfort2019moments}, that provide an additional challenge of understanding \emph{temporal} aspects, and Video Reasoning~\cite{song2018explore,yang2018dataset}, that tackles both spatial (comparison of object attributes, counting and other relational question) and temporal aspects and relations (e.g. object disappearance).
+To deal with the temporal aspect most studies typically cut the whole video into clips; e.g., in~\cite{song2018explore} the model extracts visual features from each frame and aggregates features first into clips, followed by aggregation over clips to form a single video representation.
+Still, when reasoning and producing the answer, the system in fact has \textit{access to all frames}. 
+Similarly, in Visual Dialog~\cite{das2017visual} the system memorizes the whole dialog history.
+However, in real-time dialog or video monitoring, it is not always possible to keep the entire history of conversation nor all frames from the beginning of the recording.  
+
+
+As evident from human cognition, attention and memory are the key competencies required to solve these problems, and unsurprisingly, the AI research is rapidly growing in these areas.
+The ability to deal with temporal casuality can pose a challenge for also in pure natural language processing (NLP) settings, e.g. in question answering (QA) and dialog applications.  
+Current NLP solutions, in many problem settings, work around this challenge by processing the entire text input and reason over it multiple times using attention \cite{vaswani2017attention} or other mechanisms.
+For example, typical solutions to the bAbI reasoning task, such as Memory Networks \cite{weston2014memory}, involve processing all the supporting facts at once and keeping them in memory all the time while searching for the answer.
+
+
 \section{Related work}
 Visual Question Answering (VQA) is a challenging multimodal task that combines vision and language.  Most image question answering datasets and tasks focus on identifying object attributes, counting, and reasoning about their spatial-relations. Prior work generally relied on dense visual features produced by either CNNs \cite{xiong2016dynamic,yang2016stacked} or object detection modules \cite{desta2018object}, and increasingly, recent models utilize the relationships among objects to augment those features with contextual information from each object’s surroundings \cite{teney2017graph, santoro2017simple}.  
 
