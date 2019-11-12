@@ -16,11 +16,11 @@ We consider as task groups the question categories defined by the authors: \text
 	\item Finally, we finetuned a model, trained on all task groups jointly, on each of the task groups separately. We are interested in two observations here: how significant is the performance gain, if any, on the finetuned task? And complementary, how significant is the performance drop, if any, on the other tasks? 
 \end{itemize}
 
-The results of these experiments are available in \Tab{tab:CoGenT_results}. 
+The results of these experiments are available in \Tab{tab:CoGenT-results}. 
 \begin{table}[htb]
 	\centering
 	\noindent
-	\caption{CLEVR-CoGenT accuracies for all 5 tasks when training on solely one task, jointly training on all tasks and finetuning on each task. For all experiments, the validation and test sets are identical.}\label{tab:CoGenT_results}
+	\caption{CLEVR-CoGenT accuracies for all 5 tasks when training on solely one task, jointly training on all tasks and finetuning on each task. For all experiments, the validation and test sets are identical.}\label{tab:CoGenT-results}
 	\begin{adjustbox}{width=0.5\textwidth}
 	\begin{tabular}{c c c c c c c }\toprule
 		\multicolumn{1}{c }{\textbf{}} & \multicolumn{6}{c }{\textbf{Test Accuracy (\%)}} \\  
@@ -53,7 +53,7 @@ The results of these experiments are available in \Tab{tab:CoGenT_results}.
     \end{adjustbox}
 \end{table}
 
-Looking at the first section of \tab{tab:CoGenT_results}, we observe, unsurprisingly, that a model trained on a single task will do better on this task than on the others when being tested. Nevertheless, we also note that a model, trained on \textit{Exist} only, obtains a score slightly better than random on \textit{CompareInteger} \& \textit{CompareAttribute}. This is due to the fact that these 3 task groups share the same labels space ('yes', 'no'). \textit{Count} and \textit{QueryAttribute} have isolated labels space (('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10') and the set of object attributes values respectively) and we thus observe an accuracy of zero for these tasks, except when trained on these.
+Looking at the first section of \tab{tab:CoGenT-results}, we observe, unsurprisingly, that a model trained on a single task will do better on this task than on the others when being tested. Nevertheless, we also note that a model, trained on \textit{Exist} only, obtains a score slightly better than random on \textit{CompareInteger} \& \textit{CompareAttribute}. This is due to the fact that these 3 task groups share the same labels space ('yes', 'no'). \textit{Count} and \textit{QueryAttribute} have isolated labels space (('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10') and the set of object attributes values respectively) and we thus observe an accuracy of zero for these tasks, except when trained on these.
 
 Training SAMNet on all tasks jointly, then testing it on each task, shows significant improvement on 4 out of 5 tasks, ranging from 18 points to 37 points. \textit{QueryAttribute} does not benefit from such an improvement, only seeing an increase of one point in terms of test accuracy. This suggests that \textit{QueryAttribute} is \textit{self-sufficient}, as the model is performing similarly between single-task learning and multi-task learning.
 
@@ -88,7 +88,7 @@ Finally, we finetuned the model trained on all tasks on each task separately, fo
 		\bottomrule
 	\end{tabular}
 \end{adjustbox}
-\caption{CoGenT accuracies with finetuning.}\label{tab:CoGenT_finetuning_results}
+\caption{CoGenT accuracies with finetuning.}\label{tab:CoGenT-finetuning-results}
 \end{table}
 
 End of section
