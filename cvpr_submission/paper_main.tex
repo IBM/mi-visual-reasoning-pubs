@@ -4,8 +4,8 @@
 \usepackage{times}
 \usepackage{epsfig}
 \usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage{amssymb}
+\usepackage{amsmath, amssymb, amsfonts,bm}
+\usepackage{amsthm}
 
 % Include other packages here, before hyperref.
 \usepackage{booktabs}       % professional-quality tables
@@ -13,10 +13,11 @@
 \usepackage{adjustbox}
 \usepackage{lipsum} % for dummy text only
 
+\usepackage{url}            % simple URL typesetting
 % If you comment hyperref and then uncomment it, you should delete
 % egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
 % run, let it finish, and you should be clear).
-\usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
+\usepackage[pagebackref=true,breaklinks=true,colorlinks,bookmarks=false]{hyperref}
 
 %\cvprfinalcopy % *** Uncomment this line for the final submission
 
@@ -26,14 +27,87 @@
 % Pages are numbered in submission mode, and unnumbered in camera-ready
 \ifcvprfinal\pagestyle{empty}\fi
 
-%% User's macros %%
+%\usepackage{booktabs}       % professional-quality tables
+%\usepackage{amsfonts}       % blackboard math symbols
+%\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+%\usepackage{microtype}      % microtypography
+%\usepackage{subcaption}
+%\usepackage{graphicx}
+
+% Useful packages
+%\usepackage{mathtools}
+%\usepackage[usenames, dvipsnames]{color}
 \usepackage{cleveref}
+\crefname{figure}{Figure}{Figures}
+\crefname{table}{Table}{Tables}
+\crefname{appendix}{Appendix}{Appendices}
 \def\sec#1{Sec.~\ref{#1}}
 \def\Sec#1{Sec.~\ref{#1}}
 \def\fig#1{Fig.~\ref{#1}}
 \def\Fig#1{Fig.~\ref{#1}}
 \def\tab#1{Table~\ref{#1}}
 \def\Tab#1{Table~\ref{#1}}
+
+\usepackage{enumitem}
+\setlist{leftmargin=*} 
+%\setlist[enumerate]{labelindent=5pt, label=\alph*)} 
+
+\usepackage{wrapfig}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+
+
+
+% \usepackage{blindtext}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+
+\theoremstyle{remark}
+\newtheorem*{notation}{Notation}
+%\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{fact}{Fact}
+\newtheorem*{observation}{Observation}
+\newtheorem*{condition}{Condition}
+\newtheorem*{claim}{Claim}
+\newtheorem*{example}{Example}
+\newtheorem*{question}{Question}
+
+
+%% User's macros %%
+% \newcommand{\colorbx}[1]{\medskip\noindent\scalebox{1.05}{\fcolorbox{SaddleBrown}{white}{\color{SteelBlue}{\textbf{#1}}}}}
+
+\newcommand{\Reals}{\mathbb{R}}
+
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\vc}{\vec{c}}
+\newcommand{\vso}{\vec{so}}
+\newcommand{\vone}{\vec{1}}
+\newcommand{\proj}{\mathrm{proj}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
+
+\newcommand{\imatch}{g^{\mathrm{v}}}
+\newcommand{\mmatch}{g^{\mathrm{m}}}
+
+\newcommand{\doadd}{h^{\mathrm{a}}}
+\newcommand{\doreplace}{h^{\mathrm{r}}}
+
+\newcommand{\tlast}{\tau^{\mathrm{last}}}
+\newcommand{\tlatest}{\tau^{\mathrm{latest}}}
+\newcommand{\tnow}{\tau^{\mathrm{now}}}
+\newcommand{\tnone}{\tau^{\mathrm{none}}}
+
+\newcommand{\rhead}{\vec{rh}}
+\newcommand{\whead}{\vec{wh}}
+
 
 \newcommand{\tk}[1]{\textcolor{red}{TK: #1}}
 \newcommand{\ao}[1]{\textcolor{green}{AO: #1}}
@@ -71,7 +145,7 @@ Thomas J. Watson Research Center, Yorktown Heights, NY 10598, USA\\
 
 \input{related_work}
 
-%\input{model}
+\input{samnet}
 
 \input{experiments}
 
