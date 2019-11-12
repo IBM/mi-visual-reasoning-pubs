@@ -18,12 +18,12 @@
 %The model is also composed of an Image Encoder and a Question Encoder both responsible to pre-process the visual and textual inputs. The output unit is a classifier.
 %All those modules are described below.
 
-\begin{figure}[b!]
+\begin{figure*}[!t]
 	\centering
-	\includegraphics[width=\textwidth]{img/architecture/samnet_architecture4}
+	\includegraphics[width=\textwidth]{img/architecture/SAMNETmodel}
 	\caption{General architecture of SAMNet}
 	\label{fig:samnet}
-\end{figure}
+\end{figure*}
 
 SAM Network (SAMNet for short) is an end-to-end differentiable recurrent model equipped with an external memory~(\cref{fig:samnet}).
 At the conceptual level SAMNet draws from two core ideas:
@@ -39,15 +39,15 @@ in order to perform multi-step spatio-temporal reasoning over text and video.
 A notable feature of this design is that the number of addresses $N$ can be set to different values during training and testing to fit the characteristics of data.
 
 
-\begin{figure}[t!]
-	\centering
-	\includegraphics[width=\textwidth]{img/architecture/samcell_reasoning}
-	\caption{Unfolded reasoning steps with operations performed by the SAMCell}
-	\label{fig:samcell}
-\end{figure}
+%\begin{figure}[t!]
+%	\centering
+%	\includegraphics[width=\textwidth]{img/architecture/samcell_reasoning}
+%	\caption{Unfolded reasoning steps with operations performed by the SAMCell}
+%	\label{fig:samcell}
+%\end{figure}
 
 
-The core of SAMNet is a recurrent cell called a SAM Cell (\cref{fig:samcell}). 
+The core of SAMNet is a recurrent cell called a SAM Cell.
 Unrolling a new series of $T$ cells for every frame enables $T$ steps of compositional
 reasoning, similar to~\cite{hudson2018compositional}.
 Information flows between frames through the external memory. 
