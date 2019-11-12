@@ -6,8 +6,8 @@ One of the widely accepted solutions for the problems mentioned above is Transfe
 
 %pan2009survey: we categorize transfer learning under three sub-settings: inductive transfer learning, transductive transfer learning and unsupervised transfer learning, 
 
-In computer vision, it is now standard practice to pre-train an image encoder (such as VGG~\cite{simonyan2014very} or ResNet~\cite{he2016deep}) on large-scale datasets (such as ImageNet~\cite{deng2009imagenet}), and reuse the weights in unrelated domains and tasks, such as Visual Question Answering (VQA) in a medical domain~\cite{kornuta2019leveraging} or pixel-wise image segmentation of cars~\cite{iglovikov2018ternausnet}.
-That such transfer improves performance is appealing, knowing that both the domain (e.g. realistic images vs. medical ones or images with cars) and the task (e.g. image classification vs. VQA or image segmentation) can change significantly. This type of transfer learning is qualified as \emph{inductive}, according to the taxonomy from~\cite{pan2009survey}.
+In Computer Vision, it is now standard practice to pre-train an image encoder (such as VGG~\cite{simonyan2014very} or ResNet~\cite{he2016deep}) on large-scale datasets (such as ImageNet~\cite{deng2009imagenet}), and reuse the weights in unrelated domains and tasks, such as Visual Question Answering (VQA) in a medical domain~\cite{kornuta2019leveraging} or pixel-wise image segmentation of cars~\cite{iglovikov2018ternausnet}.
+That such transfer improves performance is appealing, knowing that both the domain (e.g. realistic images vs. medical or cars ones) and the task (e.g. image classification vs. VQA or image segmentation) can change significantly. This type of transfer learning is qualified as \emph{inductive}, according to the taxonomy from~\cite{pan2009survey}.
 
 A similar development can be noted in the Natural Language Processing (NLP) community.
 Using shallow word embeddings, such as word2vec~\cite{mikolov2013distributed} or GloVe~\cite{pennington2014glove}, pretrained on large corpuses coming from e.g.\ Wikipedia or Twitter, became a standard procedure when working with different NLP domains and tasks, some where labeled data is less accessible.
@@ -33,7 +33,7 @@ We show the impact of the different tasks when transferring the whole pretrained
 	\item Next, we show complementary results in a multi-task learning setup, when the model is trained on all-but-one task and then tested on this task (with and without finetuning).
 	\item Finally, we present a set of experiments aimed at analyzing of the impact of transfer learning in Video QA, when domain changes drastically and the model is forced to handle longer videos with higher complexity (i.e. a higher number of distractor objects present in each frame).
 \end{itemize}
-Surprisingly, our model with only small fine-tuning, managed to the master Hard variant and achieved higher accuracy than the model trained explicitly on Hard variant from the scratch.
+Surprisingly, our model, with only small fine-tuning, managed to master the Hard variant of the COG dataset and achieved higher accuracy than the model trained solely on the Hard variant.
 
 \tk{Have I addressed that correctly? I am not sure whether I have covered TL with CoGenT-A and CoGenT-B variants...}
 
