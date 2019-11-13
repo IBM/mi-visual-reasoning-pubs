@@ -18,12 +18,6 @@
 %The model is also composed of an Image Encoder and a Question Encoder both responsible to pre-process the visual and textual inputs. The output unit is a classifier.
 %All those modules are described below.
 
-\begin{figure*}
-	\centering
-	\includegraphics[width=\textwidth]{img/architecture/SAMNETmodel}
-	\caption{General architecture of SAMNet}
-	\label{fig:samnet}
-\end{figure*}
 
 SAM Network (SAMNet for short) is an end-to-end differentiable recurrent model equipped with an external memory~(\cref{fig:samnet}). At the conceptual level SAMNet draws from two core ideas:
 compositional reasoning as proposed e.g. in MAC (Memory-Attention-Composition) Network~\cite{hudson2018compositional,marois2018transfer} and utilization of external memory in Memory-Augmented Neural Networks such as NTM (Neural Turing Machine)~\cite{graves2014neural}, DNC (Differentiable Neural Computer)~\cite{graves2016hybrid} or DWM (Differentiable Working Memory)~\cite{jayram2018learning}.
@@ -41,6 +35,7 @@ A notable feature of this design is that the number of addresses $N$ can be set 
 %	\label{fig:samcell}
 %\end{figure}
 
+
 The core of SAMNet is a recurrent cell called a SAM Cell. Unrolling a new series of $T$ cells for every frame enables $T$ steps of compositional reasoning, similar to~\cite{hudson2018compositional}. Information flows between frames through the external memory. 
 During the $t$-th reasoning step, for $t=1,2, \dots, T$, SAM Cell maintains the following information as part of its recurrent state:
 (a) $\vec{c}_t \in \Reals^d$, the control state used to drive the reasoning over objects in the frame and memory; and
@@ -48,6 +43,13 @@ During the $t$-th reasoning step, for $t=1,2, \dots, T$, SAM Cell maintains the 
 Let $\vec{M}_t \in  \Reals^{N \times d}$ denote the external memory with $N$ slots at the end of step $t$.
 Let $\whead_t \in  \Reals^N$ denote an attention vector over the memory locations;
 in a trained model, $\whead_t$ points to the location of first empty slot in memory for adding new objects.
+
+\begin{figure*}
+	\centering
+	\includegraphics[width=\textwidth]{img/architecture/SAMNETmodel}
+	\caption{General architecture of SAMNet}
+	\label{fig:samnet}
+\end{figure*}
 
 \noindent{\textbf{Question-driven Controller.}}
 This module drives attention over the question to produce $k$ control states, one per reasoning operation.
@@ -101,5 +103,6 @@ We first determine whether the relevant object $\vec{ro}_t$ should be obtained f
 Note that $\vec{ro}_t$ is allowed to be a null object (i.e. 0 vector) in case neither of the gates evaluate to true.
 Finally, $\vec{so}_t$ is the output of a simple linear layer whose inputs are $\vec{ro}_t$ and the previous summary object $\vec{so}_{t-1}$.
 This serves to retain additional information that was in $\vec{so}_{t-1}$, e.g., if it held the partial result of a complex query with Boolean connectives.
+
 
 %For details of the modules not covered here, please see the appendix.
