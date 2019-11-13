@@ -1,8 +1,59 @@
 \section{Experiments}
 
-\subsection{Multi-task learning}
+We have implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on Pytorch~\cite{paszke2017automatic}. 
+We evaluated the model on the COG dataset~\cite{yang2018dataset}, a video reasoning~\cite{mogadala2019trends} dataset developed for the purpose of research on relational and temporal reasoning. We have also evaluated the model's performance on the CLEVR dataset~\cite{johnson2017clevr}, designed for Image Question Answering.
+Our experiments were designed to study SAMNet's performance as well as its generalization abilities in different settings.
+For this purpose, we used two variants of the COG dataset: an easy one (Canonical) and a Hard version. The main differences are the number of frames in the input sequence (4 vs. 8) and the maximum number of distractors (i.e., objects not relevant for the answer) per single frame (1 vs. 10).
+For CLEVR, we considered the CoGenT (Constrained Generalization Test) variant which contains two conditions, differing on the combinations of attributes values. More details on the composition of these datasets is available in Appendix \ref{sec:datasets-desc}.
 
-\subsubsection{CLEVR tasks}
+\subsection{Performance comparison with the COG baseline}
+
+In our experiments, we have trained SAMNet using 8 reasoning steps and the external memory having 8 address locations, each being a vector of 128 floats.
+%We have also carried out experiments with different numbers of reasoning steps and memory size, but this goes beyond the scope of this paper.
+We focused on 22 classification tasks and compared our results with the baseline model.
+The most important results are highlighted in~\cref{fig:samnet_cog_detailed}, whereas full comparison can be found in Appendix~\ref{sec:cog-all-results}.
+
+\begin{figure*}[!t]
+	\centering
+	\begin{subfigure}{\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{img/results/samnet_cog_orig_canonical_no_labels.png}
+	\end{subfigure}%
+	\newline
+	\begin{subfigure}{\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{img/results/samnet_cog_orig_hard.png}
+	\end{subfigure}%
+	\caption{Comparison of test set accuracies of SAMNet (blue) with original results achieved by the COG model (gray) on Canonical (top) and Hard (bottom) variants of the COG dataset.}
+	\label{fig:samnet_cog_detailed}
+\end{figure*}
+
+
+For the Canonical variant (top row), we have achieved similar accuracies for the majority of tasks (with the total average accuracy of 98.0\% in comparison of 97.6\% achieved by the COG model), with significant improvements (around 13 points) for \textit{AndCompare} tasks.
+As those tasks focus on compositional questions referring to two objects, we hypothesize that our model achieved better accuracy due to the ability to selectively pick and store the relevant objects from the past frames in the memory.
+Despite there being some tasks in which our model reached slightly lower accuracies,
+% (between 0.2 and 1.8 points)
+when comparing performances on the Hard variant, it improves upon the COG baseline on all tasks, with improvements varying from 0.5 to more than 30 points.
+
+\subsection{Temporal generalization capabilities}
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.45\textwidth]{img/results/samnet_cog_overall_transfer.png}
+	\caption{Total accuracies of SAMNet (blue) and COG models (light/dark gray) when testing generalization from Canonical to Hard variants of the dataset.}
+	\label{fig:samnet_cog_overall_transfer}
+\end{figure}
+
+The goal of the next set of experiments was to test the generalization ability concerning the sequence length and number of distractors.
+For that purpose, we have compared the accuracies of both models when trained on the Canonical variant and tested on Hard (\cref{fig:samnet_cog_overall_transfer}).
+As the original paper does not include such experiments, we have performed them on our own. The light gray color indicates the original results, whereas dark gray indicates the accuracies of COG models that we have trained (fine-tuning/testing) using the original code provided by the authors.
+For sanity check, in the first column, we report both the best-achieved score and the score reported in the paper when training and testing on Canonical variant, without any fine-tuning.
+In a pure \textit{transfer learning} setup (second column), our model shows enormous generalization ability, reaching 91.6\% accuracy on the test set.
+We have also tested both models in a setup where the model trained on a Canonical variant underwent additional fine-tuning (for a single epoch) on the Hard variant (third column).
+In this case, the SAMNet model also reached much better performance, and, interestingly, achieved better scores from the model trained and tested exclusively on the Hard variant.
+
+
+\subsection{Multi-task learning on the CLEVR and COG tasks}
 \vm{Will have to rephrase this in accordance with Jayram's definition.}
 
 We have trained SAMNet using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on PyTorch~\cite{paszke2017automatic}, using the training set of the condition A of the CLEVR dataset (CLEVR-CoGenT)~\cite{johnson2017clevr}.
@@ -18,7 +69,7 @@ We consider as task groups the question categories defined by the authors: \text
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.5\textwidth]{img/charts/CoGenT_results.pdf}
+	\includegraphics[width=0.5\textwidth]{img/results/CoGenT_results.pdf}
 	\caption{CLEVR-CoGenT accuracies for all 5 tasks $t$ when training on $t$ only, training on all tasks jointly and training on all tasks but $t$. For all experiments, the validation and test sets are identical.}
 	\label{fig:CoGenT-results}
 \end{figure}
@@ -36,3 +87,7 @@ Finally, the "all-tasks-but-$t$" experiments demonstrate that while task groups 
 
  
 A final set of experiment, for which the results are available in Appendix \ref{sec:full-cogent-results}, finetuned the model trained on all tasks on each task $t$ respectively. Given that the initial pretraining on all tasks, we were interested in the tradeoff between the significance of the performance gain, if any, on the finetuned task and the performance drop, if any, on the other tasks. Finetuning did not demonstrate a statistically meaningful benefit (except for \textit{Count}, where the accuracy increased by 1.5 pt) without hurting performance on the other tasks. Nevertheless, these experiments leave open the possibility that the training method for multi-task training could potentially benefit from using weighted sampling towards the tail end with more emphasis on samples from less performing task groups. Recent work~\cite{guo2018dynamic, kendall2018multi} in this direction has been done, although seems to weigh the tasks rather than the samples.
+
+\subsection{Domain Adaptation}
+
+\vm{todo...}
