@@ -39,10 +39,33 @@
 % Useful packages
 %\usepackage{mathtools}
 %\usepackage[usenames, dvipsnames]{color}
+
 \usepackage{cleveref}
 \crefname{figure}{Figure}{Figures}
 \crefname{table}{Table}{Tables}
 \crefname{appendix}{Appendix}{Appendices}
+\crefname{definition}{Definition}{Definitions}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem*{notation}{Notation}
+%\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+
+\newtheorem{fact}{Fact}
+\newtheorem*{observation}{Observation}
+\newtheorem*{condition}{Condition}
+\newtheorem*{claim}{Claim}
+\newtheorem*{example}{Example}
+\newtheorem*{question}{Question}
+
+
 \def\sec#1{Sec.~\ref{#1}}
 \def\Sec#1{Sec.~\ref{#1}}
 \def\fig#1{Fig.~\ref{#1}}
@@ -62,25 +85,6 @@
 
 % \usepackage{blindtext}
 
-\newtheorem{theorem}{Theorem}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{remark}[theorem]{Remark}
-
-\theoremstyle{remark}
-\newtheorem*{notation}{Notation}
-%\newtheorem*{remark}{Remark}
-\newtheorem*{note}{Note}
-
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{fact}{Fact}
-\newtheorem*{observation}{Observation}
-\newtheorem*{condition}{Condition}
-\newtheorem*{claim}{Claim}
-\newtheorem*{example}{Example}
-\newtheorem*{question}{Question}
 
 
 %% User's macros %%
@@ -93,6 +97,7 @@
 \newcommand{\cY}{\mathcal{Y}}
 \newcommand{\cQ}{\mathcal{Q}}
 \newcommand{\cV}{\mathcal{V}}
+\newcommand{\cF}{\mathcal{F}}
 
 \renewcommand{\vec}[1]{\mathbf{#1}}
 \newcommand{\vc}{\vec{c}}
