@@ -1,12 +1,13 @@
 \section{Transfer Learning}
 
 \begin{figure*}
+	\centering
 	\caption{Transfer learning taxonomy}
 	\label{fig:taskonomy}
 	\includegraphics[width=0.8\textwidth]{img/architecture/transfer_taxo}
 \end{figure*}
 
-We follow the notations in the survey by~\cite{pan-yang}.
+We follow the notations in the survey by~\cite{pan2009survey}.
 A \emph{domain} is a pair $\cD = (\cX,P(X))$, where $\cX$ is a feature space and $P(X)$ is a marginal probability distribution.
 For visual reasoning problems considered in this paper, 
 $\cX$ will consist of purely visual inputs, i.e., either images or videos, in some cases, or 
@@ -18,7 +19,7 @@ question\footnote{%
 	only a single answer is needed for the entire video.}. % 
 If the domain elements consist of just the visual inputs, then the task is defined by the question so that each question 
 defines a separate task.
-\begin{definition}[\cite{pan-yang}]
+\begin{definition}[\cite{pan2009survey}]
 	Given a source domain $\cD_S$ and a source learning task $\cT_S$, a target domain $\cD_T$ and a target learning task $\cT_T$, transfer learning aims to help improve the 
 	learning of the target predictive function $f_T(\cdot)$ in $\cD_T$ using the knowledge  in $\cD_S$ and $\cT_S$, where $\cD_S \ne \cD_T$, or $\cT_S \ne \cT_T$.
 \end{definition}
