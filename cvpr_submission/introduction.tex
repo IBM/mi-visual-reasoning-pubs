@@ -7,7 +7,7 @@ One of the widely used solutions for the above mentioned problems is Transfer Le
 %pan2009survey: we categorize transfer learning under three sub-settings: inductive transfer learning, transductive transfer learning and unsupervised transfer learning, 
 
 In Computer Vision, it is now a standard practice to pre-train an image encoder (such as VGG~\cite{simonyan2014very} or ResNet~\cite{he2016deep}) on large-scale datasets (such as ImageNet~\cite{deng2009imagenet}), and reuse the weights in unrelated domains and tasks, such as Visual Question Answering (VQA) in a medical domain~\cite{kornuta2019leveraging} or pixel-wise image segmentation of cars~\cite{iglovikov2018ternausnet}.
-Such performance improvements are appealing, especially for cases where both the domain (e.g. realistic images vs. medical or cars ones) and the task (e.g. image classification vs. VQA or image segmentation) can change significantly. This type of transfer learning is qualified as \emph{inductive}, according to the taxonomy from~\cite{pan2009survey}.
+Such performance improvements are appealing, especially for cases where both the domain (e.g. realistic images vs. medical or cars ones) and the task (e.g. image classification vs. VQA or image segmentation) can change significantly. %This type of transfer learning is qualified as \emph{inductive}, according to the taxonomy from~\cite{pan2009survey}.
 
 A similar development has emerged in the Natural Language Processing (NLP) community.
 Using shallow word embeddings, such as word2vec~\cite{mikolov2013distributed} or GloVe~\cite{pennington2014glove}, pretrained on large corpuses coming from e.g.\ Wikipedia or Twitter, became a standard procedure when working with different NLP domains and tasks, especially when labeled data is less accessible.
@@ -23,20 +23,28 @@ The impact of transfer learning is even more essential in the case of multi-moda
 In this work, we focus on a parallel aspect of transfer learning. As both Image and Video QA can be seen as meta-problems, where the model has to develop a different reasoning process depending on the type/family of question (task, e.g. counting objects or finding the value of a specific object's attribute), we investigated whether mastering one task type/family can help to master others. Thus, this work is also deeply related to multi-task learning~\cite{caruana1997multitask}.
 
 \paragraph{Contributions}
-
-The contributions of this paper are as follows.
-We propose a new model, called SAMNet (Selective Attention Memory Network), which achieves state-of-the-art results on two datasets for Visual Reasoning, namely CLEVR~\cite{johnson2017clevr}, a diagnostic dataset for Image QA, and COG~\cite{yang2018dataset}, a Video QA reasoning dataset.
-We show the impact of the different tasks when transferring the whole pretrained model in three main setups.
+The contributions of this work are as follows.
 \begin{itemize}
-	\item We first focus on transfer learning within the Image QA domain and perform experiments similar to Taskonomy~\cite{zamir2018taskonomy}. We analyze how training exclusively on one task family helps with mastering the others, with one notable difference: we transfer and fine-tune the whole model (not only the encoder or input layer).
-	\item Next, we show complementary results in a multi-task learning setup, when the model is trained on all-but-one task and then tested on this task (with and without finetuning).
-	\item Finally, we present a set of experiments aimed at analyzing of the impact of transfer learning in Video QA, when domain changes drastically and the model is forced to handle longer videos with higher complexity (i.e. a higher number of distractor objects present in each frame).
+	\compresslist
+	\item We propose a new model, called SAMNet (Selective Attention Memory Network), which achieves state-of-the-art results on COG~\cite{yang2018dataset}, a Video QA reasoning dataset.
+	\item We propose a taxonomy of transfer learning, inspired from~\cite{pan2009survey}, applied to the domain of visual reasoning. Articulated around 3 main axis, we illustrate it through the COG dataset, as well as the CLEVR~\cite{johnson2017clevr} diagnostic dataset for Image QA.
+	\item Following, we measure the impact of transferring the whole pretrained SAMNet model in the 3 proposed transfer learning settings: Feature transfer, temporal transfer and reasoning transfer. This analysis is supported by an extensive set of experiments using the COG and CLEVR datasets, as well as their variants. Several of these experiments show the significant generalization capabilities of SAMNet.
 \end{itemize}
-Surprisingly, our model, with only small fine-tuning, managed to master the Hard variant of the COG dataset and achieved higher accuracy than the model trained solely on the Hard variant.
 
-\tk{Have I addressed that correctly? I am not sure whether I have covered TL with CoGenT-A and CoGenT-B variants...}
+% ===========================
+%The contributions of this paper are as follows.
+%We propose a new model, called SAMNet (Selective Attention Memory Network), which achieves state-of-the-art results on two datasets for Visual Reasoning, namely CLEVR~\cite{johnson2017clevr}, a diagnostic dataset for Image QA, and COG~\cite{yang2018dataset}, a Video QA reasoning dataset.
+%We show the impact of the different tasks when transferring the whole pretrained model in three main setups.
+%\begin{itemize}
+%	\item We first focus on transfer learning within the Image QA domain and perform experiments similar to Taskonomy~\cite{zamir2018taskonomy}. We analyze how training exclusively on one task family helps with mastering the others, with one notable difference: we transfer and fine-tune the whole model (not only the encoder or input layer).
+%	\item Next, we show complementary results in a multi-task learning setup, when the model is trained on all-but-one task and then tested on this task (with and without finetuning).
+%	\item Finally, we present a set of experiments aimed at analyzing of the impact of transfer learning in Video QA, when domain changes drastically and the model is forced to handle longer videos with higher complexity (i.e. a higher number of distractor objects present in each frame).
+%\end{itemize}
+%Surprisingly, our model, with only small fine-tuning, managed to master the Hard variant of the COG dataset and achieved higher accuracy than the model trained solely on the Hard variant.
 
-\vm{I think the contributions should be: 1. A new model with SotA results on COG |  2. transfer  / multitask learning  in COG | 3.  transfer  / multitask learning  in CLEVR}.
+%\tk{Have I addressed that correctly? I am not sure whether I have covered TL with CoGenT-A and CoGenT-B variants...}
+%
+%\vm{I think the contributions should be: 1. A new model with SotA results on COG |  2. transfer  / multitask learning  in COG | 3.  transfer  / multitask learning  in CLEVR}.
 
 %A) Task generalization
 %- answers (CLEVR)
