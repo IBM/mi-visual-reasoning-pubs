@@ -20,6 +20,7 @@ question\footnote{%
 If the domain elements consist of just the visual inputs, then the task is defined by the question so that each question 
 defines a separate task.
 \begin{definition}[\cite{pan2009survey}]
+	\label{defn:transfer}
 	Given a source domain $\cD_S$ and a source learning task $\cT_S$, a target domain $\cD_T$ and a target learning task $\cT_T$, transfer learning aims to help improve the 
 	learning of the target predictive function $f_T(\cdot)$ in $\cD_T$ using the knowledge  in $\cD_S$ and $\cT_S$, where $\cD_S \ne \cD_T$, or $\cT_S \ne \cT_T$.
 \end{definition}
@@ -44,17 +45,17 @@ Let $\cQ$ denote the set of questions and $\cV$ denote the set of visual inputs.
 	\item[Feature Transfer:] In this setting of domain adaptation $\cX_S = \cX_T \subseteq \cQ \times \cV$
 	and the task $f(q,v)$ is just the answer to the question $q$ on $v$. The output set $\cY$ is the union of legitimate answers
 	over all questions in $\cQ$.
-	The marginal distributions $P_S$ and $P_T$ differ in the just the feature attributes such as shape, color, and size, or their combinations
+	The marginal distributions $P_S$ and $P_T$ differ in just the feature attributes such as shape, color, and size, or their combinations
 	thereof.
 	
 	\item[Temporal Transfer:] This setting is similar to attribute adaptation in that $\cX_S = \cX_T \subseteq \cQ \times \cV$
 	and there is a single task.
 	The key difference is that we introduce a notion of complexity $C(v) = (n, m)$ for a visual input $v$,
 	where $n$ equals the maximum number of objects $n$ in an image, and $m$
-	equals  the number of frames in a vide. 
+	equals  the number of frames in a video. 
 	For any visual input $v_S$ coming from $X_S$ with $C(v_S) = (n_S, m_S)$
 	and for any visual input $v_T$ coming from $X_T$ with $C(v_T) = (n_T, m_T)$, we require that $n_T \ge n_S$ and 
-	$m_T \ge m_S$ which at least one inequality being a strict one. 
+	$m_T \ge m_S$ with at least one inequality being a strict one. 
 	Thus, we necessarily increase the complexity of the visual input going from the source to the target domain.
 	
 	\item[Reasoning Transfer:]
@@ -64,8 +65,8 @@ Let $\cQ$ denote the set of questions and $\cV$ denote the set of visual inputs.
 	$\cT_q = (\cY_q, f_q(\cdot))$ where
 	the output set $\cY_q$ is the set of legitimate answers to $q$ and $f_q(v)$, for a visual input $v$, 
 	is the answer to question $q$ on visual input $v$.
-	Thus tasks are in a 1-1 correspondence with questions.
-	A \emph{task family} is a probability distribution on tasks which our case can be obtained by defining the distribution on $\cQ$. 
+	Thus, tasks are in a 1-1 correspondence with questions.
+	A \emph{task family} is a probability distribution on tasks which in our case can be obtained by defining the distribution on $\cQ$. 
 	Given a task family, the goal is to learn a prediction function that gives an answer to $f_q(v)$ for $v \in \cV$ chosen according 
 	to the feature space distribution and $q$ chosen according to the task probability distribution.
 	Suppose $\cF_S$ is the source task family and $\cF_T$ is the target task family.
