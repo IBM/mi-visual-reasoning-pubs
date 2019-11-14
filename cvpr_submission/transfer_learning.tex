@@ -2,15 +2,14 @@
 
 \begin{figure*}
 	\centering
-	\caption{Transfer learning taxonomy}
-	\label{fig:taskonomy}
 	\includegraphics[width=0.8\textwidth]{img/architecture/transfer_taxo}
+	\caption{Transfer learning taxonomy.}\label{fig:taskonomy}
 \end{figure*}
 
 We follow the notations in the survey by~\cite{pan2009survey}.
 A \emph{domain} is a pair $\cD = (\cX,P(X))$, where $\cX$ is a feature space and $P(X)$ is a marginal probability distribution.
 For visual reasoning problems considered in this paper, 
-$\cX$ will consist of purely visual inputs, i.e., either images or videos, in some cases, or 
+$\cX$ will consist of purely visual inputs, i.e., either images or videos in some cases, or 
 a combination of both visual inputs and questions in other cases. 
 A \emph{task} is a pair $\cT= (\cY,f(\cdot))$, where $\cY$ is a label space and $f: \cX \to \cY$ is a prediction function. 
 When the domain elements consist of both the question and the visual input, there is only one task, namely, to answer the 
@@ -27,7 +26,7 @@ defines a separate task.
 In all our applications, $\cX_S = \cX_T$, so $\cD_S \ne \cD_T$ means that the marginal distributions $P_S$ and $P_T$ are different.
 Similarly, $\cT_S \ne \cT_T$ means that either $Y_S \ne Y_T$ or that the associated prediction functions are different.
 
-Although~\cref{defn:transfer} is quite general, it does not adequately capture all the artifacts present in the visual reasoning.
+Although~\cref{defn:transfer} is quite general, it does not adequately capture all the artifacts present in visual reasoning.
 For example, consider the transfer learning setting where the tasks $\cT_S$ and $\cT_T$ are the same 
 but the marginal distributions $P_S$ and $P_T$ are different (referred to as \emph{domain adaptation}).
 One setting is the case of static images, where this could be due to having different feature combinations in the source and
@@ -42,7 +41,8 @@ This entails studying transfer learning between families of tasks which requires
 Broadly, we consider 3 kinds of transfer learning problems in this work, as illustrated in~\cref{fig:taskonomy}. 
 Let $\cQ$ denote the set of questions and $\cV$ denote the set of visual inputs.
 \begin{description}
-	\item[Feature Transfer:] In this setting of domain adaptation $\cX_S = \cX_T \subseteq \cQ \times \cV$
+	\compresslist % used to reduce spacing
+	\item[Feature Transfer:] In this setting of domain adaptation, $\cX_S = \cX_T \subseteq \cQ \times \cV$
 	and the task $f(q,v)$ is just the answer to the question $q$ on $v$. The output set $\cY$ is the union of legitimate answers
 	over all questions in $\cQ$.
 	The marginal distributions $P_S$ and $P_T$ differ in just the feature attributes such as shape, color, and size, or their combinations
@@ -59,7 +59,7 @@ Let $\cQ$ denote the set of questions and $\cV$ denote the set of visual inputs.
 	Thus, we necessarily increase the complexity of the visual input going from the source to the target domain.
 	
 	\item[Reasoning Transfer:]
-	This setting requires an extension of~\cref{defn:transfer} given above to investigate transfer learning when
+	This setting requires an extension of~\cref{defn:transfer} above to investigate transfer learning when
 	grouping questions into families. Let $\cV$ be the feature space consisting of visual inputs only, shared by
 	all tasks, with a common marginal distribution $P(X)$. For each question $q \in \cQ$, we define the task 
 	$\cT_q = (\cY_q, f_q(\cdot))$ where
