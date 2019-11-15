@@ -3,21 +3,22 @@
 We implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on Pytorch~\cite{paszke2017automatic}. We evaluated the model on the COG dataset~\cite{yang2018dataset}, a video reasoning~\cite{mogadala2019trends} dataset developed for the purpose of research on relational and temporal reasoning, as well as on the CLEVR dataset~\cite{johnson2017clevr}, created for Image Question Answering research.
 Our experiments were designed to study SAMNet's performance as well as its generalization and transfer learning abilities in different settings.
 For the temporal and feature transfer experiments, we used two variants of both datasets.
-For COG, an easy one (Canonical) and a Hard variant, differ mainly on the number of frames in the input sequence and number of 
+For COG, an easy one (Canonical) and a Hard variant, differ mainly on the number of frames in the input sequence,
+the maximum amount of look-back in frame history with the relevant information for each frame,  and number of 
 distractors (see~\cref{tab:cog_variants}).
 \begin{table}[ht]
 	\centering
-	\begin{adjustbox}{width=0.45\textwidth}
+	%\begin{adjustbox}{width=0.45\textwidth}
 		\begin{tabular}{lccc}
 			\toprule
-			Variant	&	Number of frames	&	Max. memory duration	&	Max. number of distractors \\ 
+			Variant	& Frames & History	& Distractors \\ 
 			\midrule
 			Canonical & 4 & 3 & 1\\	
 			Hard  & 8 & 7 & 10\\
 			\bottomrule	
 		\end{tabular}
-	\end{adjustbox}
-	\caption{Details of the Canonical and Hard variants of the COG dataset.}
+	%\end{adjustbox}
+	\caption{Details of the Canonical and Hard variants of COG}
 	\label{tab:cog_variants}
 \end{table}
 This experiment is described in~\cref{sec:temporal}.
@@ -65,15 +66,20 @@ with improvements varying from 0.5 to more than 30 points, and especially on the
 \label{sec:reasoning}
 In these experiments using the CLEVR and COG datasets, we focus on analyzing the impact 
 of each task relatively to others when training jointly.
+For each dataset, we defined appropriate task families that reflect the characteristics of that dataset and designed
+appropriate experiments to study the effectiveness of transfer learning across task families.
 
 \subsubsection{CLEVR}
 \label{sec:reasoning-clevr}
 For the CLEVR dataset, we consider the question categories defined by the authors: \textit{Exist}, \textit{Count}, \textit{CompareInteger}, \textit{CompareAttribute}, \textit{QueryAttribute} and conducted the following experiments:
 \begin{itemize}
-	\compresslist
-	\item Train and test SAMNet on a single task group $t$. These 5 experiments fit into the traditional Deep Learning procedure of single-task learning,
-	\item Train SAMNet on all task groups jointly, and evaluate its performance on each task $t$ separately,
-	\item Finally, for each task group $t$, we train SAMNet on all tasks but $t$, and test its performance on $t$. %These experiments steer away from single / multi-task training and rather fall under the Domain Adaptation setting, categorized as \emph{transductive} transfer learning in \cite{pan2009survey}.
+	\item Train and test SAMNet on a single task group $t$. These 5 experiments fit into the traditional ML setup of single-task learning;
+	\item Train SAMNet on all task groups jointly and evaluate its performance on each task group $t$ separately.
+	This is a transfer learning setting where for the source task family, the task is sampled from all questions,
+	while for the target task family, the samples consist of questions from group $t$ only;
+	\item Finally, for each task group $t$, we train SAMNet on all tasks but $t$, and test its performance on $t$.
+	This can also be viewed as a transfer learning setting similar to the previous case.
+	%These experiments steer away from single / multi-task training and rather fall under the Domain Adaptation setting, categorized as \emph{transductive} transfer learning in \cite{pan2009survey}.
 \end{itemize}
 
 Noticeable results are shown in~\cref{fig:CoGenT-results}, while the complete set is available in the supplementary material.%Appendix \ref{sec:full-cogent-results}.
@@ -99,7 +105,8 @@ finetune the model trained on all tasks on each task $t$ respectively. Given the
 
 \subsubsection{COG}
 \label{sec:reasoning-cog}
-For the COG dataset, the number of tasks (23) is large, so we decided  there is no a priori grouping of tasks 
+For the COG dataset, the number of task groups (23) is large, so we designed a 2-level hierarchy of the task groups motivated by the
+description of these tasks.
 
 
 \subsection{Temporal transfer in COG}
@@ -109,22 +116,6 @@ For the COG dataset, the number of tasks (23) is large, so we decided  there is 
 The goal here is to test the transfer learning ability concerning the sequence length and number of distractors.
 For that purpose, we compare both models when trained on the Canonical variant but tested on the 
 Hard variant (\cref{fig:samnet_cog_overall_transfer}).
-
-\begin{table}[ht]
-	\centering
-	\begin{adjustbox}{width=0.45\textwidth}
-		\begin{tabular}{lccc}
-			\toprule
-			Variant	&	Number of frames	&	Max. memory duration	&	Max. number of distractors \\ 
-			\midrule
-			Canonical & 4 & 3 & 1\\	
-			Hard  & 8 & 7 & 10\\
-			\bottomrule	
-		\end{tabular}
-	\end{adjustbox}
-	\caption{Details of the Canonical and Hard variants of the COG dataset.}
-	\label{tab:cog_variants}
-\end{table}\vspace{5pt}
 
 As the original paper does not include these experiments, we performed them. The light gray color indicates original results, whereas dark gray indicates the accuracies of COG models which we trained (fine-tuning/testing) using the original code provided by the authors.
 For sanity check, in the first column, we report both the best-achieved score and the score reported in the paper when training and testing on the Canonical variant, without any fine-tuning. The observed close scores underline the faithfulness of the model reproducibility.
