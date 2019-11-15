@@ -2,11 +2,16 @@
 \label{sec:experiments}
 We implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on Pytorch~\cite{paszke2017automatic}. We evaluated the model on the COG dataset~\cite{yang2018dataset}, a video reasoning~\cite{mogadala2019trends} dataset developed for the purpose of research on relational and temporal reasoning, as well as on the CLEVR dataset~\cite{johnson2017clevr}, created for Image Question Answering research.
 Our experiments were designed to study SAMNet's performance as well as its generalization and transfer learning abilities in different settings.
+In some of our experiments, we also compare using a \emph{zero-shot learning} approach  for transfer learning to another approach
+involving \emph{finetuning}.
+Recall that the former involves evaluating the trained model of the source directly on the target while for the latter we do additional lightweight 
+training on the target labeled data before evaluating its performance. 
+
 For the temporal and feature transfer experiments, we used two variants of both datasets.
 For COG, an easy one (Canonical) and a Hard variant, differ mainly on the number of frames in the input sequence, the maximum amount of look-back in frame history with the relevant information for each frame, and number of distractors (see~\cref{tab:cog_variants}).
+This experiment is described in~\cref{sec:temporal}.
 \begin{table}[ht]
 	\centering
-	%\begin{adjustbox}{width=0.45\textwidth}
 		\begin{tabular}{lccc}
 			\toprule
 			Variant	& Frames & History	& Distractors \\ 
@@ -15,14 +20,13 @@ For COG, an easy one (Canonical) and a Hard variant, differ mainly on the number
 			Hard  & 8 & 7 & 10\\
 			\bottomrule	
 		\end{tabular}
-	%\end{adjustbox}
 	\caption{Details of the Canonical and Hard variants of COG}
 	\label{tab:cog_variants}
 \end{table}\vspace{5pt}
-This experiment is described in~\cref{sec:temporal}.
+
 For CLEVR, we consider the CoGenT (Constrained Generalization Test) variant which contains two conditions, differing on the combinations of attributes values.
 \Cref{sec:feature} describes this experiment.
-For the reasoning transfer experiments, we consider 23 classification tasks in COG and the 5 original question categories in CLEVR.
+For the reasoning transfer experiments, we consider 23 classification task classes in COG and the 5 original question categories in CLEVR.
 %More details on the composition of these datasets is available in Appendix \ref{sec:datasets-desc}.
 
 \subsection{Performance of SAMNet vs baseline model~\cite{yang2018dataset}}
@@ -63,9 +67,9 @@ with improvements varying from 0.5 to more than 30 points, and especially on the
 \subsection{Reasoning transfer on CLEVR and COG}
 \label{sec:reasoning}
 In these experiments using the CLEVR and COG datasets, we focus on analyzing the impact 
-of each task relatively to others when training jointly.
-For each dataset, we defined appropriate task families that reflect the characteristics of that dataset and designed
-appropriate experiments to study the effectiveness of transfer learning across task families.
+of each task relative to others using appropriate groupings of tasks.
+%For each dataset, we defined appropriate task families that reflect the characteristics of that dataset and designed
+%appropriate experiments to study the effectiveness of transfer learning across task families.
 
 \subsubsection{CLEVR}
 \label{sec:reasoning-clevr}
@@ -92,7 +96,7 @@ Finally, the ``all-tasks-but-$t$'' experiments (cyan) demonstrate that while tas
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.5\textwidth]{img/results/CoGenT_results.pdf}
+	\includegraphics[width=\columnwidth]{img/results/CoGenT_results.pdf}
 	\caption{CLEVR-CoGenT accuracies for all tasks $t$ when training on $t$ only, training on all tasks jointly and training on all tasks but $t$.} %For all experiments, the validation and test sets are identical.
 	\label{fig:CoGenT-results}
 \end{figure}
@@ -115,30 +119,47 @@ description of these tasks, as shown in~\cref{fig:task-groups}.
 
 \bigskip
 
-For the groups at the lowest level, we chose the following task classes to be placed in those groups:
+For groups at the lowest level, we chose the following task classes to be placed in those groups.
+Below, substitute each of \textit{Shape} and \textit{Color} for  \uX{} to obtain the task class.
 \begin{description}
-	\item[Basic:] \textit{ExistShape}, \textit{GetShape},\textit{GetColor}, \textit{ExistColor}, \textit{Exist}
-	\item[Compare Obj-Attr:] \emph{SimpleCompareColor}, \textit{SimpleCompareShape}, \textit{AndSimpleCompareShape}, 
-	\textit{AndSimpleCompareColor};
-	\item[Compare 2 Obj:] \textit{CompareColor}, \textit{CompareShape},  \textit{AndCompareColor}, \textit{AndCompareShape}, 
-	\textit{ExistColorOf}, \textit{ExistShapeOf};
-	\item[Spatial:] \textit{ExistSpace}, \textit{ExistColorSpace}, \textit{ExistShapeSpace}, \textit{GetColorSpace}, \textit{GetShapeSpace};
-	\item[Cognitive:] \textit{ExistLastColorSameShape}, \textit{ExistLastShapeSameColor}, \textit{ExistLastObjectSameObjectdescription}
+	\item[Basic:] \textit{Exist}\uX, \textit{Get}\uX{} and \textit{Exist};
+	\item[Obj-Attr:] \emph{SimpleCompare}\uX{} and \textit{AndSimpleCompare}\uX;
+	\item[Compare:] \textit{Compare}\uX,  \textit{AndCompare}\uX{} \& \textit{Exist}\uX\textit{Of};
+	\item[Spatial:] \textit{ExistSpace}, \textit{Exist}\uX\textit{Space}, and \textit{Get}\uX\textit{Space};
+	\item[Cognitive:] \textit{ExistLastColorSameShape}, \textit{ExistLastShapeSameColor} and \textit{ExistLastObjectSameObject}
 \end{description}
 
-
-We then conducted the following experiments using the Canonical variant of the COG dataset, to study 
-whether transfer learning was effective in leveraging information gained by training a group at a higher level
-of the hierarchy to learning the constituent task groups below that group at the leaf level.
+We then conducted the following experiments using the Canonical variant of COG to study 
+whether transfer learning was effective in leveraging information gained by training a task family at a higher level
+of the hierarchy.
  \begin{itemize}
-	\item Train and test SAMNet on a single task group $t$ for the 5 groups at the lowest level of the hierarchy. 
-	These 5 experiments fit into the traditional ML setup of single-task learning;
-	\item Train on \textbf{Group A} and test separately on \textbf{Basic}, \textbf{Compare Obj-Attr} and \textbf{Compare 2 Obj};
+	\item Train and test SAMNet on each of the 5 task groups at the lowest level of the hierarchy (standard ML). 
+	\item Train on \textbf{Group A} and test on \textbf{Basic}, \textbf{Obj-Attr} and \textbf{Compare} each;
 	\item Train on \textbf{Group B} and test separately on \textbf{Spatial} and \textbf{Cognitive};
 	\item As a baseline, we compared the above results to the earlier experiment shown in~\cref{fig:samnet_cog_detailed}, which
-	can be viewed as training on \textbf{All} and testing on each group at the lowest level separately.
+	can be viewed as training on \textbf{All} and testing on each group at the leaf level separately.
 \end{itemize}
 
+The results of these experiments are shown in~\cref{fig:COG-reasoning-results}.
+
+First notice that for each of the \textbf{Basic} and \textbf{Obj-Attr} task families, the accuracy is near-perfect in all cases 
+suggesting that each contains the most primitive of tasks and therefore do not benefit from training with other task families.
+With \textbf{Spatial} we see a small improvement showing that there is some benefit due to joint training with other task families.
+Two groups that demonstrated a huge improvement of more than 25 points are \textbf{Compare} and \textbf{Cognitive}.
+The former saw an accuracy jump from 68.6\% by training on samples from that family alone
+to 97.0\% while training on all samples. To furthe rdrill down on this behavior, notice that 
+just joining \textbf{Compare} with \textbf{Obj-Attr} and \textbf{Basic} already causes a significant accuracy jump to 92.3\%. 
+In hindsight, this is not surprising because the questions in \textbf{Compare} are composed
+of fragments in the questions given by \textbf{Basic} and \textbf{Obj-Attr}, and therefore can leverage the reasoning strategies developed there to reason about questions in \textbf{Compare}.
+Lastly, for the  \textbf{Spatial} family we again see the benefits of joint training with all questions (68.6\% to 95.7\%) but in this case there
+is a slight loss incurred by including everything. As seen in the figure, just jointly training with \textbf{Spatial} alone is sufficient to get a boost in the accuracy (97.1\%). To summarize, while joint training helps, one needs to determine how much of correlation is present with the other tasks.
+
+ \begin{figure}
+ 	\centering
+ 	\includegraphics[width=\columnwidth]{img/results/COG_reasoning_transfer}
+ 	\caption{CLEVR-CoGenT accuracies for all tasks $t$ when training on $t$ only, training on all tasks jointly and training on all tasks but $t$.} %For all experiments, the validation and test sets are identical.
+ 	\label{fig:COG-reasoning-results}
+ \end{figure}
  
 
 \subsection{Temporal transfer in COG}
@@ -167,27 +188,31 @@ In this case, the SAMNet model again reaches exemplary performance, at 96.7\% ac
 \label{sec:feature}
 \begin{table}[ht]
 	\centering
-	\begin{adjustbox}{width=0.45\textwidth}
+	%\begin{adjustbox}{width=0.45\textwidth}
 		\begin{tabular}{cccc}
 			\toprule
 			Dataset	& Cubes	& Cylinders &	Spheres	\\
 			\midrule
-			CoGenT A & Gray / Blue / Brown / Yellow  & Red / Green / Purple / Cyan	&	Any color  \\
-			CoGenT B	&	Red / Green / Purple / Cyan &	Gray / Blue / Brown / Yellow	&	Any color \\
+			CoGenT A &  Family A  & Family B 	&	Any color  \\
+			CoGenT B	&	Family B  &	Family A	&	Any color \\
 			\bottomrule
 		\end{tabular}
-	\end{adjustbox}
-	\caption{Colors \& shapes combinations present in CoGenT-A \& -B datasets.}
+	%\end{adjustbox}
+	\caption{Color restrictions in CoGenT-A \& -B datasets.}
 	\label{tab:cogent_conditions}
 \end{table}
 
-The final set of experiments we consider is related to domain adaptation. %According to \cite{pan2009survey}, this settings considers different but related source and target domains, under a common task.
+The final set of experiments we consider is related to feature transfer.
+The CoGenT-A \& -B sets of CLEVR differ by the available combinations of 8 object color attributes.
+The colors are partitioned into two complementary families: 
+Gray, Blue, Brown and Yellow in Family A and Red, Green, Purple, Cyan in Family B. 
+The cubes and cylinders take colors from complementary families in each dataset with opposite configurations while
+the spheres can take any color. This is summarized in~\cref{tab:cogent_conditions}. 
+If we consider the input domain to be the set of objects with all attributes values, both sets differ by the data distribution they are sampled from. We thus consider 2 experiments with SAMNet trained on CoGenT-A: A direct generalization test (\emph{zero-shot learning}) from A to B and a finetuning of a single epoch on 30k Conditions B samples (following the procedure of~\cite{johnson2017inferring, mascharka2018transparency, perez2018film, marois2018transfer}). The results are available in~\cref{fig:CoGenT-B-results}.
 
-The CoGenT-A \& -B sets of CLEVR differ by the available combinations of object attributes (\cref{tab:cogent_conditions}). If we consider the input domain to be the set of objects with all attributes values, both sets differ by the data distribution they are sampled from. We thus consider 2 experiments with SAMNet trained on CoGenT-A: A direct generalization test (\emph{zero-shot learning}) from A to B and a finetuning of a single epoch on 30k Conditions B samples (following the procedure of~\cite{johnson2017inferring, mascharka2018transparency, perez2018film, marois2018transfer}). The results are available in~\cref{fig:CoGenT-B-results}.
-
-\begin{figure}[!t]\vspace{5pt}
+\begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.2\textwidth]{img/results/CoGenT_B_results.pdf}
+	\includegraphics[width=0.4\columnwidth]{img/results/CoGenT_B_results.pdf}
 	\caption{Test accuracy on CoGenT-A \& -B when training on CoGenT-A (blue) and finetuning on CoGenT-B (gray).}
 	\label{fig:CoGenT-B-results}
 \end{figure}
