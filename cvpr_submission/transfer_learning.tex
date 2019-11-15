@@ -45,7 +45,7 @@ Let $\cQ$ denote the set of questions and $\cV$ denote the set of visual inputs.
 	\item[Feature Transfer:] In this setting of domain adaptation, $\cX_S = \cX_T \subseteq \cQ \times \cV$
 	and the task $f(q,v)$ is just the answer to the question $q$ on $v$. The output set $\cY$ is the union of legitimate answers
 	over all questions in $\cQ$.
-	The marginal distributions $P_S$ and $P_T$ differ in just the feature attributes such as shape, color, and size, or their combinations
+	The marginal distributions $P_S$ and $P_T$ differ in the feature attributes such as shape, color, and size, or their combinations
 	thereof.
 	
 	\item[Temporal Transfer:] This setting is similar to attribute adaptation in that $\cX_S = \cX_T \subseteq \cQ \times \cV$
@@ -53,8 +53,8 @@ Let $\cQ$ denote the set of questions and $\cV$ denote the set of visual inputs.
 	The key difference is that we introduce a notion of complexity $C(v) = (n, m)$ for a visual input $v$,
 	where $n$ equals the maximum number of objects $n$ in an image, and $m$
 	equals  the number of frames in a video. 
-	For any visual input $v_S$ coming from $X_S$ with $C(v_S) = (n_S, m_S)$
-	and for any visual input $v_T$ coming from $X_T$ with $C(v_T) = (n_T, m_T)$, we require that $n_T \ge n_S$ and 
+	For any visual input $v_S$ coming from $\cX_S$ with $C(v_S) = (n_S, m_S)$
+	and for any visual input $v_T$ coming from $\cX_T$ with $C(v_T) = (n_T, m_T)$, we require that $n_T \ge n_S$ and 
 	$m_T \ge m_S$ with at least one inequality being a strict one. 
 	Thus, we necessarily increase the complexity of the visual input going from the source to the target domain.
 	
@@ -74,3 +74,5 @@ Let $\cQ$ denote the set of questions and $\cV$ denote the set of visual inputs.
 	using the knowledge in the source task family.
 	
 \end{description}
+
+If labeled data is available for $\cX_T$, a final distinction we make is between \emph{zero-shot learning} and \emph{finetuning}. Finetuning entails the use of labeled data in the target domain $\cD_T$, foreseeing performance gain on the target task $\cX_T$ will improve, after initial training on $\cX_S$ and additional training on $\cX_T$. Zero-shot learning thus refers to immediate test on $\cX_T$ after initial training on $\cX_S$.
