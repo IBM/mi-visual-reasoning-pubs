@@ -88,12 +88,14 @@ For the CLEVR dataset, we consider the question categories defined by the author
 Noticeable results are shown in~\cref{fig:CoGenT-results}, while the complete set is available in the supplementary material.%Appendix \ref{sec:full-cogent-results}.
 
 
-Looking at~\cref{fig:CoGenT-results}, SAMNet does well on \textit{Count} and \textit{QueryAttribute}, but poorer on the 3 other tasks in the single-task learning setting (blue). Indeed, \textit{Exist}, \textit{CompareInteger} and \textit{CompareAttribute} are binary tasks; \textit{Count} has for corresponding labels the digits 0 through 10 (a random agent would thus obtain $<$10\% accuracy) and \textit{QueryAttribute} maps to the set of object attributes values (15 labels).
+Looking at~\cref{fig:CoGenT-results}, SAMNet does well on \textit{Count} and \textit{QueryAttribute}, but poorer on the 3 other tasks in the single-task learning setting (blue). Indeed, \textit{Exist}, \textit{CompareInteger} and \textit{CompareAttribute} are binary tasks; \textit{Count} has output labels digits 0 through 10 (so $<$10\% accuracy by chance) and \textit{QueryAttribute} maps to the set of object attributes values (15 labels).
 
-Nevertheless, significant accuracy gains are noted when training jointly on all tasks (gray), ranging from 18 points to 37 points on 4 out of 5 tasks. \textit{QueryAttribute} only sees an increase of one point. One could qualify it as \textit{self-sufficient} as it does not appear to benefit from joint training with other tasks. These improvements suggest that related tasks benefit from joint training.
+Nevertheless, significant accuracy gains are noted when training jointly on all tasks (gray), ranging from 18 points to 37 points on 4 out of 5 tasks. These improvements suggest that related tasks benefit from joint training. \textit{QueryAttribute} only sees an increase of one point. One could qualify it as \textit{self-sufficient} as it does not appear to benefit from joint training with other tasks. 
 %We plan to run additional experiments to jointly train on $t$ and all possible subsets of the remaining 4 tasks ($2^4$ experiments per task). We hypothesize that the improvements on e.g. \textit{Exist} would mostly originate from training jointly on \textit{CompareAttribute} and \textit{CompareInteger} since all 3 tasks share the same output space (i.e., labels domain).
 
-Finally, the ``all-tasks-but-$t$'' experiments (yellow) demonstrate that while tasks are related, one does not subsume another in terms of learning. Indeed, we can observe that for \textit{CompareAttribute}, while \textit{Exist} and \textit{CompareInteger} share the same output space, including them and holding out \textit{CompareAttribute} from the training set results in poor accuracy. We also observe no learning for \textit{Count} and \textit{QueryAttribute}, caused by these tasks having distinct labels domains, which do not overlap with the other tasks. Thus, if holding out samples from \textit{Count} during training, a model will not be able to predict the corresponding labels.
+Finally, the ``all-tasks-but-$t$'' experiments (yellow) demonstrate that while tasks are related, one does not subsume another in terms of learning. Indeed, we can observe that for \textit{CompareAttribute}, while \textit{Exist} and \textit{CompareInteger} share the same output space, including them and holding out \textit{CompareAttribute} from the training set results in poor accuracy.
+We also observe no learning for \textit{Count} and \textit{QueryAttribute}. As these categories have labels that do not overlap with other categories, the model cannot predict these labels.
+
 
 \begin{figure}[!t]
 	\centering
@@ -106,7 +108,7 @@ An additional set of experiments, for which results are available in the supplem
 %Appendix \ref{sec:full-cogent-results}
 finetune the model trained on all tasks on each task $t$ respectively.
 %Given the initial training on all tasks, we were interested in the tradeoff between the performance gain, if any, on the finetuned task and the drop, if any, on other tasks.
-Finetuning did not demonstrate a clear benefit (except for \textit{Count}, where the accuracy increased by 1.5 pt) without hurting performance on the other tasks. Nevertheless, these experiments leave open the possibility that the multi-task learning training method may potentially benefit from using weighted sampling towards the tail end with more emphasis on samples from less performing task groups. Recent work~\cite{guo2018dynamic, kendall2018multi} in this direction has been done, although seems to weigh tasks rather than samples.
+Finetuning did not demonstrate a clear benefit (except for \textit{Count}, where the accuracy increased by 1.5 pt) without hurting performance on the other tasks. Nevertheless, these experiments leave open the possibility that joint training of tasks may potentially benefit from using weighted sampling towards the tail end with more emphasis on samples from less performing task groups, similar to~\cite{guo2018dynamic, kendall2018multi}.
 
 \subsubsection{COG}
 \label{sec:reasoning-cog}
