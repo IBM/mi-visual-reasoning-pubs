@@ -153,8 +153,8 @@ Two groups that demonstrated a huge improvement of more than 25 points are \text
 The former saw an accuracy jump from 68.6\% by training on samples from that family alone
 to 97.0\% when training on all samples. To further emphasize this behavior, notice that 
 just joining \textbf{Compare} with \textbf{Obj-Attr} and \textbf{Basic} already causes a significant accuracy jump to 92.3\%. 
-In hindsight, this is not surprising as the questions in \textbf{Compare} are composed
-of fragments of the questions given by \textbf{Basic} and \textbf{Obj-Attr}, and therefore can leverage the reasoning strategies developed there to reason about questions in \textbf{Compare}.
+In hindsight, this is not surprising, as the questions in \textbf{Compare} are composed
+of fragments of questions given by \textbf{Basic} and \textbf{Obj-Attr}, and therefore can leverage the reasoning strategies developed there to reason about questions in \textbf{Compare}.
 Lastly, for the \textbf{Spatial} family, we again see the benefits of joint training with all questions (68.6\% to 95.7\%) but in this case there
 is a slight loss incurred by including everything. As seen in the figure, just jointly training with \textbf{Spatial} alone is sufficient to get a boost in accuracy (97.1\%). To summarize, while joint training helps, one needs to determine how much of correlation is present with the other tasks.
 
@@ -211,8 +211,8 @@ The CoGenT-A \& -B sets of CLEVR differ by the available combinations of 8 objec
 The colors are partitioned into two complementary families: 
 Gray, Blue, Brown and Yellow in Family A and Red, Green, Purple, Cyan in Family B. 
 The cubes and cylinders take colors from complementary families in each dataset with opposite configurations while
-the spheres can take any color. This is summarized in~\cref{tab:cogent_conditions}. 
-If we consider the input domain to be the set of objects with all attributes values, both sets differ by the data distribution they are sampled from. We thus consider 2 experiments with SAMNet trained on CoGenT-A: A direct generalization test (\emph{zero-shot learning}) from A to B and a finetuning of a single epoch on 30k Conditions B samples (following the procedure of~\cite{johnson2017inferring, mascharka2018transparency, perez2018film, marois2018transfer}). The results are available in~\cref{fig:CoGenT-B-results}.
+the spheres can take any color (See~\cref{tab:cogent_conditions}). 
+Considering the input domain to be the set of objects with all attributes values, both sets differ by their marginal distributions $P_S$ and $P_T$. We consider 2 experiments with SAMNet trained on CoGenT-A: An immediate test (\emph{zero-shot learning}) from A to B and a finetuning of a single epoch on 30k Conditions B samples (following~\cite{johnson2017inferring, mascharka2018transparency, perez2018film, marois2018transfer}). The results are available in~\cref{fig:CoGenT-B-results}.
 
 \begin{figure}[!t]
 	\centering
