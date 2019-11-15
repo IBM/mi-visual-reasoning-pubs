@@ -2,7 +2,7 @@
 
 \begin{figure*}
 	\centering
-	\includegraphics[width=\textwidth]{img/architecture/graffle2}
+	\includegraphics[width=\textwidth]{img/architecture/transfer_taxo}
 	\caption{Transfer learning taxonomy.}\label{fig:taskonomy}
 \end{figure*}
 
@@ -26,7 +26,7 @@ defines a separate task.
 In all our applications, $\cX_S = \cX_T$, so $\cD_S \ne \cD_T$ means that the marginal distributions $P_S$ and $P_T$ are different.
 Similarly, $\cT_S \ne \cT_T$ means that either $Y_S \ne Y_T$ or that the associated prediction functions are different.
 
-Although~\cref{defn:transfer} is quite general, it does not adequately capture all the artifacts present in visual reasoning.
+Although~\cref{defn:transfer} is quite general, it does not adequately capture all artifacts present in visual reasoning.
 For example, consider the transfer learning setting where the tasks $\cT_S$ and $\cT_T$ are the same 
 but the marginal distributions $P_S$ and $P_T$ are different (referred to as \emph{domain adaptation}).
 One setting is the case of static images, where this could be due to having different feature combinations in the source and
