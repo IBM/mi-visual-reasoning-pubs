@@ -2,7 +2,7 @@
 
 \usepackage{cvpr}
 \usepackage{times}
-\usepackage{epsfig}
+%\usepackage{epsfig}
 \usepackage{graphicx}
 \usepackage[font=small]{subcaption}
 \captionsetup[figure]{skip=5pt}
@@ -12,15 +12,11 @@
 \usepackage{amsthm}
 
 % Include other packages here, before hyperref.
-\usepackage{booktabs}       % professional-quality tables
+\usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{adjustbox}
-\usepackage{lipsum} % for dummy text only
+\usepackage{tabularx}
 
-\usepackage{url}            % simple URL typesetting
-% If you comment hyperref and then uncomment it, you should delete
-% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
-% run, let it finish, and you should be clear).
 \usepackage[pagebackref=true,breaklinks=true,colorlinks,bookmarks=false]{hyperref}
 
 %\cvprfinalcopy % *** Uncomment this line for the final submission
@@ -30,17 +26,6 @@
 
 % Pages are numbered in submission mode, and unnumbered in camera-ready
 \ifcvprfinal\pagestyle{empty}\fi
-
-%\usepackage{booktabs}       % professional-quality tables
-%\usepackage{amsfonts}       % blackboard math symbols
-%\usepackage{nicefrac}       % compact symbols for 1/2, etc.
-%\usepackage{microtype}      % microtypography
-%\usepackage{subcaption}
-%\usepackage{graphicx}
-
-% Useful packages
-%\usepackage{mathtools}
-%\usepackage[usenames, dvipsnames]{color}
 
 \usepackage{cleveref}
 \crefname{section}{Section}{Sections}
@@ -71,21 +56,8 @@
 
 \usepackage{enumitem}
 \setlist{leftmargin=*} 
-%\setlist[enumerate]{labelindent=5pt, label=\alph*)} 
-
-\usepackage{wrapfig}
-\usepackage{tabularx}
-\usepackage{adjustbox}
-
-
-
-% \usepackage{blindtext}
-
-
 
 %% User's macros %%
-% \newcommand{\colorbx}[1]{\medskip\noindent\scalebox{1.05}{\fcolorbox{SaddleBrown}{white}{\color{SteelBlue}{\textbf{#1}}}}}
-
 \newcommand{\Reals}{\mathbb{R}}
 \newcommand{\cD}{\mathcal{D}}
 \newcommand{\cT}{\mathcal{T}}
@@ -152,8 +124,7 @@ Thomas J. Watson Research Center, Yorktown Heights, NY 10598, USA\\
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-  % \lipsum[1]
-  Transfer learning is becoming the de facto solution for vision and text encoders in the front-end processing of machine learning solutions.  Utilizing vast amounts of knowledge in pre-trained models and subsequent fine-tuning allows achieving higher accuracy in domains where labeled data are limited.  In this paper, we analyzed the efficiency of transfer learning in multimodal (vision and language) reasoning by introducing a new model (SAMNet) and testing it on two datasets: COG and CLEVR.  Our new model achieved state-of-the-art accuracy and showed significantly better generalization capabilities compared to the baseline.    Based on extensive experimentation on transfer learning on these datasets, we also formalized a taxonomy of transfer learning around three areas: feature, temporal, and reasoning transfer.   
+  Transfer learning is becoming the de facto solution for vision and text encoders in the front-end processing of machine learning solutions. Utilizing vast amounts of knowledge in pre-trained models and subsequent fine-tuning allows achieving better performance in domains where labeled data is limited. In this paper, we analyze the efficiency of transfer learning in multimodal (vision and language) reasoning by introducing a new model (SAMNet) and testing it on two datasets: COG and CLEVR.  Our new model achieves state-of-the-art accuracy on COG and shows significantly better generalization capabilities compared to the baseline. We also formalize a taxonomy of transfer learning for visual reasoning around three axes: feature, temporal, and reasoning transfer. Based on extensive experimentation on transfer learning on the two datasets, we show the performance of the new model along each axis.
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
