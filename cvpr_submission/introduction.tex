@@ -18,10 +18,7 @@ In analogy to pretrained image encoders, the community is facilitating access to
 The success of transfer learning raises several questions for research, such as the characteristics which make a dataset more favorable to use in pretraining (notably ImageNet~\cite{huh2016makes}), or regarding the observed performance correlation of models with different architectures between the source and target domains~\cite{kornblith2019better}.
 One of the most systematic work in this area is the computational taxonomic map for task transfer learning~\cite{zamir2018taskonomy}, which aim to discover the dependencies across a dictionary of twenty-six 2D, 2.5D, 3D, and semantic tasks.
 
-The impact of transfer learning is even more essential in the case of multi-modal tasks~\cite{mogadala2019trends}, which combine both modalities mentioned above, i.e., vision and language.
-%One of the most popular problem domain is Visual Question Answering (VQA)~\cite{malinowski2014multi,antol2015vqa}, where the system is expected to answer natural language questions by taking into account the content of a single image (Image Question Answering) or several frames (Video Question Answering).
-%In a typical VQA model, setting aside whether it is performing an early fusion of embeddings of those two modalities~\cite{malinowski2018visual} or multi-step reasoning~\cite{hudson2018compositional}, using pretrained image encoders and word embeddings is de facto standard, having empirically proven its dominance over the models trained from the ground up.
-In this work, we focus on a parallel aspect of transfer learning in Image and Video QA. Both can be seen as meta-problems, where models have to develop different reasoning processes, associated to the type of questions, such as object-count and object-attribute queries. We investigate, with a new model, whether mastering one task helps to master others. This is thus connected to multi-task learning~\cite{caruana1997multitask}.
+How to acutely employ transfer learning in the case of multi-modal tasks~\cite{mogadala2019trends}, which combine both modalities mentioned above, i.e., vision and language, is another engaging research question. While models such as BERT and ResNet can be transferred efficiently in the same modality they were pretrained on, there is no obvious approach to combine both and hope to perform well on, say, Visual Question Answering. New models and mechanisms, such as attention~\cite{bahdanau2014neural}, are appropriate to handle the intricate relations between two (or more) modalities.
 
 \paragraph{Contributions}
 The contributions of this work are as follows.
@@ -31,45 +28,3 @@ The contributions of this work are as follows.
 	\item We propose a taxonomy of transfer learning, inspired from~\cite{pan2009survey}, applied to the domain of visual reasoning. Articulated around 3 main axes, we illustrate it through the COG dataset, as well as the CLEVR~\cite{johnson2017clevr} diagnostic dataset for Image QA.
 	\item Following, we measure the impact of transferring the whole pretrained SAMNet model in the 3 proposed transfer learning settings: feature transfer, temporal transfer and reasoning transfer. This analysis is supported by an extensive set of experiments using the COG and CLEVR datasets, as well as their variants. Several of these experiments show the significant generalization capabilities of SAMNet.
 \end{itemize}
-
-% ===========================
-%The contributions of this paper are as follows.
-%We propose a new model, called SAMNet (Selective Attention Memory Network), which achieves state-of-the-art results on two datasets for Visual Reasoning, namely CLEVR~\cite{johnson2017clevr}, a diagnostic dataset for Image QA, and COG~\cite{yang2018dataset}, a Video QA reasoning dataset.
-%We show the impact of the different tasks when transferring the whole pretrained model in three main setups.
-%\begin{itemize}
-%	\item We first focus on transfer learning within the Image QA domain and perform experiments similar to Taskonomy~\cite{zamir2018taskonomy}. We analyze how training exclusively on one task family helps with mastering the others, with one notable difference: we transfer and fine-tune the whole model (not only the encoder or input layer).
-%	\item Next, we show complementary results in a multi-task learning setup, when the model is trained on all-but-one task and then tested on this task (with and without finetuning).
-%	\item Finally, we present a set of experiments aimed at analyzing of the impact of transfer learning in Video QA, when domain changes drastically and the model is forced to handle longer videos with higher complexity (i.e. a higher number of distractor objects present in each frame).
-%\end{itemize}
-%Surprisingly, our model, with only small fine-tuning, managed to master the Hard variant of the COG dataset and achieved higher accuracy than the model trained solely on the Hard variant.
-
-%\tk{Have I addressed that correctly? I am not sure whether I have covered TL with CoGenT-A and CoGenT-B variants...}
-%
-%\vm{I think the contributions should be: 1. A new model with SotA results on COG |  2. transfer  / multitask learning  in COG | 3.  transfer  / multitask learning  in CLEVR}.
-% ===========================
-
-%A) Task generalization
-%- answers (CLEVR)
-%B) Domain adaptation
-%- CoGenT A -> CoGenT B (CLEVR)
-%- sequence lenght  (COG)
-%- image complexity (distractors) (COG)
-
-%All those experiments in fact analyse different aspects 
- 
-%Lack of studies of impact of transfer learning for higher-level, abstract reasoning?
-
-%From one point, some preliminary results:
-% - CLEVR showing results on CoGenT-a/b~\cite{johnson2017clevr} - this is more "object generalization"
- %- COG paper showing interesting results with "task generalization" when training on all tasks excluding the one used for test~\cite{yang2018dataset}
-
-
-%I want to claim that therer are three different approaches to "master count".
-%1) Train and test only on count
-%2) Train on alll the tasks including count
-%3) Do not train on count at all and then test on count
-
-
-%conclusions:
-%when you are doing transfer make sure that the target answers are the same!
-%otherwise: binary y/n vs numers 0-7 vs names of attributes
