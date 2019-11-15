@@ -209,7 +209,7 @@ In this case, the SAMNet model again reaches exemplary performance, at 96.7\% ac
 The final set of experiments we consider is related to feature transfer.
 The CoGenT-A \& -B sets of CLEVR differ by the available combinations of 8 object color attributes.
 The colors are partitioned into two complementary families: 
-Gray, Blue, Brown and Yellow in Family A and Red, Green, Purple, Cyan in Family B. 
+Gray, Blue, Brown and Yellow in \textbf{Family A} and Red, Green, Purple, Cyan in \textbf{Family B}. 
 The cubes and cylinders take colors from complementary families in each dataset with opposite configurations while
 the spheres can take any color (See~\cref{tab:cogent_conditions}). 
 Considering the input domain to be the set of objects with all attributes values, both sets differ by their marginal distributions $P_S$ and $P_T$. We consider 2 experiments with SAMNet trained on CoGenT-A: An immediate test (\emph{zero-shot learning}) from A to B and a finetuning of a single epoch on 30k Conditions B samples (following~\cite{johnson2017inferring, mascharka2018transparency, perez2018film, marois2018transfer}). The results are available in~\cref{fig:CoGenT-B-results}.
