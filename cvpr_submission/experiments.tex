@@ -88,9 +88,9 @@ For the CLEVR dataset, we consider the question categories defined by the author
 Noticeable results are shown in~\cref{fig:CoGenT-results}, while the complete set is available in the supplementary material.%Appendix \ref{sec:full-cogent-results}.
 
 
-Looking at~\cref{fig:CoGenT-results}, SAMNet does well on \textit{Count} and \textit{QueryAttribute}, but poorer on the 3 other tasks in the single-task learning setting (dark blue). Indeed, \textit{Exist}, \textit{CompareInteger} and \textit{CompareInteger} are binary tasks; \textit{Count} has for corresponding labels the digits 0 through 10 (a random agent would thus obtain $<$10\% accuracy) and \textit{QueryAttribute} maps to the set of object attributes values (15 labels).
+Looking at~\cref{fig:CoGenT-results}, SAMNet does well on \textit{Count} and \textit{QueryAttribute}, but poorer on the 3 other tasks in the single-task learning setting (blue). Indeed, \textit{Exist}, \textit{CompareInteger} and \textit{CompareInteger} are binary tasks; \textit{Count} has for corresponding labels the digits 0 through 10 (a random agent would thus obtain $<$10\% accuracy) and \textit{QueryAttribute} maps to the set of object attributes values (15 labels).
 
-Nevertheless, significant accuracy gains are noted when training jointly on all tasks (light gray), ranging from 18 points to 37 points on 4 out of 5 tasks. \textit{QueryAttribute} only sees an increase of one point. One could qualify it as \textit{self-sufficient} as it does not appear to benefit from joint training with other tasks. These improvements suggest that related tasks benefit from joint training.
+Nevertheless, significant accuracy gains are noted when training jointly on all tasks (gray), ranging from 18 points to 37 points on 4 out of 5 tasks. \textit{QueryAttribute} only sees an increase of one point. One could qualify it as \textit{self-sufficient} as it does not appear to benefit from joint training with other tasks. These improvements suggest that related tasks benefit from joint training.
 %We plan to run additional experiments to jointly train on $t$ and all possible subsets of the remaining 4 tasks ($2^4$ experiments per task). We hypothesize that the improvements on e.g. \textit{Exist} would mostly originate from training jointly on \textit{CompareAttribute} and \textit{CompareInteger} since all 3 tasks share the same output space (i.e., labels domain).
 
 Finally, the ``all-tasks-but-$t$'' experiments (yellow) demonstrate that while tasks are related, one does not subsume another in terms of learning. Indeed, we can observe that for \textit{CompareAttribute}, while \textit{Exist} and \textit{CompareInteger} share the same output space, including them and holding out \textit{CompareAttribute} from the training set results in poor accuracy. We also observe no learning for \textit{Count} and \textit{QueryAttribute}, caused by these tasks having distinct labels domains, which do not overlap with the other tasks. Thus, if holding out samples from \textit{Count} during training, a model will not be able to predict the corresponding labels.
@@ -135,7 +135,7 @@ Below, substitute each of \textit{Shape} and \textit{Color} for  \uX{} to obtain
 
 We then conducted the following experiments using the Canonical variant of COG to study 
 whether transfer learning was effective in leveraging information gained by training a task family at a higher level
-of the hierarchy.
+of the hierarchy:
  \begin{itemize}
  	\compresslist
 	\item Train and test SAMNet on each of the 5 task groups at the lowest level of the hierarchy (standard ML). 
@@ -147,17 +147,16 @@ of the hierarchy.
 
 The results of these experiments are shown in~\cref{fig:COG-reasoning-results}.
 
-First notice that for each of the \textbf{Basic} and \textbf{Obj-Attr} task families, the accuracy is near-perfect in all cases 
-suggesting that each contains the most primitive of tasks and therefore do not benefit from training with other task families.
-With \textbf{Spatial} we see a small improvement showing that there is some benefit due to joint training with other task families.
+First, notice that for each of the \textbf{Basic} and \textbf{Obj-Attr} task families, the accuracy is near-perfect in all cases, suggesting that each contains the most primitive of tasks and therefore do not benefit from training with other task families.
+With \textbf{Spatial}, we see a small improvement showing that there is some benefit due to joint training with other task families.
 Two groups that demonstrated a huge improvement of more than 25 points are \textbf{Compare} and \textbf{Cognitive}.
 The former saw an accuracy jump from 68.6\% by training on samples from that family alone
-to 97.0\% while training on all samples. To furthe rdrill down on this behavior, notice that 
+to 97.0\% when training on all samples. To further emphasize this behavior, notice that 
 just joining \textbf{Compare} with \textbf{Obj-Attr} and \textbf{Basic} already causes a significant accuracy jump to 92.3\%. 
-In hindsight, this is not surprising because the questions in \textbf{Compare} are composed
-of fragments in the questions given by \textbf{Basic} and \textbf{Obj-Attr}, and therefore can leverage the reasoning strategies developed there to reason about questions in \textbf{Compare}.
-Lastly, for the  \textbf{Spatial} family we again see the benefits of joint training with all questions (68.6\% to 95.7\%) but in this case there
-is a slight loss incurred by including everything. As seen in the figure, just jointly training with \textbf{Spatial} alone is sufficient to get a boost in the accuracy (97.1\%). To summarize, while joint training helps, one needs to determine how much of correlation is present with the other tasks.
+In hindsight, this is not surprising as the questions in \textbf{Compare} are composed
+of fragments of the questions given by \textbf{Basic} and \textbf{Obj-Attr}, and therefore can leverage the reasoning strategies developed there to reason about questions in \textbf{Compare}.
+Lastly, for the \textbf{Spatial} family, we again see the benefits of joint training with all questions (68.6\% to 95.7\%) but in this case there
+is a slight loss incurred by including everything. As seen in the figure, just jointly training with \textbf{Spatial} alone is sufficient to get a boost in accuracy (97.1\%). To summarize, while joint training helps, one needs to determine how much of correlation is present with the other tasks.
 
  \begin{figure}
  	\centering
