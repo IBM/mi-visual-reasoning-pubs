@@ -18,10 +18,19 @@ In analogy to pretrained image encoders, the community is facilitating access to
 The success of transfer learning raises several questions for research, such as the characteristics which make a dataset more favorable to use in pretraining (notably ImageNet~\cite{huh2016makes}), or regarding the observed performance correlation of models with different architectures between the source and target domains~\cite{kornblith2019better}.
 One of the most systematic work in this area is the computational taxonomic map for task transfer learning~\cite{zamir2018taskonomy}, which aim to discover the dependencies across a dictionary of twenty-six 2D, 2.5D, 3D, and semantic tasks.
 
-How to acutely employ transfer learning in the case of multi-modal tasks~\cite{mogadala2019trends}, which combine both modalities mentioned above, i.e., vision and language, is another engaging research question. While models such as BERT and ResNet can be transferred efficiently in the same modality they were pretrained on, there is no obvious approach to combine both and hope to perform well on, say, Visual Question Answering. New models and mechanisms, such as attention~\cite{bahdanau2014neural}, are appropriate to handle the intricate relations between two (or more) modalities.
+In this work, we focus on multi-modal learning~\cite{mogadala2019trends} combining vision and language,
+and in particular, transfer learning for visual reasoning tasks with a rich logical structure, e.g., see~\cite{johnson2017clevr,yang2018dataset}. 
+While models such as BERT and ResNet can be transferred efficiently in the same modality they were pretrained on, challenges arise
+once the modalities have been fused.
+For example, in compositional reasoning problems that involve objects with multiple attributes,
+feature representations in the source domain may be entangled and not easily transfer over to the target domain~\cite{johnson2017clevr}.
+In video reasoning, an additional challenge in the temporal dimension is whether a model that is trained on shorter video sequences will 
+transfer over to longer sequences~\cite{yang2018dataset,song2018explore}.
+To address these challenges, mechanisms such as attention~\cite{bahdanau2014neural} 
+and external memory~\cite{graves2014neural, graves2016hybrid,weston2014memory} 
+which facilitate higher-level abstractions, seem more promising.
 
-\paragraph{Contributions}
-The contributions of this work are as follows.
+Our main contributions are:
 \begin{itemize}
 	\compresslist
 	\item We propose a new model, called SAMNet (Selective Attention Memory Network), which achieves state-of-the-art results on COG~\cite{yang2018dataset}, a Video QA reasoning dataset.
