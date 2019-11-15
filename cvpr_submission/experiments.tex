@@ -20,7 +20,7 @@ This experiment is described in~\cref{sec:temporal}.
 			Hard  & 8 & 7 & 10\\
 			\bottomrule	
 		\end{tabular}
-	\caption{Details of the Canonical and Hard variants of COG}
+	\caption{Details of the Canonical and Hard variants of COG.}
 	\label{tab:cog_variants}
 \end{table}\vspace{5pt}
 
@@ -75,6 +75,7 @@ of each task relative to others using appropriate groupings of tasks.
 \label{sec:reasoning-clevr}
 For the CLEVR dataset, we consider the question categories defined by the authors: \textit{Exist}, \textit{Count}, \textit{CompareInteger}, \textit{CompareAttribute}, \textit{QueryAttribute} and conducted the following experiments:
 \begin{itemize}
+	\compresslist
 	\item Train and test SAMNet on a single task group $t$. These 5 experiments fit into the traditional ML setup of single-task learning;
 	\item Train SAMNet on all task groups jointly and evaluate its performance on each task group $t$ separately.
 	This is a transfer learning setting where for the source task family, the task is sampled from all questions,
@@ -90,7 +91,7 @@ Noticeable results are shown in~\cref{fig:CoGenT-results}, while the complete se
 Looking at~\cref{fig:CoGenT-results}, SAMNet does well on \textit{Count} and \textit{QueryAttribute}, but poorer on the 3 other tasks in the single-task learning setting (dark blue). Indeed, \textit{Exist}, \textit{CompareInteger} and \textit{CompareInteger} are binary tasks; \textit{Count} has for corresponding labels the digits 0 through 10 (a random agent would thus obtain $<$10\% accuracy) and \textit{QueryAttribute} maps to the set of object attributes values (15 labels).
 
 Nevertheless, significant accuracy gains are noted when training jointly on all tasks (light gray), ranging from 18 points to 37 points on 4 out of 5 tasks. \textit{QueryAttribute} only sees an increase of one point. One could qualify it as \textit{self-sufficient} as it does not appear to benefit from joint training with other tasks. These improvements suggest that related tasks benefit from joint training.
-We plan to run additional experiments to jointly train on $t$ and all possible subsets of the remaining 4 tasks ($2^4$ experiments per task). We hypothesize that the improvements on e.g. \textit{Exist} would mostly originate from training jointly on \textit{CompareAttribute} and \textit{CompareInteger} since all 3 tasks share the same output space (i.e., labels domain).
+%We plan to run additional experiments to jointly train on $t$ and all possible subsets of the remaining 4 tasks ($2^4$ experiments per task). We hypothesize that the improvements on e.g. \textit{Exist} would mostly originate from training jointly on \textit{CompareAttribute} and \textit{CompareInteger} since all 3 tasks share the same output space (i.e., labels domain).
 
 Finally, the ``all-tasks-but-$t$'' experiments (yellow) demonstrate that while tasks are related, one does not subsume another in terms of learning. Indeed, we can observe that for \textit{CompareAttribute}, while \textit{Exist} and \textit{CompareInteger} share the same output space, including them and holding out \textit{CompareAttribute} from the training set results in poor accuracy. We also observe no learning for \textit{Count} and \textit{QueryAttribute}, caused by these tasks having distinct labels domains, which do not overlap with the other tasks. Thus, if holding out samples from \textit{Count} during training, a model will not be able to predict the corresponding labels.
 
@@ -103,7 +104,9 @@ Finally, the ``all-tasks-but-$t$'' experiments (yellow) demonstrate that while t
 
 An additional set of experiments, for which results are available in the supplementary material,
 %Appendix \ref{sec:full-cogent-results}
-finetune the model trained on all tasks on each task $t$ respectively. Given the initial training on all tasks, we were interested in the tradeoff between the performance gain, if any, on the finetuned task and the drop, if any, on other tasks. Finetuning did not demonstrate a clear benefit (except for \textit{Count}, where the accuracy increased by 1.5 pt) without hurting performance on the other tasks. Nevertheless, these experiments leave open the possibility that the multi-task learning training method may potentially benefit from using weighted sampling towards the tail end with more emphasis on samples from less performing task groups. Recent work~\cite{guo2018dynamic, kendall2018multi} in this direction has been done, although seems to weigh tasks rather than samples.
+finetune the model trained on all tasks on each task $t$ respectively.
+%Given the initial training on all tasks, we were interested in the tradeoff between the performance gain, if any, on the finetuned task and the drop, if any, on other tasks.
+Finetuning did not demonstrate a clear benefit (except for \textit{Count}, where the accuracy increased by 1.5 pt) without hurting performance on the other tasks. Nevertheless, these experiments leave open the possibility that the multi-task learning training method may potentially benefit from using weighted sampling towards the tail end with more emphasis on samples from less performing task groups. Recent work~\cite{guo2018dynamic, kendall2018multi} in this direction has been done, although seems to weigh tasks rather than samples.
 
 \subsubsection{COG}
 \label{sec:reasoning-cog}
@@ -113,7 +116,7 @@ description of these tasks, as shown in~\cref{fig:task-groups}.
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=\columnwidth]{img/architecture/hierarchy}
-	\caption{Hierarchy of Task Groups}
+	\caption{Hierarchy of Task Groups.}
 	\label{fig:task-groups}
 \end{figure}
 
@@ -122,6 +125,7 @@ description of these tasks, as shown in~\cref{fig:task-groups}.
 For groups at the lowest level, we chose the following task classes to be placed in those groups.
 Below, substitute each of \textit{Shape} and \textit{Color} for  \uX{} to obtain the task class.
 \begin{description}
+	\compresslist
 	\item[Basic:] \textit{Exist}\uX, \textit{Get}\uX{} and \textit{Exist};
 	\item[Obj-Attr:] \emph{SimpleCompare}\uX{} and \textit{AndSimpleCompare}\uX;
 	\item[Compare:] \textit{Compare}\uX,  \textit{AndCompare}\uX{} \& \textit{Exist}\uX\textit{Of};
@@ -133,6 +137,7 @@ We then conducted the following experiments using the Canonical variant of COG t
 whether transfer learning was effective in leveraging information gained by training a task family at a higher level
 of the hierarchy.
  \begin{itemize}
+ 	\compresslist
 	\item Train and test SAMNet on each of the 5 task groups at the lowest level of the hierarchy (standard ML). 
 	\item Train on \textbf{Group A} and test on \textbf{Basic}, \textbf{Obj-Attr} and \textbf{Compare} each;
 	\item Train on \textbf{Group B} and test separately on \textbf{Spatial} and \textbf{Cognitive};
