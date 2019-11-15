@@ -2,10 +2,10 @@
 \label{sec:experiments}
 We implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on Pytorch~\cite{paszke2017automatic}. We evaluated the model on the COG dataset~\cite{yang2018dataset}, a video reasoning~\cite{mogadala2019trends} dataset developed for the purpose of research on relational and temporal reasoning, as well as on the CLEVR dataset~\cite{johnson2017clevr}, created for Image Question Answering research.
 Our experiments were designed to study SAMNet's performance as well as its generalization and transfer learning abilities in different settings.
-In some of our experiments, we also compare using a \emph{zero-shot learning} approach  for transfer learning to another approach
-involving \emph{finetuning}.
-Recall that the former involves evaluating the trained model of the source directly on the target while for the latter we do additional lightweight 
-training on the target labeled data before evaluating its performance. 
+%In some of our experiments, we also compare using a \emph{zero-shot learning} approach  for transfer learning to another approach
+%involving \emph{finetuning}.
+%Recall that the former involves evaluating the trained model of the source directly on the target while for the latter we do additional lightweight 
+%training on the target labeled data before evaluating its performance. 
 
 For the temporal and feature transfer experiments, we used two variants of both datasets.
 For COG, an easy one (Canonical) and a Hard variant, differ mainly on the number of frames in the input sequence, the maximum amount of look-back in frame history with the relevant information for each frame, and number of distractors (see~\cref{tab:cog_variants}).
