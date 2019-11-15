@@ -176,14 +176,17 @@ Hard variant (\cref{fig:samnet_cog_overall_transfer}).
 The light gray color indicates original accuracies of the baseline model from paper, 
 whereas dark gray indicates accuracies of the baseline model
 obtained by running the original code provided by the authors~\cite{yang2018implement}.
-The first column displays the scores when training and testing on the Canonical variant, without any finetuning. 
+
+The first column displays the scores of the traditional ML setup when training and testing on the Canonical variant. 
 The observed close scores in light and dark gray underscore the baseline model reproducibility.
-For both cases of zero-shot learning (second column--91.6\% vs 65.9\%) and finetuning for a single epoch 
+For both cases of zero-shot learning (second column--91.6\% vs 65.9\%) and finetuning using a single epoch 
 (third column--96.7\% vs. 78.1\%), SAMNET outperforms the baseline model significantly.
-Interestingly, finetuning gets a modest boost (96.7\%) on the earlier reported accuracy in~\cref{sec:cog-baseline-compare}
-of SAMNet using the pure ML setup.
-These results suggest that it suffices to train SAMNet on video samples with small complexity 
-and achieve comparable, if not better, performance on more complex videos.
+Interestingly, this finetuning yields a mild boost of +0.6\% on the earlier reported accuracy 
+in~\cref{sec:cog-baseline-compare} (fourth column).
+These results suggest that it suffices to train SAMNet on simpler videos 
+to enable learning of good memory usage and attention on relevant entities  
+in order to achieve comparable, if not better, 
+performance on longer video frames with more complex scenes.
 
 \begin{figure}[htb]
 	\centering
