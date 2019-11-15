@@ -1,22 +1,25 @@
 \section{Experiments}
 \label{sec:experiments}
-We implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on Pytorch~\cite{paszke2017automatic}. We evaluated the model on the COG dataset~\cite{yang2018dataset}, a video reasoning~\cite{mogadala2019trends} dataset developed for the purpose of research on relational and temporal reasoning, as well as on the CLEVR dataset~\cite{johnson2017clevr}, created for Image Question Answering research.
-Our experiments were designed to study SAMNet's performance as well as its generalization and transfer learning abilities in different settings.
+We implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on Pytorch~\cite{paszke2017automatic}. 
+We evaluated the model on the COG dataset~\cite{yang2018dataset}, a video reasoning~\cite{mogadala2019trends} dataset developed for the purpose of research on relational and temporal reasoning, as well as on the CLEVR dataset~\cite{johnson2017clevr}, created for Image Question Answering research.
+There are 23 classification question categories in COG and the 5 original question categories in CLEVR.
+Our experiments were designed to study SAMNet's performance in terms of generalization and transfer learning abilities in different settings,
+and involved incorporating variants of both datasets.  
+For COG, the Canonical (easy) and Hard variant differ mainly on the number of frames in the video, 
+the maximum amount of look-back in frame history containing relevant information for reasoning, 
+and the number of object distractors (see~\cref{tab:cog_variants}).
+For CLEVR, we consider the CoGenT (Constrained Generalization Test) variant which contains two conditions, differing on the combinations of attributes values (details in~\cref{sec:temporal}).
 %In some of our experiments, we also compare using a \emph{zero-shot learning} approach  for transfer learning to another approach
 %involving \emph{finetuning}.
 %Recall that the former involves evaluating the trained model of the source directly on the target while for the latter we do additional lightweight 
 %training on the target labeled data before evaluating its performance. 
-
-For the temporal and feature transfer experiments, we used two variants of both datasets.
-For COG, an easy one (Canonical) and a Hard variant, differ mainly on the number of frames in the input sequence, the maximum amount of look-back in frame history with the relevant information for each frame, and number of distractors (see~\cref{tab:cog_variants}).
-This experiment is described in~\cref{sec:temporal}.
 \begin{table}[ht]
 	\centering
 		\begin{tabular}{lccc}
 			\toprule
 			Variant	& Frames & History	& Distractors \\ 
 			\midrule
-			Canonical & 4 & 3 & 1\\	
+			Canonical (Easy) & 4 & 3 & 1\\	
 			Hard  & 8 & 7 & 10\\
 			\bottomrule	
 		\end{tabular}
@@ -24,9 +27,6 @@ This experiment is described in~\cref{sec:temporal}.
 	\label{tab:cog_variants}
 \end{table}\vspace{5pt}
 
-For CLEVR, we consider the CoGenT (Constrained Generalization Test) variant which contains two conditions, differing on the combinations of attributes values.
-\Cref{sec:feature} describes this experiment.
-For the reasoning transfer experiments, we consider 23 classification task classes in COG and the 5 original question categories in CLEVR.
 %More details on the composition of these datasets is available in Appendix \ref{sec:datasets-desc}.
 
 \subsection{Performance of SAMNet vs baseline model~\cite{yang2018dataset}}
@@ -169,21 +169,26 @@ is a slight loss incurred by including everything. As seen in the figure, just j
 \subsection{Temporal transfer in COG}
 \label{sec:temporal}
 
-
-The goal here is to test the transfer learning ability concerning the sequence length and number of distractors.
+The goal here is to test the transfer learning ability concerning the frame sequence length, frame history required
+for reasoning, and the number of object distractors.
 For that purpose, we compare both models when trained on the Canonical variant but tested on the 
 Hard variant (\cref{fig:samnet_cog_overall_transfer}).
-
-As the original paper does not include these experiments, we performed them. The light gray color indicates original results, whereas dark gray indicates the accuracies of COG models which we trained (fine-tuning/testing) using the original code provided by the authors.
-For sanity check, in the first column, we report both the best-achieved score and the score reported in the paper when training and testing on the Canonical variant, without any fine-tuning. The observed close scores underline the faithfulness of the model reproducibility.
-In a pure \textit{zero-shot learning} setup (second column), our model shows enormous generalization ability, reaching 91.6\% accuracy on the test set.
-We also test both models in a setup where the model trained on a Canonical variant underwent additional fine-tuning (for a single epoch) on the Hard variant (third column).
-In this case, the SAMNet model again reaches exemplary performance, at 96.7\% accuracy, and, interestingly, performs better than the model trained solely on the Hard variant.
+The light gray color indicates original accuracies of the baseline model from paper, 
+whereas dark gray indicates accuracies of the baseline model
+obtained by running the original code provided by the authors~\cite{yang2018implement}.
+The first column displays the scores when training and testing on the Canonical variant, without any finetuning. 
+The observed close scores in light and dark gray underscore the baseline model reproducibility.
+For both cases of zero-shot learning (second column--91.6\% vs 65.9\%) and finetuning for a single epoch 
+(third column--96.7\% vs. 78.1\%), SAMNET outperforms the baseline model significantly.
+Interestingly, finetuning gets a modest boost (96.7\%) on the earlier reported accuracy in~\cref{sec:cog-baseline-compare}
+of SAMNet using the pure ML setup.
+These results suggest that it suffices to train SAMNet on video samples with small complexity 
+and achieve comparable, if not better, performance on more complex videos.
 
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=\columnwidth]{img/results/samnet_cog_overall_transfer.png}
-	\caption{Total accuracies of SAMNet (blue) and COG models (light/dark gray) when testing generalization from Canonical to Hard variants of the dataset.}
+	\caption{Total accuracies of SAMNet (blue) and baseline models (light/dark gray) when testing generalization from Canonical to Hard variants of the dataset.}
 	\label{fig:samnet_cog_overall_transfer}
 \end{figure}
 
