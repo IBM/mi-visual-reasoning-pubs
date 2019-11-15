@@ -3,9 +3,7 @@
 We implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on Pytorch~\cite{paszke2017automatic}. We evaluated the model on the COG dataset~\cite{yang2018dataset}, a video reasoning~\cite{mogadala2019trends} dataset developed for the purpose of research on relational and temporal reasoning, as well as on the CLEVR dataset~\cite{johnson2017clevr}, created for Image Question Answering research.
 Our experiments were designed to study SAMNet's performance as well as its generalization and transfer learning abilities in different settings.
 For the temporal and feature transfer experiments, we used two variants of both datasets.
-For COG, an easy one (Canonical) and a Hard variant, differ mainly on the number of frames in the input sequence,
-the maximum amount of look-back in frame history with the relevant information for each frame,  and number of 
-distractors (see~\cref{tab:cog_variants}).
+For COG, an easy one (Canonical) and a Hard variant, differ mainly on the number of frames in the input sequence, the maximum amount of look-back in frame history with the relevant information for each frame, and number of distractors (see~\cref{tab:cog_variants}).
 \begin{table}[ht]
 	\centering
 	%\begin{adjustbox}{width=0.45\textwidth}
@@ -20,7 +18,7 @@ distractors (see~\cref{tab:cog_variants}).
 	%\end{adjustbox}
 	\caption{Details of the Canonical and Hard variants of COG}
 	\label{tab:cog_variants}
-\end{table}
+\end{table}\vspace{5pt}
 This experiment is described in~\cref{sec:temporal}.
 For CLEVR, we consider the CoGenT (Constrained Generalization Test) variant which contains two conditions, differing on the combinations of attributes values.
 \Cref{sec:feature} describes this experiment.
@@ -57,7 +55,7 @@ As these tasks focus on compositional questions referring to two objects, we hyp
 accuracy due to its ability to selectively pick and store relevant objects from the past frames in memory.
 For the Hard variant, we achieve a total average accuracy of 96.1\% compared to 80.1\% for the baseline model, demonstrating
 that our model can adapt to larger number of frames and distractors.
-Despite there being some tasks in the canonical variant where SAMNet achieved slightly lower accuracies,
+Despite there being some tasks in the Canonical variant where SAMNet achieved slightly lower accuracies,
 % (between 0.2 and 1.8 points)
 when comparing performances on the Hard variant, it improves upon the baseline model on all tasks, 
 with improvements varying from 0.5 to more than 30 points, and especially on the more complex tasks in the dataset.
@@ -99,7 +97,7 @@ Finally, the ``all-tasks-but-$t$'' experiments (cyan) demonstrate that while tas
 	\label{fig:CoGenT-results}
 \end{figure}
 
-An supplementary set of experiments, for which results are available in the supplementary material,
+An additional set of experiments, for which results are available in the supplementary material,
 %Appendix \ref{sec:full-cogent-results}
 finetune the model trained on all tasks on each task $t$ respectively. Given the initial training on all tasks, we were interested in the tradeoff between the performance gain, if any, on the finetuned task and the drop, if any, on other tasks. Finetuning did not demonstrate a clear benefit (except for \textit{Count}, where the accuracy increased by 1.5 pt) without hurting performance on the other tasks. Nevertheless, these experiments leave open the possibility that the multi-task learning training method may potentially benefit from using weighted sampling towards the tail end with more emphasis on samples from less performing task groups. Recent work~\cite{guo2018dynamic, kendall2018multi} in this direction has been done, although seems to weigh tasks rather than samples.
 
@@ -185,12 +183,12 @@ In this case, the SAMNet model again reaches exemplary performance, at 96.7\% ac
 
 The final set of experiments we consider is related to domain adaptation. %According to \cite{pan2009survey}, this settings considers different but related source and target domains, under a common task.
 
-The CoGenT-A \& -B sets of CLEVR differ by the available combinations of object attributes (\cref{tab:cogent_conditions}). If we consider the input domain to be the set of objects with all attributes values, both sets differ by the data distribution they are sampled from. We thus consider 2 experiments with SAMNet trained on CoGenT-A: A direct generalization test (\emph{zero-shot learning}) from A to B and a finetuning of a single epoch on 30k Conditions B samples (following the procedure of~\cite{johnson2017inferring, mascharka2018transparency, perez2018film, marois2018transfer}. The results are available in~\cref{fig:CoGenT-B-results}.
+The CoGenT-A \& -B sets of CLEVR differ by the available combinations of object attributes (\cref{tab:cogent_conditions}). If we consider the input domain to be the set of objects with all attributes values, both sets differ by the data distribution they are sampled from. We thus consider 2 experiments with SAMNet trained on CoGenT-A: A direct generalization test (\emph{zero-shot learning}) from A to B and a finetuning of a single epoch on 30k Conditions B samples (following the procedure of~\cite{johnson2017inferring, mascharka2018transparency, perez2018film, marois2018transfer}). The results are available in~\cref{fig:CoGenT-B-results}.
 
 \begin{figure}[!t]\vspace{5pt}
 	\centering
-	\includegraphics[width=0.3\textwidth]{img/results/CoGenT_B_results.pdf}
-	\caption{CLEVR-CoGenT accuracies for all tasks $t$ when training on $t$ only, training on all tasks jointly and training on all tasks but $t$.} %For all experiments, the validation and test sets are identical.}
+	\includegraphics[width=0.2\textwidth]{img/results/CoGenT_B_results.pdf}
+	\caption{Test accuracy on CoGenT-A \& -B when training on CoGenT-A (blue) and finetuning on CoGenT-B (gray).}
 	\label{fig:CoGenT-B-results}
 \end{figure}
 Evaluating SAMNet on CoGenT shows that performance is worse on CoGenT-B than CoGenT-A, in line with~\cite{johnson2017inferring, mascharka2018transparency, perez2018film}. Finetuning for a single epoch allows an observable increase of 15 pts on CoGenT-B, and a slight drop on CoGenT-A, also observed in other models.
