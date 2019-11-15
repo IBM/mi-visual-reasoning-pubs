@@ -10,17 +10,18 @@ In Computer Vision, it is now standard practice to pre-train an image encoder (s
 Such performance improvements are appealing, especially for cases where both the domain (e.g. realistic images vs. medical or cars ones) and the task (e.g. image classification vs. VQA or image segmentation) can change significantly. %This type of transfer learning is qualified as \emph{inductive}, according to the taxonomy from~\cite{pan2009survey}.
 
 A similar development has emerged in the Natural Language Processing (NLP) community.
-Using shallow word embeddings, such as word2vec~\cite{mikolov2013distributed} or GloVe~\cite{pennington2014glove}, pretrained on large corpuses coming from e.g.\ Wikipedia or Twitter, became a standard procedure when working with different NLP domains and tasks, especially when labeled data is less accessible.
+Using shallow word embeddings, such as word2vec~\cite{mikolov2013distributed} or GloVe~\cite{pennington2014glove}, pretrained on large corpuses coming from e.g.\ Wikipedia or Twitter, has become a standard procedure when working with different NLP domains and tasks, 
+especially when labeled data is less accessible.
 Recently, we observe a growing utilization of deep contextualized word representations such as ELMo (based on bidirectional LSTMs)~\cite{peters2018deep} or BERT (based on the Transformer~\cite{vaswani2017attention} architecture)~\cite{devlin2018bert}, which pretrain an entire network (and not just the input layer) on very large amounts of data.
 In analogy to pretrained image encoders, the community is facilitating access to such pretrained models through repositories, some with dozens of pretrained BERT variations. HuggingFace~\cite{wolf2019transformers} is one of the most notable examples.
 
 The success of transfer learning raises several questions for research, such as the characteristics which make a dataset more favorable to use in pretraining (notably ImageNet~\cite{huh2016makes}), or regarding the observed performance correlation of models with different architectures between the source and target domains~\cite{kornblith2019better}.
 One of the most systematic work in this area is the computational taxonomic map for task transfer learning~\cite{zamir2018taskonomy}, which aim to discover the dependencies across a dictionary of twenty-six 2D, 2.5D, 3D, and semantic tasks.
 
-The impact of transfer learning is even more essential in the case of multi-modal tasks~\cite{mogadala2019trends}, which combine both modalities mentioned above (i.e., vision and language).
+The impact of transfer learning is even more essential in the case of multi-modal tasks~\cite{mogadala2019trends}, which combine both modalities mentioned above, i.e., vision and language.
 %One of the most popular problem domain is Visual Question Answering (VQA)~\cite{malinowski2014multi,antol2015vqa}, where the system is expected to answer natural language questions by taking into account the content of a single image (Image Question Answering) or several frames (Video Question Answering).
 %In a typical VQA model, setting aside whether it is performing an early fusion of embeddings of those two modalities~\cite{malinowski2018visual} or multi-step reasoning~\cite{hudson2018compositional}, using pretrained image encoders and word embeddings is de facto standard, having empirically proven its dominance over the models trained from the ground up.
-In this work, we focus on a parallel aspect of transfer learning in Image and Video QA. Both can be seen as meta-problems, where models have to develop different reasoning processes, associated to the type of questions (e.g., objects count queries, objects attribute queries etc.). We investigate, with a new model, whether mastering one task helps to master others. This is thus connected to multi-task learning~\cite{caruana1997multitask}.
+In this work, we focus on a parallel aspect of transfer learning in Image and Video QA. Both can be seen as meta-problems, where models have to develop different reasoning processes, associated to the type of questions, such as object-count and object-attribute queries. We investigate, with a new model, whether mastering one task helps to master others. This is thus connected to multi-task learning~\cite{caruana1997multitask}.
 
 \paragraph{Contributions}
 The contributions of this work are as follows.
