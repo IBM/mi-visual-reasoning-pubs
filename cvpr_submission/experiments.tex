@@ -135,16 +135,23 @@ Below, substitute each of \textit{Shape} and \textit{Color} for  \uX{} to obtain
 	\item[Cognitive:] \textit{ExistLastColorSameShape}, \textit{ExistLastShapeSameColor} and \textit{ExistLastObjectSameObject}
 \end{description}
 
+\begin{figure}[!t]
+	\centering
+	\includegraphics[width=\columnwidth]{img/results/COG_reasoning_transfer_v3}
+	\caption{COG accuracies for all task groups $t$ when training on $t$ only, training on Group A or B and training on all tasks.}
+	\label{fig:COG-reasoning-results}
+\end{figure}
+
 We then conducted the following experiments using the Canonical variant of COG to study 
 whether transfer learning was effective in leveraging information gained by training a task family at a higher level
 of the hierarchy:
  \begin{itemize}
  	\compresslist
 	\item Train and test SAMNet on each of the 5 task groups at the lowest level of the hierarchy (standard ML). 
-	\item Train on \textbf{Group A} and test on \textbf{Basic}, \textbf{Obj-Attr} and \textbf{Compare} each;
-	\item Train on \textbf{Group B} and test separately on \textbf{Spatial} and \textbf{Cognitive};
+	\item Jointly train on \textbf{Group A} and test separately on \textbf{Basic}, \textbf{Obj-Attr} and \textbf{Compare};
+	\item Jointly train on \textbf{Group B} and test separately on \textbf{Spatial} and \textbf{Cognitive};
 	\item As a baseline, we compared the above results to the earlier experiment shown in~\cref{fig:samnet_cog_detailed}, which
-	can be viewed as training on \textbf{All} and testing on each group at the leaf level separately.
+	can be viewed as training jointly on \textbf{All} and testing on each group at the leaf level separately.
 \end{itemize}
 
 The results of these experiments are shown in~\cref{fig:COG-reasoning-results}.
@@ -160,13 +167,7 @@ of fragments of questions given by \textbf{Basic} and \textbf{Obj-Attr}, and the
 Lastly, for the \textbf{Spatial} family, we again see the benefits of joint training with all questions (68.6\% to 95.7\%) but in this case there
 is a slight loss incurred by including everything. As seen in the figure, just jointly training with \textbf{Spatial} alone is sufficient to get a boost in accuracy (97.1\%). To summarize, while joint training helps, one needs to determine how much of correlation is present with the other tasks.
 
- \begin{figure}
- 	\centering
- 	\includegraphics[width=\columnwidth]{img/results/COG_reasoning_transfer.pdf}
- 	\caption{COG accuracies for all task groups $t$ when training on $t$ only, training on Group A or B and training on all tasks.}
- 	\label{fig:COG-reasoning-results}
- \end{figure}
- 
+  
 
 \subsection{Temporal transfer in COG}
 \label{sec:temporal}
