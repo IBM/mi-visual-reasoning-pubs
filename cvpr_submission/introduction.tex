@@ -23,17 +23,21 @@ In this work, we focus on multi-modal learning~\cite{mogadala2019trends} combini
 and in particular, transfer learning for visual reasoning tasks with a rich logical structure, e.g., see~\cite{johnson2017clevr,yang2018dataset}. 
 While models such as BERT and ResNet can be transferred efficiently in the same modality they were pretrained on, challenges arise
 once the modalities have been fused.
-For example, in visual reasoning problems that involve objects with multiple attributes,
-feature representations in the source domain may be entangled and not easily transfer over to the target domain~\cite{johnson2017clevr}.
+For example, the CoGenT (Constrained Generalization Test) variant of the CLEVR~\cite{johnson2017clevr}  
+contains two datasets with similar questions, but differing on combinations of object-attribute values in images 
+(\cref{sec:feature}).
+In this case, training on the first dataset might yield entangled feature representations that may fail reasoning tasks
+on the second dataset.
 In video reasoning, an additional challenge in the temporal dimension is whether a model trained on shorter video sequences will 
-transfer over to longer sequences~\cite{yang2018dataset,song2018explore}.
+transfer over to longer sequences, e.g., the Canonical and the Hard variants of the 
+COG dataset~\cite{yang2018dataset} (\cref{sec:temporal}).
 To address these challenges, mechanisms such as attention~\cite{bahdanau2014neural} 
 and external memory~\cite{graves2014neural, graves2016hybrid,weston2014memory} 
 which facilitate higher-level abstractions, seem more promising.
 
 Our main contributions are:
 \begin{itemize}
-	\compresslist
+	%\compresslist
 	\item We propose a new model, called SAMNet (Selective Attention Memory Network), which achieves state-of-the-art results on COG~\cite{yang2018dataset}, a Video QA reasoning dataset.
 	\item We propose a taxonomy of transfer learning, inspired from~\cite{pan2009survey}, applied to the domain of visual reasoning. Articulated around 3 main axes, we illustrate it through the COG dataset, as well as the CLEVR~\cite{johnson2017clevr} diagnostic dataset for Image QA.
 	\item Following, we measure the impact of transferring the whole pretrained SAMNet model in the 3 proposed transfer learning settings: feature transfer, temporal transfer and reasoning transfer. This analysis is supported by an extensive set of experiments using the COG and CLEVR datasets, as well as their variants. Several of these experiments show the significant generalization capabilities of SAMNet.
