@@ -59,7 +59,7 @@ The output $\bm{\tau}_t$ of the classifier is intended to represent the differen
 For the COG dataset, we pick 4 classes to capture the terms labeled ``last'', ``latest'', ``now'', and ``none''.
 
 The visual retrieval unit uses the information generated above to extract a relevant object $\vec{vo}_t$ from the frame.
-A similar operation on memory yields the object $\vec{mo}_t$. The memory operation is based on an attention mechanism, and resembles content-based addressing. Therefore, we obtain an attention vector over memory addresses that we interpret to be the \emph{read head}, denoted by $\rhead_t$.
+A similar operation on memory yields the object $\vec{mo}_t$. The memory operation is based on attention mechanism, and resembles content-based addressing. Therefore, we obtain an attention vector over memory addresses that we interpret to be the \emph{read head}, denoted by $\rhead_t$.
 %Note that the returned objects may be invalid, e.g., if the current reasoning step focuses on the phrase ``last red square'', $\vec{vo}_t$ is invalid even if the current frame contains a red square. 
 
 \noindent{\textbf{Reasoning Unit.}}
