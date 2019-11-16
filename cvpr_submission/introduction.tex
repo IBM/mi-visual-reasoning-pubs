@@ -18,12 +18,12 @@ In analogy to pretrained image encoders, the NLP community has also started to c
 The success of transfer learning raises several research questions, such as the characteristics which make a dataset more favorable to be used in pretraining (notably ImageNet~\cite{huh2016makes}), or regarding the observed performance correlation of models with different architectures between the source and target domains~\cite{kornblith2019better}.
 One of the most systematic works in this area is the computational taxonomic map for task transfer learning~\cite{zamir2018taskonomy}, which aimed at discovering the dependencies between twenty-six 2D, 2.5D, 3D, and semantic computer vision tasks.
 
-In this work we focus on transfer learning in multi-modal tasks combining vision and language~\cite{mogadala2019trends} .
+In this work we focus on transfer learning in multi-modal tasks combining vision and language~\cite{mogadala2019trends}.
 More precisely, we narrow the scope to transfer learning between visual reasoning tasks that have a ``nice'' logical structure, e.g.,~\cite{johnson2017clevr,yang2018dataset,song2018explore}. 
 While models such as BERT and ResNet can be transferred efficiently in the same modality they were pretrained on, challenges arise
 once the modalities have been fused.
-For example, the CoGenT (Constrained Generalization Test) variant of the CLEVR~\cite{johnson2017clevr}  
-contains two datasets with similar questions, but differing on combinations of object-attribute values in images 
+For example, the CoGenT (Constrained Generalization Test) variant of the CLEVR dataset~\cite{johnson2017clevr}  
+contains two sets with similar questions, but differing on combinations of object-attribute values in images 
 (\cref{sec:feature}).
 In this case, training on the first variant might yield entangled feature representations that may fail reasoning tasks
 on the second one.
