@@ -67,7 +67,7 @@ A similar operation on memory yields the object $\vec{mo}_t$. The memory operati
 This module is the backbone of SAMNet, which determines the gating operations to be performed on the external memory, as well as determining the correct object's location for reasoning.
 To resolve whether we have a valid object from the frame (and similarly for memory), we execute the following reasoning procedure.
 First, we compute a simple aggregate\footnote{%
-	This is closely related to Tsallis entropy of order 2 and to R\'{e}nyi entropy.} of the visual attention vector $\vec{va}_t$ of dimension $L$ ($L$ denotes the number of feature vectors for the frame):
+	This is closely related to R\'{e}nyi entropy and Tsallis entropy of order~2.} of the visual attention vector $\vec{va}_t$ of dimension $L$ ($L$ denotes the number of feature vectors for the frame):
 $vs_t = \sum_{i=1}^L [\vec{va}_t(i)]^2$. It can be shown that the more localized the attention
 vector, the higher the aggregate value.
 We perform a similar computation on the read head $\rhead_t$ over memory locations.
