@@ -20,7 +20,7 @@
 
 
 SAM Network (SAMNet for short) is an end-to-end differentiable recurrent model equipped with an external memory~(\cref{fig:samnet}). At the conceptual level, SAMNet draws from two core ideas:
-compositional reasoning as proposed e.g. in MAC (Memory-Attention-Composition) Network~\cite{hudson2018compositional,marois2018transfer} and use of an external memory, as in Memory-Augmented Neural Networks such as NTM (Neural Turing Machine)~\cite{graves2014neural}, DNC (Differentiable Neural Computer)~\cite{graves2016hybrid} or DWM (Differentiable Working Memory)~\cite{jayram2018learning}.
+iterative reasoning as proposed e.g. in MAC (Memory-Attention-Composition) Network~\cite{hudson2018compositional,marois2018transfer} and use of an external memory, as in Memory-Augmented Neural Networks such as NTM (Neural Turing Machine)~\cite{graves2014neural}, DNC (Differentiable Neural Computer)~\cite{graves2016hybrid} or DWM (Differentiable Working Memory)~\cite{jayram2018learning}.
 
 A distinctive feature of the SAM Network is its frame-by-frame temporal processing approach, where a single frame can be accessed at once. This is a notable difference from~\cite{haurilet2019s}, which uses graph traversal reasoning. The recurrent nature of SAMNet does not prevent frame sequences longer than those used for training.
 The memory locations store relevant objects representing contextual information about words in text and visual objects extracted from video. 
@@ -36,7 +36,7 @@ A notable feature of this design is that the number of addresses $N$ can be chan
 %\end{figure}
 
 
-SAMNet's core is a recurrent cell called the SAM Cell. Unrolling a new series of $T$ cells for each frame allows $T$ steps of compositional reasoning, similar to~\cite{hudson2018compositional}. Information flows between frames through the external memory. 
+SAMNet's core is a recurrent cell called the SAM Cell. Unrolling a new series of $T$ cells for each frame allows $T$ steps of iterative reasoning, similar to~\cite{hudson2018compositional}. Information flows between frames through the external memory. 
 During the $t$-th reasoning step, for $t=1,2, \dots, T$, SAM Cell maintains the following information as part of its recurrent state:
 (a) $\vec{c}_t \in \Reals^d$, the control state used to drive reasoning over objects in the frame and memory; and
 (b) $\vec{so}_t  \in \Reals^d$, the summary visual object representing the relevant object for step $t$.
