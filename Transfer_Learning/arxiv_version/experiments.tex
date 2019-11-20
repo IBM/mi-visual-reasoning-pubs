@@ -41,12 +41,12 @@ The most important results are highlighted in~\cref{fig:samnet_cog_detailed}; fu
 	\centering
 	\begin{subfigure}{\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{../img/results/samnet_cog_orig_canonical_no_labels.png}
+		\includegraphics[width=\textwidth]{../results/samnet_cog_orig_canonical_no_labels.png}
 	\end{subfigure}%
 	\newline
 	\begin{subfigure}{\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{../img/results/samnet_cog_orig_hard.png}
+		\includegraphics[width=\textwidth]{../results/samnet_cog_orig_hard.png}
 	\end{subfigure}%
 	\caption{Comparison of test set accuracies of SAMNet (blue) with original results achieved by the 
 		baseline model~\cite{yang2018dataset} (gray) on Canonical (top) and Hard (bottom) variants of the COG dataset.}
@@ -63,6 +63,7 @@ Despite there being some tasks in the Canonical variant where SAMNet achieved sl
 % (between 0.2 and 1.8 points)
 when comparing performances on the Hard variant, it improves upon the baseline model on all tasks, 
 with improvements varying from 0.5 to more than 30 points, and especially on the more complex tasks in the dataset.
+
 
 \subsection{Reasoning transfer on CLEVR and COG}
 \label{sec:reasoning}
@@ -88,7 +89,7 @@ Noticeable results are shown in~\cref{fig:CoGenT-results}, while the complete se
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.8\textwidth]{../img/results/CoGenT_results.pdf}
+	\includegraphics[width=0.8\textwidth]{../results/CoGenT_results.pdf}
 	\caption{CLEVR-CoGenT accuracies for all tasks $t$ when training on $t$ only, training on all tasks jointly and training on all tasks but $t$.} %For all experiments, the validation and test sets are identical.
 	\label{fig:CoGenT-results}
 \end{figure}
@@ -135,7 +136,7 @@ Below, substitute each of \textit{Shape} and \textit{Color} for  \uX{} to obtain
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.85\textwidth]{../img/results/COG_reasoning_transfer_v3}
+	\includegraphics[width=0.85\textwidth]{../results/COG_reasoning_transfer_v3}
 	\caption{COG accuracies for all task groups $t$ when training on $t$ only; training on Group A or B; and on all tasks.}
 	\label{fig:COG-reasoning-results}
 \end{figure}
@@ -193,7 +194,7 @@ performance on longer video frames with more complex scenes.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.8\textwidth]{../img/results/samnet_cog_overall_transfer.png}
+	\includegraphics[width=0.8\textwidth]{../results/samnet_cog_overall_transfer.png}
 	\caption{Total accuracies of SAMNet (blue) and baseline models (light/dark gray) when testing generalization from Canonical to Hard variants of the dataset.}
 	\label{fig:samnet_cog_overall_transfer}
 \end{figure}
@@ -231,7 +232,7 @@ We conduct 2 experiments with SAMNet trained on CoGenT-A:
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.6\textwidth]{../img/results/CoGenT_B_results.pdf}
+	\includegraphics[width=0.6\textwidth]{../results/CoGenT_B_results.pdf}
 	\caption{Test accuracy on CoGenT-A \& -B when training on CoGenT-A (blue) and fine-tuning on CoGenT-B (gray).}
 	\label{fig:CoGenT-B-results}
 \end{figure}
