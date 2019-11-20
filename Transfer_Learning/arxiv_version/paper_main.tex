@@ -1,0 +1,155 @@
+\documentclass[11pt]{article}
+
+\usepackage[letterpaper,margin=1in]{geometry}
+%\usepackage{cvpr}
+%\usepackage{times}
+%\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage[font=small]{subcaption}
+\captionsetup[figure]{skip=5pt}
+\captionsetup[table]{skip=5pt}
+\setlength{\belowcaptionskip}{-15pt}  % reduce padding below figure
+\usepackage{amsmath, amssymb, amsfonts,bm}
+\usepackage{amsthm}
+
+% Include other packages here, before hyperref.
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{adjustbox}
+\usepackage{tabularx}
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+\hypersetup{
+	pagebackref,
+	colorlinks,
+	breaklinks,
+	bookmarks=false,
+	linkcolor={red!50!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black},
+	%linkcolor=OliveGreen,
+	%citecolor=Blue,
+}
+
+\usepackage{cleveref}
+\crefname{section}{Section}{Sections}
+\crefname{figure}{Figure}{Figures}
+\crefname{table}{Table}{Tables}
+\crefname{appendix}{Appendix}{Appendices}
+\crefname{definition}{Definition}{Definitions}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{remark}
+\newtheorem*{notation}{Notation}
+%\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+
+\newtheorem{fact}{Fact}
+\newtheorem*{observation}{Observation}
+\newtheorem*{condition}{Condition}
+\newtheorem*{claim}{Claim}
+\newtheorem*{example}{Example}
+\newtheorem*{question}{Question}
+
+\usepackage{enumitem}
+\setlist{leftmargin=*} 
+
+%% User's macros %%
+\newcommand{\Reals}{\mathbb{R}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cY}{\mathcal{Y}}
+\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\cF}{\mathcal{F}}
+
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\vc}{\vec{c}}
+\newcommand{\vso}{\vec{so}}
+\newcommand{\vone}{\vec{1}}
+\newcommand{\proj}{\mathrm{proj}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
+
+\newcommand{\imatch}{g^{\mathrm{v}}}
+\newcommand{\mmatch}{g^{\mathrm{m}}}
+
+\newcommand{\doadd}{h^{\mathrm{a}}}
+\newcommand{\doreplace}{h^{\mathrm{r}}}
+
+\newcommand{\tlast}{\tau^{\mathrm{last}}}
+\newcommand{\tlatest}{\tau^{\mathrm{latest}}}
+\newcommand{\tnow}{\tau^{\mathrm{now}}}
+\newcommand{\tnone}{\tau^{\mathrm{none}}}
+
+\newcommand{\rhead}{\vec{rh}}
+\newcommand{\whead}{\vec{wh}}
+
+\newcommand{\uX}{\underline{X}}
+
+
+\newcommand{\tk}[1]{\textcolor{red}{TK: #1}}
+\newcommand{\ao}[1]{\textcolor{green}{AO: #1}}
+\newcommand{\tsj}[1]{\textcolor{magenta}{TSJ: #1}}
+\newcommand{\vm}[1]{\textcolor{blue}{VM: #1}}
+
+\newcommand{\compresslist}{ % Define a command to reduce spacing within itemize/enumerate environments, this is used right after \begin{enumerate} or \begin{enumerate}
+\setlength{\itemsep}{1pt}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}}
+
+
+
+%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%%%%% TITLE
+\title{Transfer Learning in Visual and Relational Reasoning}
+
+%%%%%%%%% AUTHORS
+% WILL NEED TO REARRANGE THE AUTHORS LIST & GET CORRECT INSTITUTIONS / EMAILS
+\author{T.S. Jayram \and  Vincent Marois \and \and Tomasz Kornuta \and Vincent Albouy \and Emre Sevgen \and Ahmet Ozcan\\
+IBM Research AI\\
+Almaden Research Center, San Jose, CA 95120, USA\\
+Thomas J. Watson Research Center, Yorktown Heights, NY 10598, USA\\
+{\tt\small \{jayram,  asozcan\}@us.ibm.com}
+{\tt\small \{tkornuta, sesevgen\}@gmail.com}
+{\tt\small vincent.marois@ibm.com}
+}
+
+\maketitle
+
+%%%%%%%%% ABSTRACT
+\begin{abstract}
+  Transfer learning is becoming the de facto solution for vision and text encoders in the front-end processing of machine learning solutions. Utilizing vast amounts of knowledge in pre-trained models and subsequent fine-tuning allows achieving better performance in domains where labeled data is limited. In this paper, we analyze the efficiency of transfer learning in visual reasoning by introducing a new model (SAMNet) and testing it on two datasets: COG and CLEVR.  Our new model achieves state-of-the-art accuracy on COG and shows significantly better generalization capabilities compared to the baseline. We also formalize a taxonomy of transfer learning for visual reasoning around three axes: feature, temporal, and reasoning transfer. Based on extensive experimentation of transfer learning on each of the two datasets, we show the performance of the new model along each axis.
+\end{abstract}
+
+%%%%%%%%% BODY TEXT
+\input{introduction}
+
+\input{related_work}
+
+\input{transfer_learning}
+
+\input{samnet}
+
+\input{experiments}
+
+\input{summary}
+
+\bibliographystyle{alpha}
+\bibliography{bibliography}
+
+\newpage
+\input{appendix}
+
+\end{document}

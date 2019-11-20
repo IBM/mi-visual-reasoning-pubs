@@ -1,0 +1,46 @@
+\section{Introduction}
+%dummy
+In recent years, neural networks, being at the epicenter of the Deep Learning~\cite{lecun2015deep} revolution, became the dominant solutions across many domains, from Speech Recognition~\cite{graves2013speech}, Image Classification~\cite{krizhevsky2012imagenet}, Object Detection~\cite{redmon2016you}, to Question Answering~\cite{weston2014memory} and Machine Translation~\cite{bahdanau2014neural} among others.
+At their core, being statistical models~\cite{ripley1993statistical,warner1996understanding}, neural networks rely on the assumption that training and testing samples are independent and identically distributed (\textit{iid}); i.e.\ sampled from a common input space under similar data distribution characteristics.
+However, in many real-world scenarios, this assumption does not hold. Moreover, as modern neural models often have millions of trainable parameters, training them requires vast amounts of data, which for some domains (e.g., medical) can be very expensive and/or extremely difficult to collect.
+One of the widely used solutions for the above mentioned problems is Transfer Learning~\cite{pan2009survey,weiss2016survey}, a technique which enhances model performance by transferring \emph{information} from one domain to another.
+
+%pan2009survey: we categorize transfer learning under three sub-settings: inductive transfer learning, transductive transfer learning and unsupervised transfer learning, 
+
+In Computer Vision, it is now standard practice to pretrain an image encoder (such as VGG~\cite{simonyan2014very} or ResNet~\cite{he2016deep}) on large-scale datasets (such as ImageNet~\cite{deng2009imagenet}), and reuse the weights in unrelated domains and tasks, such as segmentation of cars~\cite{iglovikov2018ternausnet} or Visual Question Answering (VQA) in a medical domain~\cite{kornuta2019leveraging}.
+Such performance improvements are appealing, especially in cases where both the domain (natural vs. medical images) and the task (image classification vs. image segmentation vs VQA) change significantly. %This type of transfer learning is qualified as \emph{inductive}, according to the taxonomy from~\cite{pan2009survey}.
+
+Similar developments have emerged in the Natural Language Processing (NLP) community.
+Using shallow word embeddings, such as word2vec~\cite{mikolov2013distributed} or GloVe~\cite{pennington2014glove}, pretrained on large corpuses from e.g.\ Wikipedia or Twitter, has become a standard procedure when working with different NLP domains and tasks.
+Recently, there is a clear, growing trend of utilization of deep contextualized word representations such as ELMo~\cite{peters2018deep} (based on bidirectional LSTMs~\cite{hochreiter1997long}) or BERT~\cite{devlin2018bert} (based on the Transformer~\cite{vaswani2017attention} architecture), where entire deep networks (not just the input layer) are pretrained on very large corporas.
+In analogy to pretrained image encoders, the NLP community has also started to create model repositories, some with dozens of pretrained models ready to be downloaded and used. HuggingFace~\cite{wolf2019transformers} is one of the most notable examples.
+
+The success of transfer learning raises several research questions, such as the characteristics which make a dataset more favorable to be used in pretraining (notably ImageNet~\cite{huh2016makes}), or regarding the observed performance correlation of models with different architectures between the source and target domains~\cite{kornblith2019better}.
+One of the most systematic works in this area is the computational taxonomic map for task transfer learning~\cite{zamir2018taskonomy}, which aimed at discovering the dependencies between twenty-six 2D, 2.5D, 3D, and semantic computer vision tasks.
+
+In this work we focus on transfer learning in multi-modal tasks combining vision and language~\cite{mogadala2019trends}.
+More precisely, we narrow the scope to transfer learning between visual reasoning tasks that have a ``nice'' logical structure, e.g.,~\cite{johnson2017clevr,yang2018dataset,song2018explore}. 
+While models such as BERT and ResNet can be transferred efficiently in the same modality they were pretrained on, challenges arise
+once the modalities have been fused.
+For example, the CoGenT (Constrained Generalization Test) variant of the CLEVR dataset~\cite{johnson2017clevr}  
+contains two sets with similar questions, but differing on combinations of object-attribute values in images 
+(\cref{sec:feature}).
+In this case, training on the first variant might yield entangled feature representations that may fail reasoning tasks
+on the second one.
+In video reasoning, an additional challenge in the temporal dimension is whether a model trained on shorter video sequences will 
+transfer over to longer ones, e.g., the Canonical and the Hard variants of the 
+COG dataset~\cite{yang2018dataset} (\cref{sec:temporal}).
+To address these challenges, mechanisms such as attention~\cite{bahdanau2014neural} 
+and external memory~\cite{graves2014neural, graves2016hybrid,weston2014memory} 
+which facilitate higher-level abstractions, seem more promising. 
+
+\smallskip
+
+\noindent Motivated by these considerations:
+%Consequently:
+\begin{enumerate}
+	%\compresslist
+	\item We propose a new model, called SAMNet (Selective Attention Memory Network), which achieves state-of-the-art results on COG~\cite{yang2018dataset}, a Video QA reasoning dataset.
+	\item We propose a taxonomy of transfer learning, inspired from~\cite{pan2009survey}, applied to the domain of visual reasoning. Articulated around 3 main axes, we illustrate it through the COG dataset, as well as the CLEVR~\cite{johnson2017clevr} diagnostic dataset for Image QA.
+	\item Subsequently, we measure the impact of transferring the whole pretrained SAMNet model in the 3 proposed transfer learning settings: feature transfer, temporal transfer and reasoning transfer. This analysis is supported by an extensive set of experiments using the COG and CLEVR datasets, as well as their variants. Several of these experiments show significant transfer learning capabilities of SAMNet.
+\end{enumerate}
