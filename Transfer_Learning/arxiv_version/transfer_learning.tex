@@ -2,7 +2,7 @@
 
 \begin{figure*}
 	\centering
-	\includegraphics[width=0.9\textwidth]{../img/architecture/transfer_taxo}
+	\includegraphics[width=\textwidth]{../img/architecture/transfer_taxo}
 	\caption{Transfer learning taxonomy.}\label{fig:taskonomy}
 \end{figure*}
 
@@ -42,7 +42,6 @@ This entails studying transfer learning between families of tasks which requires
 Broadly, we consider 3 kinds of transfer learning problems in this work, as illustrated in~\cref{fig:taskonomy}. 
 Let $\cQ$ denote the set of questions and $\cV$ denote the set of visual inputs.
 \begin{description}
-	%\compresslist % used to reduce spacing
 	\item[Feature Transfer:] In this setting of domain adaptation, $\cX_S = \cX_T \subseteq \cQ \times \cV$
 	and the task $f(q,v)$ is just the answer to the question $q$ on visual input $v$. The output set $\cY$ is the union of legitimate answers
 	over all questions in $\cQ$.

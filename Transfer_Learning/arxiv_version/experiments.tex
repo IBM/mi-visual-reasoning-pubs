@@ -41,12 +41,12 @@ The most important results are highlighted in~\cref{fig:samnet_cog_detailed}; fu
 	\centering
 	\begin{subfigure}{\textwidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{../img/results/samnet_cog_orig_canonical_no_labels.png}
+		\includegraphics[width=\textwidth]{../img/results/samnet_cog_orig_canonical_no_labels.png}
 	\end{subfigure}%
 	\newline
 	\begin{subfigure}{\textwidth}
 		\centering
-		\includegraphics[width=0.9\textwidth]{../img/results/samnet_cog_orig_hard.png}
+		\includegraphics[width=\textwidth]{../img/results/samnet_cog_orig_hard.png}
 	\end{subfigure}%
 	\caption{Comparison of test set accuracies of SAMNet (blue) with original results achieved by the 
 		baseline model~\cite{yang2018dataset} (gray) on Canonical (top) and Hard (bottom) variants of the COG dataset.}
@@ -75,7 +75,6 @@ of each task relative to others using appropriate groupings of tasks.
 \label{sec:reasoning-clevr}
 For the CLEVR dataset, we consider the question categories defined by the authors: \textit{Exist}, \textit{Count}, \textit{CompareInteger}, \textit{CompareAttribute}, \textit{QueryAttribute}. For performance reasons, we deactivated the external memory and temporally-related modules in SAMNet as they are unnecessary while reasoning about static images. We conduct the following experiments:
 \begin{itemize}
-	\compresslist
 	\item Train and test SAMNet on a single task group $t$. These 5 experiments fit into the traditional ML setup of single-task learning;
 	\item Train SAMNet on all task groups jointly and evaluate its performance on each task group $t$ separately.
 	This is a transfer learning setting where for the source task family, the task is sampled from all questions,
@@ -87,6 +86,13 @@ For the CLEVR dataset, we consider the question categories defined by the author
 
 Noticeable results are shown in~\cref{fig:CoGenT-results}, while the complete set is available in the supplementary material.%Appendix \ref{sec:full-cogent-results}.
 
+\begin{figure}[!t]
+	\centering
+	\includegraphics[width=0.8\textwidth]{../img/results/CoGenT_results.pdf}
+	\caption{CLEVR-CoGenT accuracies for all tasks $t$ when training on $t$ only, training on all tasks jointly and training on all tasks but $t$.} %For all experiments, the validation and test sets are identical.
+	\label{fig:CoGenT-results}
+\end{figure}
+
 
 Looking at~\cref{fig:CoGenT-results}, SAMNet does well on \textit{Count} and \textit{QueryAttribute}, but poorer on the 3 other tasks in the single-task learning setting (blue). Indeed, \textit{Exist}, \textit{CompareInteger} and \textit{CompareAttribute} are binary tasks; \textit{Count} has output labels digits 0 through 10 (so $<$10\% accuracy by chance) and \textit{QueryAttribute} maps to the set of object-attribute values (15 labels).
 
@@ -96,13 +102,6 @@ Nevertheless, significant accuracy gains are noted when training jointly on all 
 Finally, the ``all-tasks-but-$t$'' experiments (yellow) demonstrate that while tasks are related, one does not subsume another in terms of learning. Indeed, we can observe that for \textit{CompareAttribute}, while \textit{Exist} and \textit{CompareInteger} share the same output space, including them and holding out \textit{CompareAttribute} from the training set results in poor accuracy.
 We also observe no learning for \textit{Count} and \textit{QueryAttribute}. As these categories have labels that do not overlap with other categories, the model cannot predict these labels.
 
-
-\begin{figure}[!t]
-	\centering
-	\includegraphics[width=\columnwidth]{../img/results/CoGenT_results.pdf}
-	\caption{CLEVR-CoGenT accuracies for all tasks $t$ when training on $t$ only, training on all tasks jointly and training on all tasks but $t$.} %For all experiments, the validation and test sets are identical.
-	\label{fig:CoGenT-results}
-\end{figure}
 
 An additional set of experiments, for which results are available in the supplementary material,
 %Appendix \ref{sec:full-cogent-results}
@@ -115,9 +114,9 @@ Fine-tuning did not demonstrate a clear benefit (except for \textit{Count}, wher
 Since the number of task classes (=23) in the COG dataset is large, we designed a 2-level hierarchy of task groups using the
 description of these tasks, as shown in~\cref{fig:task-groups}.
 
-\begin{figure}[htb]
+\begin{figure}[!t]
 	\centering
-	\includegraphics[width=\columnwidth]{../img/architecture/hierarchy}
+	\includegraphics[width=0.8\textwidth]{../img/architecture/hierarchy}
 	\caption{Hierarchy of Task Groups.}
 	\label{fig:task-groups}
 \end{figure}
@@ -127,7 +126,6 @@ description of these tasks, as shown in~\cref{fig:task-groups}.
 For groups at the lowest level, we chose the following task classes to be placed in those groups.
 Below, substitute each of \textit{Shape} and \textit{Color} for  \uX{} to obtain the task class.
 \begin{description}
-	\compresslist
 	\item[Basic:] \textit{Exist}\uX, \textit{Get}\uX{} and \textit{Exist};
 	\item[Obj-Attr:] \emph{SimpleCompare}\uX{} and \textit{AndSimpleCompare}\uX;
 	\item[Compare:] \textit{Compare}\uX,  \textit{AndCompare}\uX{} \& \textit{Exist}\uX\textit{Of};
@@ -137,7 +135,7 @@ Below, substitute each of \textit{Shape} and \textit{Color} for  \uX{} to obtain
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=\columnwidth]{../img/results/COG_reasoning_transfer_v3}
+	\includegraphics[width=0.85\textwidth]{../img/results/COG_reasoning_transfer_v3}
 	\caption{COG accuracies for all task groups $t$ when training on $t$ only; training on Group A or B; and on all tasks.}
 	\label{fig:COG-reasoning-results}
 \end{figure}
@@ -146,7 +144,6 @@ We then conducted the following experiments using the Canonical variant of COG t
 whether transfer learning was effective in leveraging information gained by training a task family at a higher level
 of the hierarchy:
  \begin{itemize}
- 	\compresslist
 	\item Train and test SAMNet on each of the 5 task groups at the lowest level of the hierarchy (Single-task training);
 	\item Jointly train on:
 	\begin{itemize}
@@ -196,7 +193,7 @@ performance on longer video frames with more complex scenes.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=\columnwidth]{../img/results/samnet_cog_overall_transfer.png}
+	\includegraphics[width=0.8\textwidth]{../img/results/samnet_cog_overall_transfer.png}
 	\caption{Total accuracies of SAMNet (blue) and baseline models (light/dark gray) when testing generalization from Canonical to Hard variants of the dataset.}
 	\label{fig:samnet_cog_overall_transfer}
 \end{figure}
@@ -234,7 +231,7 @@ We conduct 2 experiments with SAMNet trained on CoGenT-A:
 
 \begin{figure}[!t]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{../img/results/CoGenT_B_results.pdf}
+	\includegraphics[width=0.6\textwidth]{../img/results/CoGenT_B_results.pdf}
 	\caption{Test accuracy on CoGenT-A \& -B when training on CoGenT-A (blue) and fine-tuning on CoGenT-B (gray).}
 	\label{fig:CoGenT-B-results}
 \end{figure}
