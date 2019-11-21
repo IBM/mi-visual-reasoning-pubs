@@ -1,35 +1,24 @@
 \documentclass[11pt]{article}
 
 \usepackage[letterpaper,margin=1in]{geometry}
-%\usepackage{cvpr}
-%\usepackage{times}
-%\usepackage{epsfig}
+\usepackage{times}
 \usepackage{graphicx}
-\usepackage[font=small]{subcaption}
-\captionsetup[figure]{skip=5pt}
-\captionsetup[table]{skip=5pt}
-\setlength{\belowcaptionskip}{-15pt}  % reduce padding below figure
+\usepackage{subcaption}
 \usepackage{amsmath, amssymb, amsfonts,bm}
 \usepackage{amsthm}
 
 % Include other packages here, before hyperref.
 \usepackage{booktabs}
-\usepackage{multirow}
 \usepackage{adjustbox}
-\usepackage{tabularx}
 \usepackage{xcolor}
 
 \usepackage{hyperref}
 \hypersetup{
-	pagebackref,
 	colorlinks,
 	breaklinks,
-	bookmarks=false,
 	linkcolor={red!50!black},
 	citecolor={blue!50!black},
 	urlcolor={blue!80!black},
-	%linkcolor=OliveGreen,
-	%citecolor=Blue,
 }
 
 \usepackage{cleveref}
@@ -39,24 +28,7 @@
 \crefname{appendix}{Appendix}{Appendices}
 \crefname{definition}{Definition}{Definitions}
 
-\newtheorem{theorem}{Theorem}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{definition}[theorem]{Definition}
-
-\theoremstyle{remark}
-\newtheorem*{notation}{Notation}
-%\newtheorem*{remark}{Remark}
-\newtheorem*{note}{Note}
-
-\newtheorem{fact}{Fact}
-\newtheorem*{observation}{Observation}
-\newtheorem*{condition}{Condition}
-\newtheorem*{claim}{Claim}
-\newtheorem*{example}{Example}
-\newtheorem*{question}{Question}
+\newtheorem*{definition}{Definition}
 
 \usepackage{enumitem}
 \setlist{leftmargin=*} 
@@ -101,36 +73,30 @@
 \newcommand{\tsj}[1]{\textcolor{magenta}{TSJ: #1}}
 \newcommand{\vm}[1]{\textcolor{blue}{VM: #1}}
 
-\newcommand{\compresslist}{ % Define a command to reduce spacing within itemize/enumerate environments, this is used right after \begin{enumerate} or \begin{enumerate}
-\setlength{\itemsep}{1pt}
-\setlength{\parskip}{0pt}
-\setlength{\parsep}{0pt}}
-
-
 
 %%%%%%%%%%%%%%%
 
 \begin{document}
 
 %%%%%%%%% TITLE
-\title{Transfer Learning in Visual and Relational Reasoning}
+\title{Transfer Learning in Visual and Relational Reasoning\footnote{%
+		Major portion of this work was done when all the authors were at IBM Research AI (Almaden)}}
 
 %%%%%%%%% AUTHORS
 % WILL NEED TO REARRANGE THE AUTHORS LIST & GET CORRECT INSTITUTIONS / EMAILS
 \author{%
 	T.S. Jayram\thanks{IBM Research AI.
-		\textit{Location}: Almaden Research Center, San Jose, CA, USA.} \and  
+		Location: \textit{Almaden Research Center, San Jose, CA, USA}.} \and  
 	Vincent Marois\thanks{IBM Research AI. 
-		\textit{Location}: Thomas J. Watson Research Center, Yorktown Heights, NY, USA.} \and 
+		Location: \textit{Thomas J. Watson Research Center, Yorktown Heights, NY, USA}.} \and 
 	Tomasz Kornuta\thanks{Nvidia Research. 
-		\textit{Location}: Santa Clara, CA, USA.
-		Work done while employed at IBM Research AI.} \and 
-	Vincent Albouy  \and 
-	Emre Sevgen \and 
-	Ahmet Ozcan\footnotemark[1]
+		Location: \textit{Santa Clara, CA, USA}.} \and 
+	Vincent Albouy\thanks{} \and 
+	Emre Sevgen\thanks{University of Chicago.}  \and 
+	Ahmet Ozcan\footnotemark[2]
 }
-	
-%\author{ABC\thanks{XYZ} \and DEF\thanks{UVW} \and GHI\footnotemark[1]}
+
+\date{}
 
 \maketitle
 

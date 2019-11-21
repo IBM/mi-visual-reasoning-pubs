@@ -1,6 +1,34 @@
-\section{Datasets: COG \& CLEVR-CoGenT}
+\section{Datasets: CLEVR-CoGenT and COG}
 \label{sec:datasets-desc}
+%Here are the details of the COG dataset.
+%
+The CoGenT dataset~\cite{johnson2017clevr} contains:
+\begin{itemize}
+	\def\labelitemi{--}
+	\item Training set of 70,000 images and 699,960 questions in Condition A,
+	\item Validation set of 15,000 images and 149,991 questions in Condition A,
+	\item Test set of 15,000 images and 149,980 questions in Condition A (without answers),
+	\item Validation set of 15,000 images and 150,000 questions in Condition B,
+	\item Test set of 15,000 images and 149,992 questions in Condition B (without answers),
+	\item Scene graphs and functional programs for all training/validation images/questions.
+\end{itemize}
 
+The combinations of attributes in CoGenT-A and CoGenT-B are shown in~\cref{tab:cogent_conditions_supplement}.
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{cccc}
+		\toprule
+		Dataset	&	Cubes	&	Cylinders	&	Spheres	\\
+		\midrule
+		CoGenT-A	&	Gray / Blue / Brown / Yellow	&	Red / Green / Purple / Cyan	&	Any color	\\
+		CoGenT-B	&	Red / Green / Purple / Cyan	&	Gray / Blue / Brown / Yellow	&	Any color 	\\
+		\bottomrule
+	\end{tabular}
+	\caption{Colors \& shapes combinations present in CoGenT-A \& -B datasets.}
+	\label{tab:cogent_conditions_supplement}
+\end{table}
+
+The Canonical and Hard variants of the COG dataset~\cite{yang2018dataset} are contrasted in~\cref{tab:cog_variants_supplement}.
 \begin{table}[ht]
 	\centering
 	\begin{tabular}{lcccccc}
@@ -16,45 +44,37 @@
 	\caption{Details of the Canonical and Hard variants of the COG dataset.}
 	\label{tab:cog_variants_supplement}
 \end{table}
+%
+%\begin{table}[ht]
+%	\centering
+%	\begin{tabular}{lcccccc}.
+%		\toprule
+%		Variant    &  	number &  	maximum & maximum & size & size & size  \\ 
+%		& of   & memory & number of & of & of & of 
+%%		& frames & duration & distractors & training set & validation set & test set \\
+%		\midrule
+%		Canonical & 4 & 3 & 1 & 10000320 & 500016 & 500016 \\	
+%		Hard  & 8 & 7 & 10 & 10000320 & 500016  & 500016 \\
+%		\bottomrule	
+%	\end{tabular}
+%	\caption{Details of the Canonical and Hard variants of the COG dataset.}
+%	\label{tab:cog_variants_supplement}
+%\end{table}
 
-\begin{table}[ht]
-	\centering
-	\begin{tabular}{cccc}
-		\toprule
-		Dataset	&	Cubes	&	Cylinders	&	Spheres	\\
-		\midrule
-		CoGenT-A	&	Gray / Blue / Brown / Yellow	&	Red / Green / Purple / Cyan	&	Any color	\\
-		CoGenT-B	&	Red / Green / Purple / Cyan	&	Gray / Blue / Brown / Yellow	&	Any color 	\\
-		\bottomrule
-	\end{tabular}
-	\caption{Colors \& shapes combinations present in CoGenT-A \& -B datasets.}
-    \label{tab:cogent_conditions_supplement}
-\end{table}
 
-The CoGenT dataset~\cite{johnson2017clevr} contains:
-\begin{itemize}
-	\def\labelitemi{--}
-	\item Training set of 70,000 images and 699,960 questions in Condition A,
-	\item Validation set of 15,000 images and 149,991 questions in Condition A,
-	\item Test set of 15,000 images and 149,980 questions in Condition A (without answers),
-	\item Validation set of 15,000 images and 150,000 questions in Condition B,
-	\item Test set of 15,000 images and 149,992 questions in Condition B (without answers),
-	\item Scene graphs and functional programs for all training/validation images/questions.
-\end{itemize}
 
 \clearpage
 \section{Complete COG results}
 \label{sec:cog-all-results}
 
 \begin{table*}[htb]
-	\caption{COG test set accuracies for SAMNet \& COG models. Below `paper' denotes results from~\cite{yang2018dataset}  while `code' denotes results of our experiments using their implementation~\cite{yang2018implement}.}
-	\centering
+\centering
 	\begin{adjustbox}{width=\columnwidth}
 	\begin{tabular}{lcccccccccc}
 		\toprule
-		Model & & SAMNet & && && COG Model&& \\
+		Model & & SAMNet & && && Baseline Model&& \\
 		\cmidrule{2-5} \cmidrule{7-11} 
-		&&&&& & paper & ours & ours & paper&\\
+		&&&&& & paper & code & code & paper&\\
 		\cmidrule{7-9} \cmidrule{10-11}
 		Trained on       & canonical & canonical & canonical & hard &           &  canonical  & canonical  & canonical & hard \\ 
 		Fine tuned on  & - & - & hard  & - &           & -   & - & hard & - \\ 
@@ -91,6 +111,7 @@ The CoGenT dataset~\cite{johnson2017clevr} contains:
 		\bottomrule
 		\end{tabular}
 		\end{adjustbox}
+	\caption{COG test set accuracies for SAMNet and baseline model~\cite{yang2018dataset}. Below `paper' denotes results from~\cite{yang2018dataset} with further author clarifications (private communication) while `code' denotes results of our experiments using their implementation~\cite{yang2018implement}.}
 	\label{tab:all-results}
 \end{table*}
 
@@ -100,7 +121,6 @@ The CoGenT dataset~\cite{johnson2017clevr} contains:
 
 \begin{table*}[htb]
 	\centering
-	\caption{Complete set of results for SAMNet on CLEVR-CoGenT.}\label{tab:CoGenT-results}
 	\begin{adjustbox}{width=\columnwidth}
 	\begin{tabular}{c c c c c c c }\toprule
 		\multicolumn{1}{c }{\textbf{}} & \multicolumn{6}{c }{\textbf{Test Accuracy (\%)}} \\  
@@ -140,4 +160,6 @@ The CoGenT dataset~\cite{johnson2017clevr} contains:
 		\bottomrule
 	\end{tabular}
 	\end{adjustbox}
+	\caption{Complete set of results for SAMNet on CLEVR-CoGenT.}
+	\label{tab:CoGenT-results}
 \end{table*}
