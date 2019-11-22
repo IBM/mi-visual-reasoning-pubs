@@ -29,7 +29,7 @@ For CLEVR, we consider the CoGenT (Constrained Generalization Test) variant whic
 
 More details on the composition of these datasets is available in Appendix~\ref{sec:datasets-desc}.
 
-\subsection{Performance of SAMNet vs baseline model~\cite{yang2018dataset}}
+\subsection{Performance of SAMNet vs baseline model}
 \label{sec:cog-baseline-compare}
 
 We trained SAMNet using 8 reasoning steps and external memory of 8 address locations, each storing an array of 128 floats. 
@@ -65,7 +65,7 @@ Despite there being some tasks in the Canonical variant where SAMNet achieved sl
 when comparing performances on the Hard variant, it improves upon the baseline model on all tasks, 
 with improvements varying from 0.5 to more than 30 points, and especially on the more complex tasks in the dataset.
 
-Appendix~\ref{sec:cog-all-results} also includes the task-by-task performance of ``SoftPaths'' model~\cite{haurilet2019s} on the Canonical variant of the COG dataset, on which it achieves on overall accuracy of 96.1\%. This model is however not recurrent, therefore, it is unsuitable for temporal transfer learning, in contrast to SAMNet or the baseline model of~\cite{yang2018dataset}.
+Appendix~\ref{sec:cog-all-results} also includes the task-by-task performance of ``SoftPaths'' model~\cite{haurilet2019s} on the Canonical variant of the COG dataset, on which it achieves on overall accuracy of 96.1\%. This model is however not recurrent, therefore, it is not immediately applicable for temporal transfer learning---in contrast to SAMNet or the baseline model of~\cite{yang2018dataset}---but we include it here for completeness.
 
 \subsection{Reasoning transfer on CLEVR and COG}
 \label{sec:reasoning}
@@ -116,14 +116,12 @@ Fine-tuning did not demonstrate a clear benefit (except for \textit{Count}, wher
 Since the number of task classes (=23) in the COG dataset is large, we designed a 2-level hierarchy of task groups using the
 description of these tasks, as shown in~\cref{fig:task-groups}.
 
-\begin{figure}[!t]
+\begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{../img/architecture/hierarchy}
+	\includegraphics[width=0.6\textwidth]{../img/architecture/hierarchy}
 	\caption{Hierarchy of Task Groups.}
 	\label{fig:task-groups}
 \end{figure}
-
-\bigskip
 
 For groups at the lowest level, we chose the following task classes to be placed in those groups.
 Below, substitute each of \textit{Shape} and \textit{Color} for  \uX{} to obtain the task class.
@@ -134,13 +132,6 @@ Below, substitute each of \textit{Shape} and \textit{Color} for  \uX{} to obtain
 	\item[Spatial:] \textit{ExistSpace}, \textit{Exist}\uX\textit{Space}, and \textit{Get}\uX\textit{Space};
 	\item[Cognitive:] \textit{ExistLastColorSameShape}, \textit{ExistLastShapeSameColor} and \textit{ExistLastObjectSameObject}
 \end{description}
-
-\begin{figure}[!t]
-	\centering
-	\includegraphics[width=0.85\textwidth]{../results/COG_reasoning_transfer_v3}
-	\caption{COG accuracies for all task groups $t$ when training on $t$ only; training on Group A or B; and on all tasks.}
-	\label{fig:COG-reasoning-results}
-\end{figure}
 
 We then conducted the following experiments using the Canonical variant of COG to study 
 whether transfer learning was effective in leveraging information gained by training a task family at a higher level
@@ -157,6 +148,13 @@ of the hierarchy:
 \end{itemize}
 
 The results of these experiments are shown in~\cref{fig:COG-reasoning-results}.
+ \begin{figure}[!b]
+	\centering
+	\includegraphics[width=0.85\textwidth]{../results/COG_reasoning_transfer_v3}
+	\caption{COG accuracies for all task groups $t$ when training on $t$ only; training on Group A or B; and on all tasks.}
+	\label{fig:COG-reasoning-results}
+\end{figure}
+
 
 First, notice that for each of the \textbf{Basic} and \textbf{Obj-Attr} task families, the accuracy is near-perfect in all cases, suggesting that each contains the most primitive tasks and therefore do not benefit from training with other task families.
 With \textbf{Spatial}, we see a small improvement showing that there is some benefit due to joint training with other task families.
@@ -169,7 +167,6 @@ of fragments of questions given by \textbf{Basic} and \textbf{Obj-Attr}, and the
 Lastly, for the \textbf{Spatial} family, we again see the benefits of joint training with all questions (68.6\% to 95.7\%) but in this case there
 is a slight loss incurred by including everything. As seen in the figure, just jointly training with \textbf{Spatial} alone is sufficient to get a boost in accuracy (97.1\%). To summarize, while joint training helps, one needs to determine how much of correlation is present with the other tasks.
 
-  
 
 \subsection{Temporal transfer in COG}
 \label{sec:temporal}
@@ -193,7 +190,7 @@ to enable learning of good memory usage and attention on relevant entities
 in order to achieve comparable, if not better, 
 performance on longer video frames with more complex scenes.
 
-\begin{figure}[htb]
+\begin{figure}[!b]
 	\centering
 	\includegraphics[width=0.8\textwidth]{../results/samnet_cog_overall_transfer.png}
 	\caption{Total accuracies of SAMNet (blue) and baseline models (light/dark gray) when testing generalization from Canonical to Hard variants of the dataset.}
@@ -203,41 +200,42 @@ performance on longer video frames with more complex scenes.
 
 \subsection{Feature transfer on CLEVR-CoGenT}
 \label{sec:feature}
-\begin{table}[ht]
-	\centering
-	%\begin{adjustbox}{width=0.45\textwidth}
-		\begin{tabular}{cccc}
-			\toprule
-			Dataset	& Cubes	& Cylinders &	Spheres	\\
-			\midrule
-			CoGenT A &  Family A  & Family B 	&	Any color  \\
-			CoGenT B	&	Family B  &	Family A	&	Any color \\
-			\bottomrule
-		\end{tabular}
-	%\end{adjustbox}
-	\caption{Restrictions on feature combinations in A \& B conditions of the CoGenT variant of the CLEVR dataset.}
-	\label{tab:cogent_conditions}
-\end{table}
-
 The final set of experiments we consider is related to feature transfer.
 The CoGenT-A \& -B variants of CLEVR differ by the available combinations of 8 object color-attributes.
 The colors are partitioned into two complementary families: 
 Gray, Blue, Brown and Yellow in \textbf{Family A} and Red, Green, Purple, Cyan in \textbf{Family B}. 
 The cubes and cylinders take colors from complementary families in each variant with opposite configurations while the spheres can take any color (See~\cref{tab:cogent_conditions}). 
 As the input domain consist of the set of objects with all attribute values, both variants differ by their marginal distributions $P_S$ and $P_T$.
+
+\begin{table}[h]
+	\centering
+	%\begin{adjustbox}{width=0.45\textwidth}
+	\begin{tabular}{cccc}
+		\toprule
+		Dataset	& Cubes	& Cylinders &	Spheres	\\
+		\midrule
+		CoGenT A &  Family A  & Family B 	&	Any color  \\
+		CoGenT B	&	Family B  &	Family A	&	Any color \\
+		\bottomrule
+	\end{tabular}
+	%\end{adjustbox}
+	\caption{Restrictions on feature combinations in A \& B conditions of the CoGenT variant of the CLEVR dataset.}
+	\label{tab:cogent_conditions}
+\end{table}
+
 We conduct 2 experiments with SAMNet trained on CoGenT-A:
 \begin{itemize}
 \item an immediate test (zero-shot learning) from A to B; and 
 \item fine-tuning for a single epoch on 30k samples from CoGenT-B (following~\cite{johnson2017inferring, mascharka2018transparency, perez2018film, marois2018transfer}).
 \end{itemize}
 
-\begin{figure}[!t]
+Performance of SAMNet on CoGenT (\cref{fig:CoGenT-B-results}) is clearly worse on CoGenT-B than CoGenT-A.
+Fine-tuning for a single epoch allows an observable increase of 15 pts on CoGenT-B, and a slight drop on CoGenT-A.
+Both are consistent with findings from the literature~\cite{johnson2017inferring, mascharka2018transparency, perez2018film}.
+
+\begin{figure}[!b]
 	\centering
 	\includegraphics[width=0.6\textwidth]{../results/CoGenT_B_results.pdf}
 	\caption{Test accuracy on CoGenT-A \& -B when training on CoGenT-A (blue) and fine-tuning on CoGenT-B (gray).}
 	\label{fig:CoGenT-B-results}
 \end{figure}
-
-Performance of SAMNet on CoGenT (\cref{fig:CoGenT-B-results}) is clearly worse on CoGenT-B than CoGenT-A.
-Fine-tuning for a single epoch allows an observable increase of 15 pts on CoGenT-B, and a slight drop on CoGenT-A.
-Both are consistent with findings from the literature~\cite{johnson2017inferring, mascharka2018transparency, perez2018film}.
