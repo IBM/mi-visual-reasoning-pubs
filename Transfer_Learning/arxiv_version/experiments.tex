@@ -27,7 +27,7 @@ For CLEVR, we consider the CoGenT (Constrained Generalization Test) variant whic
 	\label{tab:cog_variants}
 \end{table}\vspace{5pt}
 
-%More details on the composition of these datasets is available in Appendix \ref{sec:datasets-desc}.
+More details on the composition of these datasets is available in Appendix~\ref{sec:datasets-desc}.
 
 \subsection{Performance of SAMNet vs baseline model~\cite{yang2018dataset}}
 \label{sec:cog-baseline-compare}
@@ -35,7 +35,8 @@ For CLEVR, we consider the CoGenT (Constrained Generalization Test) variant whic
 We trained SAMNet using 8 reasoning steps and external memory of 8 address locations, each storing an array of 128 floats. 
 %We have also carried out experiments with different numbers of reasoning steps and memory size, but this goes beyond the scope of this paper.
 We compared our results with the baseline model introduced in the same paper as the COG dataset~\cite{yang2018dataset}.
-The most important results are highlighted in~\cref{fig:samnet_cog_detailed}; full comparison can be found in the supplementary material.%Appendix~\ref{sec:cog-all-results}.
+The most important results are highlighted in~\cref{fig:samnet_cog_detailed}; full comparison can be found in 
+Appendix~\ref{sec:cog-all-results}.
 
 \begin{figure*}[htb]
 	\centering
@@ -64,6 +65,7 @@ Despite there being some tasks in the Canonical variant where SAMNet achieved sl
 when comparing performances on the Hard variant, it improves upon the baseline model on all tasks, 
 with improvements varying from 0.5 to more than 30 points, and especially on the more complex tasks in the dataset.
 
+Appendix~\ref{sec:cog-all-results} also includes the task-by-task performance of ``SoftPaths'' model~\cite{haurilet2019s} on the Canonical variant of the COG dataset, on which it achieves on overall accuracy of 96.1\%. This model is however not recurrent, therefore, it is unsuitable for temporal transfer learning, in contrast to SAMNet or the baseline model of~\cite{yang2018dataset}.
 
 \subsection{Reasoning transfer on CLEVR and COG}
 \label{sec:reasoning}
@@ -85,7 +87,7 @@ For the CLEVR dataset, we consider the question categories defined by the author
 	%These experiments steer away from single / multi-task training and rather fall under the Domain Adaptation setting, categorized as \emph{transductive} transfer learning in \cite{pan2009survey}.
 \end{itemize}
 
-Noticeable results are shown in~\cref{fig:CoGenT-results}, while the complete set is available in the supplementary material.%Appendix \ref{sec:full-cogent-results}.
+Noticeable results are shown in~\cref{fig:CoGenT-results}, while the complete set is available in Appendix~\ref{sec:full-cogent-results}.
 
 \begin{figure}[!t]
 	\centering
@@ -104,8 +106,7 @@ Finally, the ``all-tasks-but-$t$'' experiments (yellow) demonstrate that while t
 We also observe no learning for \textit{Count} and \textit{QueryAttribute}. As these categories have labels that do not overlap with other categories, the model cannot predict these labels.
 
 
-An additional set of experiments, for which results are available in the supplementary material,
-%Appendix \ref{sec:full-cogent-results}
+An additional set of experiments, for which results are available in Appendix~\ref{sec:full-cogent-results},
 fine-tune the model trained on all tasks on each task $t$ respectively.
 %Given the initial training on all tasks, we were interested in the tradeoff between the performance gain, if any, on the fine-tuned task and the drop, if any, on other tasks.
 Fine-tuning did not demonstrate a clear benefit (except for \textit{Count}, where the accuracy increased by 1.5 pt) without hurting performance on the other tasks. Nevertheless, these experiments leave open the possibility that joint training of tasks may potentially benefit from using weighted sampling towards the tail end with more emphasis on samples from less performing task groups, similar to~\cite{guo2018dynamic, kendall2018multi}.
