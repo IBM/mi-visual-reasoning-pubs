@@ -1,0 +1,20 @@
+\section{Related work}
+
+\tk{That section will focus \textbf{only} on transfer learning}
+
+In Computer Vision, it is now standard practice to pretrain an image encoder (such as VGG~\cite{simonyan2014very} or ResNet~\cite{he2016deep}) on large-scale datasets (such as ImageNet~\cite{deng2009imagenet}), and reuse the weights in unrelated domains and tasks, such as segmentation of cars~\cite{iglovikov2018ternausnet} or Visual Question Answering (VQA) in a medical domain~\cite{kornuta2019leveraging}.
+Such performance improvements are appealing, especially in cases where both the domain (natural vs. medical images) and the task (image classification vs. image segmentation vs VQA) change significantly. %This type of transfer learning is qualified as \emph{inductive}, according to the taxonomy from~\cite{pan2009survey}.
+
+Similar developments have emerged in the Natural Language Processing (NLP) community.
+Using shallow word embeddings, such as word2vec~\cite{mikolov2013distributed} or GloVe~\cite{pennington2014glove}, pretrained on large corpuses from e.g.\ Wikipedia or Twitter, has become a standard procedure when working with different NLP domains and tasks.
+Recently, there is a clear, growing trend of utilization of deep contextualized word representations such as ELMo~\cite{peters2018deep} (based on bidirectional LSTMs~\cite{hochreiter1997long}) or BERT~\cite{devlin2018bert} (based on the Transformer~\cite{vaswani2017attention} architecture), where entire deep networks (not just the input layer) are pretrained on very large corporas.
+In analogy to pretrained image encoders, the NLP community has also started to create model repositories, some with dozens of pretrained models ready to be downloaded and used. HuggingFace~\cite{wolf2019transformers} is one of the most notable examples.
+
+The success of transfer learning raises several research questions, such as the characteristics which make a dataset more favorable to be used in pretraining (notably ImageNet~\cite{huh2016makes}), or regarding the observed performance correlation of models with different architectures between the source and target domains~\cite{kornblith2019better}.
+One of the most systematic works in this area is the computational taxonomic map for task transfer learning~\cite{zamir2018taskonomy}, which aimed at discovering the dependencies between twenty-six 2D, 2.5D, 3D, and semantic computer vision tasks.
+
+
+\tk{missing review: TL in visual reasoning, refer to CoGenT and COG}
+
+
+\tk{after reading that section the reader should end up with a conclusion that: there are no good models for TL in VR and, moreover, the datasets are randomly testing this or that, there is no theoretical framework showing that do they mean/bigger picture is missing}
