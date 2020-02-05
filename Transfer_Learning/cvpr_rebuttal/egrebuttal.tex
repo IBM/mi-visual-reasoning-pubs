@@ -7,12 +7,17 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
+\newcommand{\tk}[1]{\textcolor{red}{TK: #1}}
+\newcommand{\ao}[1]{\textcolor{green}{AO: #1}}
+\newcommand{\tsj}[1]{\textcolor{magenta}{TSJ: #1}}
+\newcommand{\vm}[1]{\textcolor{blue}{VM: #1}}
+
 % Include other packages here, before hyperref.
 
 % If you comment hyperref and then uncomment it, you should delete
 % egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
 % run, let it finish, and you should be clear).
-\usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
+\usepackage[pagebackref=true,breaklinks=true,colorlinks,bookmarks=false]{hyperref}
 
 \def\cvprPaperID{7813}
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
@@ -20,17 +25,29 @@
 \begin{document}
 
 \title{Transfer Learning in Visual and Relational Reasoning -- Rebuttal}
-
 \maketitle
 \thispagestyle{empty}
 
+\section{Reviewer \#2 questions}
 
-\section{Introduction}
+\begin{enumerate}
+  \item What are $vo_tt$ and $mo_t$ and how they differ (lines 400-403)? What is the difference between both objects? \vm{$vo_t$ is the result of a retrieval operation on the content of the current input frame. $mo_t$ is the result of a similar operation on the memory content. The difference between both objects is thus their source.}
+
+  \item How the temporal classifier $\tau_t$ is trained and used? Do you use its logits or classes directly (lines 389-397)?
+  \item What are $va_t$ and in general all other symbols. How they are computed. \vm{$va_t$ is the visual attention vector, as defined on lines 412 - 413. $va_t$ is the result of a softmax layer}.
+  \item What is pseudo-attention (line 453)? Why such a name? \vm{$w_t$ is called a pseudo-attention vector as its norm may not always be 1 (just like a probability vector), but rather vary between 0 (no change) to 1 (complete change)}.
+  \item What are reasoning operations (lines 389-391)? \vm{One iteration of the SAM Cell is considered to be a reasoning operation, as defined on lines 376 - 377}.
+  \item How many 'reasoning operations' (what is k)? \vm{8 reasoning steps, as noted on lines 532-533.}
+  \item Figure 4 shows results on CLEVR-CoGenT. CLEVR-CoGenT uses a transfer between objects of type A and objects of type B (e.g. different combination of shapes and colors). Is this used here? Or this is standard CLEVR results? What are the results on the regular CLEVR, is it 95\% from the supp. material? \vm{The results presented in Fig 4 are reported on the condition A of CLEVR-CoGenT. No results are reported for CLEVR.}
+  \item Why the paper doesn't compare to other methods on CLEVR?
+\end{enumerate}
 
 
-{\small
-\bibliographystyle{ieee}
-\bibliography{}
-}
+
+% References
+% {\small
+% \bibliographystyle{ieee}
+% \bibliography{}
+% }
 
 \end{document}
