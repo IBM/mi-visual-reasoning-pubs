@@ -28,6 +28,30 @@
 \maketitle
 \thispagestyle{empty}
 
+We would like to thank all three reviewers for their time to read our manuscript and providing us useful feedback.  Reviewers agree on the strengths of the paper, namely the introduction of a new model which out-performed the baselines, and commonly point out to the same weaknesses, which is about the writing, motivation and organization of the paper.   The specific recommendations about how to improve the paper were extremely valuable for us.  Based on these, we overhauled the paper and re-wrote most of it (please see the revised version at the end of this document).    Below, we also provide answers to the technical questions raised by the reviewers.
+
+Here are the changes we have made:
+\begin{enumerate}
+	\item Re-wrote the \textbf{Abstract} to clarify the problem statement and our contribution.
+	\item Re-wrote most of the \textbf{Introduction}, shortened it and sharpened the focus about the main contributions.
+	\item \textbf{Related Work} section focused more on Transfer learning, and the deficiencies of existing solutions.
+	\item We moved the \textbf{Transfer Learning} section just before the Experiments to tie the theoretical framework to the experiments.
+	\item \textbf{Model}:  We added a \textbf{new figure} to show the details of SAMNet and depicted the variables to connect to the equations.  We also improved the description of the Model based on Rev.2's recommendations.
+	\item We \textbf{added baselines} for CLEVR/CoGenT in Figure X.
+	\item We rearranged the order of \textbf{Experiments} to better align with the theoretical framework.
+	\item In \textbf{Supplementary} section, we added snapshots from our visualization tool to show the behavior of the model in terms of visual attention, the retrieval of objects from the frame and the use of memory.
+\end{enumerate}
+
+We appreciate the time of the reviewers for a second time and hope that they would change their rating to give this work a chance to reach the broader CVPR audience.
+
+\section{Reviewer \#1 questions}
+
+We agree that further ablation studies would be valuable however, per CVPR guidelines, we are not able to preform new experiments during rebuttal.
+
+We pledge to make our code available prior to the conference, however we do not have necessary the approvals yet before the rebuttal period ends.
+
+We've added baselines to the feature transfer. Note that some of the transfer learning experiment settings are novel with no external baselines. We hope that future studies will use our methodology and compare against our model.
+
 \section{Reviewer \#2 questions}
 
 \begin{enumerate}
@@ -42,8 +66,11 @@
   \item Why the paper doesn't compare to other methods on CLEVR?
 \end{enumerate}
 
-
-
+\section{Reviewer \#3 questions}
+ - We overhauled the abstract and  introduction to address your criticism about the contributions.
+ 
+ - We made changes (listed above) to make motivations clear.
+Comment about the memory size (i.e. why is it a good thing to change the memory size?): The size of the memory affects the training time significantly. Therefore, there is a big advantage if the model learns an abstract capability to use the memory independent of its size.  This will allow to scale-up models without re-training.
 % References
 % {\small
 % \bibliographystyle{ieee}
