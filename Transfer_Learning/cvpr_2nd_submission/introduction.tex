@@ -1,34 +1,16 @@
 \section{Introduction}
 %dummy
 In recent years, neural networks, being at the epicenter of the Deep Learning~\cite{lecun2015deep} revolution, became the dominant solutions across many domains, from Speech Recognition~\cite{graves2013speech}, Image Classification~\cite{krizhevsky2012imagenet}, Object Detection~\cite{redmon2016you}, to Question Answering~\cite{weston2014memory} and Machine Translation~\cite{bahdanau2014neural} among others.
-At their core, being statistical models~\cite{ripley1993statistical,warner1996understanding}, neural networks rely on the assumption that training and testing samples are independent and identically distributed (\textit{iid}); i.e.\ sampled from a common input space under similar data distribution characteristics.
+Neural networks, being statistical models~\cite{ripley1993statistical,warner1996understanding}, rely on the assumption that training and testing samples are independent and identically distributed (\textit{iid}); i.e.\ sampled from a common input space under similar data distribution characteristics.
 However, in many real-world scenarios, this assumption does not hold. Moreover, as modern neural models often have millions of trainable parameters, training them requires vast amounts of data, which for some domains (e.g., medical) can be very expensive and/or extremely difficult to collect.
-One of the widely used solutions for the above mentioned problems is Transfer Learning~\cite{pan2009survey,weiss2016survey}, a technique which enhances model performance by transferring \emph{information} from one domain to another.
-
-\tk{Two-three sentences about TL in CV and NLP - short!!}
+One of the widely used solutions is Transfer Learning~\cite{pan2009survey,weiss2016survey}, a technique which enhances model performance by transferring \emph{information} from one domain to another.
 
 
-\tk{The following needs to be rewritten - stronger!}
+In this work we focus on transfer learning in multi-modal reasoning tasks combining vision and language~\cite{mogadala2019trends}.  Recently introduced visual reasoning datasets, such as ~\cite{johnson2017clevr,yang2018dataset,song2018explore}, attempt to probe the generalization capabilities of models under various transfer learning scenarios. For example, CLEVR-CoGenT offers two dataset variants with different combinations of visual attributes. Whereas, the COG dataset contains two variants with different number of frames and scene complexity.  Both datasets come with a number of task classes that require similar reasoning abilities (e.g. compare or count objects). 
+The open question is whether we can build a neural architecture that fosters transfer learning and generalizes from simpler to more complex reasoning tasks.
 
-In this work we focus on transfer learning in multi-modal tasks combining vision and language~\cite{mogadala2019trends}.
-More precisely, we narrow the scope to transfer learning between visual reasoning tasks that have a ``nice'' logical structure, e.g.,~\cite{johnson2017clevr,yang2018dataset,song2018explore}. 
-While models such as BERT and ResNet can be transferred efficiently in the same modality they were pretrained on, challenges arise
-once the modalities have been fused.
-For example, the CoGenT (Constrained Generalization Test) variant of the CLEVR dataset~\cite{johnson2017clevr}  
-contains two sets with similar questions, but differing on combinations of object-attribute values in images 
-(\cref{sec:feature}).
-In this case, training on the first variant might yield entangled feature representations that may fail reasoning tasks
-on the second one.
-In video reasoning, an additional challenge in the temporal dimension is whether a model trained on shorter video sequences will 
-transfer over to longer ones, e.g., the Canonical and the Hard variants of the 
-COG dataset~\cite{yang2018dataset} (\cref{sec:temporal}).
-To address these challenges, mechanisms such as attention~\cite{bahdanau2014neural} 
-and external memory~\cite{graves2014neural, graves2016hybrid,weston2014memory} 
-which facilitate higher-level abstractions, seem more promising. 
 
-\smallskip
-
-\noindent Motivated by these considerations:
+\noindent The contributions of this paper are the following:
 %Consequently:
 \begin{enumerate}
 	%\compresslist
