@@ -42,17 +42,21 @@ A notable feature of this design is that the number of addresses $N$ can be chan
 %	\label{fig:samcell}
 %\end{figure}
 
-\noindent{\textbf{Input Units.}}
+\smallskip
+
+\noindent\textbf{Input Units.}
 The input to SAMNet consists of a question component and a visual component that is either a single frame in case of a static image or a sequence of frames in case of a video.
 The question is represented as a sequence of word embeddings (either one-hot or preprocessed by GloVe~\cite{pennington2014glove}) corresponding to words in the question.
 Each frame of the visual input is encoded using raw pixels or preprocessed by a pre-trained deep network such as RESNet~\cite{he2016deep}.
 The language input of $L$ word embeddings is processed by a Bi-LSTM based question encoder that produces \emph{contextual words} $\vec{cw} \in \Reals^{L \times d}$.
 The final states in either direction of the BI-LSTM are also concatenated and passed through a linear layer to produce a global representation of the question 
 $\vec{q} \in \Reals^d$, called the \emph{question embedding}.
-The $j$-th frame of the visual input, where $j$ indexes over the frames in temporal order, is processed by an image encoder---a CNN with appropriately chosen number of layers---to produce a \emph{feature map} 
-$\vec{F}_j \in \Reals^{H \times W \times d}$.
+The $k$-th frame of the visual input, where $k$ indexes over the frames in temporal order, is processed by an image encoder---a CNN with appropriately chosen number of layers---to produce a \emph{feature map} 
+$\vec{F}_k \in \Reals^{H \times W \times d}$.
 
-\noindent{\textbf{The SAM Cell.}} The contextual words, question embedding and frame-by-frame feature map form the inputs to SAMNet's core, namely, a recurrent cell called the SAM Cell. Unrolling a new series of $T$ cells for each frame allows $T$ steps of iterative reasoning, similar to~\cite{hudson2018compositional}. Information flows between frames through the external memory.
+\smallskip
+
+\noindent\textbf{The SAM Cell.} The contextual words, question embedding and frame-by-frame feature map form the inputs to SAMNet's core, namely, a recurrent cell called the SAM Cell. Unrolling a new series of $T$ cells for each frame allows $T$ steps of iterative reasoning, similar to~\cite{hudson2018compositional}. Information flows between frames through the external memory.
 During the $t$-th reasoning step, for $t=1,2, \dots, T$, SAM Cell maintains the following information as part of its recurrent state:
 (a) $\vec{c}_t \in \Reals^d$, the control state used to drive reasoning over objects in the frame and memory; and
 (b) $\vec{so}_t  \in \Reals^d$, the summary visual object representing the relevant object for step $t$.
@@ -60,18 +64,24 @@ Let $\vec{M}_t \in  \Reals^{N \times d}$ denote the external memory with $N$ slo
 Let $\whead_t \in  \Reals^N$ denote an attention vector over the memory locations;
 in a trained model, $\whead_t$ points to the location of the first empty slot in memory for adding new objects.
 
-\noindent{\textbf{Question-driven Controller.}}
+\smallskip
+
+\noindent\textbf{Question-driven Controller.}
 This module drives attention over the question to produce $k$ control states, one per reasoning operation.
 The control state $\vec{c}_t$ at step $t$ is then fed to a \emph{temporal classifier},
 a two-layer feedforward network with ELU activation in the hidden layer of $d$ units.
 The output $\bm{\tau}_t$ of the classifier is intended to represent the different temporal contexts (or lack thereof) associated with the word in focus for that reasoning step.
 For the COG dataset, we pick 4 classes to capture the terms labeled ``last'', ``latest'', ``now'', and ``none''.
 
-\noindent{\textbf{Retrieval Units.}} The visual retrieval unit uses the information generated above to extract a relevant object $\vec{vo}_t$ from the frame.
+\smallskip
+
+\noindent\textbf{Retrieval Units.} The visual retrieval unit uses the information generated above to extract a relevant object $\vec{vo}_t$ from the frame.
 A similar operation on memory yields the object $\vec{mo}_t$. The memory operation is based on attention mechanism, and resembles content-based addressing. Therefore, we obtain an attention vector over memory addresses that we interpret to be the \emph{read head}, denoted by $\rhead_t$.
 %Note that the returned objects may be invalid, e.g., if the current reasoning step focuses on the phrase ``last red square'', $\vec{vo}_t$ is invalid even if the current frame contains a red square.
 
-\noindent{\textbf{Reasoning Unit.}}
+\smallskip
+
+\noindent\textbf{Reasoning Unit.}
 %\paragraph{Reasoning Unit.}
 This module is the backbone of SAMNet, which determines the gating operations to be performed on the external memory, as well as determining the correct object's location for reasoning.
 To resolve whether we have a valid object from the frame (and similarly for memory), we execute the following reasoning procedure.
@@ -87,12 +97,14 @@ We input these two values, along with the temporal class weights $\bm{\tau}_t$, 
 (d) $\doadd_t$, which determines whether a new object should be added to memory.
 We stress that the network has to learn via training how to correctly implement these behaviors.
 
-\noindent{\textbf{Memory Update Unit.}}
+\smallskip
+
+\noindent\textbf{Memory Update Unit.}
 The unit first determines the memory location where an object could be added:
 \[ \vec{w}_t = \doreplace \cdot \rhead_t + \doadd \cdot \whead_{t-1} \]
 Above, $\vec{w}_t$ denotes the pseudo-attention vector that represents the ``location'' where the memory update should happen.
 $\vec{w}_t$ sums up to at most 1 and can be zero, indicating in this case there is no need adding a new object nor replacing an existing object.
-We then update the memory accordingly as:
+We then update the memory accordingly:
 \[ \vec{M}_t = \vec{M}_{t-1} \odot (\vec{J} - \vec{w}_t  \otimes \mathbf{1}) + \vec{w}_t  \otimes \vec{vo}_t,\]
 where $\vec{vo}_t$ denotes the object returned by the visual retrieval unit.
 Here $\vec{J}$ denotes the all ones matrix, $\odot$ denotes the Hadamard product and $\otimes$ denotes the Kronecker product.
@@ -102,14 +114,16 @@ Let $\whead'_{t-1}$ denote the circular shift to the right of $\whead_{t-1}$ whi
 Then:
 \[ \whead_t = \doadd \cdot \whead'_{t-1} + (1-\doadd) \cdot \whead_{t-1} \]
 
-\noindent{\textbf{Summary Update Unit.}}
+\noindent\textbf{Summary Update Unit.}
 %\paragraph{Summary Update Unit.}
 This unit updates the (recurrent) summary object to equal the outcome of the $t$-th reasoning step.
 We first determine whether the relevant object $\vec{ro}_t$ should be obtained from memory or the frame according to:
 \[ \vec{ro}_t = \imatch_t \cdot \vec{vo}_t + \mmatch_t \cdot \vec{mo}_t \]
 Note that $\vec{ro}_t$ is allowed to be a null object (i.e. 0 vector) in case neither of the gates evaluate to true.
 
-\noindent{\textbf{Output Unit.}} Finally, $\vec{so}_t$ is the output of a linear layer whose inputs are $\vec{ro}_t$ and the previous summary object $\vec{so}_{t-1}$.
+\smallskip
+
+\noindent\textbf{Output Unit.} Finally, $\vec{so}_t$ is the output of a linear layer whose inputs are $\vec{ro}_t$ and the previous summary object $\vec{so}_{t-1}$.
 This serves to retain additional information in $\vec{so}_{t-1}$, e.g., if it held the partial result of a complex query with Boolean connectives.
 
 
