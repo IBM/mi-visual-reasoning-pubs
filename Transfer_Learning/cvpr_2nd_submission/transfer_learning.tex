@@ -5,8 +5,11 @@
 	\includegraphics[width=0.9\textwidth]{../img/architecture/transfer_taxo}
 	\caption{Transfer learning taxonomy.}\label{fig:taskonomy}
 \end{figure*}
+Due to the complex nature of visual reasoning, it turns out that
+transfer learning from a source domain to a target domain can be investigated in 
+multiple ways depend on how the features are related between the two domains, including attributes such as size, color and shape, as well as temporal characteristics reflected in the number of frames and the scene complexity.
+To establish a formal framework for these various aspects, we first recall the basic definition of transfer learning~\cite{pan2009survey}.
 
-We follow the notations in the survey by~\cite{pan2009survey}.
 A \emph{domain} is a pair $\cD = (\cX,P(X))$, where $\cX$ is a feature space and $P(X)$ is a marginal probability distribution.
 For visual reasoning problems considered in this paper, 
 $\cX$ will consist of purely visual inputs, i.e., either images or videos in some cases, or 
@@ -39,8 +42,17 @@ Another situation is when the questions themselves can be grouped into families 
 comparison of objects, or existence of objects with certain features etc.
 This entails studying transfer learning between families of tasks which requires extending the above definition.
 
-Broadly, we consider 3 kinds of transfer learning problems in this work, as illustrated in~\cref{fig:taskonomy}. 
-Let $\cQ$ denote the set of questions and $\cV$ denote the set of visual inputs.
+We now formally define 3 kinds of transfer learning problems, namely,
+\emph{feature transfer}, \emph{temporal transfer}, 
+and \emph{reasoning transfer}. 
+These are illustrated in~\cref{fig:taskonomy} using representative examples from CLEVR-CoGenT and COG datasets that are particularly suited for experimental
+investigations of transfer learning.
+In the next section we detail the performance of
+SAMNet for each of these 3 kinds, using the CLEVR-CoGenT dataset
+for feature transfer, the COG dataset for temporal transfer, and finally
+both datasets for reasoning transfer, with appropriate baseline comparisons.
+
+Let $\cQ$ and $\cV$ denote the set of questions and visual inputs, respectively.
 \begin{description}
 	%\compresslist % used to reduce spacing
 	\item[Feature Transfer:] In this setting of domain adaptation, $\cX_S = \cX_T \subseteq \cQ \times \cV$
