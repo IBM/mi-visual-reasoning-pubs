@@ -17,9 +17,9 @@
 %The core of SAMNet is based a recurrent cell called SAMCell. By aligning together a series of k SAMCells per frame, the network can perform k reasoning steps over a frame. At every new frame, a new series of k SAMCells is initiated. The SAMCell can read and write to memory at every frame using a content addressable mechanism. This section describes the model and the different units that composed a SAMCell. They are called the Question-driven Controller, the Visual Retrieval Unit, the Memory Retrieval Unit, the Reasoning unit, the Memory update unit, and the Summary Object Udpate Unit.
 %The model is also composed of an Image Encoder and a Question Encoder both responsible to pre-process the visual and textual inputs. The output unit is a classifier.
 %All those modules are described below.
-\ao{Method: Start high level, how different modules interface each other, and what the motivation is for each such a module. Then it should define standard parts such as attention over questions, and introduce all the variables that appear from nowhere. I would also like to see a more clear Figure 2 depicting the architecture. There is very little correspondence between that figure and the equations used in the paper.}
+%\ao{Method: Start high level, how different modules interface each other, and what the motivation is for each such a module. Then it should define standard parts such as attention over questions, and introduce all the variables that appear from nowhere. I would also like to see a more clear Figure 2 depicting the architecture. There is very little correspondence between that figure and the equations used in the paper.}
 
-SAM Network (SAMNet for short) is an end-to-end differentiable recurrent model equipped with an external memory~(\cref{fig:samnet}). At the conceptual level, SAMNet draws from two core ideas:
+SAM Network (SAMNet) is an end-to-end differentiable recurrent model equipped with an external memory~(\cref{fig:samnet}). At the conceptual level, SAMNet draws from two core ideas:
 iterative reasoning as proposed e.g. in MAC (Memory-Attention-Composition) Network~\cite{hudson2018compositional,marois2018transfer} and use of an external memory, as in Memory-Augmented Neural Networks such as NTM (Neural Turing Machine)~\cite{graves2014neural}, DNC (Differentiable Neural Computer)~\cite{graves2016hybrid} or DWM (Differentiable Working Memory)~\cite{jayram2018learning}.
 
 \begin{figure*}
@@ -47,8 +47,10 @@ The input to SAMNet consists of a question component and a visual component that
 The question is represented as a sequence of word embeddings (either one-hot or preprocessed by GloVe~\cite{pennington2014glove}) corresponding to words in the question.
 Each frame of the visual input is encoded using raw pixels or preprocessed by a pre-trained deep network such as RESNet~\cite{he2016deep}.
 The language input of $L$ word embeddings is processed by a Bi-LSTM based question encoder that produces \emph{contextual words} $\vec{cw} \in \Reals^{L \times d}$.
-The final states in either direction of the BI-LSTM are also concatenated and passed through a linear layer to produce a global representation of the question in $\Reals^d$, called the \emph{question embedding}.
-The $j$-th frame of the visual input, where $j$ indexes over the frames in temporal order, is processed by an image encoder---a CNN with appropriately chosen number of layers---to produce a \emph{feature map} $F_j \in \Reals^{H \times W \times d}$.
+The final states in either direction of the BI-LSTM are also concatenated and passed through a linear layer to produce a global representation of the question 
+$\vec{q} \in \Reals^d$, called the \emph{question embedding}.
+The $j$-th frame of the visual input, where $j$ indexes over the frames in temporal order, is processed by an image encoder---a CNN with appropriately chosen number of layers---to produce a \emph{feature map} 
+$\vec{F}_j \in \Reals^{H \times W \times d}$.
 
 \noindent{\textbf{The SAM Cell.}} The contextual words, question embedding and frame-by-frame feature map form the inputs to SAMNet's core, namely, a recurrent cell called the SAM Cell. Unrolling a new series of $T$ cells for each frame allows $T$ steps of iterative reasoning, similar to~\cite{hudson2018compositional}. Information flows between frames through the external memory.
 During the $t$-th reasoning step, for $t=1,2, \dots, T$, SAM Cell maintains the following information as part of its recurrent state:
