@@ -35,8 +35,14 @@ A notable feature of this design is that the number of addresses $N$ can be chan
 %	\label{fig:samcell}
 %\end{figure}
 
+The input to SAMNet consists of a question component and a visual component that is either a single frame in case of a static image or a sequence of frames in case of a video
+The question is represented as a sequence of word embeddings (either one-hot or preprocessed by GloVe~\cite{}) corresponding to words in the question.
+Each frame of the visual input is encoded using raw pixels or preprocessed by a pre-trained deep network such as RESNet~\cite{}. 
+The language input of $L$ word embeddings is processed by a Bi-LSTM based question encoder that produces \emph{contextual words} $\vec{cw} \in \Reals^{L \times d}$.
+The final states in either direction of the BI-LSTM are also concatenated and passed through a linear layer to produce a global representation of the question in $\Reals^d$, called the \emph{question embedding}. 
+The $j$-th frame of the visual input, where $j$ indexes over the frames in temporal order, is processed by an image encoder---a CNN with appropriately chosen number of layers---to produce a \emph{feature map} $F_j \in \Reals^{H \times W \times d}$. 
 
-SAMNet's core is a recurrent cell called the SAM Cell. Unrolling a new series of $T$ cells for each frame allows $T$ steps of iterative reasoning, similar to~\cite{hudson2018compositional}. Information flows between frames through the external memory. 
+The contextual words, question embedding and frame-by-frame feature map form the inputs to SAMNet's core, namely, a recurrent cell called the SAM Cell. Unrolling a new series of $T$ cells for each frame allows $T$ steps of iterative reasoning, similar to~\cite{hudson2018compositional}. Information flows between frames through the external memory. 
 During the $t$-th reasoning step, for $t=1,2, \dots, T$, SAM Cell maintains the following information as part of its recurrent state:
 (a) $\vec{c}_t \in \Reals^d$, the control state used to drive reasoning over objects in the frame and memory; and
 (b) $\vec{so}_t  \in \Reals^d$, the summary visual object representing the relevant object for step $t$.
