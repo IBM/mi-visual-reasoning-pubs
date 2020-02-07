@@ -244,9 +244,10 @@ TSWLatexianTemp*
 *.DS_Store
 
 Transfer_Learning/cvpr_submission/*.pdf
+Transfer_Learning/cvpr_2nd_submission/*.pdf
+Transfer_Learning/cvpr_rebuttal/*.pdf
 Transfer_Learning/arxiv_version/*.pdf
 COG_publications/2019_neurips_kr2ml/*.pdf
 COG_publications/2019_neurips_vigil/*.pdf
 MAC_publications/2018_nips_vigil/*.pdf
 MAC_publications/arxiv/*.pdf
-
