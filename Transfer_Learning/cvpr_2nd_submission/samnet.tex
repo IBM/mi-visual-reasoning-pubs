@@ -22,6 +22,13 @@
 SAM Network (SAMNet for short) is an end-to-end differentiable recurrent model equipped with an external memory~(\cref{fig:samnet}). At the conceptual level, SAMNet draws from two core ideas:
 iterative reasoning as proposed e.g. in MAC (Memory-Attention-Composition) Network~\cite{hudson2018compositional,marois2018transfer} and use of an external memory, as in Memory-Augmented Neural Networks such as NTM (Neural Turing Machine)~\cite{graves2014neural}, DNC (Differentiable Neural Computer)~\cite{graves2016hybrid} or DWM (Differentiable Working Memory)~\cite{jayram2018learning}.
 
+\begin{figure*}
+	\centering
+	\includegraphics[width=\textwidth]{../img/architecture/SAMNETmodel}
+	\caption{General architecture of SAMNet.}
+	\label{fig:samnet}
+\end{figure*}
+
 A distinctive feature of the SAM Network is its frame-by-frame temporal processing approach, where a single frame can be accessed at once. This is a notable difference from~\cite{haurilet2019s}, which uses graph traversal reasoning. The recurrent nature of SAMNet does not prevent frame sequences longer than those used for training.
 The memory locations store relevant objects representing contextual information about words in text and visual objects extracted from video.
 Each location of the memory stores a $d$-dimensional vector. %, where $d$ is a global parameter.
@@ -43,20 +50,13 @@ The language input of $L$ word embeddings is processed by a Bi-LSTM based questi
 The final states in either direction of the BI-LSTM are also concatenated and passed through a linear layer to produce a global representation of the question in $\Reals^d$, called the \emph{question embedding}.
 The $j$-th frame of the visual input, where $j$ indexes over the frames in temporal order, is processed by an image encoder---a CNN with appropriately chosen number of layers---to produce a \emph{feature map} $F_j \in \Reals^{H \times W \times d}$.
 
-The contextual words, question embedding and frame-by-frame feature map form the inputs to SAMNet's core, namely, a recurrent cell called the SAM Cell. Unrolling a new series of $T$ cells for each frame allows $T$ steps of iterative reasoning, similar to~\cite{hudson2018compositional}. Information flows between frames through the external memory.
+\noindent{\textbf{The SAM Cell.}} The contextual words, question embedding and frame-by-frame feature map form the inputs to SAMNet's core, namely, a recurrent cell called the SAM Cell. Unrolling a new series of $T$ cells for each frame allows $T$ steps of iterative reasoning, similar to~\cite{hudson2018compositional}. Information flows between frames through the external memory.
 During the $t$-th reasoning step, for $t=1,2, \dots, T$, SAM Cell maintains the following information as part of its recurrent state:
 (a) $\vec{c}_t \in \Reals^d$, the control state used to drive reasoning over objects in the frame and memory; and
 (b) $\vec{so}_t  \in \Reals^d$, the summary visual object representing the relevant object for step $t$.
 Let $\vec{M}_t \in  \Reals^{N \times d}$ denote the external memory with $N$ slots at the end of step $t$.
 Let $\whead_t \in  \Reals^N$ denote an attention vector over the memory locations;
 in a trained model, $\whead_t$ points to the location of the first empty slot in memory for adding new objects.
-
-\begin{figure*}
-	\centering
-	\includegraphics[width=\textwidth]{../img/architecture/SAMNETmodel}
-	\caption{General architecture of SAMNet.}
-	\label{fig:samnet}
-\end{figure*}
 
 \noindent{\textbf{Question-driven Controller.}}
 This module drives attention over the question to produce $k$ control states, one per reasoning operation.
@@ -65,7 +65,7 @@ a two-layer feedforward network with ELU activation in the hidden layer of $d$ u
 The output $\bm{\tau}_t$ of the classifier is intended to represent the different temporal contexts (or lack thereof) associated with the word in focus for that reasoning step.
 For the COG dataset, we pick 4 classes to capture the terms labeled ``last'', ``latest'', ``now'', and ``none''.
 
-The visual retrieval unit uses the information generated above to extract a relevant object $\vec{vo}_t$ from the frame.
+\noindent{\textbf{Retrieval Units.}} The visual retrieval unit uses the information generated above to extract a relevant object $\vec{vo}_t$ from the frame.
 A similar operation on memory yields the object $\vec{mo}_t$. The memory operation is based on attention mechanism, and resembles content-based addressing. Therefore, we obtain an attention vector over memory addresses that we interpret to be the \emph{read head}, denoted by $\rhead_t$.
 %Note that the returned objects may be invalid, e.g., if the current reasoning step focuses on the phrase ``last red square'', $\vec{vo}_t$ is invalid even if the current frame contains a red square.
 
@@ -106,7 +106,8 @@ This unit updates the (recurrent) summary object to equal the outcome of the $t$
 We first determine whether the relevant object $\vec{ro}_t$ should be obtained from memory or the frame according to:
 \[ \vec{ro}_t = \imatch_t \cdot \vec{vo}_t + \mmatch_t \cdot \vec{mo}_t \]
 Note that $\vec{ro}_t$ is allowed to be a null object (i.e. 0 vector) in case neither of the gates evaluate to true.
-Finally, $\vec{so}_t$ is the output of a linear layer whose inputs are $\vec{ro}_t$ and the previous summary object $\vec{so}_{t-1}$.
+
+\noindent{\textbf{Output Unit.}} Finally, $\vec{so}_t$ is the output of a linear layer whose inputs are $\vec{ro}_t$ and the previous summary object $\vec{so}_{t-1}$.
 This serves to retain additional information in $\vec{so}_{t-1}$, e.g., if it held the partial result of a complex query with Boolean connectives.
 
 
