@@ -1,33 +1,35 @@
 \subsection{Reasoning transfer in CLEVR-CoGenT}
 \label{sec:reasoning-clevr}
+In the following we have relied on the CoGent-A variant only.
+Using the question groups (categories) defined by the authors, we reorganized training and testing splits with the goal of measuring whether mastering reasoning for one group can help with learning of the other.
 
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\columnwidth]{../img/plots/cogent_reasoning_transfer.pdf}
-	\caption{CoGenT-A accuracies for all tasks $t$ when training on $t$ only, training on all tasks jointly and training on all tasks but $t$.}
-	\label{fig:CoGenT-results}
+	\caption{Accuracies of SAMNet when testing its reasoning transfer capabilities on the CoGenT-A variant.}
+	\label{fig:cogent_reasoning_transfer}
 \end{figure}
 
-Using the question categories defined by the author, we conduct the following experiments:
-\begin{itemize}
-	\compresslist
-	\item Train and test SAMNet on a single task group $t$. These 5 experiments fit into the traditional ML setup of single-task learning;
-	\item Train SAMNet on all task groups jointly and evaluate its performance on each task group $t$ separately.
-	This is a transfer learning setting where for the source task family, the task is sampled from all questions, while for the target task family, the samples consist of questions from group $t$ only;
-	\item Finally, for each task group $t$, we train SAMNet on all tasks but $t$, and test its performance on $t$. This can also be viewed as a transfer learning setting similar to the previous case.
-\end{itemize}
+First we have trained a single SAMNet model and measured its accuracy on each of the task group $t$ separatelly.
+Those results, indicated in \cref{fig:cogent_reasoning_transfer} as "Train on All", form baselines for the next two sets of experiments.
 
-Noticeable results are shown in~\cref{fig:CoGenT-results}, while the complete set is available in the supplementary material.
+Next, we trained and tested 5 SAMNet instances, each on a single task group $t$.
+Interestingly, we observe a significant accuracy drop in all task groups aside of the \textit{Query Attribute}.
+We hypotesize this results from the fact that mastering visual grounding and recognizing object attributes (being the core of the latter task) is a necessary skill the system needed by the other tasks.
+Thus training on \textit{Query Attribute} helps others, whereas without any training on that particular group the system struggles with developing such a skill.
 
-Looking at~\cref{fig:CoGenT-results}, SAMNet does well on \textit{Count} and \textit{QueryAttribute}, but poorer on the 3 other tasks in the single-task learning setting (blue). Indeed, \textit{Exist}, \textit{CompareInteger} and \textit{CompareAttribute} are binary tasks; \textit{Count} has output labels digits 0 through 10 (so $<$10\% accuracy by chance) and \textit{QueryAttribute} maps to the set of object-attribute values (15 labels).
+Finally, we trained 5 SAMNet instances in the extreme reasoning transfer setup: for each task group $t$ we trained a single instance on all tasks but $t$, and next tested its performance on $t$ only.
+As expected, this setup appeared to be difficult to deal with, observing severe performance drops, with accuracy of \textit{Count} and \textit{QueryAttribute} dropping to zero.
+The explanation is that these categories expect  answers (digits 0-9, names of attributes) that do not overlap with answers in the other groups (binary yes/no), thus the model cannot predict these labels on in a zero-shot transfer.
 
-Nevertheless, significant accuracy gains are noted when training jointly on all tasks (gray), ranging from 18 points to 37 points on 4 out of 5 tasks. These improvements suggest that related tasks benefit from joint training. \textit{QueryAttribute} only sees an increase of one point. One could qualify it as \textit{self-sufficient} as it does not appear to benefit from joint training with other tasks.
+%Besides, the zero accuracy on \textit{Count} can also be explained by the fact that it results from the need of totally different reasoning leading to the answer.
+%The \textit{QueryAttribute} latter is more interesting, as when mastering e.g.  \textit{Exist} of  \textit{CompareAttribute} the model \textit{had} to develop some kind of understanding object attributes.
+%Still, this result once again suggests that the model learned joint representation of object attributes and struggle with disentangling them without being explicitly trained on task facilitationg that (like the  \textit{QueryAttribute}).
 
-Finally, the ``all-tasks-but-$t$'' experiments (yellow) demonstrate that while tasks are related, one does not subsume another in terms of learning. Indeed, we can observe that for \textit{CompareAttribute}, while \textit{Exist} and \textit{CompareInteger} share the same output space, including them and holding out \textit{CompareAttribute} from the training set results in poor accuracy.
-We also observe no learning for \textit{Count} and \textit{QueryAttribute}. As these categories have labels that do not overlap with other categories, the model cannot predict these labels.
 
-An additional set of experiments, for which results are available in the supplementary material, fine-tune the model trained on all tasks on each task $t$ respectively.
-Fine-tuning did not demonstrate a clear benefit (except for \textit{Count}, where the accuracy increased by 1.5 pt) without hurting performance on the other tasks. Nevertheless, these experiments leave open the possibility that joint training of tasks may potentially benefit from using weighted sampling towards the tail end with more emphasis on samples from less performing task groups, similar to~\cite{guo2018dynamic, kendall2018multi}.
+
+% An additional set of experiments, for which results are available in the supplementary material, fine-tune the model trained on all tasks on each task $t$ respectively.
+%Fine-tuning did not demonstrate a clear benefit (except for \textit{Count}, where the accuracy increased by 1.5 pt) without hurting performance on the other tasks. Nevertheless, these experiments leave open the possibility that joint training of tasks may potentially benefit from using weighted sampling towards the tail end with more emphasis on samples from less performing task groups, similar to~\cite{guo2018dynamic, kendall2018multi}.
 
 \subsection{Reasoning transfer in COG}
 \label{sec:reasoning-cog}
@@ -35,11 +37,11 @@ Fine-tuning did not demonstrate a clear benefit (except for \textit{Count}, wher
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\columnwidth]{../img/plots/cog_reasoning_transfer.pdf}
-	\caption{COG accuracies for all task groups $t$ when training on $t$ only; training on Group A or B; and on all tasks.}
+	\caption{Accuracies of SAMNet when testing its reasoning transfer capabilities on the Canonical variant of COG.}
 	\label{fig:COG-reasoning-results}
 \end{figure}\vspace{2pt}
 
-Reusing the task hierarchy in \cref{fig:task-groups}, we conduct the following experiments using the Canonical variant of COG to study whether transfer learning was effective in leveraging information gained by training a task family at a higher level
+Reusing the task hierarchy in \cref{fig:task-groups}, we conduct the following experiments using the Canonical variant of COG to study whether reasoning transfer learning was effective in leveraging information gained by training a task family at a higher level
 of the hierarchy:
  \begin{itemize}
  	\compresslist
