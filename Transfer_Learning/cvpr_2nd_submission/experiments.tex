@@ -3,15 +3,15 @@
 % \tk{order: CLEVR + baselines without TL, COG + baseline without TL, Feature Transfer-CLEVR/CoGenT, Temporal Transfer - COG, Reasoning Transfer - CLEVR/CoGenT, Reasoning Transfer-COG}
 
 We implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on PyTorch~\cite{paszke2017automatic}.
-We evaluated the model on 
+We evaluated the model on
 the CLEVR dataset~\cite{johnson2017clevr}, a diagnostic dataset for Image Question Answering and on the COG dataset~\cite{yang2018dataset}, a video reasoning~\cite{mogadala2019trends} dataset developed for the purpose of research on relational and temporal reasoning.
 We briefly describe both datasets in the following two subsections.
-In all experiments we used SAMNet using $k = 8$ reasoning steps and external memory with $N = 8$ slots, each storing an array of 128 floats. 
-When working with all CLEVR/CoGenT variants we deactivated SAMNet's external memory and temporal-related modules as they are unnecessary while reasoning about static images.
+In all experiments, we trained SAMNet using $k = 8$ reasoning steps and external memory with $N = 8$ slots, each storing an array of 128 floats.
+When working with CLEVR-CoGenT, we deactivated SAMNet's external memory and temporal-related modules as they are unnecessary while reasoning about static images.
 
-We start with a sanity check of the performance of SAMNet in comparison with the selected SOTA baselines on both CLEVR and COG datasets without transfer learning.
+We start with an evaluation of SAMNet's performance, comparing it to baselines on both CLEVR and COG datasets, without transfer learning.
 The rest of the experiments follows the proposed taxonomy.
-First, we investigate the feature transfer using the CLEVR-CoGenT variants, followed by the temporal transfer on the COG variants. Finally, we assess transfer reasoning capabilities on both datasets by regrouping and reorganizing classes of questions into new training and test splits.
+We first investigate feature transfer using CLEVR-CoGenT, followed by temporal transfer on the COG variants. Finally, we assess the transfer reasoning capabilities on both datasets by reorganizing classes of questions into new training and test splits.
 
 \begin{table}[b!]
 	\centering
@@ -48,10 +48,10 @@ First, we investigate the feature transfer using the CLEVR-CoGenT variants, foll
 \subsection{Basic performance of SAMNet on CLEVR}
 \label{sec:clevr-baseline-compare}
 CLEVR images contain objects characterized by a set of attributes (shape, color, size and material), whereas the questions are grouped into 5 categories: \textit{Exist}, \textit{Count}, \textit{CompareInteger}, \textit{CompareAttribute}, \textit{QueryAttribute}.
-The team behind the CLEVR dataset also introduced two CLEVR-CoGenT (Constrained Generalization Test) A and B variants, with varying combinations of color-shape attributes.
+The CLEVR authors also introduced CLEVR-CoGenT (Constrained Generalization Test), containing 2 variants, A and B, with varying combinations of color-shape attributes.
 The colors are partitioned into two complementary families:
 Gray, Blue, Brown and Yellow in Family A; and Red, Green, Purple, Cyan in Family B.
-The cubes and cylinders take colors from complementary families in each variant with opposite configurations; the spheres can take any color in both varianrs (See~\cref{tab:cogent_conditions}).
+The cubes and cylinders take colors from complementary families in each variant with opposite configurations; the spheres can take any color in both variants (See~\cref{tab:cogent_conditions}).
 As the input domain consist of the set of objects with all attribute values, both variants differ by their marginal distributions $P_S$ and $P_T$.
 
 \begin{figure}[htbp]
@@ -123,7 +123,7 @@ SAMNet improves upon the baseline model on all tasks, with improvements varying 
 
 In order to quantify SAMNet feature transfer capabilities we used the CoGenT variants of CLEVR and performed a set of experiments, starting from training on CoGenT-A followed by:
 an immediate test (zero-shot learning) to test split ot CoGenT-B; and fine-tuning for a single epoch on 30k samples from CoGenT-B before testing (following methodology used in~\cite{johnson2017inferring, mascharka2018transparency, perez2018film, marois2018transfer}).
-In \cref{fig:CoGenT-B-results} we compare the achieved performance with the previously selected SOTA models. 
+In \cref{fig:CoGenT-B-results} we compare the achieved performance with the previously selected SOTA models.
 As sanity check we also provide accuracies achieved when: tested directly on CoGenT-A; and tested on CoGenT-A after fine-tuning on B.
 
 \begin{figure}[htbp]
