@@ -36,12 +36,12 @@ As the input domain consist of the set of objects with all attribute values, bot
 
 We compare SAMNet's performance to several models: Transparency by Design networks (TbD)~\cite{mascharka2018transparency}, Feature-wise Linear Modulation (FiLM)~\cite{perez2018film} and the Program Generator + Execution Engine (PG + EE), presented in \cite{johnson2017inferring}. For performance reasons, we deactivated the external memory and temporally-related modules in SAMNet as they are unnecessary while reasoning about static images. SAMNet reaches 96.2\% accuracy on CLEVR, compared to 96.9\%, 97.7\% and 98.7\% for PG + EE, FiLM and TbD respectively.
 
-% \begin{figure}[!t]
-% 	\centering
-% 	\includegraphics[width=\columnwidth]{../results/CLEVR_baselines_comparison.pdf}
-% 	\caption{Comparison of SAMNet to baseline models~\cite{mascharka2018transparency, perez2018film, johnson2017inferring} on CLEVR.}
-% 	\label{fig:clevr-baseline-compare}
-% \end{figure}
+\begin{figure}[!t]
+	\centering
+	\includegraphics[width=0.8\columnwidth]{../results/CLEVR_baselines_comparison.pdf}
+	\caption{Comparison of SAMNet to baseline models~\cite{mascharka2018transparency, perez2018film, johnson2017inferring} on CLEVR.}
+	\label{fig:clevr-baseline-compare}
+\end{figure}
 
 \begin{figure}[htb]
 	\centering
@@ -131,7 +131,7 @@ We conduct 2 experiments with SAMNet trained on CoGenT-A to evaluate its feature
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\columnwidth]{../results/CoGenT_B_results_with_baselines.pdf}
-	\caption{Test accuracy on CoGenT-A \& -B when training on CoGenT-A (blue / yellow (striped)) and fine-tuning on CoGenT-B (gray (dotted)).}
+	\caption{Test accuracy on CoGenT-A \& -B when training on CoGenT-A and fine-tuning on CoGenT-B.}
 	\label{fig:CoGenT-B-results}
 \end{figure}
 
