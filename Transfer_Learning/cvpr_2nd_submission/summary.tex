@@ -2,13 +2,11 @@
 
 %Observing attention maps shows that SAMNet can effectively perform multi-step reasoning over questions and frames as intended. Despite being trained only on image-question pairs with complex, compositional questions, SAMNet clearly learns to associate visual symbols with words and accurately classify temporal contexts as designed. Besides, the model’s reasoning using neural representations appears to be similar to how a human would operate on abstract symbols when solving the same task, including memorizing and recalling symbols (object embeddings) from the memory when needed. This is not perfect however and the system can sometimes store spurious objects despite the gating and reasoning mechanisms, but still give correct answers. This indicates at least two directions for possible further improvements. The first is to ameliorate content-based addressing with masking, similar to the improvements made for DNC proposed by [2]. Second is to implement variable number of reasoning steps, instead of hard-coded 8 steps, which could utilize Adaptive Computation Time (ACT) [5].
 
-In this paper, we quantified the impact of Transfer Learning on Visual Reasoning.
-We have proposed a new taxonomy of transfer learning for Visual Reasoning, articulated around three axes: feature, temporal and reasoning transfer.
-We have also introduced a novel Memory-Augmented Neural Network model called SAMNet.
-SAMNet, designed to learn to reason over sequences of frames, shows significant improvements over SOTA models on the COG dataset for Video Reasoning  and achieves comparable performance on the CLEVR dataset for Image Reasoning.
+Even though transfer learning in computer vision is a common practice, a holistic view of its impact on visual reasoning was missing.
+To capture and quantify the influence of transfer learning on visual reasoning, we proposed a new taxonomy, articulated around three aspects: feature, temporal and reasoning transfer.  That enabled us to reuse the existing datasets for image and video QA, namely CLEVR and COG, and isolate splits capturing the reasoning transfer.
+We note that some of the proposed splits form tasks (e.g. Train on all but \textit{t}) that are complementary to well established ones in the literature, e.g. in Taskonomy~\cite{zamir2018taskonomy}.
 
-Taking that as a starting point and leveraging the proposed taxonomy, we have conducted an extensive set of experiments, focusing on the impact of transfer learning in areas that might be considered as higher-level reasoning.
-SAMNet demonstrates very good generalization capabilities along certain axes and, through the cautious use of fine-tuning, can see its performance advanced even further.
-
-Finally, we note that some of the proposed tasks (e.g. Train on all but \textit{t}) are complementary to ones already well established in the literature, e.g. in Taskonomy~\cite{zamir2018taskonomy}.
-We hope these contributions will bolster new research directions to acutely apply transfer learning to areas in need of data and continue exploring the conceivable performance improvements.
+Our experiments on transfer learning showed the shortcomings of existing approaches, especially for video reasoning.  Hence, we designed a novel Memory-Augmented Neural Network model called SAMNet, with mechanisms to address these deficiencies.
+SAMNet showed significant improvements over SOTA models on the COG dataset for Video Reasoning  and achieved comparable performance on the CLEVR dataset for Image Reasoning.
+It also demonstrated excellent generalization capabilities for temporal and reasoning transfer. Moreover,  through the cautious use of fine-tuning, SAMNet's performance advanced even further.
+We hope that the proposed taxonomy, newly established reasoning transfer tasks, along with the provided baselines will bolster new research on both models and datasets for transfer learning on visual reasoning.
