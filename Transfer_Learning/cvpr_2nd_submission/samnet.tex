@@ -101,7 +101,7 @@ We stress that the network has to learn via training how to correctly implement 
 
 \noindent\textbf{Memory Update Unit.}
 The unit first determines the memory location where an object could be added:
-\[ \vec{w}_t = \doreplace \cdot \rhead_t + \doadd \cdot \whead_{t-1} \]
+\[ \vec{w}_t = \doreplace_t \cdot \rhead_t + \doadd_t \cdot \whead_{t-1} \]
 Above, $\vec{w}_t$ denotes the pseudo-attention vector that represents the ``location'' where the memory update should happen.
 $\vec{w}_t$ sums up to at most 1 and can be zero, indicating in this case there is no need adding a new object nor replacing an existing object.
 We then update the memory accordingly:
@@ -112,7 +112,7 @@ Note that the memory is unchanged in the case where $\vec{w}_t = 0$, i.e., $\vec
 We finally update the write head so that it points to the succeeding address if an object was added to memory or otherwise stay the same.
 Let $\whead'_{t-1}$ denote the circular shift to the right of $\whead_{t-1}$ which corresponds to the soft version of the head update.
 Then:
-\[ \whead_t = \doadd \cdot \whead'_{t-1} + (1-\doadd) \cdot \whead_{t-1} \]
+\[ \whead_t = \doadd_t \cdot \whead'_{t-1} + (1-\doadd_t) \cdot \whead_{t-1} \]
 
 \noindent\textbf{Summary Update Unit.}
 %\paragraph{Summary Update Unit.}
