@@ -6,10 +6,10 @@ We implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta201
 We evaluated the model on 
 the CLEVR dataset~\cite{johnson2017clevr}, a diagnostic dataset for Image Question Answering and on the COG dataset~\cite{yang2018dataset}, a video reasoning~\cite{mogadala2019trends} dataset developed for the purpose of research on relational and temporal reasoning.
 We briefly describe both datasets in the following two subsections.
-We also present comparison of SAMNet with the existing baselines as a sanity check. 
 In all experiments we used SAMNet using $k = 8$ reasoning steps and external memory with $N = 8$ slots, each storing an array of 128 floats. 
 
-The rest of experiments is following the proposed taxonomy.
+We start experiments with comparison of SAMNet performance with the selected SOTA baselines on both CLEVR and COG datasets without transfer learning, what we treat as a sinity check.
+The rest of experiments follows the proposed taxonomy.
 First, we investigate the feature transfer using the CLEVR-CoGenT variants, followed by the temporal transfer on COG. Finally, we assess SAMNet's transfer reasoning capabilities on both datasets by regrouping and reorganizing classes of questions into new training and test splits.
 
 \begin{table}[b!]
@@ -60,17 +60,16 @@ As the input domain consist of the set of objects with all attribute values, bot
 	\label{fig:clevr_baselines}
 \end{figure}
 
-
-We compare SAMNet's performance to selected SOTA models, namely Transparency by Design networks (TbD)~\cite{mascharka2018transparency}, Feature-wise Linear Modulation (FiLM)~\cite{perez2018film} and the Program Generator + Execution Engine (PG + EE)~\cite{johnson2017inferring}.
-For performance reasons, we deactivated the external memory and temporal-related modules in SAMNet as they are unnecessary while reasoning about static images.
-As presented in \cref{fig:clevr_baselines}, SAMNet reaches comparable 96.2\% accuracy, compared to 96.9\%, 97.7\% and 98.7\% for PG + EE, FiLM and TbD respectively.
+\cref{fig:clevr_baselines} presents accuracy achieved by SAMNet when compared to selected SOTA models, namely: Transparency by Design networks (TbD)~\cite{mascharka2018transparency}, Feature-wise Linear Modulation (FiLM)~\cite{perez2018film} and the Program Generator + Execution Engine (PG + EE)~\cite{johnson2017inferring}.
+When collecting those results we deactivated SAMNet's external memory and temporal-related modules as they are unnecessary while reasoning about static images.
+SAMNet reaches comparable 96.2\% accuracy, with TbD achieving the best score with 98.7\%.
 
 
 \subsection{Basic performance of SAMNet on COG}
 \label{sec:cog-baseline-compare}
 
-GOC dataset contains short videos with the associated questions, grouped into 23 question categories~\footnote{Aside of categorical questions, COG also offers tasks expecting the model to point a particular object in the image (out of scope of this paper).}.
-COG comes in two variants: the Canonical (easy) and Hard, differing mainly on the number of frames in the video, the maximum amount of look-back in frame history containing relevant information for reasoning, and the number of object distractors (see~\cref{tab:cog_variants}).
+COG dataset contains short videos, with the associated questions grouped into 23 categories~\footnote{Aside of categorical questions, COG also offers tasks expecting the model to point a particular object in the image (out of scope of this paper).}.
+COG comes in two variants: the Canonical (easy) and Hard, differing mainly on the number of frames in the video, the maximum amount of look-back in frame history containing relevant information for reasoning, and the number of object distractors present in a given frame (see~\cref{tab:cog_variants}).
 Since the number of task classes is large, we designed a 2-level hierarchy of task groups using the
 description of tasks, as shown in~\cref{fig:task-groups}.
 
@@ -130,40 +129,42 @@ As sanity check we also provide accuracies achieved when: tested directly on CoG
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\columnwidth]{../img/plots/cogent_feature_transfer_baselines.pdf}
-	\caption{Test accuracy on CoGenT-A \& -B when training on CoGenT-A and fine-tuning on CoGenT-B.}
+	\caption{Feature transfer: test accuracties when transfering between the CoGenT-A and CoGenT-B variants.}
 	\label{fig:CoGenT-B-results}
 \end{figure}
 
-When training and testing on CoGenT-A, SAMNet performs slightly worse than the other models.
-In the case of zero-shot transfer to CoGenT-B all models show relatively good performance (around 75 percent), still being a significant decrease of accuracy (by 17 points)
+When training and testing on CoGenT-A, SAMNet performs slightly worse than the other models, what is consistent with results on the basic CLEVR variant.
+In the case of zero-shot transfer to CoGenT-B all models show relatively good performance (around 75 percent), still being a significant decrease of accuracy (by 17 points).
 As expected, all models are able to recove performance when fine-tuned on CoGenT-B.
-This process results in degradation of performance on originallly mastered CoGenT-A, with SAMNet and TbD showing clear capabilities to limit the impact of catastrophic forgetting.
+However, this process also results in degradation of performance on originallly mastered CoGenT-A, with SAMNet and TbD showing clear capabilities to limit the impact of catastrophic forgetting.
 This indicates that both SAMNet and TbD managed to develop and sustain (to some extent) representations of features when facing shift from one domain to the other.
 Still, the drop in zero-shot transfer suggests that both struggle with disentanglement of shape and color features.
 
 \subsection{Temporal transfer in COG}
 \label{sec:temporal}
 
-The goal here is to test the transfer learning ability concerning the frame sequence length, frame history required for reasoning, and the number of object distractors.
-For that purpose, we compare both models when trained on the Canonical variant but tested on the Hard variant (\cref{fig:samnet_cog_overall_transfer}).
-The gray (dotted) color indicates original accuracies of the baseline model from paper,
-whereas yellow (striped) indicates accuracies of the baseline model obtained by running the original code provided by the authors~\cite{yang2018implement}.
-
-The first column displays the scores of the traditional ML setup when training and testing on the Canonical variant.
-The observed close scores in gray (dotted) and yellow (striped) underscore the baseline model reproducibility.
-For both cases of zero-shot learning (second column--91.6\% vs. 65.9\%) and fine-tuning using a single epoch (third column--96.7\% vs. 78.1\%), SAMNET outperforms the baseline model significantly.
-Interestingly, this fine-tuning yields a mild boost of +0.6\% on the earlier reported accuracy in~\cref{sec:cog-baseline-compare} (fourth column).
-These results suggest that it suffices to train SAMNet on simpler videos to enable learning of good memory usage and attention on relevant entities in order to achieve comparable, if not better, performance on longer video frames with more complex scenes.
+Temporal transfer checks the transfer learning ability concerning the frame sequence length, frame history required for reasoning, and the number of object distractors.
+For that reason we train the models on the Canonical variant of COG dataset and test them on the Hard variant~(\cref{fig:samnet_cog_overall_transfer}).
+As the original paper~\cite{yang2018dataset} didn't provided such experiments, we supplement the original accuracies (denoted as gray-dotted) with the ones achieved by the COG baseline model that we have obtained by running the original code (gray-striped) provided by the authors~\cite{yang2018implement}.
 
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\columnwidth]{../img/plots/cog_temporal_transfer_baselines.pdf}
-	\caption{Total accuracies of SAMNet (blue) and baseline models (gray (dotted) / yellow (striped)) when testing generalization from Canonical to Hard variants of the dataset.}
+	\caption{Temporal transfer capabilites of SAMNet (blue) and baseline models (gray -striped and -dotted) when moving from Canonical to Hard variants of the COG dataset.}
 	\label{fig:samnet_cog_overall_transfer}
 \end{figure}
 
+The first column displays the aggregated scores when training and testing on the Canonical variant.
+The observed close scores of both base models (gray striped and dotted) underscore the baseline model reproducibility.
+For both cases of zero-shot learning and fine-tuning using a single epoch, SAMNET significantly outperformed the baseline model, by 25 and 17 points respectively.
+This might partially result from the frame-by-frame processing of videos executed by SAMNet by design, as opposed to the processing of aggregated frames performed by the baseline.
+Interestingly, the fine-tuning yields a mild boost of +0.6\% on the accuracy achieved by the model trained exclusively on the Hard variant.
+This suggest that SAMNet managed to develop elementary skills (like good memory usage and attention on relevant entities) and successfully build on them when dealing with longer videos and more complex scenes.
 
-\subsection{Reasoning transfer in CoGenT}
+%This suggest that it suffices to train SAMNet on simpler videos to enable learning of good memory usage and attention on relevant entities in order to achieve comparable, if not better, performance on longer video frames with more complex scenes.
+
+
+\subsection{Reasoning transfer in CLEVR-CoGenT}
 \label{sec:reasoning-clevr}
 
 \begin{figure}[htbp]
