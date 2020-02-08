@@ -1,5 +1,5 @@
 \subsection{Reasoning transfer in CLEVR-CoGenT}
-\label{sec:reasoning-clevr}
+\label{sec:reasoning-transfer-clevr}
 In the following we have relied on the CoGent-A variant only.
 Using the question groups (categories) defined by the authors, we reorganized training and testing splits with the goal of measuring whether mastering reasoning for one group can help with learning of the other.
 
@@ -10,11 +10,11 @@ Using the question groups (categories) defined by the authors, we reorganized tr
 	\label{fig:cogent_reasoning_transfer}
 \end{figure}
 
-First we have trained a single SAMNet model and measured its accuracy on each of the task group $t$ separatelly.
+First we have trained a single SAMNet instance and measured its accuracy on each of the task group $t$ separatelly.
 Those results, indicated in \cref{fig:cogent_reasoning_transfer} as "Train on All", form baselines for the next two sets of experiments.
 
 Next, we trained and tested 5 SAMNet instances, each on a single task group $t$.
-Interestingly, we observe a significant accuracy drop in all task groups aside of the \textit{Query Attribute}.
+Interestingly, we observe significant accuracy drops (from 18 up to almost 35 points) in all task groups aside of the \textit{Query Attribute}.
 We hypotesize this results from the fact that mastering visual grounding and recognizing object attributes (being the core of the latter task) is a necessary skill the system needed by the other tasks.
 Thus training on \textit{Query Attribute} helps others, whereas without any training on that particular group the system struggles with developing such a skill.
 
@@ -31,18 +31,17 @@ The explanation is that these categories expect  answers (digits 0-9, names of a
 % An additional set of experiments, for which results are available in the supplementary material, fine-tune the model trained on all tasks on each task $t$ respectively.
 %Fine-tuning did not demonstrate a clear benefit (except for \textit{Count}, where the accuracy increased by 1.5 pt) without hurting performance on the other tasks. Nevertheless, these experiments leave open the possibility that joint training of tasks may potentially benefit from using weighted sampling towards the tail end with more emphasis on samples from less performing task groups, similar to~\cite{guo2018dynamic, kendall2018multi}.
 
-\subsection{Reasoning transfer in COG}
-\label{sec:reasoning-cog}
+\subsection{Reasoning transfer in COG Canonical}
+\label{sec:reasoning-transfer-cog}
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=\columnwidth]{../img/plots/cog_reasoning_transfer.pdf}
-	\caption{Accuracies of SAMNet when testing its reasoning transfer capabilities on the Canonical variant of COG.}
-	\label{fig:COG-reasoning-results}
-\end{figure}\vspace{2pt}
+We conduct the following experiments using the Canonical variant of COG to study whether reasoning transfer learning was effective in leveraging information gained by training a task family at a higher level of the hierarchy.
+Order of the performed experiments is analogical to the one from previous chapter.
+First column (\cref{fig:cog_reasoning_transfer}, "Train on All") is our baseline, i.e.
+we train a single SAMNet instance on all tasks and test on each of the five task groups from the task hierarchy presented in \cref{fig:task-groups}.
+Please note that those results are in fact weighted averages when aggregating accuracies of our model on the Canonical variant (\cref{fig:samnet_cog_detailed}).
 
-Reusing the task hierarchy in \cref{fig:task-groups}, we conduct the following experiments using the Canonical variant of COG to study whether reasoning transfer learning was effective in leveraging information gained by training a task family at a higher level
-of the hierarchy:
+Next 
+
  \begin{itemize}
  	\compresslist
 	\item Train and test SAMNet on each of the 5 task groups at the lowest level of the hierarchy (Single-task training);
@@ -54,7 +53,15 @@ of the hierarchy:
 	\item As a baseline, we compared the above results to the earlier experiment shown in~\cref{fig:samnet_cog_detailed}, which can be viewed as training jointly on \textbf{All} and testing on each group at the leaf level separately (All-task training).
 \end{itemize}
 
-The results of these experiments are shown in~\cref{fig:COG-reasoning-results}.
+The results of these experiments are shown in~\cref{fig:cog_reasoning_transfer}.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\columnwidth]{../img/plots/cog_reasoning_transfer.pdf}
+	\caption{Accuracies of SAMNet when testing its reasoning transfer capabilities on the Canonical variant of COG.}
+	\label{fig:cog_reasoning_transfer}
+\end{figure}
+
 
 First, notice that for each of the \textbf{Basic} and \textbf{Obj-Attr} task families, the accuracy is near-perfect in all cases, suggesting that each contains the most primitive tasks and therefore do not benefit from training with other task families.
 With \textbf{Spatial}, we see a small improvement showing that there is some benefit due to joint training with other task families.
