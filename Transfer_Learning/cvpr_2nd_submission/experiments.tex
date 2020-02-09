@@ -2,6 +2,14 @@
 \label{sec:experiments}
 % \tk{order: CLEVR + baselines without TL, COG + baseline without TL, Feature Transfer-CLEVR/CoGenT, Temporal Transfer - COG, Reasoning Transfer - CLEVR/CoGenT, Reasoning Transfer-COG}
 
+\begin{figure}[b!]
+	\centering
+	\includegraphics[width=0.8\columnwidth]{../img/plots/clevr_baselines.pdf}
+	\caption{Comparison of SAMNet to baselines on CLEVR.}
+	\label{fig:clevr_baselines}
+\end{figure}
+
+
 We implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on PyTorch~\cite{paszke2017automatic}.
 We evaluated the model on
 the CLEVR dataset~\cite{johnson2017clevr}, a diagnostic dataset for Image Question Answering and on the COG dataset~\cite{yang2018dataset}, a video reasoning~\cite{mogadala2019trends} dataset developed for the purpose of research on relational and temporal reasoning.
@@ -13,24 +21,7 @@ We start with an evaluation of SAMNet's performance, comparing it to baselines o
 The rest of the experiments follows the proposed taxonomy.
 We first investigate feature transfer using CLEVR-CoGenT, followed by temporal transfer on the COG variants. Finally, we assess the reasoning transfer capability of SAMNet on both datasets, by reorganizing groups of questions into new training and test splits.
 
-\begin{table}[b!]
-	\centering
-	%\begin{adjustbox}{width=0.45\textwidth}
-	\begin{tabular}{cccc}
-		\toprule
-		Variant	& Cubes	& Cylinders &	Spheres	\\
-		\midrule
-		CLEVR &  Any Color  & Any Color 	&	Any color  \\
-		CoGenT-A &  Family A  & Family B 	&	Any color  \\
-		CoGenT-B	&	Family B  &	Family A	&	Any color \\
-		\bottomrule
-	\end{tabular}
-	%\end{adjustbox}
-	\caption{Allowed feature combinations in the CoGenT-A and CoGenT-B variants of the CLEVR dataset.}%\vspace{2pts}
-	\label{tab:cogent_conditions}
-\end{table}
-
-\begin{figure*}[t!]
+\begin{figure*}[!t]
 	\centering
 	\begin{subfigure}{\textwidth}
 		\centering
@@ -54,13 +45,6 @@ Gray, Blue, Brown and Yellow in Family A; and Red, Green, Purple, Cyan in Family
 The cubes and cylinders take colors from complementary families in each variant with opposite configurations; the spheres can take any color in both variants (See~\cref{tab:cogent_conditions}).
 As the input domain consist of the set of objects with all attribute values, both variants differ by their marginal distributions $P_S$ and $P_T$.
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.8\columnwidth]{../img/plots/clevr_baselines.pdf}
-	\caption{Comparison of SAMNet to baselines on CLEVR.}
-	\label{fig:clevr_baselines}
-\end{figure}
-
 \cref{fig:clevr_baselines} presents the accuracy achieved by SAMNet when compared to selected SOTA models, namely: Transparency by Design networks (TbD)~\cite{mascharka2018transparency}, Feature-wise Linear Modulation (FiLM)~\cite{perez2018film} and the Program Generator + Execution Engine (PG + EE)~\cite{johnson2017inferring}.
 SAMNet reaches a comparable 96.2\% accuracy, with TbD achieving the best score of 98.7\%.
 
@@ -73,7 +57,7 @@ COG comes in two variants: Canonical (easy) and Hard, differing mainly on the nu
 Since the number of task classes is large, we designed a 2-level hierarchy of task groups using the
 description of tasks, as shown in~\cref{fig:task-groups}.
 
-\begin{table}[ht]
+\begin{table}[htbp]
 	\centering
 	\begin{tabular}{lccc}
 		\toprule
@@ -88,7 +72,7 @@ description of tasks, as shown in~\cref{fig:task-groups}.
 \end{table}
 
 
-\begin{figure}[htbp]
+\begin{figure}[b!]
 	\centering
 	\includegraphics[width=\columnwidth]{../img/architecture/hierarchy}
 	\caption{Hierarchy of Task Groups in the COG dataset.}
