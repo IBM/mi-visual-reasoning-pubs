@@ -37,7 +37,7 @@ Here are the changes we have made:
 	\item \textbf{Related Work} section focused more on Transfer learning, and the deficiencies of existing solutions.
 	\item We moved the \textbf{Transfer Learning} section just before the Experiments to tie the theoretical framework to the experiments.
 	\item \textbf{Model}:  We added a \textbf{new figure} to show the details of SAMNet and depicted the variables to connect to the equations.  We also improved the description of the Model based on Rev.2's recommendations.
-	\item We \textbf{added baselines} for CLEVR/CoGenT in Figure X.
+	\item We \textbf{added comparison to several baselines}: compared SAMNet with three SOTA models on CLEVR (without transfer learning) in Figure 3, on CoGenT (with transfer learning) whit the same three SOTA models in Figure 6. Besides, we more stronly emphasized comparison with the baseline COG model in Figures 4 and 7. Please not that the added results are taken from the papers, we have followed the CVPR guidelines and not performed any experiments.
 	\item We rearranged the order of \textbf{Experiments} to better align with the theoretical framework.
 	\item In \textbf{Supplementary} section, we added snapshots from our visualization tool to show the behavior of the model in terms of visual attention, the retrieval of objects from the frame and the use of memory.
 \end{enumerate}
@@ -46,31 +46,83 @@ We appreciate the time of the reviewers for a second time and hope that they wou
 
 \section{Reviewer \#1 questions}
 
+\begin{enumerate}
+\item \textbf{Ad. Ablation studies}.
+	
 We agree that further ablation studies would be valuable however, per CVPR guidelines, we are not able to preform new experiments during rebuttal.
+
+\item \textbf{Ad. Reproduction and the availability of the code}.
 
 We pledge to make our code available prior to the conference, however we do not have necessary the approvals yet before the rebuttal period ends.
 
-We've added baselines to the feature transfer. Note that some of the transfer learning experiment settings are novel with no external baselines. We hope that future studies will use our methodology and compare against our model.
+\item \textbf{Ad. Performance of QA baselines}.
+
+We have significantly refined the paper and as a result it provides comparison of our model with baselines in \textbf{four} our of \textbf{six} experimental sections, each being aggregation of numerous experiments.
+The remaining \textbf{two} sets of experiments concern the novel reasoning learning setups with no existing external baselines.
+We agree that the comparison will be interesting, but sadly we haven't collected accuracies for any other model aside of SAMNet before the original submission, and CVPR police prevents us from doing so and adding them to the paper now.
+At that point we hope that future studies will use our methodology and compare against our model.
+
+Moreover, there are \textbf{no existing QA baselines} for \textbf{five}  ouf all \textbf{six} experimental setups.
+The only one available QA baseline is for the original CLEVR dataset.
+As in this case we already provided comparison with three SOTA VQA models, we decided to skip QA baseline as not introducing much.
+
+\end{enumerate}
 
 \section{Reviewer \#2 questions}
 
 \begin{enumerate}
-  \item What are $vo_tt$ and $mo_t$ and how they differ (lines 400-403)? What is the difference between both objects? \vm{$vo_t$ is the result of a retrieval operation on the content of the current input frame. $mo_t$ is the result of a similar operation on the memory content. The difference between both objects is thus their source.}
+  \item \textbf{What are $vo_tt$ and $mo_t$ and how they differ (lines 400-403)? What is the difference between both objects?}
+  
+  $vo_t$ is the result of a retrieval operation on the content of the current input frame. $mo_t$ is the result of a similar operation on the memory content. The difference between both objects is thus their source. We have included the explanation in the revised model section.
 
-  \item How the temporal classifier $\tau_t$ is trained and used? Do you use its logits or classes directly (lines 389-397)?
-  \item What are $va_t$ and in general all other symbols. How they are computed. \vm{$va_t$ is the visual attention vector, as defined on lines 412 - 413. $va_t$ is the result of a softmax layer}.
-  \item What is pseudo-attention (line 453)? Why such a name? \vm{$w_t$ is called a pseudo-attention vector as its norm may not always be 1 (just like a probability vector), but rather vary between 0 (no change) to 1 (complete change)}.
-  \item What are reasoning operations (lines 389-391)? \vm{One iteration of the SAM Cell is considered to be a reasoning operation, as defined on lines 376 - 377}.
-  \item How many 'reasoning operations' (what is k)? \vm{8 reasoning steps, as noted on lines 532-533.}
-  \item Figure 4 shows results on CLEVR-CoGenT. CLEVR-CoGenT uses a transfer between objects of type A and objects of type B (e.g. different combination of shapes and colors). Is this used here? Or this is standard CLEVR results? What are the results on the regular CLEVR, is it 95\% from the supp. material? \vm{The results presented in Fig 4 are reported on the condition A of CLEVR-CoGenT. No results are reported for CLEVR.}
-  \item Why the paper doesn't compare to other methods on CLEVR?
+  \item \textbf{How the temporal classifier $\tau_t$ is trained and used? Do you use its logits or classes directly (lines 389-397)?}
+  
+Thank you for pointing that out. We have explained that in revised version of the paper. Directly  quoting the paper (in italics), a temporal classifier is: \textit{a two-layer feedforward network with ELU activation in the hidden layer of $d$ units. The output $\tau_t$ of the classifier is intended to represent the different temporal contexts (or lack thereof) associated with the word in focus for that reasoning step. For the COG dataset, we pick 4 classes to capture the terms labeled “last”, “latest”, “now”, and “none”.}
+  
+  \item \textbf{What are $va_t$ and in general all other symbols. How they are computed.}
+  
+  $va_t$ is the visual attention vector, the result of a softmax layer. We have explained that in the revised version of the paper. 
+  
+  \item \textbf{What is pseudo-attention (line 453)? Why such a name?}
+  
+  $w_t$ is called a pseudo-attention vector as it (quotation from the revised paper): \textit{sums up to at most 1 and can be zero, indicating in this case there is no need adding a new object nor replacing an existing object.}
+  
+  \item \textbf{What are reasoning operations (lines 389-391)?}
+  
+  One iteration of the SAM Cell is considered to be a reasoning operation. We have added proper explanation as part of the SAM Cell description.
+  
+  \item \textbf{How many 'reasoning operations' (what is k)?}
+  
+  In all our experiments we set $k=8$ reasoning steps. In order to better hightlight this we have moved that information to the beginning of the experimental section.
+  
+  \item \textbf{Figure 4 shows results on CLEVR-CoGenT. CLEVR-CoGenT uses a transfer between objects of type A and objects of type B (e.g. different combination of shapes and colors). Is this used here? Or this is standard CLEVR results? What are the results on the regular CLEVR, is it 95\% from the supp. material?}
+  
+  We agree with the reviewer that this comparison was missing in the main paper, yet important enough to be included in it. Hence in the revised version of the paper we have added a new experimental section: \textbf{5.1. Performance of SAMNet on CLEVR}, where we present SAMNet accuracy in comparison with the three selected SOTA models.
+
+    \item \textbf{Why the paper doesn't compare to other methods on CLEVR?}
+
+	Please refer to the comment above.
+	  
 \end{enumerate}
 
 \section{Reviewer \#3 questions}
- - We overhauled the abstract and  introduction to address your criticism about the contributions.
 
- - We made changes (listed above) to make motivations clear.
-Comment about the memory size (i.e. why is it a good thing to change the memory size?): The size of the memory affects the training time significantly. Therefore, there is a big advantage if the model learns an abstract capability to use the memory independent of its size.  This will allow to scale-up models without re-training.
+\begin{enumerate}
+
+\item \textbf{neither the abstract, introduction, nor the related work sections identify clear contributions; what makes SAMNet novel over other nets out there? What was missing in previous work that SAMNet has that causes it to have better performance? Why is it a good thing that a new taxonomy is proposed?}
+
+ We are extremely grateful for providing this feedback. It motivafted us to rethink not only the contributions, but the paper as a whole. As w results we overhauled the abstract and  introduction to address the criticism about the contributions. We hope that the changes made our motivations clear.
+
+\item \textbf{the paper lacks motivation throughout. For example, what was the point of section 3? It seems like a set of definitions, but they are abstract and it's unclear what a reader is to take away from the section.}
+ 
+The third section introduced the taxonomy that enabled develop a holistic view on the whole Transfer Learning in Visual Reasoning and identify the uncovered areas, such as reasoning transfer. Besides, it enabled us to design new experiments reusing and reorganizing the existing datasets in different way. Still, we agree that the original submission was improperly organized, and, moreover, the experimental section wasn't properly tied with the introduced theoretical framework. We addressed both those issues in the revised version of the paper -- in particular, we have reorganized and rewritten the whole experimental section.
+ 
+\item \textbf{In Section 4 the authors describe SAMNet, but the argument was never made what was missing in existing networks that requires a new network to be proposed. Is the problem with previous approaches that they have limited memory, and this is what motivates SAMNet? Is it that the number of addresses can be changed between training and testing (and why is that a good thing)?}
+ 
+The size of the memory affects the training time significantly. Therefore, there is a big advantage if the model learns an abstract capability to use the memory independent of its size.  This will allow to scale-up models without re-training. Memory along with the frame-by-frame processing of input videos make SAMNet a unique model, by definition better suited for the temporal transfer.
+
+\end{enumerate}
+
 % References
 % {\small
 % \bibliographystyle{ieee}
