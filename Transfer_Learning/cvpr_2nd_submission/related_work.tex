@@ -5,24 +5,25 @@ In Computer Vision, it is now standard practice to pretrain an image encoder (su
 Such performance improvements are appealing, especially in cases where both the domain (natural vs. medical images) and the task (image classification vs. image segmentation vs VQA) change significantly.
 
 Similar developments have emerged in the Natural Language Processing (NLP) community.
-Using shallow word embeddings, such as word2vec~\cite{mikolov2013distributed} or GloVe~\cite{pennington2014glove}, pretrained on large corpuses from e.g.\ Wikipedia or Twitter, was de facto a standard procedure accross different NLP domains and tasks for the last several years.
+Using shallow word embeddings, such as word2vec~\cite{mikolov2013distributed} or GloVe~\cite{pennington2014glove}, pretrained on large corpuses from e.g.\ Wikipedia or Twitter, has been a standard procedure across different NLP domains and tasks.
 Recently, there is a clear, growing trend of utilization of deep contextualized word representations such as ELMo~\cite{peters2018deep} (based on bidirectional LSTMs~\cite{hochreiter1997long}) or BERT~\cite{devlin2018bert} (based on the Transformer~\cite{vaswani2017attention} architecture), where entire deep networks (not just the input layer) are pretrained on very large corporas.
 %In analogy to repositories with pretrained image encoders in TensorFlow~\cite{} or PyTorch~\cite{}, the NLP community has also started to create model repositories, some with dozens of pretrained models ready to be downloaded and used. HuggingFace~\cite{wolf2019transformers} is one of the most notable examples.
 
-Visual Reasoning tasks combining both the visual and language modalities~\cite{mogadala2019trends} naturally draw from those findings by reusing the pretrained image and word/question encoders.
-The community also seems to be realising that the models should not only be able to generalize on the low-level image features, but also on the performed high-level, abstract \textit{reasoning}.
-First notable attemp to establish a framework enabling transfer learning of reasoning skill was CLEVR~\cite{johnson2017clevr} with its two CoGenT variants.
-As a result several interesting works appeared~\cite{mascharka2018transparency, perez2018film, johnson2017inferring,marois2018transfer}, proposing models trying to cope with transfer from one to the other domain with different distributions of visual attribute combinations.
-Similarly, the baseline model introduced along with the COG dataset~\cite{yang2018dataset} have shown that it can do significantly better answer questions belonging to task classes not being explicitly trained on when leveraging knowledge learned on other tasks.
+Visual Reasoning tasks, combining both the visual and language modalities~\cite{mogadala2019trends}, naturally draw from those findings by reusing the pretrained image and word/question encoders.
+Ensuring models can generalize on high-level, abstract \emph{reasoning} has been a recent interest of the community.
+The first attempt at establishing a framework enabling transfer learning of reasoning skills was CLEVR~\cite{johnson2017clevr} with its two CoGenT variants.
+This fostered research~\cite{mascharka2018transparency, perez2018film, johnson2017inferring,marois2018transfer}, proposing models designed to transfer from one domain to another, with different distributions of visual attribute combinations.
+Similarly, the baseline model introduced alongside the COG dataset~\cite{yang2018dataset} has shown the ability to solve tasks not explicitly trained on, by leveraging knowledge learned on other tasks.
+
 These results clearly indicate the usefulness of transfer learning, despite the assumption of similar distributions between the source and target domains not being respected.
-At the same time transfer learning several research questions, such as the characteristics which make a whole dataset or a particular task more favorable to be used in pretraining (notably ImageNet~\cite{huh2016makes}), or regarding the observed performance correlation of models with different architectures between the source and target domains~\cite{kornblith2019better}.
+Conjointly, transfer learning raises several research questions, such as the characteristics which make a whole dataset or a particular task more favorable to be used in pretraining (notably ImageNet~\cite{huh2016makes}), or regarding the observed performance correlation of models with different architectures between the source and target domains~\cite{kornblith2019better}.
 One of the most systematic works in this area is the computational taxonomic map for task transfer learning~\cite{zamir2018taskonomy}, aiming at discovering the dependencies between twenty-six different computer vision tasks.
-In this work we extend that idea further and introduce a taxonomy enabling us to isolate and quantify different aspects of visual reasoning on the performance of our model.
+In this work, we extend this idea further and introduce a taxonomy allowing us to isolate and quantify different aspects of visual reasoning.
 %We illustrate it with the two above mentioned CLEVR and COG datasets.
 %The taxonomy enabled us to perform more systematic studies and facilitate comparison between the already existing solutions and the newly introduced SAMNet model.
 
 
-%transfer learning has helped models generalize better to domains with different distributions. 
+%transfer learning has helped models generalize better to domains with different distributions.
 
 
 %We propose to address this by introducing a taxonomy of transfer learning in visual reasoning, and illustrate it with two visual reasoning datasets.
