@@ -6,12 +6,12 @@ However, in many real-world scenarios, this assumption does not hold. Moreover, 
 One of the widely used solutions is Transfer Learning~\cite{pan2009survey,weiss2016survey}, a technique which enhances model performance by transferring \emph{information} from one domain to another.
 
 
-In this work we focus on transfer learning in multi-modal reasoning tasks combining vision and language~\cite{mogadala2019trends}. Recently introduced visual reasoning datasets, such as ~\cite{johnson2017clevr,yang2018dataset,song2018explore}, attempt to probe the generalization capabilities of models under various scenarios, trying to quatify the visual complexity of the analysed scene or compositional complexity of the question.
-Some of those setups seems to be well suited for transfer learning, still, not addressing that isue directly.
-For example, the \cite{johnson2017clevr} paper introduces the CLEVR dataset along with two variants (CoGenT-A and B) with varying combinations of visual attributes.
+In this work we focus on transfer learning in multi-modal reasoning tasks combining vision and language~\cite{mogadala2019trends}. Recently introduced visual reasoning datasets, such as ~\cite{johnson2017clevr,yang2018dataset,song2018explore}, attempt to probe the generalization capabilities of models under various scenarios, trying to quantify the visual complexity of the scene or the compositional complexity of the question.
+While these datasets seem to be well suited for transfer learning, they do not tackle that issue directly.
+In particular, \cite{johnson2017clevr} introduces the CLEVR dataset along with two variants (CoGenT-A and -B) with varying combinations of visual attributes.
 Similarly, COG \cite{yang2018dataset}, a Video QA reasoning dataset, contains two variants (Canonical and Hard) with different number of frames and scene complexity.
 Both datasets come with a number of task classes that require similar reasoning abilities (e.g. compare or count objects).
-The open question that we address in this paper is whether we can build a neural architecture that fosters transfer learning and generalizes from simpler to more complex reasoning tasks.
+The open question we address in this paper is whether we can build a neural architecture that fosters transfer learning and generalizes from simpler to more complex reasoning tasks.
 
 \noindent The contributions of this paper are the following:
 %Consequently:
@@ -20,6 +20,6 @@ The open question that we address in this paper is whether we can build a neural
 	\item We introduce a new model called SAMNet (Selective Attention Memory Network).
 	The unique features of SAMNet include the dynamic processing of video input frame-by-frame, multi-step reasoning over a given image and remembering the relevant concepts.
 	\item We propose a taxonomy of transfer learning to highlight new research directions, identify missing areas and encourage new datasets for transfer learning in visual reasoning. We evaluate the CLEVR/CoGenT and COG tasks to show how they map onto the proposed theoretical framework.
-	\item We perform an extensive set of experiments, comparing our model with baselines on the existing tasks, achieving the state-of-the-art results on COG~\cite{yang2018dataset}. We also designed two new tasks for reasoning transfer and show that the design of SAMNet promotes transfer learning capabilities and generalization.
+	\item We perform an extensive set of experiments, comparing our model with baselines on the existing tasks, achieving state-of-the-art results on COG~\cite{yang2018dataset}. We also designed two new tasks for reasoning transfer and show that the design of SAMNet promotes transfer learning capabilities and generalization.
 
 \end{enumerate}
