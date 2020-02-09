@@ -1,7 +1,7 @@
 \subsection{Reasoning transfer in CLEVR-CoGenT}
 \label{sec:reasoning-transfer-clevr}
-In the following experiments we have relied on the CoGent-A variant only.
-Using the question groups (categories) defined by the authors, we reorganized training and testing splits with the goal of measuring whether mastering reasoning for one group can help with learning of the other.
+In the following experiments, we used CoGent-A only.
+Using the question groups (categories) defined by the authors, we organized training and testing splits with the goal of measuring whether mastering reasoning for one questions group can help learning others.
 
 \begin{figure}[htbp]
 	\centering
@@ -10,12 +10,12 @@ Using the question groups (categories) defined by the authors, we reorganized tr
 	\label{fig:cogent_reasoning_transfer}
 \end{figure}
 
-First we have trained a single SAMNet instance and measured its accuracy on each of the task group $t$ separatelly.
-Those results, indicated in \cref{fig:cogent_reasoning_transfer} as "Train on All", form baselines for the next two sets of experiments.
+We first trained a single SAMNet instance and measured its accuracy on each of the task group $t$ separately.
+Those results, indicated in \cref{fig:cogent_reasoning_transfer} as "Train on All", serve as baselines for the next two sets of experiments.
 
-Next, we trained and tested 5 SAMNet instances, each on a single task group $t$ ("Train on t only").
-Interestingly, we observe significant accuracy drops (from 18 up to almost 35 points) in all task groups aside of the \textit{Query Attribute}.
-We hypotesize this results from the fact that mastering visual grounding and recognizing object attributes (being the core of the latter task) is a necessary skill the system needed by the other tasks.
+We next trained and tested 5 SAMNet instances, each on a single task group $t$ ("Train on t only").
+We observe significant accuracy drops (from 18 up to almost 35 points) in all task groups, aside of \textit{Query Attribute}.
+We hypothesize this results from the fact that mastering visual grounding and recognizing object attributes (being the core of the latter task) is a necessary skill the system needed by the other tasks.
 Thus training on \textit{Query Attribute} helps others, whereas without any training on that particular group the system struggles with developing such a skill.
 
 Finally, we trained 5 SAMNet instances in the extreme reasoning transfer setup: for each task group $t$ we trained a single instance on all tasks but $t$, and next tested its performance on $t$ only.
