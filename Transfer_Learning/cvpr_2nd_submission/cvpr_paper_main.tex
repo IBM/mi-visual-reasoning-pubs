@@ -1,6 +1,8 @@
 \documentclass[10pt,twocolumn,letterpaper]{article}
 
 \usepackage{cvpr}
+\cvprfinalcopy
+
 \usepackage{times}
 %\usepackage{epsfig}
 \usepackage{graphicx}
@@ -36,7 +38,7 @@
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
 % Pages are numbered in submission mode, and unnumbered in camera-ready
-\ifcvprfinal\pagestyle{empty}\fi
+%\ifcvprfinal\pagestyle{empty}\fi
 
 \usepackage{cleveref}
 \crefname{section}{Section}{Sections}
@@ -112,29 +114,30 @@
 \setlength{\parskip}{0pt}
 \setlength{\parsep}{0pt}}
 
-
+\usepackage{authblk}
 
 %%%%%%%%%%%%%%%
 
 \begin{document}
 
 %%%%%%%%% TITLE
-\title{Transfer Learning in Visual and Relational Reasoning}
+\title{Transfer Learning in Visual and Relational Reasoning\vspace{-1cm}}
 
-\author{%
-	T.S. Jayram\thanks{IBM Research AI.} \and
-	Vincent Marois\footnotemark[2] \and
-	Tomasz Kornuta\thanks{NVIDIA.} \and
-	Vincent Albouy\thanks{} \and
-	Emre Sevgen\thanks{Citrine Informatics.}  \and
-	Ahmet Ozcan\footnotemark[2]
-}
+\author[1]{T.S. Jayram}
+\author[2]{Vincent Marois}
+\author[3]{Tomasz Kornuta}
+\author[ ]{Vincent Albouy\thanks{Work done while at IBM Reseach AI, Almaden Research Center}\hskip -4pt}
+\author[*]{Emre Sevgen}
+\author[1]{Ahmet Ozcan\vspace{-0.3cm}}
+\affil[ ]{$^1$IBM Research AI, Almaden Research Center, San Jose, CA, USA. $^2$IBM Research AI, Thomas J. Watson Research Center, York Town, NY, USA. $^3$NVIDIA, Santa Clara, CA, USA}
+\affil[ ]{\textit {\{jayram,  asozcan\}@us.ibm.com,  \{vincent.marois,vincent.albouy\}@ibm.com, tkornuta@nvidia.com, sesevgen@gmail.com} \vspace{-0.7cm}}
+
 %
 %\author{T.S. Jayram \and  Vincent Marois \and Vincent Albouy \and Tomasz Kornuta  \and Emre Sevgen \and Ahmet Ozcan\\
 %IBM Research AI\\
 %Almaden Research Center, San Jose, CA 95120, USA\\
 %Thomas J. Watson Research Center, Yorktown Heights, NY 10598, USA\\
-%{\tt\small {jayram,  asozcan}@us.ibm.com}
+%{\tt\small }
 %{\tt\small {tkornuta, sesevgen}@gmail.com}
 %{\tt\small vincent.marois@ibm.com}
 %}
