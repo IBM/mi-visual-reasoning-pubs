@@ -12,6 +12,9 @@
 *.cb2
 .*.lb
 
+# snapshot package
+*.dep
+
 ## Intermediate documents:
 *.dvi
 *.xdv
