@@ -1,7 +1,5 @@
-\RequirePackage{snapshot}
-
 \documentclass[11pt]{article}
-
+\pdfoutput=1
 \usepackage[letterpaper,margin=1in]{geometry}
 \usepackage[auth-sc,affil-sl]{authblk}
 \usepackage{times}
@@ -86,24 +84,6 @@
 \title{Transfer Learning in Visual and Relational Reasoning}
 
 %%%%%%%%% AUTHORS
-% WILL NEED TO REARRANGE THE AUTHORS LIST & GET CORRECT INSTITUTIONS / EMAILS
-%\author{%
-%T.S. Jayram\thanks{\textit{IBM Almaden Research Center, San Jose, CA, USA}.} \hspace{1.5cm} \and  
-%Vincent Marois\thanks{\textit{IBM Thomas J. Watson Research Center, Yorktown Heights, NY, USA}.} \hspace{1.5cm} \and 
-%Tomasz Kornuta\thanks{Currently at NVIDIA. \textit{Santa Clara, CA, USA}.}  \and
-%\hspace{1cm} Vincent Albouy\footnotemark[1]  \hspace{1.5cm} \and 
-%Emre Sevgen\thanks{Currently at Citrine Informatics.}  \hspace{1.5cm} \and 
-%Ahmet S. Ozcan\footnotemark[1] \and \\
-%{\large IBM Research AI}
-%}
-
-\newcommand\blfootnote[1]{%
-	\begingroup
-	\renewcommand\thefootnote{}\footnote{#1}%
-	\addtocounter{footnote}{-1}%
-	\endgroup
-}
-
 \renewcommand\Authands{ and }
 \author[1]{T.S. Jayram}
 \author[2]{Vincent Marois}
@@ -118,14 +98,21 @@
 \date{}
 
 \maketitle
+%% Footnote without numbering
+\newcommand\blfootnote[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
+
 \blfootnote{E-mail: {\scriptsize \textit{\{jayram,asozcan\}@us.ibm.com,  \{vincent.marois,vincent.albouy\}@ibm.com, tkornuta@nvidia.com, sesevgen@gmail.com}}}
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-	Transfer learning has become the de facto standard in computer vision and natural language processing, especially where labeled data is scarce. Accuracy can be significantly improved by using pre-trained models and subsequent fine-tuning. In visual reasoning tasks, such as image question answering, transfer learning is more complex. In addition to transferring the capability to recognize visual features, we also expect to transfer the system’s ability to reason. Moreover, for video data, temporal reasoning adds another dimension. In this work, we formalize these unique aspects of transfer learning and propose a theoretical framework for visual reasoning, exemplified by the well-established CLEVR and COG datasets. Furthermore, we introduce a new, end-to-end differentiable recurrent model (SAMNet), which shows state-of-the-art accuracy and better performance in transfer learning on both datasets. The improved performance of SAMNet stems from its capability to decouple the abstract multi-step reasoning from the length of the sequence and its selective attention enabling to store only the question-relevant objects in the external memory.
+	Transfer learning has become the de facto standard in computer vision and natural language processing, especially where labeled data is scarce. Accuracy can be significantly improved by using pre-trained models and subsequent fine-tuning. In visual reasoning tasks, such as image question answering, transfer learning is more complex. In addition to transferring the capability to recognize visual features, we also expect to transfer the system's ability to reason. Moreover, for video data, temporal reasoning adds another dimension. In this work, we formalize these unique aspects of transfer learning and propose a theoretical framework for visual reasoning, exemplified by the well-established CLEVR and COG datasets. Furthermore, we introduce a new, end-to-end differentiable recurrent model (SAMNet), which shows state-of-the-art accuracy and better performance in transfer learning on both datasets. The improved performance of SAMNet stems from its capability to decouple the abstract multi-step reasoning from the length of the sequence and its selective attention enabling to store only the question-relevant objects in the external memory.
 \end{abstract}
 
-%%%%%%%%% BODY TEXT
 %%%%%%%%% BODY TEXT
 \input{introduction}
 
@@ -141,7 +128,7 @@
 \input{summary}
 
 \bibliographystyle{alpha}
-\bibliography{../bibliography}
+\bibliography{bibliography}
 
 \newpage
 \appendix
