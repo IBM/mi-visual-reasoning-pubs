@@ -14,9 +14,9 @@ We first trained a single SAMNet instance on CoGenT-A and measured its accuracy 
 Those results, indicated in \cref{fig:cogent_reasoning_transfer} as "Train on All", serve as baselines for the next two sets of experiments.
 
 We next trained and tested 5 SAMNet instances, each on a single task group $t$ ("Train on t only").
-We observe significant accuracy drops (from 18 up to almost 35 points) in all task groups, aside of \textit{Query Attribute}.
+We observe significant accuracy drops (from 18 up to almost 35 points) in all task groups, except for \textit{Query Attribute}.
 We hypothesize \textit{Query Attribute} requires mastering visual grounding and recognizing object attributes, as opposed to the other groups which may not enforce it.
-Thus, training on \textit{Query Attribute} helps others, whereas without any training on that particular group, SAMNet battles developing such skill.
+Thus, training on \textit{Query Attribute} helps others, whereas without any training on that particular group, SAMNet struggles developing such skill.
 
 Finally, we trained 5 SAMNet instances as follows: for each task group $t$ we trained a single instance on all tasks but $t$, and tested its performance on $t$ only.
 As expected, this setup appears challenging, causing severe performance drops, with accuracy on \textit{Count} and \textit{QueryAttribute} dropping to zero.
@@ -35,7 +35,7 @@ This stems from the non-overlapping labels spaces of \textit{Count} (digits 0 to
 \label{sec:reasoning-transfer-cog}
 In order to further investigate whether reasoning transfer is effective in leveraging information gained by training a task family at a higher level of the hierarchy, we also conducted a set of experiments using the Canonical variant of COG.
 The order of the performed experiments is analogical to the one in the previous section.
-The first column (\cref{fig:cog_reasoning_transfer}, "Train on All") is the baseline, i.e.
+The first column (\cref{fig:cog_reasoning_transfer}, "Train on All") is taken as a reference, i.e.
 we train a single SAMNet instance on all tasks and test on each of the five task groups from the task hierarchy presented in \cref{fig:task-groups}.
 Please note that these results are weighted averages of the accuracies of our model on the Canonical variant tasks (\cref{fig:samnet_cog_detailed}).
 
@@ -46,10 +46,10 @@ Please note that these results are weighted averages of the accuracies of our mo
 	\label{fig:cog_reasoning_transfer}
 \end{figure}
 
-Next, we experimented with the "Train on t only" setup, i.e. training and testing each of 5 SAMNet instances on a single task group $t$ (i.e. single leaf of the proposed hierarchy).
-For \textit{Basic}, \textit{Spatial} and \textit{Obj-Attr}, the accuracy is matching the baseline ("Train on All"), suggesting that each group contain sufficient information for developing all necessary skills.
+Next, we experimented with the "Train on t only" setup, i.e. training and testing each of 5 SAMNet instances on a single task group $t$ (i.e. the leaves of the proposed hierarchy).
+For \textit{Basic}, \textit{Spatial} and \textit{Obj-Attr}, the accuracy is matching the reference ("Train on All"), suggesting that each group contains sufficient information for developing all necessary skills.
 Therefore, models trained on these groups may not benefit from any additional training on other task groups.
-However, the accuracy drops for \textit{Compary} and \textit{Cognitive}, suggesting the opposite.
+However, accuracy on \textit{Compary} and \textit{Cognitive} dropped, suggesting the contrary.
 
 Therefore, we have performed a final set of experiments ("Train on Group A/B"), where we trained two SAMNet instances: a) trained on all tasks from \textit{Group A} and tested on each task from the lowest groups (i.e. \textit{Basic}, \textit{Obj-Attr} and \textit{Compare}) separately; b) trained on all tasks from \textit{Group B} and tested separately on \textit{Spatial} and \textit{Cognitive}.
 As expected, training on the other tasks from \textit{Group A} enabled the model to significantly improve on the \textit{Compare} task (from 58.6\% to 92.3\%).

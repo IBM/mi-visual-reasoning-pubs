@@ -2,11 +2,11 @@
 \label{sec:related_work}
 
 In Computer Vision, it is now standard practice to pretrain an image encoder (such as VGG~\cite{simonyan2014very} or ResNet~\cite{he2016deep}) on large-scale datasets (such as ImageNet~\cite{deng2009imagenet}), and reuse the weights in unrelated domains and tasks, such as segmentation of cars~\cite{iglovikov2018ternausnet} or Visual Question Answering (VQA) in a medical domain~\cite{kornuta2019leveraging}.
-Such performance improvements are appealing, especially in cases where both the domain (natural vs. medical images) and the task (image classification vs. image segmentation vs VQA) change significantly.
+Such performance improvements are appealing, especially in cases where both the domain (natural vs. medical images) and the task (image classification vs. image segmentation vs. VQA) change significantly.
 
 Similar developments have emerged in the Natural Language Processing (NLP) community.
 Using shallow word embeddings, such as word2vec~\cite{mikolov2013distributed} or GloVe~\cite{pennington2014glove}, pretrained on large corpuses from e.g.\ Wikipedia or Twitter, has been a standard procedure across different NLP domains and tasks.
-Recently, there is a clear, growing trend of utilization of deep contextualized word representations such as ELMo~\cite{peters2018deep} (based on bidirectional LSTMs~\cite{hochreiter1997long}) or BERT~\cite{devlin2018bert} (based on the Transformer~\cite{vaswani2017attention} architecture), where entire deep networks (not just the input layer) are pretrained on very large corporas.
+Recently, there is a clear, growing trend in the utilization of deep contextualized word representations such as ELMo~\cite{peters2018deep} (based on bidirectional LSTMs~\cite{hochreiter1997long}) or BERT~\cite{devlin2018bert} (based on the Transformer~\cite{vaswani2017attention} architecture), where entire deep networks (not just the input layer) are pretrained on very large corporas.
 %In analogy to repositories with pretrained image encoders in TensorFlow~\cite{} or PyTorch~\cite{}, the NLP community has also started to create model repositories, some with dozens of pretrained models ready to be downloaded and used. HuggingFace~\cite{wolf2019transformers} is one of the most notable examples.
 
 Visual Reasoning tasks, combining both the visual and language modalities~\cite{mogadala2019trends}, naturally draw from those findings by reusing the pretrained image and word/question encoders.
