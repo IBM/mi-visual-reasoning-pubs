@@ -49,10 +49,13 @@ The input to SAMNet consists of a question component and a visual component that
 The question is represented as a sequence of word embeddings (either one-hot or preprocessed by GloVe~\cite{pennington2014glove}) corresponding to words in the question.
 Each frame of the visual input is encoded using raw pixels or preprocessed by a pre-trained deep network such as RESNet~\cite{he2016deep}.
 The language input of $L$ word embeddings is processed by a Bi-LSTM based question encoder that produces \emph{contextual words} $\vec{cw} \in \Reals^{L \times d}$.
-The final states in either direction of the BI-LSTM are also concatenated and passed through a linear layer to produce a global representation of the question
+The final states in either direction of the Bi-LSTM are also concatenated and passed through a linear layer to produce a global representation of the question
 $\vec{q} \in \Reals^d$, called the \emph{question embedding}.
 The $k$-th frame of the visual input, where $k$ indexes over the frames in temporal order, is processed by an image encoder---a CNN with appropriately chosen number of layers---to produce a \emph{feature map}
 $\vec{F}_k \in \Reals^{H \times W \times d}$.
+Similar to the memory, we view $\vec{F}_k$ as a content-addressable memory with 
+$H \times W$ locations, each containing a$d$-dimensional feature vector.
+
 
 \smallskip
 
@@ -67,7 +70,7 @@ in a trained model, $\whead_t$ points to the location of the first empty slot in
 \smallskip
 
 \noindent\textbf{Question-driven Controller.}
-This module drives attention over the question to produce $k$ control states, one per reasoning operation.
+This module drives attention over the question to produce $T$ control states, one per reasoning operation.
 The control state $\vec{c}_t$ at step $t$ is then fed to a \emph{temporal classifier},
 a two-layer feedforward network with ELU activation in the hidden layer of $d$ units.
 The output $\bm{\tau}_t$ of the classifier is intended to represent the different temporal contexts (or lack thereof) associated with the word in focus for that reasoning step.
@@ -75,8 +78,10 @@ For the COG dataset, we pick 4 classes to capture the terms labeled ``last'', ``
 
 \smallskip
 
-\noindent\textbf{Retrieval Units.} The visual retrieval unit uses the information generated above to extract a relevant object $\vec{vo}_t$ from the frame.
-A similar operation on memory yields the object $\vec{mo}_t$. The memory operation is based on attention mechanism, and resembles content-based addressing. Therefore, we obtain an attention vector over memory addresses that we interpret to be the \emph{read head}, denoted by $\rhead_t$.
+\noindent\textbf{Retrieval Units.} The visual retrieval unit uses the information generated above to extract an attention vector $\vec{va}_t \in \Reals^{H \times W}$ over the feature vectors in $\vec{F}_k$ and a frame object 
+$\vec{vo}_t \in \Reals^d$.
+A similar operation on memory yields an attention vector $\rhead_t \in \Reals^N$ over the $N$ memory addresses, called the \emph{read head}, and a memory object
+$\vec{mo}_t \in \Reals^d$.
 %Note that the returned objects may be invalid, e.g., if the current reasoning step focuses on the phrase ``last red square'', $\vec{vo}_t$ is invalid even if the current frame contains a red square.
 
 \smallskip
@@ -85,9 +90,11 @@ A similar operation on memory yields the object $\vec{mo}_t$. The memory operati
 %\paragraph{Reasoning Unit.}
 This module is the backbone of SAMNet, which determines the gating operations to be performed on the external memory, as well as determining the correct object's location for reasoning.
 To resolve whether we have a valid object from the frame (and similarly for memory), we execute the following reasoning procedure.
-First, we compute a simple aggregate\footnote{%
-	This is closely related to R\'{e}nyi entropy and Tsallis entropy of order~2.} of the visual attention vector $\vec{va}_t$ of dimension $L$ ($L$ denotes the number of feature vectors for the frame):
-$vs_t = \sum_{i=1}^L [\vec{va}_t(i)]^2$. It can be shown that the more localized the attention
+First, we compute a simple aggregate%\footnote{%
+%	This is closely related to R\'{e}nyi entropy and Tsallis entropy of 
+%	order~2.}%
+of the visual attention vector $\vec{va}_t$:
+$vs_t = \sum_{i=1}^H \sum_{j=1}^W [\vec{va}_t(i,j)]^2$. It can be shown that the more localized the attention
 vector, the higher the aggregate value.
 We perform a similar computation on the read head $\rhead_t$ over memory locations.
 We input these two values, along with the temporal class weights $\bm{\tau}_t$, into a 3-layer feedforward classifier with hidden ELU units to extract 4 gating values (in $[0,1]$) for the current reasoning step:
