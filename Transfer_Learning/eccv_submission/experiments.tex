@@ -4,7 +4,7 @@
 
 \begin{figure}[b!]
 	\centering
-	\includegraphics[width=0.5\columnwidth]{../img/plots/clevr_baselines.pdf}
+	\includegraphics[width=0.5\textwidth]{../img/plots/clevr_baselines.pdf}
 	\caption{Comparison of SAMNet to baselines on CLEVR.}
 	\label{fig:clevr_baselines}
 \end{figure}
@@ -45,14 +45,14 @@ Gray, Blue, Brown, Yellow in Family A; and Red, Green, Purple, Cyan in Family B.
 The cubes and cylinders take colors from complementary families in each variant with opposite configurations; the spheres can take any color in both variants (See~\cref{tab:cogent_conditions}).
 As the input domain consist of the set of objects with all attribute values, both variants differ by their marginal distributions $P_S$ and $P_T$.
 
-\cref{fig:clevr_baselines} presents the accuracy achieved by SAMNet when compared to selected SOTA models, namely: Transparency by Design networks (TbD)~\cite{mascharka2018transparency}, Feature-wise Linear Modulation (FiLM)~\cite{perez2018film} and the Program Generator + Execution Engine (PG + EE)~\cite{johnson2017inferring}.
+\cref{fig:clevr_baselines} presents the accuracy achieved by SAMNet when compared to selected state-of-the-art models, namely: Transparency by Design networks (TbD)~\cite{mascharka2018transparency}, Feature-wise Linear Modulation (FiLM)~\cite{perez2018film} and the Program Generator + Execution Engine (PG + EE)~\cite{johnson2017inferring}.
 SAMNet reaches a comparable 96.2\% accuracy, with TbD achieving the best score of 98.7\%.
 
 
 \subsection{Performance of SAMNet on COG}
 \label{sec:cog-baseline-compare}
 
-COG dataset contains short videos, with associated questions grouped into 23 categories~\footnote{COG also proposes a pointing version of the tasks, which are not considered in this work.}.
+COG dataset contains short videos, with associated questions grouped into 23 categories\footnote{COG also proposes a pointing version of the tasks, which are not considered in this work.}.
 COG comes in two variants: Canonical (easy) and Hard, differing mainly on the number of frames in the video, the maximum amount of look-back in frame history containing relevant information for reasoning, and the number of object distractors present in a given frame (see~\cref{tab:cog_variants}).
 Since the number of task classes is large, we designed a 2-level hierarchy of task groups using the
 description of tasks, as shown in~\cref{fig:task-groups}.
@@ -74,7 +74,7 @@ description of tasks, as shown in~\cref{fig:task-groups}.
 
 \begin{figure}[b!]
 	\centering
-	\includegraphics[width=0.5\columnwidth]{../img/architecture/hierarchy}
+	\includegraphics[width=0.5\textwidth]{../img/architecture/hierarchy}
 	\caption{Hierarchy of Task Groups in the COG dataset.}
 	\label{fig:task-groups}
 \end{figure}
@@ -84,7 +84,6 @@ description of tasks, as shown in~\cref{fig:task-groups}.
 For groups at the lowest level, we chose the following task classes to be placed in those groups.
 Below, substitute each of \textit{Shape} and \textit{Color} for  \uX{} to obtain the task class.
 \begin{description}
-	\compresslist
 	\item[Basic:] \textit{Exist}\uX, \textit{Get}\uX{} and \textit{Exist};
 	\item[Obj-Attr:] \emph{SimpleCompare}\uX{} and \textit{AndSimpleCompare}\uX;
 	\item[Compare:] \textit{Compare}\uX,  \textit{AndCompare}\uX{} \& \textit{Exist}\uX\textit{Of};
@@ -93,7 +92,7 @@ Below, substitute each of \textit{Shape} and \textit{Color} for  \uX{} to obtain
 \end{description}
 
 
-We compared our results with the baseline model introduced in the same paper as the COG dataset~\cite{yang2018dataset}.
+We compared our results with the baseline model introduced in in~\cite{yang2018dataset}, the same paper as the COG dataset.
 The most important results are highlighted in~\cref{fig:samnet_cog_detailed}; full comparison can be found in the supplementary material.
 
 For the Canonical variant (top row), we achieve similar accuracies for the majority of tasks (with a total average accuracy of 98.0\%, compared to 97.6\% for the baseline model), with significant improvements (around 13 points) for \textit{AndCompare} tasks.
@@ -107,12 +106,12 @@ SAMNet improves upon the baseline model on all tasks, with improvements varying 
 
 In order to quantify SAMNet's feature transfer ability, we used the CoGenT variants of CLEVR and performed a set of experiments, starting from training on CoGenT-A, followed by:
 an immediate test (zero-shot learning) on CoGenT-B; and fine-tuning for a single epoch on 30k samples from CoGenT-B before testing (following the methodology used in~\cite{johnson2017inferring,mascharka2018transparency,perez2018film,marois2018transfer}).
-In \cref{fig:CoGenT-B-results}, we compare the achieved performance with the previously selected SOTA models.
+In \cref{fig:CoGenT-B-results}, we compare the achieved performance with the previously selected state-of-the-art models.
 We also consider a direct test on CoGenT-A; and a test on CoGenT-A after fine-tuning on B.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=\columnwidth]{../img/plots/cogent_feature_transfer_baselines.pdf}
+	\includegraphics[width=\textwidth]{../img/plots/cogent_feature_transfer_baselines.pdf}
 	\caption{Feature transfer: test accuracies when transferring between CoGenT-A and CoGenT-B.}
 	\label{fig:CoGenT-B-results}
 \end{figure}
@@ -132,7 +131,7 @@ As the original paper~\cite{yang2018dataset} didn't provide such experiments, we
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.8\columnwidth]{../img/plots/cog_temporal_transfer_baselines.pdf}
+	\includegraphics[width=0.8\textwidth]{../img/plots/cog_temporal_transfer_baselines.pdf}
 	\caption{Temporal transfer capabilities of SAMNet (blue) and baseline models (gray -striped and -dotted) when moving from Canonical to Hard  in COG.}
 	\label{fig:samnet_cog_overall_transfer}
 \end{figure}
