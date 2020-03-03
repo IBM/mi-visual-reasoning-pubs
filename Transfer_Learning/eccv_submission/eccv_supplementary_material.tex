@@ -1,11 +1,14 @@
-\documentclass[10pt,letterpaper]{article}
-
-\usepackage{cvpr}
-\usepackage{times}
+\documentclass[runningheads]{llncs}
 
 \usepackage{booktabs}
 \usepackage{adjustbox}
 \usepackage{xcolor}
+\usepackage{comment}
+
+% INITIAL SUBMISSION - The following two lines are NOT commented
+% CAMERA READY - Comment OUT the following two lines
+\usepackage{ruler}
+\usepackage[width=122mm,left=12mm,paperwidth=146mm,height=193mm,top=12mm,paperheight=217mm]{geometry}
 
 \usepackage{hyperref}
 \hypersetup{
@@ -19,30 +22,36 @@
 \usepackage{cleveref}
 \crefname{table}{Table}{Tables}
 
-%\cvprfinalcopy % *** Uncomment this line for the final submission
-
-\def\cvprPaperID{7813} 
-\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
-
-
-\ifcvprfinal\pagestyle{empty}\fi
-
-
-
 \begin{document}
 
 %%%%%%%%% TITLE
-\title{Transfer Learning in Visual and Relational Reasoning\\ (Supplementary Material)}
+\pagestyle{headings}
+\mainmatter
+\def\ECCVSubNumber{7169}  % Insert your submission number here
 
-%%%%%%%%% AUTHORS
-\author{T.S. Jayram \and  Vincent Marois \and Vincent Albouy \and Tomasz Kornuta  \and Emre Sevgen \and Ahmet Ozcan\\
-IBM Research AI\\
-Almaden Research Center, San Jose, CA 95120, USA\\
-Thomas J. Watson Research Center, Yorktown Heights, NY 10598, USA\\
-{\tt\small {jayram,  asozcan}@us.ibm.com}
-{\tt\small {tkornuta, sesevgen}@gmail.com}
-{\tt\small vincent.marois@ibm.com}
-}
+\title{Transfer Learning in Visual and Relational Reasoning -- Supplementary Material}
+
+% INITIAL SUBMISSION
+%\begin{comment}
+\titlerunning{ECCV-20 submission ID \ECCVSubNumber}
+\authorrunning{ECCV-20 submission ID \ECCVSubNumber}
+\author{Anonymous ECCV submission}
+\institute{Paper ID \ECCVSubNumber}
+%\end{comment}
+
+% CAMERA READY SUBMISSION
+\begin{comment}
+\author{T.S. Jayram\inst{1} \and  Vincent Marois\inst{2} \and Vincent Albouy\thanks{Work done while at IBM Research AI, Almaden Research Center} \and Tomasz Kornuta\inst{3} \and Ahmet Ozcan\inst{1}}
+
+\authorrunning{T.S. Jayram et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+
+\institute{IBM Research AI, Almaden Research Center, San Jose, CA, USA\\ \email{\{jayram,  asozcan\}@us.ibm.com}
+      \and IBM Research AI, Thomas J. Watson Research Center, York Town, NY, USA\\ \email{vincent.marois@ibm.com}
+      \and NVIDIA, Santa Clara, CA, USA\\ \email{tkornuta@nvidia.com}}
+\end{comment}
+
 
 \maketitle
 
@@ -51,7 +60,7 @@ Thomas J. Watson Research Center, Yorktown Heights, NY 10598, USA\\
 \bigskip
 
 \clearpage
-\bibliographystyle{ieee_fullname}
+\bibliographystyle{splncs04}
 \bibliography{../bibliography}
 
 

@@ -10,7 +10,7 @@ The CoGenT dataset~\cite{johnson2017clevr} contains:
 	\item Test set of 15,000 images and 149,980 questions in Condition A (without answers),
 	\item Validation set of 15,000 images and 150,000 questions in Condition B,
 	\item Test set of 15,000 images and 149,992 questions in Condition B (without answers),
-	\item Scene graphs and functional programs for all training/validation images/questions.
+	\item Scene graphs and functional programs for all training / validation images and questions.
 \end{itemize}
 
 \noindent The combinations of attributes in CoGenT-A and CoGenT-B are shown in~\cref{tab:cogent_conditions_supplement}.
@@ -34,13 +34,13 @@ The CoGenT dataset~\cite{johnson2017clevr} contains:
 	\centering
 	\begin{tabular}{lcccccc}
 		\toprule
-		Variant    &  	number &  	maximum & maximum & size & size & size  \\ 
+		Variant    &  	number &  	maximum & maximum & size & size & size  \\
 		& of   & memory & number of & of & of & of  \\
 		& frames & duration & distractors & training set & validation set & test set \\
 		\midrule
-		Canonical & 4 & 3 & 1 & 10000320 & 500016 & 500016 \\	
+		Canonical & 4 & 3 & 1 & 10000320 & 500016 & 500016 \\
 		Hard  & 8 & 7 & 10 & 10000320 & 500016  & 500016 \\
-		\bottomrule	
+		\bottomrule
 	\end{tabular}
 	\smallskip
 	\caption{Details of the Canonical and Hard variants of the COG dataset.}
@@ -51,13 +51,13 @@ The CoGenT dataset~\cite{johnson2017clevr} contains:
 %	\centering
 %	\begin{tabular}{lcccccc}.
 %		\toprule
-%		Variant    &  	number &  	maximum & maximum & size & size & size  \\ 
-%		& of   & memory & number of & of & of & of 
+%		Variant    &  	number &  	maximum & maximum & size & size & size  \\
+%		& of   & memory & number of & of & of & of
 %%		& frames & duration & distractors & training set & validation set & test set \\
 %		\midrule
-%		Canonical & 4 & 3 & 1 & 10000320 & 500016 & 500016 \\	
+%		Canonical & 4 & 3 & 1 & 10000320 & 500016 & 500016 \\
 %		Hard  & 8 & 7 & 10 & 10000320 & 500016  & 500016 \\
-%		\bottomrule	
+%		\bottomrule
 %	\end{tabular}
 %	\caption{Details of the Canonical and Hard variants of the COG dataset.}
 %	\label{tab:cog_variants_supplement}
@@ -75,16 +75,16 @@ The CoGenT dataset~\cite{johnson2017clevr} contains:
 		\begin{tabular}{l r r r r r r r r r r}
 			\toprule[1.25pt]
 			Model & \multicolumn{4}{c}{SAMNet} &  &\multicolumn{4}{c}{Baseline Model} \\
-			\cmidrule(lr){2-5} 
-			\cmidrule(lr){7-10} 
+			\cmidrule(lr){2-5}
+			\cmidrule(lr){7-10}
 			&&&&& & paper & code & code & paper\\
-			\cmidrule(lr){7-10} 
-			Trained on       & canonical & canonical & canonical & hard &           &  canonical  & canonical  & canonical & hard \\ 
-			Fine tuned on  & - & - & hard  & - &           & -   & - & hard & - \\ 
-			Tested on        & canonical & hard & hard & hard &            &canonical  & hard & hard & hard  \\ 
-			\midrule[1pt]	
-			Overall accuracy & 98.0 & 91.6 & 96.5  & 96.1 &           & 97.6  & 65.9 & 78.1& 80.1 \\ 
-			\midrule[1pt]	
+			\cmidrule(lr){7-10}
+			Trained on       & canonical & canonical & canonical & hard &           &  canonical  & canonical  & canonical & hard \\
+			Fine tuned on  & - & - & hard  & - &           & -   & - & hard & - \\
+			Tested on        & canonical & hard & hard & hard &            &canonical  & hard & hard & hard  \\
+			\midrule[1pt]
+			Overall accuracy & 98.0 & 91.6 & 96.5  & 96.1 &           & 97.6  & 65.9 & 78.1& 80.1 \\
+			\midrule[1pt]
 			AndCompareColor			&	93.5	&	82.7	&	89.2	&	80.6	&	&	81.9	&	57.1	&	60.7	&	51.4	 \\
 			AndCompareShape			&	93.2	&	83.7	&	89.7	&	80.1	&	&	80.0	&	53.1	&	50.3	&	50.7 \\
 			AndSimpleCompareColor		&	99.2	&	85.3	&	97.6	&	99.4	&	&	99.7	&	53.4	&	77.1	&	78.2 \\
@@ -125,40 +125,40 @@ The CoGenT dataset~\cite{johnson2017clevr} contains:
 	\centering
 	\begin{adjustbox}{width=\textwidth}
 	\begin{tabular}{c c c c c c c }\toprule
-		\multicolumn{1}{c }{\textbf{}} & \multicolumn{6}{c }{\textbf{Test Accuracy (\%)}} \\  
-		\multicolumn{1}{c }{\textbf{}} & \multicolumn{6}{c }{on \texttt{valA} -- 150,000 samples} \\ 
+		\multicolumn{1}{c }{\textbf{}} & \multicolumn{6}{c }{\textbf{Test Accuracy (\%)}} \\
+		\multicolumn{1}{c }{\textbf{}} & \multicolumn{6}{c }{on \texttt{valA} -- 150,000 samples} \\
 		\cmidrule(lr){2-7}
-		\multicolumn{1}{ c }{\textbf{Experiments}} & \textbf{Overall}& \textbf{Exist}  & \textbf{Count} & \textbf{CompareInteger} & \textbf{CompareAttribute} & \textbf{QueryAttribute}\\ 
+		\multicolumn{1}{ c }{\textbf{Experiments}} & \textbf{Overall}& \textbf{Exist}  & \textbf{Count} & \textbf{CompareInteger} & \textbf{CompareAttribute} & \textbf{QueryAttribute}\\
 		\cmidrule(lr){1-1}
 		\cmidrule(lr){2-7}
-		\multicolumn{1}{ c }{Exist only} & 26.07 & \emph{74.20}	& 0.0	& 59.79	& 59.15 & 0.0 \\ 
-		\multicolumn{1}{ c }{Count only} & 14.89  & 0.0	& \emph{62.78}	& 0.0 & 0.0 & 0.0 \\ 
-		\multicolumn{1}{ c }{CompareInteger only} & 23.44 & 48.15	& 0.0	& \emph{77.98}	& 54.08 & 0.0 \\ 
-		\multicolumn{1}{ c }{CompareAttribute only} & 23.50 & 51.93	& 0.0 & 59.06 & \emph{61.73} & 0.0 \\ 
-		\multicolumn{1}{ c }{QueryAttribute only} & 34.64 	& 0.0	& 0.0	& 0.0 & 0.0 & \emph{97.08} \\ 		
+		\multicolumn{1}{ c }{Exist only} & 26.07 & \emph{74.20}	& 0.0	& 59.79	& 59.15 & 0.0 \\
+		\multicolumn{1}{ c }{Count only} & 14.89  & 0.0	& \emph{62.78}	& 0.0 & 0.0 & 0.0 \\
+		\multicolumn{1}{ c }{CompareInteger only} & 23.44 & 48.15	& 0.0	& \emph{77.98}	& 54.08 & 0.0 \\
+		\multicolumn{1}{ c }{CompareAttribute only} & 23.50 & 51.93	& 0.0 & 59.06 & \emph{61.73} & 0.0 \\
+		\multicolumn{1}{ c }{QueryAttribute only} & 34.64 	& 0.0	& 0.0	& 0.0 & 0.0 & \emph{97.08} \\
 		\cmidrule(lr){1-1}
 		\cmidrule(lr){2-7}
-		
-		\multicolumn{1}{ c }{All tasks} & 95.32 & 98.4 	& 86.75	& 96.0	& 98.65	& 98.02 \\ 
+
+		\multicolumn{1}{ c }{All tasks} & 95.32 & 98.4 	& 86.75	& 96.0	& 98.65	& 98.02 \\
 		\cmidrule(lr){1-1}
 		\cmidrule(lr){2-7}
-		
-		\multicolumn{1}{ c }{All tasks but Exist} & 90.33 	& \emph{60.42}	& 86.12	& 96.18	& 98.52 & 98.60 \\ 
-		\multicolumn{1}{ c }{All tasks but Count} & 74.59 	& 97.51	& \emph{0.0}	& 94.37	& 98.42 & 98.47 \\ 
-		\multicolumn{1}{ c }{All tasks but CompareInteger} & 91.53 	& 98.22	& 86.09	& \emph{56.35}	& 98.78 & 98.40 \\ 
-		\multicolumn{1}{ c }{All tasks but CompareAttribute} & 81.92 	& 98.32	& 86.36	& 95.86	& \emph{23.18} & 98.44 \\ 
-		\multicolumn{1}{ c }{All tasks but QueryAttribute} & 42.17 	& 76.79	& 54.64	& 79.87 & 64.13 & \emph{0.0} \\ 
-		
+
+		\multicolumn{1}{ c }{All tasks but Exist} & 90.33 	& \emph{60.42}	& 86.12	& 96.18	& 98.52 & 98.60 \\
+		\multicolumn{1}{ c }{All tasks but Count} & 74.59 	& 97.51	& \emph{0.0}	& 94.37	& 98.42 & 98.47 \\
+		\multicolumn{1}{ c }{All tasks but CompareInteger} & 91.53 	& 98.22	& 86.09	& \emph{56.35}	& 98.78 & 98.40 \\
+		\multicolumn{1}{ c }{All tasks but CompareAttribute} & 81.92 	& 98.32	& 86.36	& 95.86	& \emph{23.18} & 98.44 \\
+		\multicolumn{1}{ c }{All tasks but QueryAttribute} & 42.17 	& 76.79	& 54.64	& 79.87 & 64.13 & \emph{0.0} \\
+
 		\cmidrule(lr){1-1}
 		\cmidrule(lr){2-7}
-		
-		\multicolumn{1}{ c }{\textit{Trained on all tasks -- Finetune on $t$}} & &  & &  & &\\ 
-		\multicolumn{1}{ c }{Exist} & 94.16 & \emph{98.04} & 82.96 & 95.02 & 98.12 & 97.97 \\ 
+
+		\multicolumn{1}{ c }{\textit{Trained on all tasks -- Finetune on $t$}} & &  & &  & &\\
+		\multicolumn{1}{ c }{Exist} & 94.16 & \emph{98.04} & 82.96 & 95.02 & 98.12 & 97.97 \\
 		\multicolumn{1}{ c }{Count} & 95.10 & 96.46 & \emph{88.28} & 94.78 & 97.01 & 98.26 \\
 		\multicolumn{1}{ c }{CompareInteger} & 95.31 & 98.39 & 86.56 & \emph{96.07} & 98.70 & 98.09 \\
 		\multicolumn{1}{ c }{CompareAttribute} & 95.31 & 98.40 & 86.78 & 96.00 & \emph{98.66} & 98.04 \\
 		\multicolumn{1}{ c }{QueryAttribute} & 93.49 & 97.45 & 82.09 & 92.23 & 97.85& \emph{97.76} \\
-		
+
 		\bottomrule
 	\end{tabular}
 	\end{adjustbox}
