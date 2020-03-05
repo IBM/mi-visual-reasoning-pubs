@@ -42,7 +42,7 @@ CLEVR images contain objects characterized by a set of attributes (shape, color,
 The CLEVR authors also introduced CLEVR-CoGenT (Constrained Generalization Test), containing 2 variants, CoGenT-A and CoGenT-B, with varying combinations of color-shape attributes.
 The colors are partitioned into two complementary families:
 Gray, Blue, Brown, Yellow in Family A; and Red, Green, Purple, Cyan in Family B.
-The cubes and cylinders take colors from complementary families in each variant with opposite configurations; the spheres can take any color in both variants (See~\cref{tab:cogent_conditions}).
+The cubes and cylinders take colors from complementary families in each variant with opposite configurations; the spheres can take any color in both variants (see the dataset description in the supplementary material).
 As the input domain consist of the set of objects with all attribute values, both variants differ by their marginal distributions $P_S$ and $P_T$.
 
 \cref{fig:clevr_baselines} presents the accuracy achieved by SAMNet when compared to selected state-of-the-art models, namely: Transparency by Design networks (TbD)~\cite{mascharka2018transparency}, Feature-wise Linear Modulation (FiLM)~\cite{perez2018film} and the Program Generator + Execution Engine (PG + EE)~\cite{johnson2017inferring}.
@@ -53,23 +53,23 @@ SAMNet reaches a comparable 96.2\% accuracy, with TbD achieving the best score o
 \label{sec:cog-baseline-compare}
 
 COG dataset contains short videos, with associated questions grouped into 23 categories\footnote{COG also proposes a pointing version of the tasks, which are not considered in this work.}.
-COG comes in two variants: Canonical (easy) and Hard, differing mainly on the number of frames in the video, the maximum amount of look-back in frame history containing relevant information for reasoning, and the number of object distractors present in a given frame (see~\cref{tab:cog_variants}).
+COG comes in two variants: Canonical (easy) and Hard, differing mainly on the number of frames in the video (4 vs. 8), the maximum amount of look-back in frame history containing relevant information for reasoning (3 vs. 7), and the number of object distractors present in a given frame (1 vs. 10) (see the dataset description in the supplementary material).
 Since the number of task classes is large, we designed a 2-level hierarchy of task groups using the
 description of tasks, as shown in~\cref{fig:task-groups}.
 
-\begin{table}[htbp]
-	\centering
-	\begin{tabular}{lccc}
-		\toprule
-		Variant	& Frames & History	& Distractors \\
-		\midrule
-		Canonical (Easy) & 4 & 3 & 1\\
-		Hard  & 8 & 7 & 10\\
-		\bottomrule
-	\end{tabular}
-	\caption{Details of the Canonical and Hard variants of COG.}
-	\label{tab:cog_variants}
-\end{table}
+% \begin{table}[htbp]
+% 	\centering
+% 	\begin{tabular}{lccc}
+% 		\toprule
+% 		Variant	& Frames & History	& Distractors \\
+% 		\midrule
+% 		Canonical (Easy) & 4 & 3 & 1\\
+% 		Hard  & 8 & 7 & 10\\
+% 		\bottomrule
+% 	\end{tabular}
+% 	\caption{Details of the Canonical and Hard variants of COG.}
+% 	\label{tab:cog_variants}
+% \end{table}
 
 
 \begin{figure}[b!]
