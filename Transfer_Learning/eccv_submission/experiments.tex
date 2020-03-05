@@ -1,14 +1,5 @@
 \section{Experiments}
 \label{sec:experiments}
-% \tk{order: CLEVR + baselines without TL, COG + baseline without TL, Feature Transfer-CLEVR/CoGenT, Temporal Transfer - COG, Reasoning Transfer - CLEVR/CoGenT, Reasoning Transfer-COG}
-
-\begin{figure}[b!]
-	\centering
-	\includegraphics[width=0.5\textwidth]{../img/plots/clevr_baselines.pdf}
-	\caption{Comparison of SAMNet to baselines on CLEVR.}
-	\label{fig:clevr_baselines}
-\end{figure}
-
 
 We implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta2018accelerating}, a framework based on PyTorch~\cite{paszke2017automatic}.
 We evaluated the model on
@@ -21,23 +12,10 @@ We start with an evaluation of SAMNet's performance, comparing it to baselines o
 The rest of the experiments follows the proposed taxonomy.
 We first investigate feature transfer using CLEVR-CoGenT, followed by temporal transfer on the COG variants. Finally, we assess the reasoning transfer capability of SAMNet on both datasets, by reorganizing groups of questions into new training and test splits.
 
-\begin{figure*}[!t]
-	\centering
-	\begin{subfigure}{\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{../img/plots/cog_canonical_baseline_no_labels.pdf}
-	\end{subfigure}%
-	\newline
-	\begin{subfigure}{\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{../img/plots/cog_hard_baseline_labels.pdf}
-	\end{subfigure}%
-	\caption{Comparison of test set accuracies of SAMNet (blue) with original results achieved by the baseline model~\cite{yang2018dataset} (dotted gray) on Canonical (top) and Hard (bottom) variants of the COG dataset.}
-	\label{fig:samnet_cog_detailed}\vspace{-10pt}
-\end{figure*}
 
-\subsection{Performance of SAMNet on CLEVR}
-\label{sec:clevr-baseline-compare}
+\subsection{Description of the Datasets}
+\label{sec:datasets-desc}
+
 CLEVR images contain objects characterized by a set of attributes (shape, color, size and material). The questions are grouped into 5 categories: \textit{Exist}, \textit{Count}, \textit{CompareInteger}, \textit{CompareAttribute}, \textit{QueryAttribute}.
 The CLEVR authors also introduced CLEVR-CoGenT (Constrained Generalization Test), containing 2 variants, CoGenT-A and CoGenT-B, with varying combinations of color-shape attributes.
 The colors are partitioned into two complementary families:
@@ -45,17 +23,29 @@ Gray, Blue, Brown, Yellow in Family A; and Red, Green, Purple, Cyan in Family B.
 The cubes and cylinders take colors from complementary families in each variant with opposite configurations; the spheres can take any color in both variants (see the dataset description in the supplementary material).
 As the input domain consist of the set of objects with all attribute values, both variants differ by their marginal distributions $P_S$ and $P_T$.
 
-\cref{fig:clevr_baselines} presents the accuracy achieved by SAMNet when compared to selected state-of-the-art models, namely: Transparency by Design networks (TbD)~\cite{mascharka2018transparency}, Feature-wise Linear Modulation (FiLM)~\cite{perez2018film} and the Program Generator + Execution Engine (PG + EE)~\cite{johnson2017inferring}.
-SAMNet reaches a comparable 96.2\% accuracy, with TbD achieving the best score of 98.7\%.
-
-
-\subsection{Performance of SAMNet on COG}
-\label{sec:cog-baseline-compare}
-
-COG dataset contains short videos, with associated questions grouped into 23 categories\footnote{COG also proposes a pointing version of the tasks, which are not considered in this work.}.
+COG dataset contains short videos with associated questions (classification)
+grouped into 23 categories\footnote{COG also proposes pointing-type questions, which are not considered here.}.
 COG comes in two variants: Canonical (easy) and Hard, differing mainly on the number of frames in the video (4 vs. 8), the maximum amount of look-back in frame history containing relevant information for reasoning (3 vs. 7), and the number of object distractors present in a given frame (1 vs. 10) (see the dataset description in the supplementary material).
-Since the number of task classes is large, we designed a 2-level hierarchy of task groups using the
-description of tasks, as shown in~\cref{fig:task-groups}.
+
+\begin{figure}[!t]
+	\centering
+	\includegraphics[width=0.6\textwidth]{../img/architecture/hierarchy}
+	\caption{Hierarchy of Question Categories in the COG dataset.}
+	\label{fig:question-groups}
+\end{figure}
+
+Since the number of questions categories is large, we designed a 2-level hierarchy  (see~\cref{fig:question-groups})
+that groups these categories appropriately using their descriptions. 
+For groups at the lowest level, we chose the following question categories to be placed in those groups.
+Below, substitute each of \textit{Shape} and \textit{Color} for  \uX{} to obtain the group.
+\begin{description}
+	\item[Basic:] \textit{Exist}\uX, \textit{Get}\uX{} and \textit{Exist} (5 categories);
+	\item[Obj-Attr:] \emph{SimpleCompare}\uX{} and \textit{AndSimpleCompare}\uX{} (4 categories);
+	\item[Compare:] \textit{Compare}\uX,  \textit{AndCompare}\uX{} \& \textit{Exist}\uX\textit{Of} (6 categories);
+	\item[Spatial:] \textit{ExistSpace}, \textit{Exist}\uX\textit{Space}, and \textit{Get}\uX\textit{Space} (5 categories);
+	\item[Cognitive:] \textit{ExistLastColorSameShape}, \textit{ExistLastShapeSameColor} and \textit{ExistLastObjectSameObject} (3 categories)
+\end{description}
+
 
 % \begin{table}[htbp]
 % 	\centering
@@ -72,33 +62,47 @@ description of tasks, as shown in~\cref{fig:task-groups}.
 % \end{table}
 
 
-\begin{figure}[b!]
+
+
+
+
+
+\subsection{Performance of SAMNet on CLEVR and COG}
+\label{sec:baseline-compare}
+
+\begin{figure}[!b]
 	\centering
-	\includegraphics[width=0.6\textwidth]{../img/architecture/hierarchy}
-	\caption{Hierarchy of Task Groups in the COG dataset.}
-	\label{fig:task-groups}
+	\includegraphics[width=0.5\textwidth]{../img/plots/clevr_baselines.pdf}
+	\caption{Comparison of SAMNet to baselines on CLEVR.}
+	\label{fig:clevr_baselines}
 \end{figure}
 
+\cref{fig:clevr_baselines} presents the accuracy achieved by SAMNet on CLEVR
+when compared to selected state-of-the-art models, namely: Transparency by Design networks (TbD)~\cite{mascharka2018transparency}, Feature-wise Linear Modulation (FiLM)~\cite{perez2018film} and the Program Generator + Execution Engine (PG + EE)~\cite{johnson2017inferring}.
+SAMNet reaches a comparable 96.2\% accuracy, with TbD achieving the best score of 98.7\%.
 
-
-For groups at the lowest level, we chose the following task classes to be placed in those groups.
-Below, substitute each of \textit{Shape} and \textit{Color} for  \uX{} to obtain the task class.
-\begin{description}
-	\item[Basic:] \textit{Exist}\uX, \textit{Get}\uX{} and \textit{Exist} (5 task classes);
-	\item[Obj-Attr:] \emph{SimpleCompare}\uX{} and \textit{AndSimpleCompare}\uX\ (4 task classes);
-	\item[Compare:] \textit{Compare}\uX,  \textit{AndCompare}\uX{} \& \textit{Exist}\uX\textit{Of} (6 task classes);
-	\item[Spatial:] \textit{ExistSpace}, \textit{Exist}\uX\textit{Space}, and \textit{Get}\uX\textit{Space} (5 task classes);
-	\item[Cognitive:] \textit{ExistLastColorSameShape}, \textit{ExistLastShapeSameColor} and \textit{ExistLastObjectSameObject} (3 task classes)
-\end{description}
-
-
-We compared our results with the baseline model introduced in in~\cite{yang2018dataset}, the same paper as the COG dataset.
+For COG, we compared our results with the baseline model introduced in~\cite{yang2018dataset}, the same paper as the COG dataset.
 The most important results are highlighted in~\cref{fig:samnet_cog_detailed}; full comparison can be found in the supplementary material.
 
-For the Canonical variant (top row), we achieve similar accuracies for the majority of tasks (with a total average accuracy of 98.0\%, compared to 97.6\% for the baseline model), with significant improvements (around 13 points) for \textit{AndCompare} tasks.
-As these tasks focus on compositional questions referring to two objects, we hypothesize that our model achieves better accuracy due to its ability to selectively pick and store relevant objects from the past frames in its external memory.
+\begin{figure*}[!t]
+	\centering
+	\begin{subfigure}{\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{../img/plots/cog_canonical_baseline_no_labels.pdf}
+	\end{subfigure}%
+	\newline
+	\begin{subfigure}{\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{../img/plots/cog_hard_baseline_labels.pdf}
+	\end{subfigure}%
+	\caption{Comparison of test set accuracies of SAMNet (blue) with original results achieved by the baseline model~\cite{yang2018dataset} (dotted gray) on Canonical (top) and Hard (bottom) variants of the COG dataset.}
+	\label{fig:samnet_cog_detailed}\vspace{-10pt}
+\end{figure*}
+
+For the Canonical variant (top row), we achieve similar accuracies for the majority of categories (with a total average accuracy of 98.0\%, compared to 97.6\% for the baseline model), with significant improvements (around 13 points) for the \textit{AndCompare} category.
+As these question categories focus on compositional questions referring to two objects, we hypothesize that our model achieves better accuracy due to its ability to selectively pick and store relevant objects from the past frames in its external memory.
 For the Hard variant, we achieve a total average accuracy of 96.1\% compared to 80.1\% for the baseline model, demonstrating that our model can adapt to larger number of frames and distractors.
-SAMNet improves upon the baseline model on all tasks, with improvements varying from 0.5 to more than 30 points, especially outperforming in the most complex tasks (\textit{AndCompare}\uX, \textit{Compare}\uX).
+SAMNet improves upon the baseline model on all categories, with improvements varying from 0.5 to more than 30 points, especially outperforming in the most complex categories (\textit{AndCompare}\uX, \textit{Compare}\uX).
 
 
 \subsection{Feature transfer using CLEVR-CoGenT}
@@ -116,7 +120,7 @@ We also consider a direct test on CoGenT-A; and a test on CoGenT-A after fine-tu
 	\label{fig:CoGenT-B-results}
 \end{figure}
 
-When training and testing on CoGenT-A, SAMNet performs slightly worse than the other models, matching the results observed in \cref{sec:clevr-baseline-compare}.
+When training and testing on CoGenT-A, SAMNet performs slightly worse than the other models, matching the results observed in \cref{sec:baseline-compare}.
 When zero-shot testing on CoGenT-B, all models show relatively good performance (around 75\%), which represents nonetheless a drop of 17 points with respect to CoGenT-A.
 All models perform better when fine-tuned on CoGenT-B.
 However, this process also results in a degradation of performance on CoGenT-A, with SAMNet and TbD showing an ability to limit this drop in accuracy.
