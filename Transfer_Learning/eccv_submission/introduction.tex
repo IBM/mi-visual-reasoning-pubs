@@ -6,10 +6,10 @@ However, in many real-world scenarios, this assumption does not hold. Moreover, 
 One of the widely used solutions is Transfer Learning~\cite{pan2009survey,weiss2016survey}, a technique which enhances model performance by transferring \emph{information} from one domain to another.
 
 
-In this work we focus on transfer learning in multi-modal reasoning tasks combining vision and language~\cite{mogadala2019trends}. Recently introduced visual reasoning datasets, such as ~\cite{johnson2017clevr,yang2018dataset,song2018explore}, attempt to probe the generalization capabilities of models under various scenarios, trying to quantify the visual complexity of the scene or the compositional complexity of the question.
+In this work we focus on transfer learning in multi-modal reasoning tasks combining vision and language~\cite{mogadala2019trends}. Recently introduced visual reasoning datasets, such as~\cite{johnson2017clevr,yang2018dataset,song2018explore}, attempt to probe the generalization capabilities of models under various scenarios, trying to quantify the visual complexity of the scene or the compositional complexity of the question.
 While these datasets seem to be well suited for transfer learning, they do not tackle that issue directly.
-In particular, \cite{johnson2017clevr} introduces the CLEVR dataset along with two variants (CoGenT-A and -B) with varying combinations of visual attributes.
-Similarly, COG \cite{yang2018dataset}, a Video QA reasoning dataset, contains two variants (Canonical and Hard) with different number of frames and scene complexity.
+In particular,~\cite{johnson2017clevr} introduces the CLEVR dataset along with two variants (CoGenT-A and CoGenT-B) with varying combinations of visual attributes.
+Similarly, COG~\cite{yang2018dataset}, a Video QA reasoning dataset, contains two variants (Canonical and Hard) with different number of frames and scene complexity.
 Both datasets come with a number of task classes that require similar reasoning abilities (e.g. compare or count objects).
 The open question we address in this paper is whether we can build a neural architecture that fosters transfer learning and generalizes from simpler to more complex reasoning tasks.
 
