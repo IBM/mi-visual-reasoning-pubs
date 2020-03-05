@@ -14,7 +14,7 @@ We implemented and trained our SAMNet model using MI-Prometheus~\cite{kornuta201
 We evaluated the model on
 the CLEVR dataset~\cite{johnson2017clevr}, a diagnostic dataset for Image Question Answering and on the COG dataset~\cite{yang2018dataset}, a video reasoning~\cite{mogadala2019trends} dataset developed for the purpose of research on relational and temporal reasoning.
 We briefly describe both datasets in the following two subsections.
-In all experiments, we trained SAMNet using $k = 8$ reasoning steps and external memory with $N = 8$ slots, each storing an array of 128 floats.
+In all experiments, we trained SAMNet using $T = 8$ reasoning steps and external memory with $N = 8$ slots, each storing an array of 128 floats.
 When working with CLEVR, we deactivated SAMNet's external memory and temporal-related modules as they are unnecessary while reasoning about static images.
 
 We start with an evaluation of SAMNet's performance, comparing it to baselines on both CLEVR and COG datasets, without transfer learning.
