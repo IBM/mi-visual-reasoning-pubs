@@ -21,12 +21,11 @@
 
 SAMNet is an end-to-end differentiable recurrent model equipped with an external memory~(\cref{fig:samnet}). At the conceptual level, SAMNet draws from two core ideas:
 iterative reasoning as proposed in MAC (Memory-Attention-Composition) Network~\cite{hudson2018compositional,marois2018transfer} and an external memory as proposed in Memory-Augmented Neural Networks such as NTM (Neural Turing Machine)~\cite{graves2014neural}, DNC (Differentiable Neural Computer)~\cite{graves2016hybrid} or DWM (Differentiable Working Memory)~\cite{jayram2018learning}.
-
-\begin{figure*}
+\begin{figure*}[!b]
 	\centering
 	\includegraphics[width=\textwidth]{../img/architecture/SAMNETmodel}
 	\caption{General architecture of SAMNet.}
-	\label{fig:samnet}\vspace{-10pt}
+	\label{fig:samnet}
 \end{figure*}
 
 A distinctive feature of SAMNet is its frame-by-frame temporal processing in a recurrent fashion; this allows for the model to be used on frame sequences longer than those used for training. This is a notable difference from~\cite{haurilet2019s}, which uses graph traversal reasoning on a fixed number of frames. 
