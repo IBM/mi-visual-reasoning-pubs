@@ -1,3 +1,25 @@
+\section{SAMCell Data Flow}
+\label{sec:samcell-detail}
+
+The diagram in~\Cref{fig:samcell} shows the various modules of 
+SAM Cell and describes the flow of information between them.
+In the figure, the gray box on the left shows SAM Cell processing the $k$-th frame of the video, whose feature map equals $F_k$, for $T$ reasoning steps.
+The contextual words $\vec{cw}$ and question embedding $\vec{q}$ form the remaining
+inputs to SAM Cell.
+The state of memory (contents) at the beginning of this reasoning process is denoted by $M_0$. This is updated for each of the $T$ reasoning steps along with the various recurrent states of SAM Cell, namely, $\vec{wh}_t$, $\vec{c}_t$ and $\vec{so}_t$. 
+The gray box on the right details what happens across the various modules
+during a single reasoning step $t$.
+The main document describes the role played by each tensor shown going between
+various modules within that box.
+\begin{figure*}[hbtp]
+	\centering
+	\includegraphics[width=\textwidth]{../img/architecture/samcell_reasoning}
+	\caption{Archirecture of SAM Cell.}
+	\label{fig:samcell}
+\end{figure*}
+
+\clearpage
+
 \section{Datasets: CLEVR-CoGenT and COG}
 \label{sec:datasets-desc}
 %Here are the details of the COG dataset.
